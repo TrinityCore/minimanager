@@ -195,7 +195,7 @@ function doregister(){
         {
             $result = $sql->query("INSERT INTO account (username,sha_pass_hash,email, joindate,last_ip,failed_logins,locked,last_login,expansion)
                                    VALUES (UPPER('$user_name'),'$pass','$mail',now(),'$last_ip',0,$create_acc_locked,NULL,$expansion)");
-            $query_result = mysql_fetch_assoc($sql->query("SELECT id FROM account WHERE username = '$user_name'"));
+            $query_result = mysqli_fetch_assoc($sql->query("SELECT id FROM account WHERE username = '$user_name'"));
         }
 
         $sql->close();
