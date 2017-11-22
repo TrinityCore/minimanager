@@ -26,7 +26,7 @@ require_once("../../scripts/config.php");
 
 class CaptchaSecurityImages
 {
-    var $font = 'monofont.ttf';
+    var $font = 'monofont.ttf'; //On linux, change to './monofont.ttf';
 
     function generateCode($characters)
     {
