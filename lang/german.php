@@ -185,6 +185,8 @@ $lang_register = array(
   'invited_info' => 'Wenn dich ein anderer Spieler geworben hat, gib hier seinen Accountnamen an.',
   'email_address_used' => 'Diese Mailadresse hat schon einen Account.',
   'referrer_not_found' => 'Der Account des Spielers, der dich geworben hat, wurde nicht gefunden.<br/>Stelle bitte sicher, dass du einen g&uuml;ltigen Accountnamen eingegeben hast.',
+  'server_code' => 'Server Passphrase',   // TODO
+  'server_code_incorrect' => 'Incorrect Server Passphrase. Contact the Administrator',   // TODO
   );
 
 

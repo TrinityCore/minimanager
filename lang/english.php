@@ -188,6 +188,8 @@ $lang_register = array(
   'invited_info' => 'Please write the account name of the player who invited you to register here.',
   'email_address_used' => 'This email has an account already.<br/>No more accounts can be created for this email address.',
   'referrer_not_found' => 'Unfortunately the specified account was not found in our database.<br/>Please ensure you have entered a valid account name or leave the &quot;Invited by&quot;-field blank.',
+  'server_code' => 'Server Passphrase',
+  'server_code_incorrect' => 'Incorrect Server Passphrase. Contact the Administrator',
   );
 
 
