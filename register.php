@@ -116,7 +116,7 @@ function doregister(){
     }
 
     //make sure it doesnt contain non english chars.
-    if (!valid_alphabetic($user_name)) 
+    if (!ctype_alnum($user_name)) 
     {
         $sql->close();
         redirect("register.php?err=6");
