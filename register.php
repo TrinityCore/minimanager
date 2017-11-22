@@ -315,7 +315,7 @@ function register(){
                                 <tr>
                                     <td valign=\"top\">{$lang_captcha['security_code']}:</td>
                                     <td>
-                                        <input type=\"text\" name=\"security_code\" size=\"45\" /><br />
+                                        <input type=\"text\" name=\"security_code\" autocomplete=\"off\" size=\"45\" /><br />
                                     </td>
                                 </tr>";
     
