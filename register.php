@@ -124,7 +124,7 @@ function doregister(){
 
     //make sure the mail is valid mail format
     $mail = $sql->quote_smart(trim($_POST['email']));
-    if ((!valid_email($mail))||(strlen($mail) > 224)) 
+    if ((!filter_var($mail, FILTER_VALIDATE_EMAIL))||(strlen($mail) > 224)) 
     {
         $sql->close();
         redirect("register.php?err=7");
