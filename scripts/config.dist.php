@@ -177,7 +177,7 @@ $item_icons                 = 'img/icons'; // and this is where it will save to 
 
 $disable_acc_creation  = false;     // true = Do not allow new accounts to be created
 $enable_server_code    = false;     // Enables additional passphrase that must be entered during registration
-$server_code		   = 'trinity'; // if above is true, this is the passphrase that must be entered during registration
+$server_code           = 'trinity'; // if above is true, this is the passphrase that must be entered during registration
 $expansion_select      = true;      // true = Shows option to select expansion or classic. (false = no option, WOTLK enabled by default)
 $defaultoption         = 2;         // if the above is false then set what the default option will be (2 = WOTLK, 1 = TBC, 0 = Classic)
 $enable_captcha        = false;     // false = no security image check (enable for protection against 'bot' registrations)
