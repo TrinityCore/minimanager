@@ -10,7 +10,7 @@ class SQL //MySQL
   var $query_result;
   var $num_queries = 0;
 
-  function connect($db_host, $db_username, $db_password, $db_name = '', $use_names = '', $pconnect = false, $newlink = true) {
+  function connect($db_host, $db_username, $db_password, $db_name = '', $pconnect = false, $newlink = true) {
     global $lang_global;
 
     if ($pconnect) $this->link_id = @mysql_pconnect($db_host, $db_username, $db_password);
