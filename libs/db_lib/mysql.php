@@ -20,7 +20,9 @@ class SQL //MySQL
       if($db_name){
         if (@mysql_select_db($db_name, $this->link_id)) return $this->link_id;
           else die($lang_global['err_sql_open_db']." ('$db_name')");
-        if (!empty($use_names)) $this->query("SET NAMES '$use_names'");
+        // PHP 7?
+        $use_names = $use_names ?: 'utf8mb4';
+        mysql_set_charset($use_names, $this->link_id);
       }
     } else die($lang_global['err_sql_conn_db']);
   }
