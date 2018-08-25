@@ -10,7 +10,7 @@ class SQL //MySQL
   var $query_result;
   var $num_queries = 0;
 
-  function connect($db_host, $db_username, $db_password, $db_name = '', $use_names = '', $pconnect = false, $newlink = true) {
+  function connect($db_host, $db_username, $db_password, $db_name = '', $pconnect = false, $newlink = true) {
     global $lang_global;
 
     if ($pconnect) $this->link_id = @mysql_pconnect($db_host, $db_username, $db_password);
@@ -20,7 +20,7 @@ class SQL //MySQL
       if($db_name){
         if (@mysql_select_db($db_name, $this->link_id)) return $this->link_id;
           else die($lang_global['err_sql_open_db']." ('$db_name')");
-        if (!empty($use_names)) $this->query("SET NAMES '$use_names'");
+        $this->query("SET NAMES $database_encoding");
       }
     } else die($lang_global['err_sql_conn_db']);
   }

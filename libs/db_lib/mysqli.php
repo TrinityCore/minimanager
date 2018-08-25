@@ -10,7 +10,7 @@ class SQL //MySQLi
     var $query_result;
     var $num_queries = 0;
 
-    function connect($db_host, $db_username, $db_password, $db_name = NULL, $use_names = '', $pconnect = true, $newlink = false) {
+    function connect($db_host, $db_username, $db_password, $db_name = NULL, $pconnect = true, $newlink = false) {
         global $lang_global;
 
         if (strpos($db_host, ':') !== false) list($db_host, $db_port) = explode(':', $db_host);
@@ -19,7 +19,7 @@ class SQL //MySQLi
         else $this->link_id = @mysqli_connect($db_host, $db_username, $db_password, $db_name);
 
         if ($this->link_id){
-            if (!empty($use_names)) $this->query("SET NAMES '$use_names'");
+            $this->query("SET NAMES $database_encoding");
         } else die($lang_global['err_sql_conn_db']);
     }
 
