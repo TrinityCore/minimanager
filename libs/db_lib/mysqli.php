@@ -15,11 +15,13 @@ class SQL //MySQLi
 
         if (strpos($db_host, ':') !== false) list($db_host, $db_port) = explode(':', $db_host);
 
-        if (isset($db_port)) $this->link_id = @mysqli_connect($db_host, $db_username, $db_password, $db_name, $db_port);
-        else $this->link_id = @mysqli_connect($db_host, $db_username, $db_password, $db_name);
+        if (isset($db_port)) $this->link_id = new mysqli($db_host, $db_username, $db_password, $db_name, $db_port);
+        else $this->link_id = new mysqli($db_host, $db_username, $db_password, $db_name);
 
         if ($this->link_id){
-            if (!empty($use_names)) $this->query("SET NAMES '$use_names'");
+            // PHP 7?
+            $use_names = $use_names ?: 'utf8mb4';
+            $this->link_id->set_charset($use_names);
         } else die($lang_global['err_sql_conn_db']);
     }
 
