@@ -49,8 +49,8 @@ function browse_guilds(&$sqlr, &$sqlc)
     //==========================$_GET and SECURE end=============================
     //==========================MyGuild==========================================
 
-    $query_myGuild = $sqlc->query("SELECT g.guildid as gid, g.name, g.leaderguid AS lguid,
-                                    (SELECT name from characters where guid = lguid), (SELECT race in (2,5,6,8,10) from characters where guid = lguid) as faction,
+    $query_myGuild = $sqlc->query("SELECT g.guildid as gid, BINARY g.name, g.leaderguid AS lguid,
+                                    (SELECT BINARY name from characters where guid = lguid), (SELECT race in (2,5,6,8,10) from characters where guid = lguid) as faction,
                                     (select count(*) from characters where guid in (select guid from guild_member where guildid = lguid) and online = 1) as gonline,
                                     (select count(*) from guild_member where guildid = gid), SUBSTRING_INDEX(g.MOTD,' ',6), g.createdate,
                                     (select account from characters where guid = lguid) FROM guild as g
@@ -116,31 +116,31 @@ function browse_guilds(&$sqlr, &$sqlc)
             case "name":
                 if (preg_match('/^[\t\v\b\f\a\n\r\\\"\'\? <>[](){}_=+-|!@#$%^&*~`.,0123456789\0]{1,30}$/', $search_value))
                     redirect("guild.php?error=5&amp;realm=$realmid");
-                $query = $sqlc->query("SELECT g.guildid as gid, g.name,g.leaderguid as lguid,
-                                      (SELECT name from characters where guid = lguid) as lname, c.race in (2,5,6,8,10) as lfaction,
+                $query = $sqlc->query("SELECT g.guildid as gid, BINARY g.name,g.leaderguid as lguid,
+                                      (SELECT BINARY name from characters where guid = lguid) as lname, c.race in (2,5,6,8,10) as lfaction,
                                       (select count(*) from guild_member where guildid = gid) as tot_chars, createdate, c.account as laccount
                                       FROM guild as g left outer join characters as c on c.guid = g.leaderguid
-                                      where g.name like '%$search_value%' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
-                $query_count = $sqlc->query("SELECT 1 from guild where name like '%$search_value%'");
+                                      where BINARY g.name like '%$search_value%' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
+                $query_count = $sqlc->query("SELECT 1 from guild where BINARY name like '%$search_value%'");
                 break;
 
             case "leadername" :
                 if (preg_match('/^[\t\v\b\f\a\n\r\\\"\'\? <>[](){}_=+-|!@#$%^&*~`.,0123456789\0]{1,30}$/', $search_value))
                     redirect("guild.php?error=5&amp;realm=$realmid");
-                $query = $sqlc->query("SELECT g.guildid as gid, g.name,g.leaderguid as lguid,
-                                      (SELECT name from characters where guid = lguid) as lname, c.race in (2,5,6,8,10) as lfaction,
+                $query = $sqlc->query("SELECT g.guildid as gid, BINARY g.name,g.leaderguid as lguid,
+                                      (SELECT BINARY name from characters where guid = lguid) as lname, c.race in (2,5,6,8,10) as lfaction,
                                       (select count(*) from guild_member where guildid = gid) as tot_chars, createdate, c.account as laccount
                                       FROM guild as g left outer join characters as c on c.guid = g.leaderguid where g.leaderguid in
-                                      (SELECT guid from characters where name like '%$search_value%') ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
-                $query_count = $sqlc->query("SELECT 1 from guild where leaderguid in (select guid from characters where name like '%$search_value%')");
+                                      (SELECT guid from characters where BINARY name like '%$search_value%') ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
+                $query_count = $sqlc->query("SELECT 1 from guild where leaderguid in (select guid from characters where BINARY name like '%$search_value%')");
                 break;
 
             case "guildid" :
                 if (is_numeric($search_value));
                 else
                     redirect("guild.php?error=5&amp;realm=$realmid");
-                $query = $sqlc->query("SELECT g.guildid as gid, g.name,g.leaderguid as lguid,
-                                      (SELECT name from characters where guid = lguid) as lname, c.race in (2,5,6,8,10) as lfaction,
+                $query = $sqlc->query("SELECT g.guildid as gid, BINARY g.name,g.leaderguid as lguid,
+                                      (SELECT BINARY name from characters where guid = lguid) as lname, c.race in (2,5,6,8,10) as lfaction,
                                       (select count(*) from guild_member where guildid = gid) as tot_chars, createdate, c.account as laccount
                                       FROM guild as g left outer join characters as c on c.guid = g.leaderguid
                                       where g.guildid = '$search_value' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
@@ -153,7 +153,7 @@ function browse_guilds(&$sqlr, &$sqlc)
     }
     else
     {
-        $query = $sqlc->query("SELECT g.guildid as gid, g.name,g.leaderguid as lguid, (SELECT name from characters where guid = lguid) as lname, c.race in (2,5,6,8,10) as lfaction, (select count(*) from guild_member where guildid = gid) as tot_chars, createdate, c.account as laccount FROM guild as g left outer join characters as c on c.guid = g.leaderguid ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
+        $query = $sqlc->query("SELECT g.guildid as gid, BINARY g.name,g.leaderguid as lguid, (SELECT BINARY name from characters where guid = lguid) as lname, c.race in (2,5,6,8,10) as lfaction, (select count(*) from guild_member where guildid = gid) as tot_chars, createdate, c.account as laccount FROM guild as g left outer join characters as c on c.guid = g.leaderguid ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
         $query_count = $sqlc->query("SELECT 1 from guild");
     }
     $all_record = $sqlc->num_rows($query_count);
@@ -315,7 +315,7 @@ function view_guild()
     $dir = ($dir) ? 0 : 1;
     //==========================$_GET and SECURE end=============================
 
-    $query = $sqlc->query("SELECT guildid, name, info, MOTD, createdate,
+    $query = $sqlc->query("SELECT guildid, BINARY name, BINARY info, BINARY MOTD, createdate,
                           (select count(*) from guild_member where guildid = '$guild_id') as mtotal,
                           (select count(*) from guild_member where guildid = '$guild_id' and guid in
                           (select guid from characters where online = 1)) as monline
@@ -389,10 +389,10 @@ function view_guild()
 
     $output .="
                                             </tr>";
-    $members = $sqlc->query("SELECT gm.guid as cguid, c.name as cname, c.`race` as crace ,c.`class` as cclass,
+    $members = $sqlc->query("SELECT gm.guid as cguid, BINARY c.name as cname, c.`race` as crace ,c.`class` as cclass,
                             c.`level` AS clevel,
-                            gm.rank AS mrank, (SELECT rname FROM guild_rank WHERE guildid ='$guild_id' AND rid = mrank) AS rname,
-                            gm.Pnote, gm.OFFnote, gender,
+                            gm.rank AS mrank, (SELECT BINARY rname FROM guild_rank WHERE guildid ='$guild_id' AND rid = mrank) AS rname,
+                            BINARY gm.Pnote, BINARY gm.OFFnote, gender,
                             c.`online` as conline, c.`account`, c.`logout_time` as clogout
                             FROM guild_member as gm left outer join characters as c on c.guid = gm.guid
                             WHERE gm.guildid = '$guild_id' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
