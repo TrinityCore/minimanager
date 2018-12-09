@@ -18,7 +18,7 @@ function dologin(&$sqlr)
     if (255 < strlen($user_name) || 255 < strlen($user_pass))
         redirect('login.php?error=1');
 
-    $result = $sqlr->query('SELECT account.id, username, gmlevel FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE username = \''.$user_name.'\' AND sha_pass_hash = \''.$user_pass.'\'');
+    $result = $sqlr->query('SELECT account.id AS id, username, gmlevel FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE username = \''.$user_name.'\' AND sha_pass_hash = \''.$user_pass.'\'');
     if ($require_account_verify)
     {
         $sql2 = new SQL;
@@ -35,17 +35,20 @@ function dologin(&$sqlr)
 
     if (1 == $sqlr->num_rows($result))
     {
-        $id = $sqlr->result($result, 0, 'id');
+        $info = $sqlr->fetch_assoc($result);
+        $id = $info['id'];
         if ($sqlr->result($sqlr->query('SELECT count(*) FROM account_banned WHERE id = '.$id.' AND active = \'1\''), 0))
             redirect('login.php?error=3');
         else
         {
             $_SESSION['user_id'] = $id;
-            $_SESSION['uname'] = $sqlr->result($result, 0, 'username');
-            if (($sqlr->result($result, 0, 'gmlevel')) == null)
-            $_SESSION['user_lvl'] = 0;
+            $_SESSION['uname'] = $info['username'];
+            
+            if ($info['gmlevel'] == NULL)
+                $_SESSION['user_lvl'] = 0;
             else
-            $_SESSION['user_lvl'] = $sqlr->result($result, 0, 'gmlevel');
+                $_SESSION['user_lvl'] = $info['gmlevel'];
+            
             $_SESSION['realm_id'] = $sqlr->quote_smart($_POST['realm']);
             $_SESSION['client_ip'] = (isset($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : getenv('REMOTE_ADDR');
             $_SESSION['logged_in'] = true;
@@ -179,25 +182,26 @@ function do_cookie_login(&$sqlr)
     $user_name = $sqlr->quote_smart($_COOKIE['uname']);
     $user_pass = $sqlr->quote_smart($_COOKIE['p_hash']);
 
-    $result = $sqlr->query('SELECT account.id, username, gmlevel FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE username = \''.$user_name.'\' AND sha_pass_hash = \''.$user_pass.'\'');
+    $result = $sqlr->query('SELECT account.id AS id, username, gmlevel FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE username = \''.$user_name.'\' AND sha_pass_hash = \''.$user_pass.'\'');
 
     unset($user_name);
     unset($user_pass);
 
     if ($sqlr->num_rows($result))
     {
-        $id = $sqlr->result($result, 0, 'id');
+        $info = $sqlr->fetch_assoc($result);
+        $id = $info['id'];
         if ($sqlr->result($sqlr->query('SELECT count(*) FROM account_banned WHERE id ='.$id.' AND active = \'1\''), 0))
             redirect('login.php?error=3');
         else
         {
             $_SESSION['user_id']   = $id;
-            $_SESSION['uname']     = $sqlr->result($result, 0, 'username');
+            $_SESSION['uname']     = $info['username'];
 
-            if (($sqlr->result($result, 0, 'gmlevel')) == null)
+            if ($info['gmlevel'] == NULL)
                 $_SESSION['user_lvl']  = 0;
             else
-                $_SESSION['user_lvl']  = $sqlr->result($result, 0, 'gmlevel');
+                $_SESSION['user_lvl']  = $info['gmlevel'];
 
             $_SESSION['realm_id']  = $sqlr->quote_smart($_COOKIE['realm_id']);
             $_SESSION['client_ip'] = (isset($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : getenv('REMOTE_ADDR');
