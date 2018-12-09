@@ -5,7 +5,8 @@ require_once 'header.php';
 require_once 'libs/bbcode_lib.php';
 require_once 'libs/char_lib.php';
 require_once 'libs/map_zone_lib.php';
-valid_login($action_permission['read']);
+if (isset($action_permission['read']))
+	valid_login($action_permission['read']);
 
 //#############################################################################
 // MINIMANAGER FRONT PAGE
