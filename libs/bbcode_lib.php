@@ -61,7 +61,7 @@ function bbcode_emoticons()
         5 => Array (":mad:", "angry",   "15","15"),
         6 => Array (":|",    "neutral", "15","15"),
         7 => Array ("=)",    "happy",   "15","15"),
-        8 => Array (":´(",   "cry",     "15","15"),
+        8 => Array (":Â´(",   "cry",     "15","15"),
         9 => Array (":?",    "hmm",     "15","15"),
         10=> Array (":]",    "roll",    "15","15"),
         11=> Array (":S",    "smm",     "15","15"),
@@ -136,23 +136,23 @@ function bbcode_bbc2html($text)
 {
   $bbcode_emoticons = bbcode_emoticons();
   // By BlackWizard, https://www.phpcs.com/codes/BBCODE-SIMPLEMENT_17638.aspx
-  $text = preg_replace("#\[img\]((ht|f)tp://)([^\r\n\t<\"]*?)\[/img\]#sie", "'<img src=\\1' . str_replace(' ', '%20', '\\3') . ' />'", $text);
-  $text = preg_replace("#\[url=((ht|f)tp://)([^\r\n\t<\"]*?)\](.+?)\[\/url\]#sie", "'<a href=\"\\1' . str_replace(' ', '%20', '\\3') . '\" target=blank>\\4</a>'", $text);
-  $text = preg_replace("#\[url\]((ht|f)tp://)([^\r\n\t<\"]*?)\[/url\]#sie", "'<a href=\"\\1' . str_replace(' ', '%20', '\\3') . '\" target=blank>\\1\\3</a>'", $text);
-  $text = preg_replace("#\[b\](.+?)\[\/b\]#sie", "'<b>\\1</b>'", $text);
-  $text = preg_replace("#\[i\](.+?)\[\/i\]#sie", "'<i>\\1</i>'", $text);
-  $text = preg_replace("#\[u\](.+?)\[\/u\]#sie", "'<u>\\1</u>'", $text);
-  $text = preg_replace("#\[h1\](.+?)\[\/h1\]#sie", "'<h1>\\1</h1>'", $text);
-  $text = preg_replace("#\[h2\](.+?)\[\/h2\]#sie", "'<h2>\\1</h2>'", $text);
-  $text = preg_replace("#\[code\](.+?)\[\/code\]#sie", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#344;font-size:16px;\">#:</th></tr><tr><td align=left style=\"background-color:#333;\"><code>\\1</code></td></tr></table>'", $text);
-  $text = preg_replace("#\[quote\](.+?)\[\/quote\]#sie", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#443;font-size:16px;\">Cita :</th></tr><tr><td align=left style=\"background-color:#333;\">\\1</td></tr></table>'", $text);
-  $text = preg_replace("#\[quote=(.+?)\](.+?)\[\/quote\]#sie", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#443;font-size:16px;\">\\1 :</th></tr><tr><td align=left style=\"background-color:#333;>\\2</td></tr></table>'", $text);
-  $text = preg_replace("#\[color=(.+?)\](.+?)\[\/color\]#sie", "'<font color=\\1>\\2</font>'", $text);
-  $text = preg_replace("#\[size=(.+?)\](.+?)\[\/size\]#sie", "'<font size=\\1>\\2</font>'", $text);
-  $text = preg_replace("#\[font=(.+?)\](.+?)\[\/font\]#sie", "'<font face=\"\\1\">\\2</font>'", $text);
-  $text = preg_replace("#\[left\](.+?)\[\/left\]#sie", "'<p style=\"text-align:left;\">\\1</p>'", $text);
-  $text = preg_replace("#\[right\](.+?)\[\/right\]#sie", "'<p style=\"text-align:right;\">\\1</p>'", $text);
-  $text = preg_replace("#\[center\](.+?)\[\/center\]#sie", "'<center>\\1</center>'", $text);
+  $text = preg_replace("#\[img\]((ht|f)tp://)([^\r\n\t<\"]*?)\[/img\]#si", "'<img src=\\1' . str_replace(' ', '%20', '\\3') . ' />'", $text);
+  $text = preg_replace("#\[url=((ht|f)tp://)([^\r\n\t<\"]*?)\](.+?)\[\/url\]#si", "'<a href=\"\\1' . str_replace(' ', '%20', '\\3') . '\" target=blank>\\4</a>'", $text);
+  $text = preg_replace("#\[url\]((ht|f)tp://)([^\r\n\t<\"]*?)\[/url\]#si", "'<a href=\"\\1' . str_replace(' ', '%20', '\\3') . '\" target=blank>\\1\\3</a>'", $text);
+  $text = preg_replace("#\[b\](.+?)\[\/b\]#si", "'<b>\\1</b>'", $text);
+  $text = preg_replace("#\[i\](.+?)\[\/i\]#si", "'<i>\\1</i>'", $text);
+  $text = preg_replace("#\[u\](.+?)\[\/u\]#si", "'<u>\\1</u>'", $text);
+  $text = preg_replace("#\[h1\](.+?)\[\/h1\]#si", "'<h1>\\1</h1>'", $text);
+  $text = preg_replace("#\[h2\](.+?)\[\/h2\]#si", "'<h2>\\1</h2>'", $text);
+  $text = preg_replace("#\[code\](.+?)\[\/code\]#si", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#344;font-size:16px;\">#:</th></tr><tr><td align=left style=\"background-color:#333;\"><code>\\1</code></td></tr></table>'", $text);
+  $text = preg_replace("#\[quote\](.+?)\[\/quote\]#si", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#443;font-size:16px;\">Cita :</th></tr><tr><td align=left style=\"background-color:#333;\">\\1</td></tr></table>'", $text);
+  $text = preg_replace("#\[quote=(.+?)\](.+?)\[\/quote\]#si", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#443;font-size:16px;\">\\1 :</th></tr><tr><td align=left style=\"background-color:#333;>\\2</td></tr></table>'", $text);
+  $text = preg_replace("#\[color=(.+?)\](.+?)\[\/color\]#si", "'<font color=\\1>\\2</font>'", $text);
+  $text = preg_replace("#\[size=(.+?)\](.+?)\[\/size\]#si", "'<font size=\\1>\\2</font>'", $text);
+  $text = preg_replace("#\[font=(.+?)\](.+?)\[\/font\]#si", "'<font face=\"\\1\">\\2</font>'", $text);
+  $text = preg_replace("#\[left\](.+?)\[\/left\]#si", "'<p style=\"text-align:left;\">\\1</p>'", $text);
+  $text = preg_replace("#\[right\](.+?)\[\/right\]#si", "'<p style=\"text-align:right;\">\\1</p>'", $text);
+  $text = preg_replace("#\[center\](.+?)\[\/center\]#si", "'<center>\\1</center>'", $text);
   $text = preg_replace( "/([^\/=\"\]])((http|ftp)+(s)?:\/\/[^<>\s]+)/i", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>",  $text);
   $text = preg_replace('/([^\/=\"\]])(www\.)(\S+)/', '\\1<a href="https://\\2\\3" target="_blank">\\2\\3</a>', $text);
   $text = preg_replace('#\r\n#', '<br />', $text);
@@ -161,7 +161,7 @@ function bbcode_bbc2html($text)
   // Emoticons
   for($i=0;$i<count($bbcode_emoticons);$i++)
   {
-    $text = preg_replace("#".preg_quote($bbcode_emoticons[$i][0])."#sie", "'<img src=\"img/emoticons/{$bbcode_emoticons[$i][1]}.gif\" />'", $text);
+    $text = preg_replace("#".preg_quote($bbcode_emoticons[$i][0])."#si", "'<img src=\"img/emoticons/{$bbcode_emoticons[$i][1]}.gif\" />'", $text);
   }
   $text = str_replace("&lt;br /&gt;", "<br />", $text);
   return $text;
