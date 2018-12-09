@@ -75,6 +75,8 @@ else
 //escape strings for use in SQL-Querys to prevent SQL-Injection
 function cleanSQL($string)
 {
+    global $mmfpm_db;
+    
     if(get_magic_quotes_gpc())  // prevents duplicate backslashes
         $string = stripslashes($string);
 
