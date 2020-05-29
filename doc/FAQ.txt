@@ -1,6 +1,6 @@
 F.A.Q
 
-First Make sure you have the latest revision of minimanager from https://minimanager-tc.googlecode.com/svn/trunk/
+First Make sure you have the latest revision of minimanager from https://github.com/TrinityCore/minimanager
 
 
 Q - How to install miniManager?
