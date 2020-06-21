@@ -213,7 +213,7 @@ function send_mail()
                 switch ($group_send)
                 {
                     case "gm_level":
-                        $result = $sqlr->query("SELECT email FROM account WHERE id IN (SELECT id FROM account_access WHERE gmlevel $group_sign '$group_value')");
+                        $result = $sqlr->query("SELECT email FROM account WHERE id IN (SELECT AccountID FROM account_access WHERE SecurityLevel $group_sign '$group_value')");
                         while($user = $sql->fetch_row($result))
                         {
                             if($user[0] != "") array_push($email_array, $user[0]);
@@ -294,7 +294,7 @@ function send_mail()
                 switch ($group_send)
                 {
                     case "gm_level":
-                        $result = $sqlr->query("SELECT id FROM account_access WHERE gmlevel $group_sign '$group_value'");
+                        $result = $sqlr->query("SELECT AccountID FROM account_access WHERE SecurityLevel $group_sign '$group_value'");
                         while($acc = $sqlc->fetch_row($result))
                         {
                             $result_2 = $sqlc->query("SELECT BINARY name AS name FROM `characters` WHERE account = '$acc[0]'");

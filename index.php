@@ -252,7 +252,7 @@ function front(&$sqlr, &$sqlc, &$sqlm)
                     continue;
             }
 
-            $gm = $sqlr->result($sqlr->query('SELECT gmlevel FROM account_access WHERE id='.$char['account'].''), 0);
+            $gm = $sqlr->result($sqlr->query('SELECT SecurityLevel FROM account_access WHERE AccountID='.$char['account'].''), 0);
             if(empty($gm))
                 $gm = 0;
             

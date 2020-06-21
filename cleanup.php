@@ -157,7 +157,7 @@ function run_cleanup() {
         case "last_login":
             $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-            $result = $sql->query("SELECT account.id FROM account left join account_access on account.id = account_access.id  WHERE account.last_login $cleanup_sign '$cleanup_value' AND account_access.gmlevel < $user_lvl OR account.last_login $cleanup_sign '$cleanup_value' AND account_access.gmlevel IS NULL");
+            $result = $sql->query("SELECT account.id FROM account left join account_access on account.id = account_access.AccountID  WHERE account.last_login $cleanup_sign '$cleanup_value' AND account_access.SecurityLevel < $user_lvl OR account.last_login $cleanup_sign '$cleanup_value' AND account_access.SecurityLevel IS NULL");
             $total_accounts = $sql->num_rows($result);
 
             $output .= "
@@ -227,7 +227,7 @@ function run_cleanup() {
         case "failed_login":
             $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-            $result = $sql->query("SELECT account.id FROM account left join account_access on account.id = account_access.id  WHERE account.failed_logins $cleanup_sign '$cleanup_value' AND account_access.gmlevel < $user_lvl OR account.failed_logins $cleanup_sign '$cleanup_value' AND account_access.gmlevel IS NULL");
+            $result = $sql->query("SELECT account.id FROM account left join account_access on account.id = account_access.AccountID  WHERE account.failed_logins $cleanup_sign '$cleanup_value' AND account_access.SecurityLevel < $user_lvl OR account.failed_logins $cleanup_sign '$cleanup_value' AND account_access.SecurityLevel IS NULL");
             $total_accounts = $sql->num_rows($result);
 
             $output .= "
@@ -438,7 +438,7 @@ function run_cleanup() {
         case "locked":
             $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-            $result = $sql->query("SELECT account.id FROM account left join account_access on account.id = account_access.id  WHERE account.locked $cleanup_sign '$cleanup_value' AND account_access.gmlevel < $user_lvl OR account.locked $cleanup_sign '$cleanup_value' AND account_access.gmlevel IS NULL");
+            $result = $sql->query("SELECT account.id FROM account left join account_access on account.id = account_access.AccountID  WHERE account.locked $cleanup_sign '$cleanup_value' AND account_access.SecurityLevel < $user_lvl OR account.locked $cleanup_sign '$cleanup_value' AND account_access.SecurityLevel IS NULL");
             $total_accounts = $sql->num_rows($result);
 
             $output .= "
@@ -509,7 +509,7 @@ function run_cleanup() {
         case "num_of_char_in_acc":
             $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-            $result = $sql->query("SELECT account.id FROM account left join account_access on account.id = account_access.id  WHERE account_access.gmlevel < $user_lvl OR account_access.gmlevel IS NULL");
+            $result = $sql->query("SELECT account.id FROM account left join account_access on account.id = account_access.AccountID  WHERE account_access.SecurityLevel < $user_lvl OR account_access.SecurityLevel IS NULL");
             $acc_output_array = array();
 
             while($acc = $sql->fetch_row($result))

@@ -43,7 +43,7 @@ $realm_db->query("SET NAMES $database_encoding");
 
 $gm_online = 0;
 $gm_accounts = array();
-$query = $realm_db->query("SELECT GROUP_CONCAT(`id` SEPARATOR ' ') FROM `account_access` WHERE `gmlevel`>'0'");
+$query = $realm_db->query("SELECT GROUP_CONCAT(`AccountID` SEPARATOR ' ') FROM `account_access` WHERE `SecurityLevel`>'0'");
 if($query)
     if($result = $realm_db->fetch_row($query))
         $gm_accounts = explode(' ', $result[0]);

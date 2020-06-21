@@ -75,8 +75,8 @@ function browse_guilds(&$sqlr, &$sqlc)
                             </tr>';
         while ($data = $sqlr->fetch_row($query_myGuild))
         {
-            $result = $sqlr->query("SELECT gmlevel FROM account_access WHERE id ='$data[9]'");
-            $owner_gmlvl = $sqlr->result($result, 0, 'gmlevel');
+            $result = $sqlr->query("SELECT SecurityLevel FROM account_access WHERE AccountID ='$data[9]'");
+            $owner_gmlvl = $sqlr->result($result, 0, 'SecurityLevel');
             $output .= "
                             <tr>
                                 <td>$data[0]</td>
@@ -214,8 +214,8 @@ function browse_guilds(&$sqlr, &$sqlc)
                             </tr>";
     while ($data = $sqlr->fetch_row($query))
     {
-        $result = $sqlr->query("SELECT gmlevel FROM account_access WHERE id ='$data[7]'");
-        $owner_gmlvl = $sqlr->result($result, 0, 'gmlevel');
+        $result = $sqlr->query("SELECT SecurityLevel FROM account_access WHERE AccountID ='$data[7]'");
+        $owner_gmlvl = $sqlr->result($result, 0, 'SecurityLevel');
         $output .= "
                             <tr>
                                 <td>$data[0]</td>";
@@ -399,8 +399,8 @@ function view_guild()
 
     while ($member = $sqlr->fetch_row($members))
     {
-        $result = $sqlr->query("SELECT gmlevel FROM account_access WHERE id ='$member[11]'");
-        $owner_gmlvl = $sqlr->result($result, 0, 'gmlevel');
+        $result = $sqlr->query("SELECT SecurityLevel FROM account_access WHERE AccountID ='$member[11]'");
+        $owner_gmlvl = $sqlr->result($result, 0, 'SecurityLevel');
         $output .= "
                                             <tr>";
         // gm, gildleader or own account! are allowed to remove from guild

@@ -31,12 +31,12 @@ $show_version['svnrev_lvl']  =  '5';    // Minimum account level to show SVN Rev
 //---- SQL Configuration ----
 //
 //  SQL server type  :
-//  'MySQL'   - Mysql
+//  'MySQL'   - Mysql (Do not use it. You will have SQL attacks!)
 //  'PgSQL'   - PostgreSQL
 //  'MySQLi'  - MySQLi
 //  'SQLLite' - SQLLite
 
-$db_type          = 'MySQL';
+$db_type          = 'MySQLi';
 
 // only Creature, Item and Game Object uses this setting, the rest uses $itemperpage.
 // $itemperpage setting is lower down at Layout configuration.

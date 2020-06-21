@@ -225,7 +225,7 @@ function forum_view_topic(){
     $link = $mysql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
 $query = "SELECT account,name,gender,race,class,
- level,(SELECT gmlevel FROM `{$realm_db['name']}`.account_access WHERE `{$realm_db['name']}`.account_access.id = `{$characters_db[$realm_id]['name']}`.characters.account) as gmlevel
+ level,(SELECT SecurityLevel FROM `{$realm_db['name']}`.account_access WHERE `{$realm_db['name']}`.account_access.AccountID = `{$characters_db[$realm_id]['name']}`.characters.account) as SecurityLevel
 FROM `{$characters_db[$realm_id]['name']}`.characters WHERE totaltime IN ( SELECT MAX(totaltime) FROM `{$characters_db[$realm_id]['name']}`.characters WHERE account IN (";
 while($post = $mysql->fetch_row($posts)){
   $query .= "$post[1],";
