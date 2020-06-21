@@ -33,9 +33,9 @@ function edit_char() { //form needs update, uneditable fields have been removed 
         //resrict by owner's gmlvl
         $owner_acc_id = $sql->result($result, 0, 'account');
         $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
-        $query = $sql->query("SELECT gmlevel FROM account_access WHERE id ='$owner_acc_id'");
+        $query = $sql->query("SELECT SecurityLevel FROM account_access WHERE AccountID ='$owner_acc_id'");
         $query = $sql->query("SELECT username FROM account WHERE id ='$owner_acc_id'");
-        $owner_gmlvl = $sql->result($query, 0, 'gmlevel');
+        $owner_gmlvl = $sql->result($query, 0, 'SecurityLevel');
         $owner_name = $sql->result($query, 0, 'username');
         $owner_check = $sql->result($query, 0, 'username');
 
@@ -266,8 +266,8 @@ function do_edit_char() {
             //resrict by owner's gmlvl
             $owner_acc_id = $sql->result($result, 0, 'account');
             $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
-            $query = $sql->query("SELECT gmlevel FROM account_access WHERE id ='$owner_acc_id' and (`RealmID` = $realm_id or `RealmID` = -1)");
-            $owner_gmlvl = $sql->result($query, 0, 'gmlevel');
+            $query = $sql->query("SELECT SecurityLevel FROM account_access WHERE AccountID ='$owner_acc_id' and (`RealmID` = $realm_id or `RealmID` = -1)");
+            $owner_gmlvl = $sql->result($query, 0, 'SecurityLevel');
             $new_owner_name = $_GET['owner_name'];
             $query = $sql->query("SELECT id FROM account WHERE username ='$new_owner_name'");
             $new_owner_acc_id = $sql->result($query, 0, 'id');

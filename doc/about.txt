@@ -12,7 +12,7 @@ ABOUT:
    MiniManager uses data on databases provided by Trinity, but it also
  requires additional data provided in /SQL/ folder.
 
-   The user access level is based on server Trinity accounts' gmlevel.
+   The user access level is based on server Trinity accounts' SecurityLevel.
  It can be extended to have an unlimited number of user access level.
  Highest access level, by miniManager default is 5 (SysOp).
  Default page configuration allows players to view most pages, all as read-only,

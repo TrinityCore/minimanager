@@ -31,7 +31,7 @@ else
     $sql2->query("INSERT INTO account (id,username,sha_pass_hash,email, joindate,last_ip,failed_logins,locked,last_login,expansion) VALUES ('',UPPER('$username'),'$pass','$mail',now(),'$last_ip','0','$locked',NULL,'$expansion')");
     $result = $sql2->query("SELECT * FROM account WHERE username='$username'");
     $data = mysql_fetch_assoc($result);
-    $sql2->query("INSERT INTO account_access (`id`,`gmlevel`) VALUES ('{$data['id']}','0')");
+    $sql2->query("INSERT INTO account_access (`id`,`SecurityLevel`) VALUES ('{$data['id']}','0')");
 
 }
 

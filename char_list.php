@@ -293,9 +293,9 @@ function browse_chars(&$sqlr, &$sqlc)
     {
         $char = $sqlr->fetch_row($query) or die(error($lang_global['err_no_user']));
         // to disalow lower lvl gm to  view accounts of other gms
-        $result = $sqlr->query("SELECT `account_access`.`gmlevel`, `account`.`username` FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE account.id ='$char[2]'");
+        $result = $sqlr->query("SELECT `account_access`.`SecurityLevel`, `account`.`username` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id ='$char[2]'");
         $acc = $sqlr->fetch_assoc($result);
-        $owner_gmlvl = $acc['gmlevel'];
+        $owner_gmlvl = $acc['SecurityLevel'];
 
         if ($owner_gmlvl == null)
             $owner_gmlvl = 0;

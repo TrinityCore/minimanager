@@ -86,7 +86,7 @@ function stats($action, &$sqlr, &$sqlc)
                       <font class="bold">'.$lang_index['tot_users_online'].' : '.$total_chars.'</font><br /><br />';
         else
         {
-            $query = $sqlr->query('SELECT count(*) FROM account UNION SELECT count(*) FROM account_access WHERE gmlevel > 0');
+            $query = $sqlr->query('SELECT count(*) FROM account UNION SELECT count(*) FROM account_access WHERE SecurityLevel > 0');
             $total_acc = $sqlr->result($query, 0);
             $total_gms = $sqlr->result($query, 1);
             unset($query);

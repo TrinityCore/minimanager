@@ -21,7 +21,7 @@ function del_char($guid, $realm)
                             WHERE guid = '.$guid.' LIMIT 1');
     $owner_acc_id = $sqlc->result($query, 0, 'account');
 
-    $owner_gmlvl = $sqlr->result($sqlr->query('SELECT gmlevel 
+    $owner_gmlvl = $sqlr->result($sqlr->query('SELECT SecurityLevel 
                                                 FROM account_access 
                                                 WHERE id = '.$owner_acc_id.''), 0);
 
@@ -78,12 +78,12 @@ function del_acc($acc_id)
     $sqlr = new SQL;
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $query = $sqlr->query('SELECT `account`.`online`, `account_access`.`gmlevel` FROM `account` LEFT JOIN `account_access` ON `account`.`id`=`account_access`.`id` WHERE `account`.`id` = '.$acc_id.'');
+    $query = $sqlr->query('SELECT `account`.`online`, `account_access`.`SecurityLevel` FROM `account` LEFT JOIN `account_access` ON `account`.`id`=`account_access`.`AccountID` WHERE `account`.`id` = '.$acc_id.'');
 
 
-    $gmlevel = $sqlr->result($query, 0, 'gmlevel');
+    $SecurityLevel = $sqlr->result($query, 0, 'SecurityLevel');
 
-    if (($user_lvl > $gmlevel)||($acc_id == $user_id))
+    if (($user_lvl > $SecurityLevel)||($acc_id == $user_id))
     {
         if ($sqlr->result($query, 0, 'online'));
         else

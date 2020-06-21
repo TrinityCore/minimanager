@@ -44,8 +44,8 @@ function browse_users(&$sqlr, &$sqlc)
     $search_value = '';
 
     $order_by2 = $order_by;
-    if ($order_by == 'gmlevel')
-        $order_by = 'account_access.gmlevel';
+    if ($order_by == 'SecurityLevel')
+        $order_by = 'account_access.SecurityLevel';
     elseif ($order_by == 'online')
         $order_by = 'account.online';
     else
@@ -60,7 +60,7 @@ function browse_users(&$sqlr, &$sqlc)
         // injection prevention
         $search_value = $sqlr->quote_smart($_GET['search_value']);
         $search_by = $sqlr->quote_smart($_GET['search_by']);
-        $search_menu = array('username', 'id', 'gmlevel', 'greater_gmlevel', 'email', 'joindate', 'last_ip', 'failed_logins', 'greater_failed_logins', 'lesser_failed_logins', 'last_login', 'online', 'banned', 'locked', 'expansion');
+        $search_menu = array('username', 'id', 'SecurityLevel', 'greater_gmlevel', 'email', 'joindate', 'last_ip', 'failed_logins', 'greater_failed_logins', 'lesser_failed_logins', 'last_login', 'online', 'banned', 'locked', 'expansion');
         if (in_array($search_by, $search_menu));
         else
             $search_by = 'username';
@@ -70,17 +70,17 @@ function browse_users(&$sqlr, &$sqlc)
         // developer note: 'if else' is always faster then 'switch case'
         if ($search_by === 'greater_gmlevel')
         {
-            $sql_query = 'SELECT `account_access`.`gmlevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE account_access.gmlevel < '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
-            $query_1 = $sqlr->query('SELECT count(*) FROM account_access WHERE gmlevel = "%'.$search_value.'%"');
+            $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account_access.SecurityLevel < '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
+            $query_1 = $sqlr->query('SELECT count(*) FROM account_access WHERE SecurityLevel = "%'.$search_value.'%"');
         }
-        elseif ($search_by === 'gmlevel')
+        elseif ($search_by === 'SecurityLevel')
         {
-            $sql_query = 'SELECT `account_access`.`gmlevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE account_access.gmlevel = '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
-            $query_1 = $sqlr->query('SELECT count(*) FROM account_access WHERE gmlevel = "%'.$search_value.'%"');
+            $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account_access.SecurityLevel = '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
+            $query_1 = $sqlr->query('SELECT count(*) FROM account_access WHERE SecurityLevel = "%'.$search_value.'%"');
         }
         elseif ($search_by === 'banned')
         {
-            $sql_query = 'SELECT `account_access`.`gmlevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE account.id = 0 ';
+            $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = 0 ';
             $count_query = 'SELECT count(*) FROM account WHERE id = 0 ';
             $que = $sqlr->query('SELECT id FROM account_banned');
             while ($banned = $sqlr->fetch_assoc($que))
@@ -94,24 +94,24 @@ function browse_users(&$sqlr, &$sqlc)
         }
         elseif ($search_by === 'failed_logins')
         {
-            $sql_query = 'SELECT `account_access`.`gmlevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE failed_logins = '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
+            $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE failed_logins = '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
             $query_1 = $sqlr->query('SELECT count(*) FROM account WHERE failed_logins = '.$search_value.'');
         }
         elseif ($search_by === 'greater_failed_logins')
         {
-            $sql_query = 'SELECT `account_access`.`gmlevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE failed_logins > '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
+            $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE failed_logins > '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
             $query_1 = $sqlr->query('SELECT count(*) FROM account WHERE failed_logins > '.$search_value.'');
         }
         elseif ($search_by === 'lesser_failed_logins')
         {
-            $sql_query = 'SELECT `account_access`.`gmlevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE failed_logins < '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
+            $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE failed_logins < '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
             $query_1 = $sqlr->query('SELECT count(*) FROM account WHERE failed_logins < '.$search_value.'');
         }
         else
         {
             // default search case
-            $sql_query = 'SELECT `account_access`.`gmlevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE `account`.'.$search_by.' LIKE "%'.$search_value.'%" ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
-            $query_1 = $sqlr->query('SELECT count(*) FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE `account`.'.$search_by.' LIKE "%'.$search_value.'%"');
+            $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE `account`.'.$search_by.' LIKE "%'.$search_value.'%" ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
+            $query_1 = $sqlr->query('SELECT count(*) FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE `account`.'.$search_by.' LIKE "%'.$search_value.'%"');
         }
         $query = $sqlr->query($sql_query);
     }
@@ -119,7 +119,7 @@ function browse_users(&$sqlr, &$sqlc)
     {
         // get total number of items
         $query_1 = $sqlr->query('SELECT count(*) FROM account');
-        $query = $sqlr->query('SELECT `account_access`.`gmlevel`, `account`.* FROM account LEFT JOIN account_access ON account.id=account_access.id ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'');
+        $query = $sqlr->query('SELECT `account_access`.`SecurityLevel`, `account`.* FROM account LEFT JOIN account_access ON account.id=account_access.AccountID ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'');
     }
     // this is for multipage support
     $all_record = $sqlr->result($query_1,0);
@@ -173,7 +173,7 @@ function browse_users(&$sqlr, &$sqlc)
                                                 <select name="search_by">
                                                     <option value="username"'.($search_by === 'username' ? ' selected="selected"' : '').'>'.$lang_user['by_name'].'</option>
                                                     <option value="id"'.($search_by === 'id' ? ' selected="selected"' : '').'>'.$lang_user['by_id'].'</option>
-                                                    <option value="gmlevel"'.($search_by === 'gmlevel' ? ' selected="selected"' : '').'>'.$lang_user['by_gm_level'].'</option>
+                                                    <option value="SecurityLevel"'.($search_by === 'SecurityLevel' ? ' selected="selected"' : '').'>'.$lang_user['by_gm_level'].'</option>
                                                     <option value="greater_gmlevel"'.($search_by === 'greater_gmlevel' ? ' selected="selected"' : '').'>'.$lang_user['greater_gm_level'].'</option>
                                                     <option value="expansion"'.($search_by === 'expansion' ? ' selected="selected"' : '').'>'.$lang_user['by_expansion'].'</option>
                                                     <option value="email"'.($search_by === 'email' ? ' selected="selected"' : '').'>'.$lang_user['by_email'].'</option>
@@ -219,7 +219,7 @@ function browse_users(&$sqlr, &$sqlc)
     $output .='
                                 <th width="1%"><a href="user.php?order_by=id&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='id' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['id'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=username&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='username' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['username'].'</a></th>
-                                <th width="1%"><a href="user.php?order_by=gmlevel&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='gmlevel' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['gm_level'].'</a></th>';
+                                <th width="1%"><a href="user.php?order_by=SecurityLevel&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='SecurityLevel' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['gm_level'].'</a></th>';
     if ($expansion_select)
         $output .='
                                 <th width="1%"><a href="user.php?order_by=expansion&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='expansion' ? ' class="'.$order_dir.'"' : '').'>EXP</a></th>';
@@ -235,8 +235,8 @@ function browse_users(&$sqlr, &$sqlc)
     //---------------Page Specific Data Starts Here--------------------------
     while ($data = $sqlr->fetch_assoc($query))
     {
-        $data['gmlevel'] = (!is_null($data['gmlevel'])) ? $data['gmlevel'] : 0;
-        if (($user_lvl >= $data['gmlevel'])||($user_name === $data['username']))
+        $data['SecurityLevel'] = (!is_null($data['SecurityLevel'])) ? $data['SecurityLevel'] : 0;
+        if (($user_lvl >= $data['SecurityLevel'])||($user_name === $data['username']))
         {
             $output .= '
                             <tr>';
@@ -251,7 +251,7 @@ function browse_users(&$sqlr, &$sqlc)
                                 <td>
                                     <a href="user.php?action=edit_user&amp;error=11&amp;id='.$data['id'].'">'.$data['username'].'</a>
                                 </td>
-                                <td>'.$gm_level_arr[$data['gmlevel']][2].'</td>';
+                                <td>'.$gm_level_arr[$data['SecurityLevel']][2].'</td>';
             if ($expansion_select)
             {
                 $exp_lvl_arr = id_get_exp_lvl();
@@ -786,7 +786,7 @@ function edit_user()
 
     $id = $sqlr->quote_smart($_GET['id']);
 
-    $result = $sqlr->query("SELECT IFNULL(`account_access`.`gmlevel`,0) as `gmlevel`, `account`.* FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE account.id = '$id'");
+    $result = $sqlr->query("SELECT IFNULL(`account_access`.`SecurityLevel`,0) as `SecurityLevel`, `account`.* FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
     $data = $sqlr->fetch_assoc($result);
 
     $refguid = $sqlm->fetch_assoc($sqlm->query('SELECT InvitedBy FROM mm_point_system_invites WHERE PlayersAccount = '.$data['id'].''));
@@ -876,14 +876,14 @@ function edit_user()
         {
             $output .="
                                         <td>
-                                            <select name=\"gmlevel\">";
+                                            <select name=\"SecurityLevel\">";
             foreach ($gm_level_arr as $level)
             {
                 if (($level[0] > -1) && ($level[0] < $user_lvl))
                 {
                     $output .= "
                                                 <option value=\"{$level[0]}\" ";
-                    if ($data['gmlevel'] == $level[0])
+                    if ($data['SecurityLevel'] == $level[0])
                         $output .= "selected=\"selected\" ";
                     $output .= ">{$level[1]}</option>";
                 }
@@ -894,7 +894,7 @@ function edit_user()
         }
         else
             $output .= '
-                                        <td>'.id_get_gm_level($data['gmlevel']).' ( '.$data['gmlevel'].' )</td>';
+                                        <td>'.id_get_gm_level($data['SecurityLevel']).' ( '.$data['SecurityLevel'].' )</td>';
         $output .= '
                                     </tr>
                                     <tr>
@@ -1157,7 +1157,7 @@ function doedit_user()
 
     $mail = (isset($_POST['mail']) && $_POST['mail'] != '') ? $sqlr->quote_smart($_POST['mail']) : "";
     $failed = (isset($_POST['failed'])) ? $sqlr->quote_smart($_POST['failed']) : 0;
-    $gmlevel = (isset($_POST['gmlevel'])) ? $sqlr->quote_smart($_POST['gmlevel']) : 0;
+    $SecurityLevel = (isset($_POST['SecurityLevel'])) ? $sqlr->quote_smart($_POST['SecurityLevel']) : 0;
     $expansion = (isset($_POST['expansion'])) ? $sqlr->quote_smart($_POST['expansion']) : 1;
     $banned = (isset($_POST['banned'])) ? $sqlr->quote_smart($_POST['banned']) : 0;
     $locked = (isset($_POST['locked'])) ? $sqlr->quote_smart($_POST['locked']) : 0;
@@ -1167,16 +1167,16 @@ function doedit_user()
     if ((strlen($username) < 4) || (strlen($username) > 15))
         redirect("user.php?action=edit_user&id=$id&error=8");
 
-    if ($gmlevel >= $user_lvl)
+    if ($SecurityLevel >= $user_lvl)
         redirect("user.php?action=edit_user&&id={$_POST['id']}&error=16");
     if (!valid_alphabetic($username))
         redirect("user.php?action=edit_user&error=9&id=$id");
     //restricting accsess to lower gmlvl
-    $result = $sqlr->query("SELECT account.username, IFNULL(account_access.gmlevel,0) as gmlevel FROM account LEFT JOIN account_access ON account.id=account_access.id WHERE account.id = '$id'");
-    if (($user_lvl <= $sqlr->result($result, 0, 'gmlevel')) && ($user_name != $sqlr->result($result, 0, 'username')))
+    $result = $sqlr->query("SELECT account.username, IFNULL(account_access.SecurityLevel,0) as SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
+    if (($user_lvl <= $sqlr->result($result, 0, 'SecurityLevel')) && ($user_name != $sqlr->result($result, 0, 'username')))
         redirect("user.php?error=14");
 
-    $accgmlevel = $sqlr->result($result, 0, 'gmlevel');
+    $accgmlevel = $sqlr->result($result, 0, 'SecurityLevel');
 
     if (!$banned)
         $sqlr->query("DELETE FROM account_banned WHERE id='$id'");
@@ -1193,16 +1193,16 @@ function doedit_user()
     if (!$sqlr->affected_rows())
         $error = true;
 
-    if ($gmlevel != $accgmlevel) //gmlevel changed..
+    if ($SecurityLevel != $accgmlevel) //SecurityLevel changed..
     {
-        if ($gmlevel == 0 && $accgmlevel > 0)
-            $sqlr->query("DELETE FROM account_access WHERE id='$id'"); //0 has no entry in account_access
-        elseif ($gmlevel > 0 && $accgmlevel == 0) //0 has no entry in account_access, add one; sometimes there's a bug so there's indeed a gmlevel 0 entry in the table -> replace
-            $sqlr->query("REPLACE INTO account_access (`id`,`gmlevel`,`RealmID`) VALUES ('$id','$gmlevel','-1')"); //RealmID needs to be fixed!!
+        if ($SecurityLevel == 0 && $accgmlevel > 0)
+            $sqlr->query("DELETE FROM account_access WHERE AccountID='$id'"); //0 has no entry in account_access
+        elseif ($SecurityLevel > 0 && $accgmlevel == 0) //0 has no entry in account_access, add one; sometimes there's a bug so there's indeed a SecurityLevel 0 entry in the table -> replace
+            $sqlr->query("REPLACE INTO account_access (`id`,`SecurityLevel`,`RealmID`) VALUES ('$id','$SecurityLevel','-1')"); //RealmID needs to be fixed!!
         else
-            $sqlr->query("UPDATE account_access SET gmlevel='$gmlevel' WHERE id='$id'");
+            $sqlr->query("UPDATE account_access SET SecurityLevel='$SecurityLevel' WHERE id='$id'");
 
-        $sqlr->query("SELECT IFNULL((SELECT gmlevel FROM account_access WHERE id='$id'),0)");
+        $sqlr->query("SELECT IFNULL((SELECT SecurityLevel FROM account_access WHERE AccountID='$id'),0)");
         if (!$sqlr->affected_rows() || $sqlr->result($result, 0) != $accgmlevel) //temporary errorhandling
             $error = true;
     }
