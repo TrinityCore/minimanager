@@ -29,7 +29,7 @@ function char_main(&$sqlr, &$sqlc)
     {
         //resrict by owner's gmlvl
         $owner_acc_id = $sqlc->result($result, 0, 'account');
-        $query = $sqlr->query('SELECT `username`, `SecurityLevel` FROM `account` LEFT JOIN `account_access` ON `account`.`id`=AccountID WHERE `account`.`id` = '.$owner_acc_id.' ORDER BY `SecurityLevel` DESC LIMIT 1');
+        $query = $sqlr->query('SELECT `username`, `SecurityLevel` FROM `account` LEFT JOIN `account_access` ON `account`.`id`=`account_access`.`AccountID` WHERE `account`.`id` = '.$owner_acc_id.' ORDER BY `SecurityLevel` DESC LIMIT 1');
         $owner_name = $sqlr->result($query, 0, 'username');
         $owner_gmlvl = $sqlr->result($query, 0, 'SecurityLevel');
 

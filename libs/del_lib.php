@@ -78,7 +78,7 @@ function del_acc($acc_id)
     $sqlr = new SQL;
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $query = $sqlr->query('SELECT `account`.`online`, `account_access`.`SecurityLevel` FROM `account` LEFT JOIN `account_access` ON `account`.`id`=AccountID WHERE `account`.`id` = '.$acc_id.'');
+    $query = $sqlr->query('SELECT `account`.`online`, `account_access`.`SecurityLevel` FROM `account` LEFT JOIN `account_access` ON `account`.`id`=`account_access`.`AccountID` WHERE `account`.`id` = '.$acc_id.'');
 
 
     $SecurityLevel = $sqlr->result($query, 0, 'SecurityLevel');
