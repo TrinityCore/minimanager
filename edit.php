@@ -119,6 +119,8 @@ function edit_user(&$sqlr, &$sqlc)
             {
                 $sqlc->connect($characters_db[$realm['id']]['addr'], $characters_db[$realm['id']]['user'], $characters_db[$realm['id']]['pass'], $characters_db[$realm['id']]['name']);
                 $result = $sqlc->query('SELECT guid, BINARY name AS name, race, class, level, gender FROM characters WHERE account = '.$user_id.'');
+                $result = $sqlc->query('SELECT characters.guid, BINARY characters.name AS name, race, class, level, gender, guild.name AS gname FROM characters LEFT JOIN guild_member
+                                        ON characters.guid = guild_member.guid LEFT JOIN guild ON guild_member.guildid = guild.guildid WHERE account = '.$user_id.'');
 
                 $output .= '
                                 <tr>
@@ -135,7 +137,7 @@ function edit_user(&$sqlr, &$sqlc)
                                         <a href="char.php?id='.$char['guid'].'&amp;realm='.$realm['id'].'">'.$char['name'].' -
                                             <img src="img/c_icons/'.$char['race'].'-'.$char['gender'].'.gif" onmousemove="toolTip(\''.char_get_race_name($char['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />
                                             <img src="img/c_icons/'.$char['class'].'.gif" onmousemove="toolTip(\''.char_get_class_name($char['class']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt=""/> - lvl '.char_get_level_color($char['level']).'
-                                        </a>
+                                        </a> - '.$char['gname'].'
                                     </td>
                                 </tr>';
                 }
@@ -145,6 +147,8 @@ function edit_user(&$sqlr, &$sqlc)
         else
         {
             $result = $sqlc->query('SELECT guid, BINARY name AS name, race, class, level, gender FROM characters WHERE account = '.$user_id.'');
+            $result = $sqlc->query('SELECT characters.guid, BINARY characters.name AS name, race, class, level, gender, guild.name AS gname FROM characters LEFT JOIN guild_member
+                                    ON characters.guid = guild_member.guid LEFT JOIN guild ON guild_member.guildid = guild.guildid WHERE account = '.$user_id.'');
 
             $output .= '
                                 <tr>
@@ -160,7 +164,7 @@ function edit_user(&$sqlr, &$sqlc)
                                         <a href="char.php?id='.$char['guid'].'">'.$char['name'].' -
                                             <img src="img/c_icons/'.$char['race'].'-'.$char['gender'].'.gif" onmousemove="toolTip(\''.char_get_race_name($char['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />
                                             <img src="img/c_icons/'.$char['class'].'.gif" onmousemove="toolTip(\''.char_get_class_name($char['class']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt=""/> - lvl '.char_get_level_color($char['level']).'
-                                        </a>
+                                        </a> - '.$char['gname'].'
                                     </td>
                                 </tr>';
             }
