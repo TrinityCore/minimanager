@@ -81,10 +81,8 @@ DROP TABLE IF EXISTS `mm_account`;
 CREATE TABLE `mm_account` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identifier',
   `username` varchar(32) NOT NULL DEFAULT '',
-  `sha_pass_hash` varchar(40) NOT NULL DEFAULT '',
-  `sessionkey` longtext,
-  `v` longtext,
-  `s` longtext,
+  `salt` binary(32),
+  `verifier` binary(32),
   `email` text,
   `joindate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_ip` varchar(30) NOT NULL DEFAULT '127.0.0.1',
@@ -99,3 +97,14 @@ CREATE TABLE `mm_account` (
     PRIMARY KEY (`id`),
   UNIQUE KEY `idx_username` (`username`)
 ) ENGINE=MyISAM AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Account System';
+
+DROP TABLE IF EXISTS `mm_password_resets`;
+CREATE TABLE `mm_password_resets` (
+    `token` binary(32) not null,
+    `accountId` int(11) unsigned not null,
+    `oldsalt` binary(32),
+    `salt` binary(32),
+    `verifier` binary(32),
+    `time` bigint unsigned,
+    primary key (`token`)
+);

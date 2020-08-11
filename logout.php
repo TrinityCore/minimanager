@@ -12,10 +12,6 @@ unset($_SESSION['realm_id']);
 unset($_SESSION['client_ip']);
 unset($_SESSION['logged_in']);
 
-setcookie ('uname',    '', time() - 3600);
-setcookie ('realm_id', '', time() - 3600);
-setcookie ('p_hash',   '', time() - 3600);
-
 if (strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') === false)
 {
     header('Location: https://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']), '/\\').'/login.php');

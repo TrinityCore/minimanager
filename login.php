@@ -1,6 +1,7 @@
 <?php
 
 require_once 'header.php';
+require_once 'libs/srp6_lib.php';
 
 //#############################################################################
 // Login
@@ -18,7 +19,7 @@ function dologin(&$sqlr)
     if (255 < strlen($user_name) || 255 < strlen($user_pass))
         redirect('login.php?error=1');
 
-    $result = $sqlr->query('SELECT account.id AS id, username, SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE username = \''.$user_name.'\' AND sha_pass_hash = \''.$user_pass.'\'');
+    $result = $sqlr->query('SELECT account.id AS id, username, salt, verifier, SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE username = \''.$user_name.'\'');
     if ($require_account_verify)
     {
         $sql2 = new SQL;
@@ -36,29 +37,30 @@ function dologin(&$sqlr)
     if (1 == $sqlr->num_rows($result))
     {
         $info = $sqlr->fetch_assoc($result);
-        $id = $info['id'];
-        if ($sqlr->result($sqlr->query('SELECT count(*) FROM account_banned WHERE id = '.$id.' AND active = \'1\''), 0))
-            redirect('login.php?error=3');
+        if (!VerifySRP6Login($_POST['user'], $_POST['pass'], $info['salt'], $info['verifier']))
+            redirect('login.php?error=1');
         else
         {
-            $_SESSION['user_id'] = $id;
-            $_SESSION['uname'] = $info['username'];
-            
-            if ($info['SecurityLevel'] == NULL)
-                $_SESSION['user_lvl'] = 0;
+            $id = $info['id'];
+            if ($sqlr->result($sqlr->query('SELECT count(*) FROM account_banned WHERE id = '.$id.' AND active = \'1\''), 0))
+                redirect('login.php?error=3');
             else
-                $_SESSION['user_lvl'] = $info['SecurityLevel'];
-            
-            $_SESSION['realm_id'] = $sqlr->quote_smart($_POST['realm']);
-            $_SESSION['client_ip'] = (isset($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : getenv('REMOTE_ADDR');
-            $_SESSION['logged_in'] = true;
-            if (isset($_POST['remember']) && $_POST['remember'] != '')
             {
-                setcookie('uname', $_SESSION['uname'], time()+60*60*24*7);
-                setcookie('realm_id', $_SESSION['realm_id'], time()+60*60*24*7);
-                setcookie('p_hash', $user_pass, time()+60*60*24*7);
+                $_SESSION['user_id'] = $id;
+                $_SESSION['uname'] = $info['username'];
+                
+                if ($info['SecurityLevel'] == NULL)
+                    $_SESSION['user_lvl'] = 0;
+                else
+                    $_SESSION['user_lvl'] = $info['SecurityLevel'];
+                
+                $_SESSION['realm_id'] = $sqlr->quote_smart($_POST['realm']);
+                $_SESSION['client_ip'] = (isset($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : getenv('REMOTE_ADDR');
+                $_SESSION['logged_in'] = true;
+                if (isset($_POST['remember']) && $_POST['remember'] != '')
+                    setcookie(session_name(), session_id(), time()+60*60*24*7);
+                redirect('index.php');
             }
-            redirect('index.php');
         }
     }
     else
@@ -74,13 +76,10 @@ function login(&$sqlr)
 
     $output .= '
                 <center>
-                    <script type="text/javascript" src="libs/js/sha1.js"></script>
                     <script type="text/javascript">
                     // <![CDATA[
                     function dologin ()
                     {
-                        document.form.pass.value = hex_sha1(document.form.user.value.toUpperCase()+":"+document.form.login_pass.value.toUpperCase());
-                        document.form.login_pass.value = "0";
                         do_submit();
                     }
                     // ]]>
@@ -88,7 +87,6 @@ function login(&$sqlr)
                     <fieldset class="half_frame">
                         <legend>'.$lang_login['login'].'</legend>
                         <form method="post" action="login.php?action=dologin" name="form" onsubmit="return dologin()">
-                            <input type="hidden" name="pass" value="" maxlength="256" />
                             <table class="hidden">
                                 <tr>
                                     <td>
@@ -99,7 +97,7 @@ function login(&$sqlr)
                                     <td>'.$lang_login['username'].' : <input type="text" name="user" size="24" maxlength="16" /></td>
                                 </tr>
                                 <tr align="right">
-                                    <td>'.$lang_login['password'].' : <input type="password" name="login_pass" size="24" maxlength="40" /></td>
+                                    <td>'.$lang_login['password'].' : <input type="password" name="pass" size="24" maxlength="40" /></td>
                                 </tr>';
 
     $result = $sqlr->query('SELECT id, name FROM realmlist ORDER BY id ASC LIMIT 10');
@@ -172,57 +170,8 @@ function login(&$sqlr)
                 </center>';
 }
 //#################################################################################################
-// Login via set cookie
-//#################################################################################################
-function do_cookie_login(&$sqlr)
-{
-    if (empty($_COOKIE['uname']) || empty($_COOKIE['p_hash']) || empty($_COOKIE['realm_id']))
-        redirect('login.php?error=2');
-
-    $user_name = $sqlr->quote_smart($_COOKIE['uname']);
-    $user_pass = $sqlr->quote_smart($_COOKIE['p_hash']);
-
-    $result = $sqlr->query('SELECT account.id AS id, username, SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE username = \''.$user_name.'\' AND sha_pass_hash = \''.$user_pass.'\'');
-
-    unset($user_name);
-    unset($user_pass);
-
-    if ($sqlr->num_rows($result))
-    {
-        $info = $sqlr->fetch_assoc($result);
-        $id = $info['id'];
-        if ($sqlr->result($sqlr->query('SELECT count(*) FROM account_banned WHERE id ='.$id.' AND active = \'1\''), 0))
-            redirect('login.php?error=3');
-        else
-        {
-            $_SESSION['user_id']   = $id;
-            $_SESSION['uname']     = $info['username'];
-
-            if ($info['SecurityLevel'] == NULL)
-                $_SESSION['user_lvl']  = 0;
-            else
-                $_SESSION['user_lvl']  = $info['SecurityLevel'];
-
-            $_SESSION['realm_id']  = $sqlr->quote_smart($_COOKIE['realm_id']);
-            $_SESSION['client_ip'] = (isset($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : getenv('REMOTE_ADDR');
-            $_SESSION['logged_in'] = true;
-            redirect('index.php');
-        }
-    }
-    else
-    {
-        setcookie (   'uname', '', time() - 3600);
-        setcookie ('realm_id', '', time() - 3600);
-        setcookie (  'p_hash', '', time() - 3600);
-        redirect('login.php?error=1');
-    }
-}
-//#################################################################################################
 // MAIN
 //#################################################################################################
-if (isset($_COOKIE["uname"]) && isset($_COOKIE["p_hash"]) && isset($_COOKIE["realm_id"]) && empty($_GET['error']))
-    do_cookie_login($sqlr);
-
 $err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
 
 $lang_login = lang_login();

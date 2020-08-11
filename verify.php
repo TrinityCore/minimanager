@@ -14,7 +14,7 @@ $output .= "<div class=\"top\">";
 $sql = new SQL;
 $sql->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
 
-$query = $sql->query("SELECT * FROM mm_account WHERE username = '$username' AND authkey = '$authkey'");
+$query = $sql->query("SELECT id,username,salt,verifier,email,joindate,last_ip,failed_logins,locked,last_logon,expansion FROM mm_account WHERE username = '$username' AND authkey = '$authkey'");
 
 $lang_verify = lang_verify();
 
@@ -27,8 +27,8 @@ else
     $sql2->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
     $data = mysql_fetch_array($query);
-    list($id,$username,$pass,$mail,$joindate,$last_ip,$failed_logins,$locked,$last_login,$expansion) = $data;
-    $sql2->query("INSERT INTO account (id,username,sha_pass_hash,email, joindate,last_ip,failed_logins,locked,last_login,expansion) VALUES ('',UPPER('$username'),'$pass','$mail',now(),'$last_ip','0','$locked',NULL,'$expansion')");
+    list($id,$username,$salt,$verifier,$mail,$joindate,$last_ip,$failed_logins,$locked,$last_login,$expansion) = $data;
+    $sql2->query("INSERT INTO account (id,username,salt,verifier,email, joindate,last_ip,failed_logins,locked,last_login,expansion) VALUES ('',UPPER('$username'),UNHEX('".bin2hex($salt)".'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip','0','$locked',NULL,'$expansion')");
     $result = $sql2->query("SELECT * FROM account WHERE username='$username'");
     $data = mysql_fetch_assoc($result);
     $sql2->query("INSERT INTO account_access (`id`,`SecurityLevel`) VALUES ('{$data['id']}','0')");
