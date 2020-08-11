@@ -175,18 +175,17 @@ function doregister(){
         {
             $sql2 = new SQL;
             $sql2->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
-            $query2_result = $sql2->query("SELECT * FROM mm_account WHERE username = '$user_name' OR email = '$mail'");
 
-            if ($sql2->num_rows($query2_result) > 0)
+            if ($sql2->num_rows($sql2->query("SELECT id FROM mm_account WHERE username = '$user_name' OR email = '$mail'")) > 0)
               redirect("register.php?err=15");
             else
             {
                 $client_ip = $_SERVER['REMOTE_ADDR'];
-                $authkey = sha1($client_ip . time());
+                $authkey = bin2hex(random_bytes(8));
                 
                 list($salt,$verifier) = GetSRP6RegistrationData($_POST['username'], $_POST['pass']);
-                $result = $sql2->query("INSERT INTO mm_account (username,salt,verifier,email, joindate,last_ip,failed_logins,locked,last_login,expansion,authkey)
-                                        VALUES (UPPER('$user_name'),UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip','0','$create_acc_locked',NULL,'$expansion','$authkey')");
+                $result = $sql2->query("INSERT INTO mm_account (username,salt,verifier,email,joindate,last_ip,locked,expansion,authkey)
+                                        VALUES (UPPER('$user_name'),UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip','$create_acc_locked','$expansion','$authkey')");
                 do_verify_email();
                 redirect("login.php?error=7");
             }
@@ -195,8 +194,8 @@ function doregister(){
         else
         {
             list($salt,$verifier) = GetSRP6RegistrationData($_POST['username'], $_POST['pass']);
-            $result = $sql->query("INSERT INTO account (username,salt,verifier,email, joindate,last_ip,failed_logins,locked,last_login,expansion)
-                                   VALUES (UPPER('$user_name'),UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip',0,$create_acc_locked,NULL,$expansion)");
+            $result = $sql->query("INSERT INTO account (username,salt,verifier,email, joindate,last_ip,locked,expansion)
+                                   VALUES (UPPER('$user_name'),UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip',$create_acc_locked,$expansion)");
             $query_result = $sql->fetch_assoc($sql->query("SELECT id FROM account WHERE username = '$user_name'"));
         }
 
