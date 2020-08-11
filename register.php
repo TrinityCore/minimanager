@@ -497,8 +497,6 @@ function do_pass_recovery(){
             '?action=do_pass_activate&amp;a='.$data['id'].'&amp;t='.$token
             , $body);
         $body = str_replace("<base_url>", $_SERVER['HTTP_HOST'], $body);
-        
-        die($body);
 
         $mail->WordWrap = 50;
         $mail->From = $from_mail;
