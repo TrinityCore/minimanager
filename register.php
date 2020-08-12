@@ -1,5 +1,6 @@
 <?php
 require_once("header.php");
+require_once 'libs/srp6_lib.php';
 
 //#####################################################################################################
 // DO EMAIL VERIFICATION
@@ -108,8 +109,6 @@ function doregister(){
     $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
     $user_name = $sql->quote_smart(trim($_POST['username']));
-    $pass = $sql->quote_smart($_POST['pass']);
-    $pass1 = $sql->quote_smart($_POST['pass1']);
 
     //make sure username/pass at least 4 chars long and less than max
     if ((strlen($user_name) < 4) || (strlen($user_name) > 15))
@@ -176,16 +175,17 @@ function doregister(){
         {
             $sql2 = new SQL;
             $sql2->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
-            $query2_result = $sql2->query("SELECT * FROM mm_account WHERE username = '$user_name' OR email = '$mail'");
 
-            if ($sql2->num_rows($query2_result) > 0)
+            if ($sql2->num_rows($sql2->query("SELECT id FROM mm_account WHERE username = '$user_name' OR email = '$mail'")) > 0)
               redirect("register.php?err=15");
             else
             {
                 $client_ip = $_SERVER['REMOTE_ADDR'];
-                $authkey = sha1($client_ip . time());
-                $result = $sql2->query("INSERT INTO mm_account (username,sha_pass_hash,email, joindate,last_ip,failed_logins,locked,last_login,expansion,authkey)
-                                        VALUES (UPPER('$user_name'),'$pass','$mail',now(),'$last_ip','0','$create_acc_locked',NULL,'$expansion','$authkey')");
+                $authkey = bin2hex(random_bytes(8));
+                
+                list($salt,$verifier) = GetSRP6RegistrationData($_POST['username'], $_POST['pass']);
+                $result = $sql2->query("INSERT INTO mm_account (username,salt,verifier,email,joindate,last_ip,locked,expansion,authkey)
+                                        VALUES (UPPER('$user_name'),UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip','$create_acc_locked','$expansion','$authkey')");
                 do_verify_email();
                 redirect("login.php?error=7");
             }
@@ -193,9 +193,10 @@ function doregister(){
         }
         else
         {
-            $result = $sql->query("INSERT INTO account (username,sha_pass_hash,email, joindate,last_ip,failed_logins,locked,last_login,expansion)
-                                   VALUES (UPPER('$user_name'),'$pass','$mail',now(),'$last_ip',0,$create_acc_locked,NULL,$expansion)");
-            $query_result = mysqli_fetch_assoc($sql->query("SELECT id FROM account WHERE username = '$user_name'"));
+            list($salt,$verifier) = GetSRP6RegistrationData($_POST['username'], $_POST['pass']);
+            $result = $sql->query("INSERT INTO account (username,salt,verifier,email, joindate,last_ip,locked,expansion)
+                                   VALUES (UPPER('$user_name'),UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip',$create_acc_locked,$expansion)");
+            $query_result = $sql->fetch_assoc($sql->query("SELECT id FROM account WHERE username = '$user_name'"));
         }
 
         $sql->close();
@@ -233,7 +234,6 @@ function doregister(){
             $body = str_replace("\n", "<br />", $body);
             $body = str_replace("\r", " ", $body);
             $body = str_replace("<username>", $user_name, $body);
-            $body = str_replace("<password>", $pass1, $body);
             $body = str_replace("<base_url>", $_SERVER['SERVER_NAME'], $body);
 
             $mailer->WordWrap = 50;
@@ -260,18 +260,15 @@ function register(){
 
     $output .= "
                 <center>
-                    <script type=\"text/javascript\" src=\"libs/js/sha1.js\"></script>
                     <script type=\"text/javascript\">
                         function do_submit_data () {
-                            if (document.form.pass1.value != document.form.pass2.value){
+                            if (document.form.pass.value != document.form.pass2.value){
                                 alert('{$lang_register['diff_pass_entered']}');
                                 return;
-                            } else if (document.form.pass1.value.length > 225){
+                            } else if (document.form.pass.value.length > 225){
                                 alert('{$lang_register['pass_too_long']}');
                                 return;
                             } else {
-                                document.form.pass.value = hex_sha1(document.form.username.value.toUpperCase()+':'+document.form.pass1.value.toUpperCase());
-                                document.form.pass2.value = '0';
                                 do_submit();
                             }
                         }
@@ -282,7 +279,6 @@ function register(){
                     <fieldset class=\"half_frame\">
                         <legend>{$lang_register['create_acc']}</legend>
                         <form method=\"post\" action=\"register.php?action=doregister\" name=\"form\">
-                            <input type=\"hidden\" name=\"pass\" value=\"\" maxlength=\"256\" />
                             <table class=\"flat\">
                                 <tr>
                                     <td valign=\"top\">{$lang_register['username']}:</td>
@@ -293,7 +289,7 @@ function register(){
                                 </tr>
                                 <tr>
                                     <td valign=\"top\">{$lang_register['password']}:</td>
-                                    <td><input type=\"password\" name=\"pass1\" size=\"45\" maxlength=\"25\" /></td>
+                                    <td><input type=\"password\" name=\"pass\" size=\"45\" maxlength=\"25\" placeholder=\"(unchanged)\" /></td>
                                 </tr>
                                 <tr>
                                     <td valign=\"top\">{$lang_register['confirm_password']}:</td>
@@ -437,7 +433,7 @@ function pass_recovery(){
 // DO RECOVER PASSWORD
 //#####################################################################################################
 function do_pass_recovery(){
-    global $lang_global, $realm_db, $from_mail, $mailer_type, $smtp_cfg, $title;
+    global $lang_global, $realm_db, $mmfpm_db, $from_mail, $mailer_type, $smtp_cfg, $title;
 
     if ( empty($_POST['username']) || empty($_POST['email']) )
         redirect("register.php?action=pass_recovery&err=1");
@@ -448,10 +444,12 @@ function do_pass_recovery(){
     $user_name = $sql->quote_smart(trim($_POST['username']));
     $email_addr = $sql->quote_smart($_POST['email']);
 
-    $result = $sql->query("SELECT sha_pass_hash FROM account WHERE username = '$user_name' AND email = '$email_addr'");
+    $result = $sql->query("SELECT id, salt FROM account WHERE username = '$user_name' AND email = '$email_addr'");
 
     if ($sql->num_rows($result) == 1)
     {
+        $data = $sql->fetch_assoc($result);
+        $now = time();
         require_once("libs/mailer/class.phpmailer.php");
 
         $mail = new PHPMailer();
@@ -476,13 +474,27 @@ function do_pass_recovery(){
         $subject = fgets($fh, 4096);
         $body = fread($fh, filesize($file_name));
         fclose($fh);
+        
+        $sql2 = new SQL;
+        $sql2->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
+        
+        $token = bin2hex(random_bytes(32));
+        while (0 < $sql2->num_rows($sql2->query('select accountId FROM mm_password_resets WHERE token=UNHEX(\''.$token.'\')')))
+            $token = bin2hex(random_bytes(32));
+        
+        $password = bin2hex(random_bytes(6));
+        list($salt,$verifier) = GetSRP6RegistrationData(trim($_POST['username']), $password);
+        
+        $sql2->query('INSERT INTO mm_password_resets (token, accountId, oldsalt, salt, verifier, time) VALUES (UNHEX(\''.$token.'\'), '.$data['id'].', UNHEX(\''.bin2hex($data['salt']).'\'), UNHEX(\''.bin2hex($salt).'\'), UNHEX(\''.bin2hex($verifier).'\'), '.time().')');
 
         $body = str_replace("\n", "<br />", $body);
         $body = str_replace("\r", " ", $body);
         $body = str_replace("<username>", $user_name, $body);
-        $body = str_replace("<password>", substr(sha1(strtoupper($user_name)),0,7), $body);
+        $body = str_replace("<password>", $password, $body);
         $body = str_replace("<activate_link>",
-        $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME']."?action=do_pass_activate&amp;h=".$sql->result($result, 0, 'sha_pass_hash')."&amp;p=".substr(sha1(strtoupper($user_name)),0,7), $body);
+            $_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].
+            '?action=do_pass_activate&amp;a='.$data['id'].'&amp;t='.$token
+            , $body);
         $body = str_replace("<base_url>", $_SERVER['HTTP_HOST'], $body);
 
         $mail->WordWrap = 50;
@@ -513,35 +525,33 @@ function do_pass_recovery(){
 // DO ACTIVATE RECOVERED PASSWORD
 //#####################################################################################################
 function do_pass_activate(){
-    global $lang_global, $realm_db;
+    global $lang_global, $realm_db, $mmfpm_db;
 
-    if (empty($_GET['h']) || empty($_GET['p']))
-        redirect("register.php?action=pass_recovery&err=1");
+    if (empty($_GET['a']) || empty($_GET['t']))
+        redirect("register.php?action=pass_recovery&err=13");
+    
+    $sql2 = new SQL;
+    $sql2->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
 
-    $sql = new SQL;
-    $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
-
-    $pass = $sql->quote_smart(trim($_GET['p']));
-    $hash = $sql->quote_smart($_GET['h']);
-
-    $result = $sql->query("SELECT id,username FROM account WHERE sha_pass_hash = '$hash'");
-
-    if ($sql->num_rows($result) == 1)
+    $id = +$_GET['a'];
+    $token = $sql2->quote_smart($_GET['t']);
+    
+    $result = $sql2->query('SELECT oldsalt, salt, verifier, time FROM mm_password_resets WHERE token=UNHEX(\'' . $token . '\') AND accountId = '.$id);
+    if ($sql2->num_rows($result) > 0)
     {
-        $username = $sql->result($result, 0, 'username');
-        $id = $sql->result($result, 0, 'id');
-
-        if (substr(sha1(strtoupper($sql->result($result, 0, 'username'))),0,7) == $pass)
+        $data = $sql2->fetch_assoc($result);
+        $sql2->query('DELETE FROM mm_password_resets WHERE token = UNHEX(\''.$token.'\')');
+        if ((time() - $data['time']) <= 3600)
         {
-            $sql->query("UPDATE account SET sha_pass_hash=SHA1(CONCAT(UPPER('$username'),':',UPPER('$pass'))), v=0, s=0 WHERE id = '$id'");
-            redirect("login.php");
+            $sql = new SQL;
+            $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
+            $sql->query("UPDATE account SET salt=UNHEX('".bin2hex($data['salt'])."'),verifier=UNHEX('".bin2hex($data['verifier'])."') WHERE id = ".$id." AND salt = UNHEX('".bin2hex($data['oldsalt'])."')");
+            if ($sql->affected_rows() > 0)
+                redirect("login.php");
         }
-
     }
-    else
-        redirect("register.php?action=pass_recovery&err=1");
 
-    redirect("register.php?action=pass_recovery&err=1");
+    redirect("register.php?action=pass_recovery&err=13");
 }
 
 

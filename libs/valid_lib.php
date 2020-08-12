@@ -7,7 +7,7 @@ require_once 'tab_lib.php';
 //making sure the input string contains only [A-Z][a-z][0-9]-_ chars.
 function valid_alphabetic($srting)
 {
-    if (ereg('[^a-zA-Z0-9_-]{1,}', $srting))
+    if (preg_match('[^a-zA-Z0-9_-]{1,}', $srting))
         return false;
     else
         return true;

@@ -4,6 +4,7 @@
 // page header, and any additional required libraries
 require_once 'header.php';
 require_once 'libs/char_lib.php';
+require_once 'libs/srp6_lib.php';
 // minimum permission to view page
 valid_login($action_permission['read']);
 
@@ -530,7 +531,7 @@ function backup_user()
                         for($j=0; $j<$num_fields; $j++)
                         {
                             $row[$j] = addslashes($row[$j]);
-                            $row[$j] = ereg_replace("\n","\\n",$row[$j]);
+                            $row[$j] = preg_replace("\n","\\n",$row[$j]);
 
                             if (isset($row[$j]))
                             {
@@ -595,7 +596,7 @@ function backup_user()
                                 for($j=0; $j<$num_fields; $j++)
                                 {
                                     $row[$j] = addslashes($row[$j]);
-                                    $row[$j] = ereg_replace("\n","\\n",$row[$j]);
+                                    $row[$j] = preg_replace("\n","\\n",$row[$j]);
 
                                     if (isset($row[$j]))
                                     {
@@ -636,21 +637,17 @@ function add_new()
     valid_login($action_permission['insert']);
     $output .= "
                 <center>
-                    <script type=\"text/javascript\" src=\"libs/js/sha1.js\"></script>
                     <script type=\"text/javascript\">
                         // <![CDATA[
                           function do_submit_data ()
                           {
-                            if (document.form.new_pass1.value != document.form.new_pass2.value)
+                            if (document.form.pass.value != document.form.pass2.value)
                             {
                               alert('{$lang_user['nonidentical_passes']}');
                               return;
                             }
                             else
                             {
-                              document.form.pass.value = hex_sha1(document.form.new_user.value.toUpperCase()+':'+document.form.new_pass1.value.toUpperCase());
-                              document.form.new_pass1.value = '0';
-                              document.form.new_pass2.value = '0';
                               do_submit();
                             }
                           }
@@ -659,20 +656,19 @@ function add_new()
                     <fieldset style=\"width: 550px;\">
                         <legend>{$lang_user['create_new_acc']}</legend>
                         <form method=\"get\" action=\"user.php\" name=\"form\">
-                            <input type=\"hidden\" name=\"pass\" value=\"\" maxlength=\"256\" />
                             <input type=\"hidden\" name=\"action\" value=\"doadd_new\" />
                             <table class=\"flat\">
                                 <tr>
                                     <td>{$lang_user['username']}</td>
-                                    <td><input type=\"text\" name=\"new_user\" size=\"24\" maxlength=\"15\" value=\"New_Account\" /></td>
+                                    <td><input type=\"text\" name=\"new_user\" size=\"24\" maxlength=\"15\" /></td>
                                 </tr>
                                 <tr>
                                     <td>{$lang_user['password']}</td>
-                                    <td><input type=\"text\" name=\"new_pass1\" size=\"24\" maxlength=\"25\" value=\"123456\" /></td>
+                                    <td><input type=\"password\" name=\"pass\" size=\"24\" maxlength=\"25\" /></td>
                                 </tr>
                                 <tr>
                                     <td>{$lang_user['confirm']}</td>
-                                    <td><input type=\"text\" name=\"new_pass2\" size=\"24\" maxlength=\"25\" value=\"123456\" /></td>
+                                    <td><input type=\"password\" name=\"pass2\" size=\"24\" maxlength=\"25\" /></td>
                                 </tr>
                                 <tr>
                                     <td>{$lang_user['email']}</td>
@@ -732,7 +728,6 @@ function doadd_new()
     $sqlc->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
     $new_user = $sqlc->quote_smart(trim($_GET['new_user']));
-    $pass = $sqlc->quote_smart($_GET['pass']);
 
     //make sure username/pass at least 4 chars long and less than max
     if ((strlen($new_user) < 4) || (strlen($new_user) > 15))
@@ -748,12 +743,14 @@ function doadd_new()
         redirect("user.php?action=add_new&error=7");
     else
         $last_ip = "0.0.0.0";
+    
+    list($salt,$verifier) = GetSRP6RegistrationData(trim($_GET['new_user']), $_GET['pass']);
 
     $new_mail = (isset($_GET['new_mail'])) ? $sqlc->quote_smart(trim($_GET['new_mail'])) : NULL;
     $locked = (isset($_GET['new_locked'])) ? $sqlc->quote_smart($_GET['new_locked']) : 0;
     $expansion = (isset($_GET['new_expansion'])) ? $sqlc->quote_smart($_GET['new_expansion']) : 0;
-    $result = $sqlc->query("INSERT INTO account (username,sha_pass_hash,email, joindate,last_ip,failed_logins,locked,last_login,expansion)
-                            VALUES ('$new_user','$pass','$new_mail',now() ,'$last_ip',0, $locked ,NULL, $expansion)");
+    $result = $sqlc->query("INSERT INTO account (username,salt,verifier,email, joindate,last_ip,failed_logins,locked,last_login,expansion)
+                            VALUES ('$new_user',UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$new_mail',now() ,'$last_ip',0, $locked ,NULL, $expansion)");
     if ($result)
         redirect("user.php?error=5");
 }
@@ -799,20 +796,17 @@ function edit_user()
     {
         $output .= '
                 <center>
-                    <script type="text/javascript" src="libs/js/sha1.js"></script>
                     <script type="text/javascript">
                         // <![CDATA[
                           function do_submit_data ()
                           {
-                            if ((document.form.username.value != "'.$data['username'].'") && (document.form.new_pass.value == "******"))
+                            if ((document.form.username.value != "'.$data['username'].'") && (document.form.pass.value == ""))
                             {
                               alert("If you are changing Username, The password must be changed too.");
                               return;
                             }
                             else
                             {
-                              document.form.pass.value = hex_sha1(document.form.username.value.toUpperCase()+":"+document.form.new_pass.value.toUpperCase());
-                              document.form.new_pass.value = "0";
                               do_submit();
                             }
                           }
@@ -821,7 +815,6 @@ function edit_user()
                         <fieldset style="width: 550px;">
                         <legend>'.$lang_user['edit_acc'].'</legend>
                             <form method="post" action="user.php?action=doedit_user" name="form">
-                                <input type="hidden" name="pass" value="" maxlength="256" />
                                 <input type="hidden" name="id" value="'.$id.'" />
                                 <table class="flat">
                                     <tr>
@@ -842,7 +835,7 @@ function edit_user()
                                         <td>'.$lang_user['password'].'</td>';
         if($user_lvl >= $action_permission['update'])
             $output .="
-                                        <td><input type=\"text\" name=\"new_pass\" size=\"42\" maxlength=\"40\" value=\"******\" /></td>";
+                                        <td><input type=\"password\" name=\"pass\" size=\"42\" maxlength=\"40\" placeholder=\"(unchanged)\" /></td>";
         else
             $output.="
                                         <td>********</td>";
@@ -1152,8 +1145,13 @@ function doedit_user()
     $id = $sqlr->quote_smart($_POST['id']);
     $username = $sqlr->quote_smart($_POST['username']);
     $banreason = $sqlr->quote_smart($_POST['banreason']);
-    $pass = $sqlr->quote_smart($_POST['pass']);
-    $user_pass_change = ($pass != sha1(strtoupper($username).":******")) ? "username='$username',sha_pass_hash='$pass'," : "";
+    
+    $user_pass_change = '';
+    if ($_POST['pass'] !== '')
+    {
+        list($salt, $verifier) = GetSRP6RegistrationData($username, $_POST['pass']);
+        $user_pass_change = ('username=\'' . $username . '\', salt=UNHEX(\'' . bin2hex($salt) . '\'), verifier=UNHEX(\'' . bin2hex($verifier) . '\'), ');
+    }
 
     $mail = (isset($_POST['mail']) && $_POST['mail'] != '') ? $sqlr->quote_smart($_POST['mail']) : "";
     $failed = (isset($_POST['failed'])) ? $sqlr->quote_smart($_POST['failed']) : 0;
@@ -1173,10 +1171,10 @@ function doedit_user()
         redirect("user.php?action=edit_user&error=9&id=$id");
     //restricting accsess to lower gmlvl
     $result = $sqlr->query("SELECT account.username, IFNULL(account_access.SecurityLevel,0) as SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
-    if (($user_lvl <= $sqlr->result($result, 0, 'SecurityLevel')) && ($user_name != $sqlr->result($result, 0, 'username')))
+    $accgmlevel = $sqlr->result($result, 0, 'SecurityLevel');
+    if (($user_lvl <= $accgmlevel) && ($user_name != $sqlr->result($result, 0, 'username')))
         redirect("user.php?error=14");
 
-    $accgmlevel = $sqlr->result($result, 0, 'SecurityLevel');
 
     if (!$banned)
         $sqlr->query("DELETE FROM account_banned WHERE id='$id'");
@@ -1189,7 +1187,7 @@ function doedit_user()
     }
     $error = false;
 
-    $sqlr->query("UPDATE account SET email='$mail', $user_pass_change v=0,s=0,failed_logins='$failed',locked='$locked',expansion='$expansion' WHERE id='$id'");
+    $sqlr->query("UPDATE account SET email='$mail', $user_pass_change failed_logins='$failed',locked='$locked',expansion='$expansion' WHERE id='$id'");
     if (!$sqlr->affected_rows())
         $error = true;
 

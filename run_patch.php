@@ -26,15 +26,15 @@ function print_upload()
         $buffer = '';
 
     $upload_max = ini_get('upload_max_filesize');
-    if (eregi('([0-9]+)K', $upload_max, $tempregs))
+    if (preg_match('/([0-9]+)K/i', $upload_max, $tempregs))
         $upload_max=$tempregs[1]*1024;
-    if (eregi('([0-9]+)M', $upload_max, $tempregs))
+    if (preg_match('/([0-9]+)M/i', $upload_max, $tempregs))
         $upload_max=$tempregs[1]*1024*1024;
 
     $post_max = ini_get('post_max_size');
-    if (eregi('([0-9]+)K', $post_max, $tempregs))
+    if (preg_match('/([0-9]+)K/i', $post_max, $tempregs))
         $post_max=$tempregs[1]*1024;
-    if (eregi('([0-9]+)M', $post_max, $tempregs))
+    if (preg_match('/([0-9]+)M/i', $post_max, $tempregs))
         $post_max=$tempregs[1]*1024*1024;
     // sanity check- a single upload should not be more than 50% the size limit of the total post
     $post_max = $post_max /2;
@@ -154,9 +154,9 @@ function do_run_patch()
             ($sql->query(trim($qry)) ? ++$good : ++$bad);
         if ($bad)
         {
-            $err = ereg_replace ('\n',   '',$sql->error());
-            $err = ereg_replace ('\r\n$','',$err);
-            $err = ereg_replace ('\r$',  '',$err);
+            $err = preg_replace ('\n',   '',$sql->error());
+            $err = preg_replace ('\r\n$','',$err);
+            $err = preg_replace ('\r$',  '',$err);
             error($lang_run_patch['err_in_line'].': '.$line.' <br />'.$err);
             exit();
         }

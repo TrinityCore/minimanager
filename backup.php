@@ -84,9 +84,9 @@ function backup_step2()
     }
 
     $upload_max_filesize=ini_get("upload_max_filesize");
-    if (eregi("([0-9]+)K",$upload_max_filesize,$tempregs))
+    if (preg_match("/([0-9]+)K/i",$upload_max_filesize,$tempregs))
         $upload_max_filesize=$tempregs[1]*1024;
-    if (eregi("([0-9]+)M",$upload_max_filesize,$tempregs))
+    if (preg_match("/([0-9]+)M/i",$upload_max_filesize,$tempregs))
         $upload_max_filesize=$tempregs[1]*1024*1024;
 
     switch ($backup_action)
@@ -250,7 +250,7 @@ function dobackup()
 
     if (("load" == $backup_action)&&("file" == $backup_from_to))
     {
-        if (!eregi("(\.(sql|qbquery))$",$_FILES["uploaded_file"]["name"]))
+        if (!preg_match("/(\.(sql|qbquery))$/i",$_FILES["uploaded_file"]["name"]))
             error($lang_backup['upload_sql_file_only']);
 
         $uploaded_filename=str_replace(" ","_",$_FILES["uploaded_file"]["name"]);
@@ -478,7 +478,7 @@ function dobackup()
                         for($j=0; $j<$num_fields; $j++)
                         {
                             $row[$j] = addslashes($row[$j]);
-                            $row[$j] = ereg_replace("\n","\\n",$row[$j]);
+                            $row[$j] = preg_replace("/\n/","\\n",$row[$j]);
                             if (isset($row[$j]))
                             {
                                 if ($sql->field_type($acc_query,$j) == "int")
@@ -546,7 +546,7 @@ function dobackup()
                                 for($j=0; $j<$num_fields; $j++)
                                 {
                                     $row[$j] = addslashes($row[$j]);
-                                    $row[$j] = ereg_replace("\n","\\n",$row[$j]);
+                                    $row[$j] = preg_replace("/\n/","\\n",$row[$j]);
 
                                     if (isset($row[$j]))
                                     {

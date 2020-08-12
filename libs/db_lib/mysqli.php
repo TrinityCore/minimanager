@@ -15,8 +15,12 @@ class SQL //MySQLi
 
         if (strpos($db_host, ':') !== false) list($db_host, $db_port) = explode(':', $db_host);
 
-        if (isset($db_port)) $this->link_id = @mysqli_connect($db_host, $db_username, $db_password, $db_name, $db_port);
-        else $this->link_id = @mysqli_connect($db_host, $db_username, $db_password, $db_name);
+        if (($db_host === 'pipe') || ($db_host === 'socket'))
+            $this->link_id = @mysqli_connect('localhost', $db_username, $db_password, $db_name, null, $db_port);
+        elseif (isset($db_port))
+            $this->link_id = @mysqli_connect($db_host, $db_username, $db_password, $db_name, $db_port);
+        else
+            $this->link_id = @mysqli_connect($db_host, $db_username, $db_password, $db_name);
 
         if ($this->link_id){
             if (!empty($use_names)) $this->query("SET NAMES '$use_names'");
@@ -43,6 +47,7 @@ class SQL //MySQLi
     function result($query_id = 0, $row = 0, $field = NULL){
         if ($query_id){
             if ($row) @mysqli_data_seek($query_id, $row);
+            if ($field !== NULL) return (@mysqli_fetch_assoc($query_id))[$field];
             $cur_row = @mysqli_fetch_row($query_id);
             return $cur_row[0];
         } else return false;

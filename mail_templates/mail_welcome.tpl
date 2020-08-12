@@ -4,7 +4,7 @@ Thank you for registering in our Trinity server at <a href="https://<base_url>">
 
 <b>Your account details are</b>:
 Username: <username>
-Password: <password>
+Password: <i>&lt;redacted&gt;</i>
 
 For more information please visit our website. 
 -------------------------------

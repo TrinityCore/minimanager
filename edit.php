@@ -3,6 +3,7 @@
 
 require_once 'header.php';
 require_once 'libs/char_lib.php';
+require_once 'libs/srp6_lib.php';
 valid_login($action_permission['read']);
 
 //##############################################################################################################
@@ -28,13 +29,10 @@ function edit_user(&$sqlr, &$sqlc)
 
         $output .= '
             <center>
-                <script type="text/javascript" src="libs/js/sha1.js"></script>
                 <script type="text/javascript">
                 // <![CDATA[
                     function do_submit_data ()
                     {
-                        document.form.pass.value = hex_sha1(\''.strtoupper($user_name).':\'+document.form.user_pass.value.toUpperCase());
-                        document.form.user_pass.value = \'0\';
                         do_submit();
                     }
                 // ]]>
@@ -42,7 +40,6 @@ function edit_user(&$sqlr, &$sqlc)
                 <fieldset style="width: 550px;">
                     <legend>'.$lang_edit['edit_acc'].'</legend>
                     <form method="post" action="edit.php?action=doedit_user" name="form">
-                        <input type="hidden" name="pass" value="" maxlength="256" />
                             <table class="flat">
                                 <tr>
                                     <td>'.$lang_edit['id'].'</td>
@@ -54,7 +51,7 @@ function edit_user(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>'.$lang_edit['password'].'</td>
-                                    <td><input type="text" name="user_pass" size="42" maxlength="40" value="******" /></td>
+                                    <td><input type="password" name="pass" size="42" maxlength="40" placeholder="(unchanged)" /></td>
                                 </tr>
                                 <tr>
                                     <td>'.$lang_edit['mail'].'</td>
@@ -292,7 +289,12 @@ function doedit_user(&$sqlr, &$sqlc)
         && (empty($_POST['referredby'])||($_POST['referredby'] === '')) )
         redirect('edit.php?error=1');
 
-    $new_pass = ($sqlr->quote_smart($_POST['pass']) == sha1(strtoupper($user_name).':******')) ? '' : 'sha_pass_hash=\''.$sqlr->quote_smart($_POST['pass']).'\', ';
+    $new_pass = ''; // this is spliced into a sql query. yes, this is stupid. i am here to make it work, not to make it better.
+    if ($_POST['pass'] !== '')
+    {
+        list($salt, $verifier) = GetSRP6RegistrationData($user_name, $_POST['pass']);
+        $new_pass = ('salt=UNHEX(\'' . bin2hex($salt) . '\'), verifier=UNHEX(\'' . bin2hex($verifier) . '\'), ');
+    }
     $new_mail = $sqlr->quote_smart(trim($_POST['mail']));
     $new_expansion = $sqlr->quote_smart(trim($_POST['expansion']));
     $referredby = $sqlr->quote_smart(trim($_POST['referredby']));
@@ -302,7 +304,7 @@ function doedit_user(&$sqlr, &$sqlc)
     else
         redirect('edit.php?error=2');
 
-    $sqlr->query('UPDATE account SET email = \''.$new_mail.'\', '.$new_pass.' v=0, s=0, expansion = \''.$new_expansion.'\' WHERE username = \''.$user_name.'\'');
+    $sqlr->query('UPDATE account SET email = \''.$new_mail.'\', '.$new_pass.' expansion = \''.$new_expansion.'\' WHERE username = \''.$user_name.'\'');
 
     if (doupdate_referral($referredby, $sqlr, $sqlc) || $sqlr->affected_rows())
         redirect('edit.php?error=3');

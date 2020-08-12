@@ -23,7 +23,7 @@ function print_commands_form()
                     <tr>
                         '.(($user_lvl >= $action_permission['update']) ? '<td><input type="checkbox" name="check['.$data['name'].']" value="'.$data['security'].'" /></td>' : '<td></td>').'
                         <td align="left">'.$data['name'].'</td>
-                        <td>'.htmlentities(ereg_replace("[a-zA-Z ]+:* *\.", ".", $comm[0])).'</td>
+                        <td>'.htmlentities(preg_replace("/[a-zA-Z ]+:* *\./", ".", $comm[0])).'</td>
                         <td>'.(isset($comm[1]) ? str_replace("\r\n", "<br />", str_replace("\r\n\r\n", "<br />", htmlentities($comm[1]))): '').'</td>
                     </tr>';
     }
