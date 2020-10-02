@@ -101,7 +101,6 @@ class SQL //MySQL
   if( is_array($value) ) {
     return array_map( array(&$this,'quote_smart') , $value);
   } else {
-    if( get_magic_quotes_gpc() ) $value = stripslashes($value);
     if( $value === '' ) $value = NULL;
     if (function_exists('mysql_real_escape_string'))
       return mysql_real_escape_string($value, $this->link_id);

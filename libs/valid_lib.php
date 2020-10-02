@@ -77,9 +77,6 @@ function cleanSQL($string)
 {
     global $mmfpm_db;
     
-    if(get_magic_quotes_gpc())  // prevents duplicate backslashes
-        $string = stripslashes($string);
-
     if (phpversion() >= '7.0')
         {
             $sqlm = new mysqli($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
