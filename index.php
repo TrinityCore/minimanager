@@ -85,7 +85,7 @@ function front(&$sqlr, &$sqlc, &$sqlm)
     //  This retrieves the actual database version from the database itself, instead of hardcoding it into a string
     $version = $sqlw->fetch_assoc($sqlw->query('SELECT core_revision, db_version FROM version'), 0);
     $output .= '
-                    '.$lang_index['trinity_rev'].' '.$version['core_revision'].' '.$lang_index['using_db'].' '.$version['db_version'].'
+                    '.$lang_index['trinity_rev'].' <a href="https://github.com/TrinityCore/TrinityCore/commit/'.rtrim($version['core_revision'], "+").'">'.$version['core_revision'].'</a> '.$lang_index['using_db'].' <a href="https://github.com/TrinityCore/TrinityCore/releases/tag/'.str_replace(' ', '', $version['db_version']).'">'.$version['db_version'].'</a>
                 </div>';
     unset($version);
 
