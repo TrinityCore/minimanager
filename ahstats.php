@@ -15,7 +15,7 @@ function browse_auctions(&$sqlr, &$sqlc)
 
     $red = "\"#DD5047\"";
     $blue = "\"#0097CD\"";
-    $sidecolor = array(1 => $blue,2 => $red,3 => $blue,4 => $blue,5 => $red,6 => $red,7 => $blue,8 => $red,10 => $red);
+    $sidecolor = array(1 => $blue,2 => $red,3 => $blue,4 => $blue,5 => $red,6 => $red,7 => $blue,8 => $red,10 => $red,11 => $blue);
     $hiddencols = array(1,8,9,10);
 
     //$sqlc = new SQL;
