@@ -57,7 +57,7 @@ function char_main(&$sqlr, &$sqlc)
         if ($user_lvl >= $owner_gmlvl && (($side_v === $side_p) || !$side_v))
         {
             $result = $sqlc->query('SELECT characters.equipmentCache, BINARY characters.name AS name, characters.race, characters.class, characters.level, characters.zone, characters.map, characters.online, characters.totaltime, characters.gender, characters.account, character_stats.blockPct,
-                                    character_stats.dodgePct, character_stats.parryPct, character_stats.critPct, character_stats.rangedCritPct, character_stats.spellCritPct, COALESCE(guild_member.guildid,0) AS guildid, COALESCE(guild_member.rank,0) AS rank,
+                                    character_stats.dodgePct, character_stats.parryPct, character_stats.critPct, character_stats.rangedCritPct, character_stats.spellCritPct, COALESCE(guild_member.guildid,0) AS guildid, COALESCE(guild_member.rank,0) AS `rank`,
                                     characters.totalHonorPoints, characters.arenaPoints, characters.totalKills, character_stats.maxhealth, character_stats.maxpower1, character_stats.strength, character_stats.agility, character_stats.stamina, character_stats.intellect,
                                     character_stats.spirit, character_stats.armor, character_stats.resHoly, character_stats.resFire, character_stats.resNature, character_stats.resFrost, character_stats.resShadow, character_stats.resArcane, character_stats.attackPower,
                                     character_stats.rangedAttackPower, character_stats.spellPower, characters.power2, character_stats.maxpower2, characters.power4, character_stats.maxpower4, characters.power3, character_stats.maxpower3
