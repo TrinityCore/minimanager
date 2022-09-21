@@ -95,7 +95,7 @@ function test_port($server,$port)
 //#############################################################################
 function aasort(&$array, $field, $order = false)
 {
-    $order = ($order ? SORT_ASC : SORT_DESC);
+    $order = ($order ? SORT_DESC : SORT_ASC);
     $colum = array_column($array, $field);
     array_multisort($colum, $order, $array);       
 }
