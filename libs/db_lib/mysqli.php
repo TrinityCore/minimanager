@@ -93,11 +93,11 @@ class SQL //MySQLi
         return ($query_id) ? @mysqli_free_result($query_id) : false;
     }
 
-    function field_type($query_id = 0,$field_offset){
+    function field_type($field_offset, $query_id = 0){
         return false; //TODO
     }
 
-    function field_name($query_id = 0,$field_offset){
+    function field_name($field_offset,$query_id = 0){
         return false; //TODO
     }
 
