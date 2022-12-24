@@ -94,9 +94,10 @@ $output .= '
         <title>'.$title.'</title>
         <meta http-equiv="Content-Type" content="text/html; charset='.$site_encoding.'" />
         <meta http-equiv="Content-Type" content="text/javascript; charset='.$site_encoding.'" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" type="text/css" href="themes/'.$theme.'/'.$theme.'_1024.css" title="1024" />
         <link rel="stylesheet" type="text/css" href="themes/'.$theme.'/'.$theme.'_1280.css" title="1280" />
-        <link rel="SHORTCUT ICON" href="img/favicon.ico" />
+        <link rel="icon" href="img/favicon.ico" />
         <script type="text/javascript" charset="utf-8"></script>
         <script type="text/javascript" src="libs/js/general.js"></script>
         <script type="text/javascript" src="libs/js/layout.js"></script>
