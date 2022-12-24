@@ -1,5 +1,5 @@
 <?php
-$zones = Array(
+$zones = [
 1 => 'Dun Morogh',
 2 => 'Longshore',
 3 => 'Badlands',
@@ -2283,5 +2283,5 @@ $zones = Array(
 4763 => 'Transport: Alliance Gunship',
 4764 => 'Transport: Horde Gunship',
 4769 => 'Hrothgar`s Landing'
-);
+];
 ?>

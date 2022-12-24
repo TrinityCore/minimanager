@@ -1,6 +1,6 @@
 <?php
 
-$character_race = Array(
+$character_race = [
 	1 => 'Человек',
 	2 => 'Орк',
 	3 => 'Дворф',
@@ -11,9 +11,9 @@ $character_race = Array(
 	8 => 'Тролль',
 	9 => 'Гоблин',
 	10 => 'Эльф крови',
-	11 => 'Дреней');
+	11 => 'Дреней'];
 
-$character_class = Array(
+$character_class = [
 	1 => 'Воин',
 	2 => 'Паладин',
 	3 => 'Охотник',
@@ -23,19 +23,19 @@ $character_class = Array(
 	7 => 'Шаман',
 	8 => 'Маг',
 	9 => 'Чернокнижник',
-	11 => 'Друид');
+	11 => 'Друид'];
 
-$lang_defs = Array(
-	'maps_names' => Array('Азерот','Запределье','Нордскол'),
+$lang_defs = [
+	'maps_names' => ['Азерот','Запределье','Нордскол'],
 	'total' => 'Всего',
-	'faction' => Array('Альянс', 'Орда'),
+	'faction' => ['Альянс', 'Орда'],
 	'name' => 'Имя',
 	'race' => 'Расса',
 	'class' => 'Класс',
 	'level' => 'ур',
 	'click_to_next' => 'жми кнопку',
 	'click_to_first' => 'жми кнопку'
-);
+];
 
 include "zone_names_".$lang.".php";
 

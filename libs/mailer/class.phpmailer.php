@@ -173,14 +173,14 @@ class PHPMailer
     var $SMTPKeepAlive = false;
 
     var $smtp            = NULL;
-    var $to              = array();
-    var $cc              = array();
-    var $bcc             = array();
-    var $ReplyTo         = array();
-    var $attachment      = array();
-    var $CustomHeader    = array();
+    var $to              = [];
+    var $cc              = [];
+    var $bcc             = [];
+    var $ReplyTo         = [];
+    var $attachment      = [];
+    var $CustomHeader    = [];
     var $message_type    = "";
-    var $boundary        = array();
+    var $boundary        = [];
     var $error_count     = 0;
     var $LE              = "\n";
  
@@ -391,7 +391,7 @@ class PHPMailer
     function SmtpSend($header, $body) {
         include_once("class.smtp.php");
         $error = "";
-        $bad_rcpt = array();
+        $bad_rcpt = [];
 
         if(!$this->SmtpConnect())
             return false;
@@ -465,7 +465,7 @@ class PHPMailer
         // Retry while there is no connection
         while($index < count($hosts) && $connection == false)
         {
-            $hostinfo = array();
+            $hostinfo = [];
             if(preg_match('/^(.+):([0-9]+)$/i', $hosts[$index], $hostinfo))
             {
                 $host = $hostinfo[1];
@@ -679,7 +679,7 @@ class PHPMailer
                 $result .= $this->AddrAppend("Cc", $this->cc);
         }
 
-        $from = array();
+        $from = [];
         $from[0][0] = trim($this->From);
         $from[0][1] = $this->FromName;
         $result .= $this->AddrAppend("From", $from); 
@@ -909,7 +909,7 @@ class PHPMailer
      */
     function AttachAll() {
         // Return text of body
-        $mime = array();
+        $mime = [];
 
         // Add all attachments
         for($i = 0; $i < count($this->attachment); $i++)
@@ -1180,28 +1180,28 @@ class PHPMailer
      * Clears all recipients assigned in the TO array.  Returns void.
      */
     function ClearAddresses() {
-        $this->to = array();
+        $this->to = [];
     }
 
     /**
      * Clears all recipients assigned in the CC array.  Returns void.
      */
     function ClearCCs() {
-        $this->cc = array();
+        $this->cc = [];
     }
 
     /**
      * Clears all recipients assigned in the BCC array.  Returns void.
      */
     function ClearBCCs() {
-        $this->bcc = array();
+        $this->bcc = [];
     }
 
     /**
      * Clears all recipients assigned in the ReplyTo array.  Returns void.
      */
     function ClearReplyTos() {
-        $this->ReplyTo = array();
+        $this->ReplyTo = [];
     }
 
     /**
@@ -1209,9 +1209,9 @@ class PHPMailer
      * array.  Returns void.
      */
     function ClearAllRecipients() {
-        $this->to = array();
-        $this->cc = array();
-        $this->bcc = array();
+        $this->to = [];
+        $this->cc = [];
+        $this->bcc = [];
     }
 
     /**
@@ -1219,14 +1219,14 @@ class PHPMailer
      * attachments.  Returns void.
      */
     function ClearAttachments() {
-        $this->attachment = array();
+        $this->attachment = [];
     }
 
     /**
      * Clears all custom headers.  Returns void.
      */
     function ClearCustomHeaders() {
-        $this->CustomHeader = array();
+        $this->CustomHeader = [];
     }
 
     /**

@@ -24,7 +24,7 @@ class SQL //MySQLi
 
         if ($this->link_id){
             if (!empty($use_names)) $this->query("SET NAMES '$use_names'");
-        } else die($lang_global['err_sql_conn_db'] . " DB: {$db_name}");
+        } else die($lang_global['err_sql_conn_db']);
     }
 
     function db($db_name) {
@@ -103,7 +103,7 @@ class SQL //MySQLi
 
     function quote_smart($value){
     if( is_array($value) ) {
-        return array_map( array('SQL','quote_smart') , $value);
+        return array_map( ['SQL','quote_smart'], $value);
     } else {
         if( $value === '' ) $value = NULL;
         return mysqli_real_escape_string($this->link_id, $value);
@@ -118,8 +118,8 @@ class SQL //MySQLi
         global $tot_queries;
         $tot_queries += $this->num_queries;
         if ($this->link_id){
-            if ($this->query_result instanceof mysqli_result) mysqli_free_result($this->query_result);
-            return mysqli_close($this->link_id);
+            if ($this->query_result instanceof mysqli_result) @mysqli_free_result($this->query_result);
+            return @mysqli_close($this->link_id);
         } else return false;
     }
 
@@ -132,7 +132,3 @@ class SQL //MySQLi
     }
 }
 ?>
-
-
-
-

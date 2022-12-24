@@ -35,7 +35,7 @@ function forum_index(){
     $mysql = new SQL;
     $mysql->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
     $result = $mysql->query("SELECT `authorname`,`id`,`name`,`time`,`forum` FROM `mm_forum_posts` WHERE `id` IN (SELECT MAX(`id`) FROM `mm_forum_posts` GROUP BY `forum`) ORDER BY `forum`;");
-    $lasts = array();
+    $lasts = [];
     if($mysql->num_rows($result) > 0){
         while($row = $mysql->fetch_row($result))
             $lasts[$row[4]] = $row;
@@ -137,7 +137,7 @@ function forum_view_forum(){
         <center><table class=\"lined\">";
   $topics = $mysql->query("SELECT id, authorid, authorname, name, annouced, sticked, closed FROM mm_forum_posts WHERE (forum = '$id' AND id = `topic`) OR annouced = 1 AND id = `topic` ORDER BY annouced DESC, sticked DESC, lastpost DESC LIMIT $start, $maxqueries;");
   $result = $mysql->query("SELECT `topic` as curtopic,(SELECT count(`id`)-1 FROM mm_forum_posts WHERE `topic` = `curtopic`) AS replies,lastpost as curlastpost,(SELECT authorname FROM mm_forum_posts WHERE id = curlastpost) as authorname,(SELECT time FROM mm_forum_posts WHERE id = curlastpost) as time FROM `mm_forum_posts` WHERE (`forum` = $id AND `topic` = `id` ) OR annouced = 1;");
-  $lasts = array();
+  $lasts = [];
   if($mysql->num_rows($result) > 0){
     while($row = $mysql->fetch_row($result))
       $lasts[$row[0]] = $row;

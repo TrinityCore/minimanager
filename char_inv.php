@@ -54,36 +54,36 @@ function char_inv(&$sqlr, &$sqlc)
             //  we have lots to do for inventory
 
             // character bags, 1 main + 4 additional
-            $bag = array
-            (
-                0=>array(),
-                1=>array(),
-                2=>array(),
-                3=>array(),
-                4=>array()
-            );
+            $bag =
+                [
+                0=> [],
+                1=> [],
+                2=> [],
+                3=> [],
+                4=> []
+                ];
 
             // character bang, 1 main + 7 additional
-            $bank = array
-            (
-                0=>array(),
-                1=>array(),
-                2=>array(),
-                3=>array(),
-                4=>array(),
-                5=>array(),
-                6=>array(),
-                7=>array()
-            );
+            $bank =
+                [
+                0=> [],
+                1=> [],
+                2=> [],
+                3=> [],
+                4=> [],
+                5=> [],
+                6=> [],
+                7=> []
+                ];
 
             // this is where we will put items that are in main bag
-            $bag_id = array();
+            $bag_id = [];
             // this is where we will put items that are in main bank
-            $bank_bag_id = array();
+            $bank_bag_id = [];
             // this is where we will put items that are in character bags, 4 arrays, 1 for each
-            $equiped_bag_id = array(0,0,0,0,0);
+            $equiped_bag_id = [0,0,0,0,0];
             // this is where we will put items that are in bank bangs, 7 arrays, 1 for each
-            $equip_bnk_bag_id = array(0,0,0,0,0,0,0,0);
+            $equip_bnk_bag_id = [0,0,0,0,0,0,0,0];
 
             $sqlw = new SQL;
             $sqlw->connect($world_db[$realmid]['addr'], $world_db[$realmid]['user'], $world_db[$realmid]['pass'], $world_db[$realmid]['name']);
@@ -96,23 +96,23 @@ function char_inv(&$sqlr, &$sqlc)
                     if($slot['slot'] < 23) // SLOT 19 TO 22 (Bags)
                     {
                         $bag_id[$slot['item']] = ($slot['slot']-18);
-                        $equiped_bag_id[$slot['slot']-18] = array($slot['itemEntry'],
-                        $sqlw->result($sqlw->query('SELECT ContainerSlots FROM item_template WHERE entry = '.$slot['itemEntry'].''), 0, 'ContainerSlots'), $slot['stack_count']);
+                        $equiped_bag_id[$slot['slot']-18] = [$slot['itemEntry'],
+                        $sqlw->result($sqlw->query('SELECT ContainerSlots FROM item_template WHERE entry = '.$slot['itemEntry'].''), 0, 'ContainerSlots'), $slot['stack_count']];
                     }
                     elseif($slot['slot'] < 39) // SLOT 23 TO 38 (BackPack)
                     {
                         if(isset($bag[0][$slot['slot']-23]))
                             $bag[0][$slot['slot']-23][0]++;
                         else
-                            $bag[0][$slot['slot']-23] = array($slot['itemEntry'],0,$slot['stack_count']);
+                            $bag[0][$slot['slot']-23] = [$slot['itemEntry'],0,$slot['stack_count']];
                     }
                     elseif($slot['slot'] < 67) // SLOT 39 TO 66 (Bank)
-                        $bank[0][$slot['slot']-39] = array($slot['itemEntry'],0,$slot['stack_count']);
+                        $bank[0][$slot['slot']-39] = [$slot['itemEntry'],0,$slot['stack_count']];
                     elseif($slot['slot'] < 74) // SLOT 67 TO 73 (Bank Bags)
                     {
                         $bank_bag_id[$slot['item']] = ($slot['slot']-66);
-                        $equip_bnk_bag_id[$slot['slot']-66] = array($slot['itemEntry'],
-                        $sqlw->result($sqlw->query('SELECT ContainerSlots FROM item_template WHERE entry = '.$slot['itemEntry'].''), 0, 'ContainerSlots'), $slot['stack_count']);
+                        $equip_bnk_bag_id[$slot['slot']-66] = [$slot['itemEntry'],
+                        $sqlw->result($sqlw->query('SELECT ContainerSlots FROM item_template WHERE entry = '.$slot['itemEntry'].''), 0, 'ContainerSlots'), $slot['stack_count']];
                     }
                 }
                 else
@@ -123,11 +123,11 @@ function char_inv(&$sqlr, &$sqlc)
                         if(isset($bag[$bag_id[$slot['bag']]][$slot['slot']]))
                             $bag[$bag_id[$slot['bag']]][$slot['slot']][1]++;
                         else
-                            $bag[$bag_id[$slot['bag']]][$slot['slot']] = array($slot['itemEntry'],0,$slot['stack_count']);
+                            $bag[$bag_id[$slot['bag']]][$slot['slot']] = [$slot['itemEntry'],0,$slot['stack_count']];
                     }
                     // Bank Bags
                     elseif (isset($bank_bag_id[$slot['bag']]))
-                        $bank[$bank_bag_id[$slot['bag']]][$slot['slot']] = array($slot['itemEntry'],0,$slot['stack_count']);
+                        $bank[$bank_bag_id[$slot['bag']]][$slot['slot']] = [$slot['itemEntry'],0,$slot['stack_count']];
                 }
             }
             unset($slot);

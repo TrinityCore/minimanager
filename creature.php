@@ -48,14 +48,14 @@ function get_npcflag($flag)
         return $lang_creature['none'];
 }
 
-$creature_type = Array
-(
-    0 => array(0,$lang_creature['normal']),
-    1 => array(1,$lang_creature['elite']),
-    2 => array(2,$lang_creature['rare_elite']),
-    3 => array(3,$lang_creature['world_boss']),
-    4 => array(4,$lang_creature['rare'])
-);
+$creature_type =
+    [
+    0 => [0,$lang_creature['normal']],
+    1 => [1,$lang_creature['elite']],
+    2 => [2,$lang_creature['rare_elite']],
+    3 => [3,$lang_creature['world_boss']],
+    4 => [4,$lang_creature['rare']]
+    ];
 
 function makeinfocell($text,$tooltip)
 {
@@ -579,7 +579,7 @@ function do_insert_update($do_insert)
                                             </td>
                                         </tr>
                                         <tr>";
-        $rank = array(0 => "", 1 => "", 3 => "", 2 => "", 4 => "");
+        $rank = [0 => "", 1 => "", 3 => "", 2 => "", 4 => ""];
         $rank[$mob['rank']] = " selected=\"selected\" ";
         $output .= "
                                             <td >".makeinfocell($lang_creature['rank'],$lang_creature['rank_desc'])."</td>
@@ -593,7 +593,7 @@ function do_insert_update($do_insert)
                                                 </select>
                                             </td>";
         unset($rank);
-        $type = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => "");
+        $type = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => ""];
         $type[$mob['type']] = " selected=\"selected\" ";
         $output .= "
                                             <td colspan=\"2\">".makeinfocell($lang_creature['type'],$lang_creature['type_desc'])."</td>
@@ -615,7 +615,7 @@ function do_insert_update($do_insert)
                                         </tr>
                                         <tr>";
         unset($type);
-        $npcflag = array(0 => "", 1 => "", 2 => "", 4 => "", 8 => "", 16 => "", 32 => "", 64 => "", 128 => "", 256 => "", 512 => "", 1024 => "", 2048 => "", 4096 => "", 8192 => "", 16384 => "", 65536 => "", 131072 => "", 262144 => "", 524288 => "", 1048576 => "", 2097152 => "", 4194304 => "", 268435456 => "");
+        $npcflag = [0 => "", 1 => "", 2 => "", 4 => "", 8 => "", 16 => "", 32 => "", 64 => "", 128 => "", 256 => "", 512 => "", 1024 => "", 2048 => "", 4096 => "", 8192 => "", 16384 => "", 65536 => "", 131072 => "", 262144 => "", 524288 => "", 1048576 => "", 2097152 => "", 4194304 => "", 268435456 => ""];
         if($mob['npcflag'] == 0)
             $npcflag[0] = " selected=\"selected\" ";
         else
@@ -692,7 +692,7 @@ function do_insert_update($do_insert)
                                             </td>";
 
         unset($npcflag);
-        $trainer_type = array(0 => "", 1 => "", 2 => "", 3 => "");
+        $trainer_type = [0 => "", 1 => "", 2 => "", 3 => ""];
         $trainer_type[$mob['trainer_type']] = " selected=\"selected\" ";
         $output .= "
                                             <td>".makeinfocell($lang_creature['trainer_type'],$lang_creature['trainer_type_desc'])."</td>
@@ -707,7 +707,7 @@ function do_insert_update($do_insert)
                                         </tr>
                                         <tr>";
         unset($trainer_type);
-        $family = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => "", 11 => "", 12 => "", 13 => "", 14 => "", 15 => "", 16 => "", 17 => "", 18 => "", 19 => "", 20 => "", 21 => "", 22 => "", 23 => "", 24 => "", 25 => "", 26 => "", 27 => "" );
+        $family = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => "", 11 => "", 12 => "", 13 => "", 14 => "", 15 => "", 16 => "", 17 => "", 18 => "", 19 => "", 20 => "", 21 => "", 22 => "", 23 => "", 24 => "", 25 => "", 26 => "", 27 => ""];
         $family[$mob['family']] = " selected=\"selected\" ";
         $output .= "
                                             <td>".makeinfocell($lang_creature['family'],$lang_creature['family_desc'])."</td>
@@ -842,7 +842,7 @@ function do_insert_update($do_insert)
                                             <td></td>
                                             <td colspan=\"2\"></td>";
 
-        $dmgschool = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "");
+        $dmgschool = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => ""];
         $dmgschool[$mob['dmgschool']] = " selected=\"selected\" ";
         $output .= "
                                             <td>".makeinfocell($lang_creature['dmgschool'],$lang_creature['dmgschool_desc'])."</td>
@@ -1004,7 +1004,7 @@ function do_insert_update($do_insert)
                                         <tr class=\"large_bold\">
                                             <td colspan=\"6\" class=\"hidden\" align=\"left\">{$lang_creature['other']}:</td>
                                         </tr>";
-        $trainer_class = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "",5 => "",7 => "",8 => "",9 => "",11 => "");
+        $trainer_class = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "",5 => "",7 => "",8 => "",9 => "",11 => ""];
         $trainer_class[$mob['trainer_class']] = " selected=\"selected\" ";
         $output .= "
                                             <td>".makeinfocell($lang_creature['class'],$lang_creature['class_desc'])."</td>
@@ -1024,7 +1024,7 @@ function do_insert_update($do_insert)
                                             </td>";
         unset($trainer_class);
 
-        $trainer_race = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "",5 => "",6 => "", 7 => "",8 => "",10 => "",11 => "");
+        $trainer_race = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "",5 => "",6 => "", 7 => "",8 => "",10 => "",11 => ""];
         $trainer_race[$mob['trainer_race']] = " selected=\"selected\" ";
         $output .= "
                                             <td>".makeinfocell($lang_creature['race'],$lang_creature['race_desc'])."</td>
@@ -1062,7 +1062,7 @@ function do_insert_update($do_insert)
                                             </td>";
         unset($trainer_race);
 
-        $InhabitType = array(0 => "", 1 => "", 2 => "", 3 => "");
+        $InhabitType = [0 => "", 1 => "", 2 => "", 3 => ""];
         $InhabitType[$mob['InhabitType']] = " selected=\"selected\" ";
         $output .= "
                                             <td>".makeinfocell($lang_creature['inhabit_type'],$lang_creature['inhabit_type_desc'])."</td>

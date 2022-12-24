@@ -8,19 +8,19 @@ function char_char_get_race_names_n_sides_tab()
 {
     global $lang_id_tab;
 
-    return array
-    (
-        1 => array($lang_id_tab['human'],    0),
-        2 => array($lang_id_tab['orc'],      1),
-        3 => array($lang_id_tab['dwarf'],    0),
-        4 => array($lang_id_tab['nightelf'], 0),
-        5 => array($lang_id_tab['undead'],   1),
-        6 => array($lang_id_tab['tauren'],   1),
-        7 => array($lang_id_tab['gnome'],    0),
-        8 => array($lang_id_tab['troll'],    1),
-        10 => array($lang_id_tab['bloodelf'], 1),
-        11 => array($lang_id_tab['draenei'],  0),
-    );
+    return
+        [
+        1 => [$lang_id_tab['human'],    0],
+        2 => [$lang_id_tab['orc'],      1],
+        3 => [$lang_id_tab['dwarf'],    0],
+        4 => [$lang_id_tab['nightelf'], 0],
+        5 => [$lang_id_tab['undead'],   1],
+        6 => [$lang_id_tab['tauren'],   1],
+        7 => [$lang_id_tab['gnome'],    0],
+        8 => [$lang_id_tab['troll'],    1],
+        10 => [$lang_id_tab['bloodelf'], 1],
+        11 => [$lang_id_tab['draenei'],  0],
+        ];
 }
 
 
@@ -32,11 +32,10 @@ function char_get_side_name($side_id)
     global $lang_id_tab;
 
     $side_names =
-    array
-    (
+    [
         0 => $lang_id_tab['Alliance'],
         1 => $lang_id_tab['Horde'],
-    );
+    ];
 
   return $side_names[$side_id];
 }
@@ -72,8 +71,7 @@ function char_get_class_name($class_id)
     global $lang_id_tab;
 
     $class_names =
-    array
-    (
+    [
         1  => $lang_id_tab['warrior'],
         2  => $lang_id_tab['paladin'],
         3  => $lang_id_tab['hunter'],
@@ -84,7 +82,7 @@ function char_get_class_name($class_id)
         8  => $lang_id_tab['mage'],
         9  => $lang_id_tab['warlock'],
         11 => $lang_id_tab['druid'],
-    );
+    ];
 
     return $class_names[$class_id];
 }
@@ -98,10 +96,9 @@ function char_get_pvp_rank_name($honor_points=0, $side_id=0)
     global $lang_id_tab;
 
     $rank_names =
-    array
-    (
-        0 => array
-        (
+    [
+        0 =>
+            [
             '00' => $lang_id_tab['None'],
             '01' => $lang_id_tab['None'],
             0   => $lang_id_tab['None'],
@@ -119,9 +116,9 @@ function char_get_pvp_rank_name($honor_points=0, $side_id=0)
             12   => $lang_id_tab['Marshal'],
             13   => $lang_id_tab['Field_Marshal'],
             14   => $lang_id_tab['Grand_Marshal'],
-        ),
-        1 => array
-        (
+            ],
+        1 =>
+            [
             '00' => $lang_id_tab['None'],
             '01' => $lang_id_tab['None'],
             0   => $lang_id_tab['None'],
@@ -139,8 +136,8 @@ function char_get_pvp_rank_name($honor_points=0, $side_id=0)
             12   => $lang_id_tab['General'],
             13   => $lang_id_tab['Warlord'],
             14   => $lang_id_tab['High_Warlord'],
-        )
-    );
+            ]
+    ];
 
     return $rank_names[$side_id][char_get_pvp_rank_id($honor_points, $side_id)];
 }

@@ -37,7 +37,7 @@
         $verifier = CalculateSRP6Verifier($username, $password, $salt);
         
         // done - this is what you put in the account table!
-        return array($salt, $verifier);
+        return [$salt, $verifier];
     }
     
     function VerifySRP6Login($username, $password, $salt, $verifier)

@@ -17,7 +17,7 @@ function get_additional_data($entryid, $type = 0)
     global $world_db, $realm_id;
     
     if (!is_numeric($entryid))
-        return array(0,0,0);
+        return [0,0,0];
 
     $sql = new SQL;
     $sql->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
@@ -26,7 +26,7 @@ function get_additional_data($entryid, $type = 0)
     $data = $sql->fetch_assoc($q);
     
     if ($sql->num_rows($q) == 0)
-      return array(0,0,0);
+      return [0,0,0];
       
     $q = "SELECT ((SELECT Health_Mod FROM creature_template WHERE entry = ".$entryid.")*(SELECT basehp".$data['exp']." FROM creature_classlevelstats WHERE level = ".$data['level']." AND class = ".$data['class'].")+0.5), ((SELECT Mana_Mod FROM creature_template WHERE entry = ".$entryid.")*(SELECT basemana FROM creature_classlevelstats WHERE level = ".$data['level']." AND class = ".$data['class'].")+0.5),((SELECT Armor_Mod FROM creature_template WHERE entry = ".$entryid.")*(SELECT basearmor FROM creature_classlevelstats WHERE level = ".$data['level']." AND class = ".$data['class'].")+0.5);";          
     if ($type == 1)
@@ -45,7 +45,7 @@ function get_additional_data($entryid, $type = 0)
         return 0;
     
     if ($type == 0 && $result[1] == 0.5)
-        return array($result[0],0,$result[2]);
+        return [$result[0],0,$result[2]];
         
     
     return (($type > 0) ? $result[0] : $result);
@@ -75,12 +75,11 @@ function get_realm_name($realm_id)
 function id_get_exp_lvl()
 {
     $exp_lvl_arr =
-    array
-    (
-        0 => array(0, "Classic",                ""     ),
-        1 => array(1, "The Burning Crusade",    "TBC"  ),
-        2 => array(2, "Wrath of the Lich King", "WotLK")
-    );
+    [
+        0 => [0, "Classic",                ""],
+        1 => [1, "The Burning Crusade",    "TBC"],
+        2 => [2, "Wrath of the Lich King", "WotLK"]
+    ];
     return $exp_lvl_arr;
 }
 

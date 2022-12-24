@@ -106,7 +106,7 @@ function browse_guilds(&$sqlr, &$sqlc)
         $search_by = $sqlc->quote_smart($_GET['search_by']);
         $search_value = $sqlc->quote_smart($_GET['search_value']);
 
-        $search_menu = array('name', 'leadername', 'guildid');
+        $search_menu = ['name', 'leadername', 'guildid'];
         if (in_array($search_by, $search_menu));
         else
             $search_by = 'name';
@@ -339,7 +339,7 @@ function view_guild()
                             <table class=\"hidden\" style=\"width: 100%;\">
                                 <tr>
                                     <td>
-                                        <table class=\"lined\"style=\"width: 100%;\">
+                                        <table class=\"lined\" style=\"width: 100%;\">
                                             <tr>
                                                 <td width=\"25%\"><b>{$lang_guild['create_date']}:</b><br />".date('o-m-d', $guild_data[4])."</td>
                                                 <td width=\"50%\" class=\"bold\">$guild_data[1]</td>

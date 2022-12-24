@@ -9,7 +9,7 @@
 
 $site_encoding = "ISO-8859-1";
 
-$forum_lang = Array(
+$forum_lang = [
 
 	// BBCode you can replace this by images off course
 	"image" => "Immagine",
@@ -87,5 +87,5 @@ $forum_lang = Array(
 
 	// move_topic
 	"where" => "Dove vuoi spostare questa discussione?",
-);
+];
 ?>

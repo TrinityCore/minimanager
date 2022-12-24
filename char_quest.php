@@ -73,9 +73,9 @@ function char_quest(&$sqlr, &$sqlc)
                                 </tr>';
             $result = $sqlc->query('SELECT quest, status, -1 as rewarded FROM character_queststatus WHERE guid = '.$id.' AND status IN (1, 3) UNION SELECT quest, -1, active AS rewarded FROM character_queststatus_rewarded WHERE guid = ' . $id . ';');
 
-            $quests_1 = array();
-            $quests_3 = array();
-            $questStatus = array(0 => "None (0)", 1 => "Completed but not delivered (1)", 2 => "Not available (2)", 3 => "Incomplete (3)", 4 => "Available (4)", 5 => "Failed (5)");
+            $quests_1 = [];
+            $quests_3 = [];
+            $questStatus = [0 => "None (0)", 1 => "Completed but not delivered (1)", 2 => "Not available (2)", 3 => "Incomplete (3)", 4 => "Available (4)", 5 => "Failed (5)"];
 
             if ($sqlc->num_rows($result))
             {
@@ -86,9 +86,9 @@ function char_quest(&$sqlr, &$sqlc)
                     $quest_info = $sqlc->fetch_assoc($query1);
 
                     if ($quest['rewarded'] == 1 || $quest['status'] == 1)
-                        array_push($quests_1, array($quest['quest'], $quest_info['QuestLevel'], $quest_info['Title'], $quest['status'], $quest['rewarded']));
+                        array_push($quests_1, [$quest['quest'], $quest_info['QuestLevel'], $quest_info['Title'], $quest['status'], $quest['rewarded']]);
                     else
-                        array_push($quests_3, array($quest['quest'], $quest_info['QuestLevel'], $quest_info['Title'], $quest['status'], $quest['rewarded']));
+                        array_push($quests_3, [$quest['quest'], $quest_info['QuestLevel'], $quest_info['Title'], $quest['status'], $quest['rewarded']]);
                 }
 
                 unset($quest);

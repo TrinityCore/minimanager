@@ -22,7 +22,7 @@ function sql_table_dump ($dbhost, $dbuser, $dbpass, $database, $table, $construc
 
 	fwrite($fp, "DROP TABLE IF EXISTS $table;\n")or die (error($lang_backup['file_write_err']));
 	$pri = "";
-	$creatinfo = array();
+	$creatinfo = [];
 	while($tmp = $sql_0->fetch_row($fi)){
 		$con = "`".$tmp[0]."` ";
 		$con .= trim($tmp[1]." ");
@@ -48,8 +48,8 @@ function sql_table_dump ($dbhost, $dbuser, $dbpass, $database, $table, $construc
 	$qkey = $sql_0->query("SHOW INDEX FROM ".$table);
 
 	if($rkey = $sql_0->fetch_array($qkey)){
-		$knames = array();
-		$keys = array();
+		$knames = [];
+		$keys = [];
 		do {
 			$keys[$rkey["Key_name"]]["nonunique"] = $rkey["Non_unique"];
 			if(!$rkey["Sub_part"]){

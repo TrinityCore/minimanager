@@ -7,7 +7,7 @@
  * Translator: Vagi
  */
 
-$lang_global = array(
+$lang_global = [
 	// ----- GENERAL ERROR CODES -----
 	'err_sql_conn_db' => 'FEIL - Tilkobling til databsen kunne ikke bli opprettet !',
 	'err_sql_open_db' => 'FEIL - Kan ikke koble til database !',
@@ -46,9 +46,9 @@ $lang_global = array(
 	'language_6' => 'Spanish',
 	'language_7' => 'Mexican',
 	'language_8' => 'Russian'
-	);
+];
 
-$lang_login = array(
+$lang_login = [
 	// ----- LOGIN.PHP -----
 	'login' => 'Logg inn',
 	'username' => 'Brukernavn',
@@ -64,9 +64,9 @@ $lang_login = array(
 	'remember_me' => 'Remember Me', //TODO
 	'pass_recovery' => 'Lost Password?', //TODO
 	'after_registration' => 'Your account creation was successful!'
-	);
+];
 
-$lang_guild = array(
+$lang_guild = [
 	// ----- GUILD.PHP -----
 	'my_guilds' => 'My Guilds',
 	'id' => 'ID',
@@ -99,9 +99,9 @@ $lang_guild = array(
 	'guild_search_result' => 'Guilds Search Results',
 	'show_guilds' => 'Show all Guilds',
 	'browse_guilds' => 'Browse Guilds'
-	);
+];
 
-$lang_register = array(
+$lang_register = [
 	// ----- REGISTER.PHP -----
 	'create_acc' => 'Registrer',
 	'username' => 'Brukernavn',
@@ -145,9 +145,9 @@ $lang_register = array(
 	'invited_info' => 'Please write the account name of the player who invited you to register here.',
 	'email_address_used' => 'This email has an account already.<br/>No more accounts can be created for this email address.',
 	'referrer_not_found' => 'Unfortunately the specified account was not found in our database.<br/>Please ensure you have entered a valid account name or leave the &quot;Invited by&quot;-field blank.',
-	);
+];
 
-$lang_index = array(
+$lang_index = [
 	// ----- INDEX.PHP -----
 	'realm' => 'Realm:',
 	'online' => 'er Online',
@@ -168,10 +168,10 @@ $lang_index = array(
 	'guild' => 'Guild',
 	'trinity_rev' => 'Trinity Rev',
 	'using_db' => 'using db'
-	);
+];
 function lang_header()
 {
-$lang_header = array(
+$lang_header = [
 	// ----- HEADER.PHP -----
 	'main' => 'Hoved',
 	'users' => 'Brukere',
@@ -210,16 +210,16 @@ $lang_header = array(
 	'statistics_on' => 'Online Statistics',
 	'instances' => 'Instances',
 	'top100' => 'TOP 100'
-	);
+];
   return $lang_header;
 }
-$lang_footer = array(
+$lang_footer = [
 	// -----FOOTER.PHP -----
 	'bugs_to_admin' => 'Problemer eller feil rapporteres til',
 	'site_admin' => 'Server Admin'
-	);
+];
 
-$lang_repair = array(
+$lang_repair = [
 	// ----- REPAIR.PHP -----
 	'repair_optimize' => 'Repair / Optimize Tables',
 	'repair' => 'Repair',
@@ -233,9 +233,9 @@ $lang_repair = array(
 	'tables' => 'Tables',
 	'select_tables' => 'Select Tables the operation to be performed on.',
 	'repair_error' => 'Error'
-	);
+];
 
-$lang_backup = array(
+$lang_backup = [
 	// ----- BACKUP.PHP -----
 	'backup_options' => 'Sikkerhetskopi innstillinger',
 	'select_option' => 'Velg sikkerhetskopi innstilling',
@@ -263,9 +263,9 @@ $lang_backup = array(
 	'que_executed' => 'forespørsler er blitt kjørt uten problemer',
 	'tables_to_save' => 'Følgende tabeller vil bli lagret',
 	'save_all_realms' => 'Lagre data fra alle Realm'
-	);
+];
 
-$lang_banned = array( //TODO
+$lang_banned = [ //TODO
 	// ----- BANNED.PHP -----
 	'add_to_banned' => 'Add to Banned Lists',
 	'tot_banned' => 'Total Banned',
@@ -287,9 +287,9 @@ $lang_banned = array( //TODO
 	'ban_time' => 'Ban for amount of (hours)',
 	'entry' => 'Entry (Acc. name / IP)',
 	'acc_not_found' => 'Account Not Found'
-	);
+];
 
-$lang_char = array(
+$lang_char = [
 	// ----- CHAR.PHP -----
 	'online' => 'Pålogget',
 	'offline' => 'Avlogget',
@@ -376,9 +376,9 @@ $lang_char = array(
 	'achievement_title' => 'Achievement Title',
 	'achievement_date' => 'Date',
 	'no_com_achievements' => 'No Achievements Completed'
-	);
+];
 
-$lang_item = array(
+$lang_item = [
 	// ----- ITEM TOOLTIP -----
 	'head' => 'Head',
 	'gloves' => 'Gloves',
@@ -561,9 +561,9 @@ $lang_item = array(
 	'CA_RATING' => 'Crit Avoid',
 	'RESILIENCE_RATING' => 'Resistance',
 	'HASTE_RATING' => 'Haste'
-	);
+];
 
-$lang_char_list = array(
+$lang_char_list = [
 	// ----- CHAR_LIST.PHP -----
 	'cleanup' => 'Opprydding',
 	'by_name' => 'ved navn',
@@ -601,9 +601,9 @@ $lang_char_list = array(
 	'browse_chars' => 'Ble gjennom personer',
 	'chars_gold' => '&lt; Gull (C)',
 	'by_item' => 'ved Item id'
-	);
+];
 
-$lang_cleanup = array(
+$lang_cleanup = [
 	// ----- CLEANUP.PHP -----
 	'cleanup_options' => 'Opprydnings alternativer',
 	'clean_chars' => 'Rydd personer',
@@ -632,9 +632,9 @@ $lang_cleanup = array(
 	'clean_db' => 'Tøm database',
 	'arenateams_deleted' => 'Arena Team(s) deleted!',
 	'no_arenateams_del' => 'No Arena Team(s) deleted!'
-	);
+];
 
-$lang_edit = array(
+$lang_edit = [
 	// ----- EDIT.PHP -----
 	'edit_acc' => 'Endre konto',
 	'id' => 'ID',
@@ -665,9 +665,9 @@ $lang_edit = array(
 	'wotlk' => 'WOTLK',
 	'tot_chars' => 'Total Characters',
 	'invited_by' => 'Invited By'
-	);
+];
 
-$lang_mail = array(
+$lang_mail = [
 	// ----- MAIL.PHP -----
 	'mail_type' => 'Mail Type',
 	'mail_options' => 'Mail Options',
@@ -696,17 +696,17 @@ $lang_mail = array(
 	'option_unavailable' => 'Du kan ikke bruke denne innstillingen på nåværende konfigurasjon.',
 	'use_currect_option' => 'Noen av \'Gruppe Send\' innstillingene kan kun bli brukt ved \'inGame mail\' ellrt \'E-post\' men ikke med begge.',
 	'send_mail' => 'Send Mail'
-	);
+];
 
-$lang_motd = array(
+$lang_motd = [
 	// ----- MOTD.PHP -----
 	'post_motd' => 'Legg til Melding for dagen',
 	'post_rules' => 'Noter: lengden er begrenset til 255 tegn.<br />HTML tags kan brukes.',
 	'err_max_len' => 'Maks lengde begrensning overskredet',
 	'add_motd' => 'Legg til Melding for dagen'
-	);
+];
 
-$lang_run_patch = array(
+$lang_run_patch = [
 	// -----RUN_PATCH.PHP -----
 	'err_in_line' => 'SQL syntax fil i forespørsel nummer ',
 	'run_sql_file_only' => 'Du kan kun kjøre .sql eller .qbquery filer.',
@@ -720,15 +720,15 @@ $lang_run_patch = array(
 	'query_executed' => 'SQL forespørsler har blitt vellykket kjørt.',
 	'no_query_found' => 'Ingen resultater returnert / Ingen forespørsler funnet.',
 	'run_patch' => 'Kjør SQL Patch'
-	);
+];
 
-$lang_ssh = array(
+$lang_ssh = [
 	// ----- SSH.PHP -----
 	'server_offline' => 'SSH/Telnet Server ser ut til å være Offline!',
 	'config_server_properly' => 'Vær sikker på at du har konfigurert SSH/Telnet server ordentlig, og at den er online.'
-	);
+];
 
-$lang_realm = array(
+$lang_realm = [
 	// ----- REALM.PHP -----
 	'add_realm' => 'Legg til Realm',
 	'tot_realms' => 'Totalt Realm',
@@ -773,9 +773,9 @@ $lang_realm = array(
 	'conf_from_file' => '** This realm appear not to have proper configuration in config.php file.<br />Make sure to properly configure it before using under CMS.',
 	'offline' => 'Offline',
 	'status' => 'Status'
-	);
+];
 
-$lang_ticket = array(
+$lang_ticket = [
 	// ----- TICKET.PHP -----
 	'id' => 'ID',
 	'sender' => 'Sender',
@@ -797,9 +797,9 @@ $lang_ticket = array(
 	'ticket_updated' => 'Ticket oppdatert',
 	'ticket_update_err' => 'Feil ved oppdatering av Ticket',
 	'browse_tickets' => 'Se gjennom Tickets',
-	);
+];
 
-$lang_user = array(
+$lang_user = [
 	// ----- USER.PHP -----
 	'add_acc' => 'Ny konto',
 	'cleanup' => 'Opprydning',
@@ -873,9 +873,9 @@ $lang_user = array(
 	'classic' => 'Classic',
 	'tbc' => 'TBC',
 	'wotlk' => 'WOTLK'
-	);
+];
 
-$lang_stat = array(
+$lang_stat = [
 	// ----- STAT.PHP -----
 	'srv_statistics' => 'Server statistikk',
 	'general_info' => 'Generell informasjon',
@@ -897,9 +897,9 @@ $lang_stat = array(
 	'uptime_prec' => ' Uptime percentage since first run',
 	'unique_ip' => 'Unique IPs last 24 Hour',
 	'on_statistics' => 'Online Statistics'
-	);
+];
 
-$lang_tele = array(
+$lang_tele = [
 	// ----- TELE.PHP -----
 	'loc_name' => 'Steds navn',
 	'loc_id' => 'Steds ID',
@@ -925,9 +925,9 @@ $lang_tele = array(
 	'tele_locations' => 'Teleport plassering',
 	'add_new' => 'Legg til ny',
 	'add_new_tele' => 'Legg til ny teleport plassering'
-	);
+];
 
-$lang_command = array(
+$lang_command = [
 	// ----- COMMAND.PHP -----
 	'command_list' => 'Tilgjengelige kommandoer',
 	'level0' => 'Spiller',
@@ -941,9 +941,9 @@ $lang_command = array(
 	'description' => 'Beskrivelse',
 	'change_level' => 'Endre merkede kommando level',
 	'save' => 'Lagre'
-	);
+];
 
-$lang_item_edit = array( //TODO :Translate entire array
+$lang_item_edit = [ //TODO :Translate entire array
 	// ----- ITEM.PHP -----
 	'search_item' => 'Search for Item(s)',
 	'model_id' => 'Model Id',
@@ -1181,9 +1181,9 @@ $lang_item_edit = array( //TODO :Translate entire array
 	'condition_value1_desc' => 'Condition Value 1 flag',
 	'condition_value2' => 'Condition Value 2',
 	'condition_value2_desc' => 'Condition Value 2 flag',
-	);
+];
 
-$lang_creature = array( //TODO :Translate entire array
+$lang_creature = [ //TODO :Translate entire array
 	// ----- CREATURE.PHP -----
 	'none' => 'None',
 	'custom' => 'Custom',
@@ -1485,9 +1485,9 @@ $lang_creature = array( //TODO :Translate entire array
 	'heroic' => 'Heroic Spawn ID',
 	'heroic_desc' => 'A heroic id is used when a creature has a different template for instances in normal and heroic mode. The one with the heroic_entry is the one used in the normal mode. A zero values means, this template is used for normal and heroic mode, or only heroic mode, if another creature point with its heroic_entry to this creature.',
 	'locales' => 'Localisation'
-	);
+];
 
-$lang_game_object = array( //TODO:
+$lang_game_object = [ //TODO:
 	// ----- GAME_OBJECT.PHP -----
 	'unknown' => 'Unknown',
 	'custom_search' => 'Custom Filter',
@@ -1597,9 +1597,9 @@ $lang_game_object = array( //TODO:
 	'datas' => 'Additional Datas',
 	'data' => 'Data',
 	'data_desc' => 'Data fields specific for different type field values. Each type has unique fields.<br />For more informaton visit https://trinitycore.info/index.php/Main_Page'
-	);
+];
 
-$lang_auctionhouse = array( //TODO
+$lang_auctionhouse = [ //TODO
 	// ----- AHSTATS.PHP -----
 	'auctionhouse' => 'Auction House',
 	'seller' => 'Seller',
@@ -1621,9 +1621,9 @@ $lang_auctionhouse = array( //TODO
 	'seller_name' => 'Seller Name',
 	'buyer_name' => 'Buyer Name',
 	'tot_found' => 'Total Items Found'
-	);
+];
 
-$lang_id_tab = array(
+$lang_id_tab = [
 	// ----- ID_TAB.PHP -----
 	'TALENT_STARLIGHT_WRATH_1' => 'Starlight Wrath Rank 1',
 	'TALENT_STARLIGHT_WRATH_2' => 'Starlight Wrath Rank 2',
@@ -3910,9 +3910,9 @@ $lang_id_tab = array(
 	'CHAR_AURA_TRUESHOT_AURA_RANK_3' => 'Trueshot Aura Rank 3',
 	'CHAR_AURA_TRUESHOT_AURA_RANK_4' => 'Trueshot Aura Rank 4',
 	'unknown' => 'Unknown'
-	);
+];
 
-$lang_arenateam = array(
+$lang_arenateam = [
 	// ----- ARENATEAM.PHP -----
 	'by_name' => 'by Name',
 	'by_team_leader' => 'by Arena Team Leader',
@@ -3956,9 +3956,9 @@ $lang_arenateam = array(
 	'standings' => 'Standing :',
 	'tot_found' => 'Total Found',
 	'arenateam' => 'Arena Team'
-	);
+];
 
-$lang_honor = array(
+$lang_honor = [
 	// ----- HONOR.PHP -----
 	'allied' => 'Alliance',
 	'horde' => 'Horde',
@@ -3970,9 +3970,9 @@ $lang_honor = array(
 	'honor points' => 'Honor Points',
 	'honor' => 'Rank',
 	'guild' => 'Guild'
-	);
+];
 
-$lang_events = array(
+$lang_events = [
 	// ----- EVENTS.PHP -----
 	'total' => 'Total',
 	'descr' => 'Event name',
@@ -3980,27 +3980,27 @@ $lang_events = array(
 	'occur' => 'Occurance<br><small>days/hours',
 	'length' => 'Length<br><small>days/hours',
 	'events' => 'Events'
-	);
+];
 
-$lang_instances = array(
+$lang_instances = [
 	// ----- INSTANCES.PHP -----
 	'map' => 'Map',
 	'level_min' => 'Minimum level',
 	'level_max' => 'Maximum level',
 	'max_players' => 'Maximum players',
 	'reset_delay' => 'Reset delay',
-	);
+];
 
-$lang_captcha = array(
+$lang_captcha = [
 	// ----- FORM.PHP -----
 	'security_image' => 'Security Image',
 	'security_code' => 'Security Code',
 	'imput_security_code' => 'Please Input the Security Code',
 	'submit' => 'Submit',
 	'invalid_code' => 'Invalid Code!'
-	);
+];
 
-$lang_top = array(
+$lang_top = [
 	// ----- TOP100.PHP -----
 	'name' => 'Name',
 	'race' => 'Race',
@@ -4014,6 +4014,6 @@ $lang_top = array(
 	'arena_points' => 'Arena',
 	'time_played' => 'Time Played',
 	'online' => 'Online'
-	);
+];
 
 ?>

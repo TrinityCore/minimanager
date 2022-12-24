@@ -43,11 +43,11 @@ function char_main(&$sqlr, &$sqlc)
         }
         else
         {
-            $side_p = (in_array($sqlc->result($result, 0, 'race'),array(2,5,6,8,10))) ? 1 : 2;
+            $side_p = (in_array($sqlc->result($result, 0, 'race'), [2,5,6,8,10])) ? 1 : 2;
             $result_1 = $sqlc->query('SELECT race FROM characters WHERE account = '.$user_id.' LIMIT 1');
 
             if ($sqlc->num_rows($result))
-                $side_v = (in_array($sqlc->result($result_1, 0, 'race'), array(2,5,6,8,10))) ? 1 : 2;
+                $side_v = (in_array($sqlc->result($result_1, 0, 'race'), [2,5,6,8,10])) ? 1 : 2;
             else
                 $side_v = 0;
 
@@ -98,7 +98,7 @@ function char_main(&$sqlr, &$sqlc)
             define('CHAR_DATA_OFFSET_SPELL_HASTE_RATING',3);
             define('CHAR_DATA_OFFSET_RESILIENCE',4);
             define('CHAR_DATA_OFFSET_RANGE_HIT',5);
-            $char_data = array(0,0,0,0,0,0);
+            $char_data = [0,0,0,0,0,0];
             $maxdamage = 0;
             $mindamage = 0;
             $maxrangeddamage = 0;
@@ -158,28 +158,28 @@ function char_main(&$sqlr, &$sqlc)
             $sqlw = new SQL;
             $sqlw->connect($world_db[$realmid]['addr'], $world_db[$realmid]['user'], $world_db[$realmid]['pass'], $world_db[$realmid]['name']);
 
-            $equiped_items = array
-            (
-                1 => array('',($EQU_HEAD        ? get_item_icon($EQU_HEAD, $sqlm, $sqlw)      : 0),($EQU_HEAD      ? get_item_border($EQU_HEAD, $sqlw)      : 0)),
-                2 => array('',($EQU_NECK        ? get_item_icon($EQU_NECK, $sqlm, $sqlw)      : 0),($EQU_NECK      ? get_item_border($EQU_NECK, $sqlw)      : 0)),
-                3 => array('',($EQU_SHOULDER    ? get_item_icon($EQU_SHOULDER, $sqlm, $sqlw)  : 0),($EQU_SHOULDER  ? get_item_border($EQU_SHOULDER, $sqlw)  : 0)),
-                4 => array('',($EQU_SHIRT       ? get_item_icon($EQU_SHIRT, $sqlm, $sqlw)     : 0),($EQU_SHIRT     ? get_item_border($EQU_SHIRT, $sqlw)     : 0)),
-                5 => array('',($EQU_CHEST       ? get_item_icon($EQU_CHEST, $sqlm, $sqlw)     : 0),($EQU_CHEST     ? get_item_border($EQU_CHEST, $sqlw)     : 0)),
-                6 => array('',($EQU_BELT        ? get_item_icon($EQU_BELT, $sqlm, $sqlw)      : 0),($EQU_BELT      ? get_item_border($EQU_BELT, $sqlw)      : 0)),
-                7 => array('',($EQU_LEGS        ? get_item_icon($EQU_LEGS, $sqlm, $sqlw)      : 0),($EQU_LEGS      ? get_item_border($EQU_LEGS, $sqlw)      : 0)),
-                8 => array('',($EQU_FEET        ? get_item_icon($EQU_FEET, $sqlm, $sqlw)      : 0),($EQU_FEET      ? get_item_border($EQU_FEET, $sqlw)      : 0)),
-                9 => array('',($EQU_WRIST       ? get_item_icon($EQU_WRIST, $sqlm, $sqlw)     : 0),($EQU_WRIST     ? get_item_border($EQU_WRIST, $sqlw)     : 0)),
-                10 => array('',($EQU_GLOVES     ? get_item_icon($EQU_GLOVES, $sqlm, $sqlw)    : 0),($EQU_GLOVES    ? get_item_border($EQU_GLOVES, $sqlw)    : 0)),
-                11 => array('',($EQU_FINGER1    ? get_item_icon($EQU_FINGER1, $sqlm, $sqlw)   : 0),($EQU_FINGER1   ? get_item_border($EQU_FINGER1, $sqlw)   : 0)),
-                12 => array('',($EQU_FINGER2    ? get_item_icon($EQU_FINGER2, $sqlm, $sqlw)   : 0),($EQU_FINGER2   ? get_item_border($EQU_FINGER2, $sqlw)   : 0)),
-                13 => array('',($EQU_TRINKET1   ? get_item_icon($EQU_TRINKET1, $sqlm, $sqlw)  : 0),($EQU_TRINKET1  ? get_item_border($EQU_TRINKET1, $sqlw)  : 0)),
-                14 => array('',($EQU_TRINKET2   ? get_item_icon($EQU_TRINKET2, $sqlm, $sqlw)  : 0),($EQU_TRINKET2  ? get_item_border($EQU_TRINKET2, $sqlw)  : 0)),
-                15 => array('',($EQU_BACK       ? get_item_icon($EQU_BACK, $sqlm, $sqlw)      : 0),($EQU_BACK      ? get_item_border($EQU_BACK, $sqlw)      : 0)),
-                16 => array('',($EQU_MAIN_HAND  ? get_item_icon($EQU_MAIN_HAND, $sqlm, $sqlw) : 0),($EQU_MAIN_HAND ? get_item_border($EQU_MAIN_HAND, $sqlw) : 0)),
-                17 => array('',($EQU_OFF_HAND   ? get_item_icon($EQU_OFF_HAND, $sqlm, $sqlw)  : 0),($EQU_OFF_HAND  ? get_item_border($EQU_OFF_HAND, $sqlw)  : 0)),
-                18 => array('',($EQU_RANGED     ? get_item_icon($EQU_RANGED, $sqlm, $sqlw)    : 0),($EQU_RANGED    ? get_item_border($EQU_RANGED, $sqlw)    : 0)),
-                19 => array('',($EQU_TABARD     ? get_item_icon($EQU_TABARD, $sqlm, $sqlw)    : 0),($EQU_TABARD    ? get_item_border($EQU_TABARD, $sqlw)    : 0))
-            );
+            $equiped_items =
+                [
+                1 => ['',($EQU_HEAD        ? get_item_icon($EQU_HEAD, $sqlm, $sqlw)      : 0),($EQU_HEAD      ? get_item_border($EQU_HEAD, $sqlw)      : 0)],
+                2 => ['',($EQU_NECK        ? get_item_icon($EQU_NECK, $sqlm, $sqlw)      : 0),($EQU_NECK      ? get_item_border($EQU_NECK, $sqlw)      : 0)],
+                3 => ['',($EQU_SHOULDER    ? get_item_icon($EQU_SHOULDER, $sqlm, $sqlw)  : 0),($EQU_SHOULDER  ? get_item_border($EQU_SHOULDER, $sqlw)  : 0)],
+                4 => ['',($EQU_SHIRT       ? get_item_icon($EQU_SHIRT, $sqlm, $sqlw)     : 0),($EQU_SHIRT     ? get_item_border($EQU_SHIRT, $sqlw)     : 0)],
+                5 => ['',($EQU_CHEST       ? get_item_icon($EQU_CHEST, $sqlm, $sqlw)     : 0),($EQU_CHEST     ? get_item_border($EQU_CHEST, $sqlw)     : 0)],
+                6 => ['',($EQU_BELT        ? get_item_icon($EQU_BELT, $sqlm, $sqlw)      : 0),($EQU_BELT      ? get_item_border($EQU_BELT, $sqlw)      : 0)],
+                7 => ['',($EQU_LEGS        ? get_item_icon($EQU_LEGS, $sqlm, $sqlw)      : 0),($EQU_LEGS      ? get_item_border($EQU_LEGS, $sqlw)      : 0)],
+                8 => ['',($EQU_FEET        ? get_item_icon($EQU_FEET, $sqlm, $sqlw)      : 0),($EQU_FEET      ? get_item_border($EQU_FEET, $sqlw)      : 0)],
+                9 => ['',($EQU_WRIST       ? get_item_icon($EQU_WRIST, $sqlm, $sqlw)     : 0),($EQU_WRIST     ? get_item_border($EQU_WRIST, $sqlw)     : 0)],
+                10 => ['',($EQU_GLOVES     ? get_item_icon($EQU_GLOVES, $sqlm, $sqlw)    : 0),($EQU_GLOVES    ? get_item_border($EQU_GLOVES, $sqlw)    : 0)],
+                11 => ['',($EQU_FINGER1    ? get_item_icon($EQU_FINGER1, $sqlm, $sqlw)   : 0),($EQU_FINGER1   ? get_item_border($EQU_FINGER1, $sqlw)   : 0)],
+                12 => ['',($EQU_FINGER2    ? get_item_icon($EQU_FINGER2, $sqlm, $sqlw)   : 0),($EQU_FINGER2   ? get_item_border($EQU_FINGER2, $sqlw)   : 0)],
+                13 => ['',($EQU_TRINKET1   ? get_item_icon($EQU_TRINKET1, $sqlm, $sqlw)  : 0),($EQU_TRINKET1  ? get_item_border($EQU_TRINKET1, $sqlw)  : 0)],
+                14 => ['',($EQU_TRINKET2   ? get_item_icon($EQU_TRINKET2, $sqlm, $sqlw)  : 0),($EQU_TRINKET2  ? get_item_border($EQU_TRINKET2, $sqlw)  : 0)],
+                15 => ['',($EQU_BACK       ? get_item_icon($EQU_BACK, $sqlm, $sqlw)      : 0),($EQU_BACK      ? get_item_border($EQU_BACK, $sqlw)      : 0)],
+                16 => ['',($EQU_MAIN_HAND  ? get_item_icon($EQU_MAIN_HAND, $sqlm, $sqlw) : 0),($EQU_MAIN_HAND ? get_item_border($EQU_MAIN_HAND, $sqlw) : 0)],
+                17 => ['',($EQU_OFF_HAND   ? get_item_icon($EQU_OFF_HAND, $sqlm, $sqlw)  : 0),($EQU_OFF_HAND  ? get_item_border($EQU_OFF_HAND, $sqlw)  : 0)],
+                18 => ['',($EQU_RANGED     ? get_item_icon($EQU_RANGED, $sqlm, $sqlw)    : 0),($EQU_RANGED    ? get_item_border($EQU_RANGED, $sqlw)    : 0)],
+                19 => ['',($EQU_TABARD     ? get_item_icon($EQU_TABARD, $sqlm, $sqlw)    : 0),($EQU_TABARD    ? get_item_border($EQU_TABARD, $sqlw)    : 0)]
+                ];
 
             if (($user_lvl > $owner_gmlvl)||($owner_name === $user_name))
             {
@@ -687,6 +687,3 @@ unset($action_permission);
 unset($lang_char);
 
 require_once 'footer.php';
-
-
-?>

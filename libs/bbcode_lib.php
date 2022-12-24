@@ -3,8 +3,8 @@
 
 function bbcode_fonts()
 {
-    $bbcode_fonts = Array
-    (
+    $bbcode_fonts =
+        [
         0 => "Fonts",
         1 => "Arial",
         2 => "Book Antiqua",
@@ -19,56 +19,56 @@ function bbcode_fonts()
         11=> "Tahoma",
         12=> "Times New Roman",
         13=> "Verdana",
-    );
+        ];
     return $bbcode_fonts;
 }
 
 
 function bbcode_colors()
 {
-    $bbcode_colors = Array
-    (
-        0 => Array ("colors",  "Colors"),
-        1 => Array ("white",   "White"),
-        2 => Array ("silver",  "Silver"),
-        3 => Array ("gray",    "Gray"),
-        4 => Array ("yellow",  "Yellow"),
-        5 => Array ("olive",   "Olive"),
-        6 => Array ("maroon",  "Maroon"),
-        7 => Array ("red",     "Red"),
-        8 => Array ("purple",  "Purple"),
-        9 => Array ("fuchsia", "Fuchsia"),
-        10=> Array ("navy",    "Navy"),
-        11=> Array ("blue",    "Blue"),
-        12=> Array ("teal",    "Teal"),
-        13=> Array ("aqua",    "Aqua"),
-        14=> Array ("lime",    "Lime"),
-        15=> Array ("green",   "Green"),
-    );
+    $bbcode_colors =
+        [
+        0 => ["colors",  "Colors"],
+        1 => ["white",   "White"],
+        2 => ["silver",  "Silver"],
+        3 => ["gray",    "Gray"],
+        4 => ["yellow",  "Yellow"],
+        5 => ["olive",   "Olive"],
+        6 => ["maroon",  "Maroon"],
+        7 => ["red",     "Red"],
+        8 => ["purple",  "Purple"],
+        9 => ["fuchsia", "Fuchsia"],
+        10=> ["navy",    "Navy"],
+        11=> ["blue",    "Blue"],
+        12=> ["teal",    "Teal"],
+        13=> ["aqua",    "Aqua"],
+        14=> ["lime",    "Lime"],
+        15=> ["green",   "Green"],
+        ];
     return $bbcode_colors;
 }
 
 
 function bbcode_emoticons()
 {
-    $bbcode_emoticons = Array
-    (
-        0 => Array (":)",    "smile",   "15","15"),
-        1 => Array (":D",    "razz",    "15","15"),
-        2 => Array (";)",    "wink",    "15","15"),
-        3 => Array ("8)",    "cool",    "15","15"),
-        4 => Array (":(",    "sad",     "15","15"),
-        5 => Array (":mad:", "angry",   "15","15"),
-        6 => Array (":|",    "neutral", "15","15"),
-        7 => Array ("=)",    "happy",   "15","15"),
-        8 => Array (":´(",   "cry",     "15","15"),
-        9 => Array (":?",    "hmm",     "15","15"),
-        10=> Array (":]",    "roll",    "15","15"),
-        11=> Array (":S",    "smm",     "15","15"),
-        12=> Array (":P",    "tongue",  "15","15"),
-        13=> Array (":O",    "yikes",   "15","15"),
-        14=> Array (":lol:", "lol",     "15","15"),
-    );
+    $bbcode_emoticons =
+        [
+        0 => [":)",    "smile",   "15","15"],
+        1 => [":D",    "razz",    "15","15"],
+        2 => [";)",    "wink",    "15","15"],
+        3 => ["8)",    "cool",    "15","15"],
+        4 => [":(",    "sad",     "15","15"],
+        5 => [":mad:", "angry",   "15","15"],
+        6 => [":|",    "neutral", "15","15"],
+        7 => ["=)",    "happy",   "15","15"],
+        8 => [":´(",   "cry",     "15","15"],
+        9 => [":?",    "hmm",     "15","15"],
+        10=> [":]",    "roll",    "15","15"],
+        11=> [":S",    "smm",     "15","15"],
+        12=> [":P",    "tongue",  "15","15"],
+        13=> [":O",    "yikes",   "15","15"],
+        14=> [":lol:", "lol",     "15","15"],
+        ];
     return $bbcode_emoticons;
 }
 
