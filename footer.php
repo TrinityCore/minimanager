@@ -40,7 +40,7 @@
                 </div>
                 <div id="body_buttom">';
     // show login and register button at bottom of every page if guest mode is activated
-    if($allow_anony && empty($_SESSION['logged_in']))
+    if($allow_anony && empty($_SESSION['logged_in']) && !strpos($_SERVER["REQUEST_URI"], "login"))
     {
         $lang_login = lang_login();
         $output .= '
