@@ -83,7 +83,7 @@ require_once 'scripts/get_lib.php';
 
 //---------------------Headers' header-----------------------------------------
 // sets encoding defined in config for language support
-header('Content-Type: text/html; charset='.$site_encoding);
+header('Content-Type: text/html; charset='.$site_encoding ?? 'utf-8');
 header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
