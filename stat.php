@@ -86,7 +86,8 @@ function stats($action, &$sqlr, &$sqlc)
                       <font class="bold">'.$lang_index['tot_users_online'].' : '.$total_chars.'</font><br /><br />';
         else
         {
-            $query = $sqlr->query('SELECT count(*) FROM account UNION SELECT count(*) FROM account_access WHERE SecurityLevel > 0');
+            $query = $sqlr->query('SELECT count(*) FROM account UNION ALL SELECT count(*) FROM account_access WHERE SecurityLevel > 0');
+
             $total_acc = $sqlr->result($query, 0);
             $total_gms = $sqlr->result($query, 1);
             unset($query);
@@ -151,7 +152,7 @@ function stats($action, &$sqlr, &$sqlc)
                                                 <tr align="left">
                                                     <td colspan="2">
                                                         '.$lang_stat['average_of'].' '.round($total_chars/$total_acc,1).' '.$lang_stat['chars_per_acc'].'<br />
-                                                        '.$lang_stat['total_of'].' '.$total_gms.' '.$lang_stat['gms_one_for'].' '.round($total_acc/$total_gms,1).' '.$lang_stat['players'].'
+                                                        '.$lang_stat['total_of'].' '.$total_gms.' '.$lang_stat['gms_one_for'].' '.round($total_acc ?? 1/$total_gms ?? 1,1).' '.$lang_stat['players'].'
                                                     </td>
                                                     <td colspan="2">
                                                     </td>
