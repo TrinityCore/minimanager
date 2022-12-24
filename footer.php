@@ -1,7 +1,7 @@
 <?php
     //hide undefined variables in some cases (some errorpages for ex.)
     if (!isset($debug))
-        error_reporting('E_NONE'); // fuck this, we need a real fix
+        error_reporting(0); // fuck this, we need a real fix
 
     // level 1 debug prints total queries,
     //  so we would have to close these, or we can't have debug output
