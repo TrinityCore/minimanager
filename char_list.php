@@ -313,7 +313,7 @@ function browse_chars(&$sqlr, &$sqlc)
                                 <td>';
             if (($user_lvl >= $action_permission['delete'])||($owner_acc_name == $user_name))
                 $output .= '
-                                    <input type="checkbox" name="check[]" value="'.$char[0].'" onclick="CheckCheckAll(document.form1);" title="Check all" />';
+                                    <input type="checkbox" name="check[]" value="'.$char[0].'" onclick="CheckCheckAll(document.form1);" title="' . $lang_global['check_all'] . '" />';
             $output .= "
                                 </td>
                                 <td>$char[0]</td>

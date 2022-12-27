@@ -789,7 +789,8 @@ $lang_cleanup = [
   'clean_db' => 'Clean Database',
   'arenateams_deleted' => 'Arena Team(s) deleted!',
   'no_arenateams_del' => 'No Arena Team(s) deleted!',
-  'cleanup_by' => "Clean up by",
+  'cleanup_by' => 'Clean up by',
+  'check_all' => 'Check all',
 ];
 
 
