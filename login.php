@@ -93,11 +93,11 @@ function login(&$sqlr)
                                         <hr />
                                     </td>
                                 </tr>
-                                <tr align="right">
-                                    <td>'.$lang_login['username'].' : <input type="text" name="user" size="24" maxlength="16" /></td>
+                                <tr align="center">
+                                    <td><label for="user">' . $lang_login['username'] . '</label> <input type="text" name="user" id="user" size="24" maxlength="16" /></td>
                                 </tr>
-                                <tr align="right">
-                                    <td>'.$lang_login['password'].' : <input type="password" name="pass" size="24" maxlength="40" /></td>
+                                <tr align="center">
+                                    <td><label for="pass">'.$lang_login['password'].'</label> <input type="password" name="pass" id="pass" size="24" maxlength="40" /></td>
                                 </tr>';
 
     $result = $sqlr->query('SELECT id, name FROM realmlist ORDER BY id ASC LIMIT 10');
@@ -125,15 +125,15 @@ function login(&$sqlr)
                                     <td>
                                     </td>
                                 </tr>
-                                <tr align="right">
-                                    <td>'.$lang_login['remember_me'].' : <input type="checkbox" name="remember" value="1"';
+                                <tr align="center">
+                                    <td><label for="remember">'.$lang_login['remember_me'].'</label>: <input type="checkbox" name="remember" id="remember" value="1"';
     if ($remember_me_checked)
         $output .= ' checked="checked"';
     $output .= ' />                 </td>';
     if ($enable_captcha == true)
         $output .= '<tr><td><img src="libs/captcha/CaptchaSecurityImages.php"><br><br></td></tr>
                                 <tr><td>'.$lang_login['security_code'].':<input type="text" name="security_code" size="45" value="Code Above ^^"><br></td></tr>
-                                <tr align="right"><td width="290"><input type="submit" value="" style="display:none" /></tr>';
+                                <tr align="right"><td width="290"><input type="submit" style="display:none" title="Hidden submit" /></tr>';
     $output .= '                </tr>
                                 <tr>
                                     <td>
@@ -141,7 +141,7 @@ function login(&$sqlr)
                                 </tr>
                                 <tr align="right">
                                     <td width="290">
-                                        <input type="submit" value="" style="display:none" />';
+                                        <input type="submit" style="display:none" title="Hidden submit" />';
 
     makebutton($lang_login['not_registrated'], 'register.php" type="wrn', 130);
     makebutton($lang_login['login'], 'javascript:dologin()" type="def', 130);

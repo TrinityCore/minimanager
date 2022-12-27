@@ -171,7 +171,7 @@ function browse_users(&$sqlr, &$sqlc)
                                             <form action="user.php" method="get" name="form">
                                                 <input type="hidden" name="error" value="3" />
                                                 <input type="text" size="24" maxlength="50" name="search_value" value="'.$search_value.'" />
-                                                <select name="search_by">
+                                                <select name="search_by" title="Search by">
                                                     <option value="username"'.($search_by === 'username' ? ' selected="selected"' : '').'>'.$lang_user['by_name'].'</option>
                                                     <option value="id"'.($search_by === 'id' ? ' selected="selected"' : '').'>'.$lang_user['by_id'].'</option>
                                                     <option value="SecurityLevel"'.($search_by === 'SecurityLevel' ? ' selected="selected"' : '').'>'.$lang_user['by_gm_level'].'</option>

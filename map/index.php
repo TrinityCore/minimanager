@@ -22,7 +22,7 @@ else
   require_once("map_english.php");
 
 ?>
-<HTML><HEAD><title>'<?php echo $realm_name ?>' - online map</title>
+<html lang="en"><head><title>'<?php echo $realm_name ?>' - online map</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <style type="text/css">
 <!--
@@ -207,7 +207,7 @@ body {
 }
 -->
 </style>
-</HEAD>
+</head>
 <script TYPE="text/javascript" src="../libs/js/JsHttpRequest/Js.js"></script>
 <SCRIPT TYPE="text/javascript">
 
@@ -941,4 +941,4 @@ function start()
     </table>
     </center>
 </div>
-</BODY></HTML>
+</BODY></html>

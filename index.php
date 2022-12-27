@@ -142,7 +142,7 @@ function front(&$sqlr, &$sqlc, &$sqlm)
             if ($user_lvl >= $action_permission['update'])
                 $output .= '
                                 <a href="motd.php?action=edit_motd&amp;error=3&amp;id='.$post['id'].'">
-                                    <img src="img/edit.png" width="14" height="14" alt="" />
+                                    <img src="img/edit.png" width="14" height="14" alt="Edit" />
                                 </a>';
             $output .= '
                             </td>

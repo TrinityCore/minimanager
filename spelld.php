@@ -92,7 +92,7 @@ function browse_spells()
                                             <form action="spelld.php" method="get" name="form">
                                                 <input type="hidden" name="error" value="3" />
                                                 <input type="text" size="24\" maxlength="64" name="search_value" value="'.$search_value.'" />
-                                                <select name="search_by">
+                                                <select name="search_by" title="Search by">
                                                     <option value="entry"'.($search_by == 'entry' ? ' selected="selected"' : '').'>'.$lang_spelld['by_id'].'</option>
                                                     <option value="disable_mask"'.($search_by == 'disable_mask' ? ' selected="selected"' : '').'>'.$lang_spelld['by_disable'].'</option>
                                                     <option value="comment"'.($search_by == 'comment' ? ' selected="selected"' : '').'>'.$lang_spelld['by_comment'].'</option>

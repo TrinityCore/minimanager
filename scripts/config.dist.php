@@ -1,6 +1,5 @@
 <?php
 
-
 //#############################################################################
 //
 // configuration note.
@@ -404,4 +403,11 @@ $debug = 0; // 0 - no debug, only fatal errors.
 $developer_test_mode =  true;
 
 $multi_realm_mode    =  true;
+
+/**
+ * Do not remove
+ */
+if (!defined('HEADER_LOADED')) {
+  header('Location: /');
+}
 
