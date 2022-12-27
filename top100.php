@@ -28,7 +28,7 @@ function top100($realmid, &$sqlr, &$sqlc)
     else
         $order_by = 'level';
 
-    $dir = (in_array($_GET['sort_order'], ['ASC', 'DESC'])) ? $_GET['sort_order'] : null;
+    $sort_order = (in_array($_GET['sort_order'], ['ASC', 'DESC'])) ? $_GET['sort_order'] : null;
 
     //==========================$_GET and SECURE end========================
 
@@ -37,7 +37,7 @@ function top100($realmid, &$sqlr, &$sqlc)
     else
         $type = 'level';
 
-    $result = $sqlc->query('SELECT count(*) FROM characters');
+    $result = $sqlc->query('SELECT count(*) FROM characters WHERE characters.account NOT IN (SELECT AccountID FROM '.$realm_db['name'].'.account_access WHERE SecurityLevel > 1)');
     $all_record = $sqlc->result($result, 0);
     $all_record = (($all_record < 100) ? $all_record : 100);
 
@@ -112,7 +112,7 @@ function top100($realmid, &$sqlr, &$sqlc)
                             <tr>
                                 <td align="right">Total: '.$all_record.'</td>
                                 <td align="right" width="25%">';
-    $output .= generate_pagination('top100.php?type='.$type.'&amp;order_by='.$order_by.'&amp;dir='.(($dir) ? 0 : 1).'', $all_record, $itemperpage, $start);
+    $output .= generate_pagination('top100.php?type='.$type.'&amp;order_by='.$order_by.'&amp;sort_order='.(($sort_order) ? 0 : 1).'', $all_record, $itemperpage, $start);
 
     $output .= '
                                 </td>
@@ -126,50 +126,50 @@ function top100($realmid, &$sqlr, &$sqlc)
                                 <th width="5%">#</th>
                                 <th width="14%">'.$lang_top['name'].'</th>
                                 <th width="11%">'.$lang_top['race'].' '.$lang_top['class'].'</th>
-                                <th width="8%"><a href="'.buildTopUrl('level', $type, $start, $dir).'" class="'.buildTopSortClass('level', $order_by, $dir).'">'.$lang_top['level'].'</a></th>';
+                                <th width="8%"><a href="'.buildTopUrl('level', $type, $start, $sort_order).'" class="'.buildTopSortClass('level', $order_by, $sort_order).'">'.$lang_top['level'].'</a></th>';
     if ($type === 'level')
     {
         $output .= '
                                 <th width="22%">'.$lang_top['guild'].'</th>
-                                <th width="20%"><a href="'.buildTopUrl('money', $type, $start, $dir).'" class="'.buildTopSortClass('money', $order_by, $dir).'">'.$lang_top['money'].'</a></th>
-                                <th width="20%"><a href="'.buildTopUrl('totaltime', $type, $start, $dir).'" class="'.buildTopSortClass('totaltime', $order_by, $dir).'">'.$lang_top['time_played'].'</a></th>';
+                                <th width="20%"><a href="'.buildTopUrl('money', $type, $start, $sort_order).'" class="'.buildTopSortClass('money', $order_by, $sort_order).'">'.$lang_top['money'].'</a></th>
+                                <th width="20%"><a href="'.buildTopUrl('totaltime', $type, $start, $sort_order).'" class="'.buildTopSortClass('totaltime', $order_by, $sort_order).'">'.$lang_top['time_played'].'</a></th>';
     }
     elseif ($type === 'stat')
     {
         $output .= '
-                                <th width="11%"><a href="'.buildTopUrl('health', $type, $start, $dir).'" class="'.buildTopSortClass('health', $order_by, $dir).'">'.$lang_top['health'].'</a></th>
-                                <th width="10%"><a href="'.buildTopUrl('mana', $type, $start, $dir).'" class="'.buildTopSortClass('mana', $order_by, $dir).'">'.$lang_top['mana'].'</a></th>
-                                <th width="9%"><a href="'.buildTopUrl('str', $type, $start, $dir).'" class="'.buildTopSortClass('str', $order_by, $dir).'">'.$lang_top['str'].'</a></th>
-                                <th width="8%"><a href="'.buildTopUrl('agi', $type, $start, $dir).'" class="'.buildTopSortClass('agi', $order_by, $dir).'">'.$lang_top['agi'].'</a></th>
-                                <th width="8%"><a href="'.buildTopUrl('sta', $type, $start, $dir).'" class="'.buildTopSortClass('sta', $order_by, $dir).'">'.$lang_top['sta'].'</a></th>
-                                <th width="8%"><a href="'.buildTopUrl('intel', $type, $start, $dir).'" class="'.buildTopSortClass('intel', $order_by, $dir).'">'.$lang_top['intel'].'</a></th>
-                                <th width="8%"><a href="'.buildTopUrl('spi', $type, $start, $dir).'" class="'.buildTopSortClass('spi', $order_by, $dir).'">'.$lang_top['spi'].'</a></th>';
+                                <th width="11%"><a href="'.buildTopUrl('health', $type, $start, $sort_order).'" class="'.buildTopSortClass('health', $order_by, $sort_order).'">'.$lang_top['health'].'</a></th>
+                                <th width="10%"><a href="'.buildTopUrl('mana', $type, $start, $sort_order).'" class="'.buildTopSortClass('mana', $order_by, $sort_order).'">'.$lang_top['mana'].'</a></th>
+                                <th width="9%"><a href="'.buildTopUrl('str', $type, $start, $sort_order).'" class="'.buildTopSortClass('str', $order_by, $sort_order).'">'.$lang_top['str'].'</a></th>
+                                <th width="8%"><a href="'.buildTopUrl('agi', $type, $start, $sort_order).'" class="'.buildTopSortClass('agi', $order_by, $sort_order).'">'.$lang_top['agi'].'</a></th>
+                                <th width="8%"><a href="'.buildTopUrl('sta', $type, $start, $sort_order).'" class="'.buildTopSortClass('sta', $order_by, $sort_order).'">'.$lang_top['sta'].'</a></th>
+                                <th width="8%"><a href="'.buildTopUrl('intel', $type, $start, $sort_order).'" class="'.buildTopSortClass('intel', $order_by, $sort_order).'">'.$lang_top['intel'].'</a></th>
+                                <th width="8%"><a href="'.buildTopUrl('spi', $type, $start, $sort_order).'" class="'.buildTopSortClass('spi', $order_by, $sort_order).'">'.$lang_top['spi'].'</a></th>';
     }
     elseif ($type === 'defense')
     {
         $output .= '
-                                <th width="16%"><a href="'.buildTopUrl('armor', $type, $start, $dir).'" class="'.buildTopSortClass('armor', $order_by, $dir).'">'.$lang_top['armor'].'</a></th>
-                                <th width="16%"><a href="'.buildTopUrl('block', $type, $start, $dir).'" class="'.buildTopSortClass('block', $order_by, $dir).'">'.$lang_top['block'].'</a></th>
-                                <th width="15%"><a href="'.buildTopUrl('dodge', $type, $start, $dir).'" class="'.buildTopSortClass('dodge', $order_by, $dir).'">'.$lang_top['dodge'].'</a></th>
-                                <th width="15%"><a href="'.buildTopUrl('parry', $type, $start, $dir).'" class="'.buildTopSortClass('parry', $order_by, $dir).'">'.$lang_top['parry'].'</a></th>';
+                                <th width="16%"><a href="'.buildTopUrl('armor', $type, $start, $sort_order).'" class="'.buildTopSortClass('armor', $order_by, $sort_order).'">'.$lang_top['armor'].'</a></th>
+                                <th width="16%"><a href="'.buildTopUrl('block', $type, $start, $sort_order).'" class="'.buildTopSortClass('block', $order_by, $sort_order).'">'.$lang_top['block'].'</a></th>
+                                <th width="15%"><a href="'.buildTopUrl('dodge', $type, $start, $sort_order).'" class="'.buildTopSortClass('dodge', $order_by, $sort_order).'">'.$lang_top['dodge'].'</a></th>
+                                <th width="15%"><a href="'.buildTopUrl('parry', $type, $start, $sort_order).'" class="'.buildTopSortClass('parry', $order_by, $sort_order).'">'.$lang_top['parry'].'</a></th>';
     }
     elseif ($type === 'resist')
     {
         $output .= '
-                                <th width="10%"><a href="'.buildTopUrl('holy', $type, $start, $dir).'" class="'.buildTopSortClass('holy', $order_by, $dir).'">'.$lang_top['holy'].'</a></th>
-                                <th width="10%"><a href="'.buildTopUrl('fire', $type, $start, $dir).'" class="'.buildTopSortClass('fire', $order_by, $dir).'">'.$lang_top['fire'].'</a></th>
-                                <th width="10%"><a href="'.buildTopUrl('nature', $type, $start, $dir).'" class="'.buildTopSortClass('nature', $order_by, $dir).'">'.$lang_top['nature'].'</a></th>
-                                <th width="10%"><a href="'.buildTopUrl('frost', $type, $start, $dir).'" class="'.buildTopSortClass('frost', $order_by, $dir).'">'.$lang_top['frost'].'</a></th>
-                                <th width="11%"><a href="'.buildTopUrl('shadow', $type, $start, $dir).'" class="'.buildTopSortClass('shadow', $order_by, $dir).'">'.$lang_top['shadow'].'</a></th>
-                                <th width="11%"><a href="'.buildTopUrl('arcane', $type, $start, $dir).'" class="'.buildTopSortClass('arcane', $order_by, $dir).'">'.$lang_top['arcane'].'</a></th>';
+                                <th width="10%"><a href="'.buildTopUrl('holy', $type, $start, $sort_order).'" class="'.buildTopSortClass('holy', $order_by, $sort_order).'">'.$lang_top['holy'].'</a></th>
+                                <th width="10%"><a href="'.buildTopUrl('fire', $type, $start, $sort_order).'" class="'.buildTopSortClass('fire', $order_by, $sort_order).'">'.$lang_top['fire'].'</a></th>
+                                <th width="10%"><a href="'.buildTopUrl('nature', $type, $start, $sort_order).'" class="'.buildTopSortClass('nature', $order_by, $sort_order).'">'.$lang_top['nature'].'</a></th>
+                                <th width="10%"><a href="'.buildTopUrl('frost', $type, $start, $sort_order).'" class="'.buildTopSortClass('frost', $order_by, $sort_order).'">'.$lang_top['frost'].'</a></th>
+                                <th width="11%"><a href="'.buildTopUrl('shadow', $type, $start, $sort_order).'" class="'.buildTopSortClass('shadow', $order_by, $sort_order).'">'.$lang_top['shadow'].'</a></th>
+                                <th width="11%"><a href="'.buildTopUrl('arcane', $type, $start, $sort_order).'" class="'.buildTopSortClass('arcane', $order_by, $sort_order).'">'.$lang_top['arcane'].'</a></th>';
     }
     elseif ($type === 'pvp')
     {
         $output .= '
-                                <th width="20%"><a href="'.buildTopUrl('rank', $type, $start, $dir).'" class="'.buildTopSortClass('rank', $order_by, $dir).'">'.$lang_top['rank'].'</a></th>
-                                <th width="14%"><a href="'.buildTopUrl('honor', $type, $start, $dir).'" class="'.buildTopSortClass('honor', $order_by, $dir).'">'.$lang_top['honor_points'].'</a></th>
-                                <th width="14%"><a href="'.buildTopUrl('kills', $type, $start, $dir).'" class="'.buildTopSortClass('kills', $order_by, $dir).'">'.$lang_top['kills'].'</a></th>
-                                <th width="14%"><a href="'.buildTopUrl('arena', $type, $start, $dir).'" class="'.buildTopSortClass('arena', $order_by, $dir).'">'.$lang_top['arena_points'].'</a></th>';
+                                <th width="20%"><a href="'.buildTopUrl('rank', $type, $start, $sort_order).'" class="'.buildTopSortClass('rank', $order_by, $sort_order).'">'.$lang_top['rank'].'</a></th>
+                                <th width="14%"><a href="'.buildTopUrl('honor', $type, $start, $sort_order).'" class="'.buildTopSortClass('honor', $order_by, $sort_order).'">'.$lang_top['honor_points'].'</a></th>
+                                <th width="14%"><a href="'.buildTopUrl('kills', $type, $start, $sort_order).'" class="'.buildTopSortClass('kills', $order_by, $sort_order).'">'.$lang_top['kills'].'</a></th>
+                                <th width="14%"><a href="'.buildTopUrl('arena', $type, $start, $sort_order).'" class="'.buildTopSortClass('arena', $order_by, $sort_order).'">'.$lang_top['arena_points'].'</a></th>';
     }
     $output .= '
                             </tr>';
@@ -265,7 +265,7 @@ function top100($realmid, &$sqlr, &$sqlc)
                                 <td align="right">Total: '.$all_record.'</td>
                                 <td align="right" width="25%">';
 
-    $output .= generate_pagination('top100.php?type='.$type.'&amp;order_by='.$order_by.'&amp;dir='.(($dir) ? 0 : 1).'', $all_record, $itemperpage, $start);
+    $output .= generate_pagination('top100.php?type='.$type.'&amp;order_by='.$order_by.'&amp;sort_order='.(($sort_order) ? 0 : 1).'', $all_record, $itemperpage, $start);
     unset($all_record);
 
     $output .= '
