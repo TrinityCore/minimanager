@@ -223,8 +223,8 @@ function browse_chars(&$sqlr, &$sqlc)
                                             <td>
                                                 <form action=\"char_list.php\" method=\"get\" name=\"form\">
                                                     <input type=\"hidden\" name=\"error\" value=\"3\" />
-                                                    <input type=\"text\" size=\"24\" maxlength=\"50\" name=\"search_value\" value=\"{$search_value}\" />
-                                                    <select name=\"search_by\">
+                                                    <input type=\"text\" size=\"24\" maxlength=\"50\" name=\"search_value\" value=\"{$search_value}\" placeholder='{$lang_global['search_by']}' />
+                                                    <select name=\"search_by\" title='{$lang_global['search_by']}'>
                                                         <option value=\"name\"".($search_by == 'name' ? " selected=\"selected\"" : "").">{$lang_char_list['by_name']}</option>
                                                         <option value=\"guid\"".($search_by == 'guid' ? " selected=\"selected\"" : "").">{$lang_char_list['by_id']}</option>
                                                         <option value=\"account\"".($search_by == 'account' ? " selected=\"selected\"" : "").">{$lang_char_list['by_account']}</option>
@@ -257,7 +257,7 @@ function browse_chars(&$sqlr, &$sqlc)
                         <input type=\"hidden\" name=\"start\" value=\"$start\" />
                         <table class=\"lined\">
                             <tr>
-                                <th width=\"1%\"><input name=\"allbox\" type=\"checkbox\" value=\"Check All\" onclick=\"CheckAll(document.form1);\" /></th>
+                                <th width=\"1%\"><input name=\"allbox\" type=\"checkbox\" value=\"Check All\" onclick=\"CheckAll(document.form1);\" title=\"{$lang_global['check_all']}\" /></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=guid&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='guid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['id']}</a></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=name&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='name' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['char_name']}</a></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=account&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='account' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['account']}</a></th>";
@@ -303,7 +303,11 @@ function browse_chars(&$sqlr, &$sqlc)
         $owner_acc_name = $acc['username'];
         $lastseen = date('Y-m-d G:i:s', $char[10]);
 
-        $guild_name = $sqlc->fetch_row($sqlc->query('SELECT BINARY name AS name FROM guild WHERE guildid = '.$char[11].''));
+        $guild_name = $sqlc->fetch_row(
+            $sqlc->query(sprintf(
+                'SELECT BINARY name AS name FROM guild WHERE guildid = %d',
+                $char[11]
+            )));
 
         if (($user_lvl >= $owner_gmlvl)||($owner_acc_name == $user_name))
         {
@@ -312,7 +316,7 @@ function browse_chars(&$sqlr, &$sqlc)
                                 <td>';
             if (($user_lvl >= $action_permission['delete'])||($owner_acc_name == $user_name))
                 $output .= '
-                                    <input type="checkbox" name="check[]" value="'.$char[0].'" onclick="CheckCheckAll(document.form1);" />';
+                                    <input type="checkbox" name="check[]" value="'.$char[0].'" onclick="CheckCheckAll(document.form1);" title="' . $lang_global['check_all'] . '" />';
             $output .= "
                                 </td>
                                 <td>$char[0]</td>

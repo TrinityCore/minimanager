@@ -90,8 +90,8 @@ function browse_tele()
                                         <td>
                                             <form action=\"tele.php\" method=\"get\" name=\"form\">
                                                 <input type=\"hidden\" name=\"error\" value=\"4\" />
-                                                <input type=\"text\" size=\"24\" name=\"search_value\" value=\"$search_value\" />
-                                                <select name=\"search_by\">
+                                                <input type=\"text\" size=\"24\" name=\"search_value\" value=\"$search_value\" placeholder='{$lang_global['search_by']}' />
+                                                <select name=\"search_by\" title='{$lang_global['search_by']}'>
                                                     <option value=\"name\"".($search_by == 'name' ? " selected=\"selected\"" : "").">{$lang_tele['loc_name']}</option>
                                                     <option value=\"id\"".($search_by == 'id' ? " selected=\"selected\"" : "").">{$lang_tele['loc_id']}</option>
                                                     <option value=\"map\"".($search_by == 'map' ? " selected=\"selected\"" : "").">{$lang_tele['on_map']}</option>
