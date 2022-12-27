@@ -218,7 +218,7 @@ function buildTopUrl($linkCategory, $type, $start, $sortOrder)
 /**
  * Build class name for top100 table header links
  */
-function buildClass($type, $orderBy, $sortOrder) {
+function buildTopSortClass($type, $orderBy, $sortOrder) {
     return $orderBy == $type
         ? $sortOrder
         : '';
