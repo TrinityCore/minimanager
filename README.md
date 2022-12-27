@@ -19,7 +19,7 @@ A docker compose configuration has been provided for convenience. Note that you 
 - Extract 333a_dbc.zip, and apply the SQL file to the `mmfpm` database
 - Download and apply ip2nation data to your `mmfpm` database
     - http://ip2nation.com/ip2nation/Download
-      - `mysql -u trinity -p mmfpm < SQL/ip2nation.sql`
+    - `mysql -u trinity -p mmfpm < SQL/ip2nation.sql`
 
 - Make a copy of the configuration file, and make changes as necessary
 ```shell
