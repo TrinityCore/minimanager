@@ -45,7 +45,7 @@ $sql_search_limit =  100;                         // limit number of maximum sea
 $mmfpm_db['addr']     = '127.0.0.1:3306';         // SQL server IP:port this DB located on, use `mysql` if local docker
 $mmfpm_db['user']     = 'root';                   // SQL server login this DB located on
 $mmfpm_db['pass']     = '1';                      // SQL server pass this DB located on
-$mmfpm_db['name']     = 'mmftc';                  // MiniManager DB name
+$mmfpm_db['name']     = 'mmfpm';                  // MiniManager DB name
 $mmfpm_db['encoding'] = 'utf8';                   // SQL connection encoding
 
 $realm_db['addr']     = '127.0.0.1:3306';         // SQL server IP:port this realmd located on
@@ -405,5 +405,3 @@ $developer_test_mode =  true;
 
 $multi_realm_mode    =  true;
 
-
-?>
