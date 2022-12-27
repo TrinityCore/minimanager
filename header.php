@@ -9,7 +9,7 @@ $time_start = microtime(true);
 // resuming login session if available, or start new one
 if (ini_get('session.auto_start'));
 else
-    session_start(['secure']);
+    session_start();
 
 //---------------------Load Default and User Configuration---------------------
 if (file_exists('./scripts/config.php'))
