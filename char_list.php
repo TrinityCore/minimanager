@@ -257,7 +257,7 @@ function browse_chars(&$sqlr, &$sqlc)
                         <input type=\"hidden\" name=\"start\" value=\"$start\" />
                         <table class=\"lined\">
                             <tr>
-                                <th width=\"1%\"><input name=\"allbox\" type=\"checkbox\" value=\"Check All\" onclick=\"CheckAll(document.form1);\" title=\"Check all\" /></th>
+                                <th width=\"1%\"><input name=\"allbox\" type=\"checkbox\" value=\"Check All\" onclick=\"CheckAll(document.form1);\" title=\"{$lang_global['check_all']}\" /></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=guid&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='guid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['id']}</a></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=name&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='name' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['char_name']}</a></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=account&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='account' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['account']}</a></th>";
