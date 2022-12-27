@@ -90,17 +90,16 @@ header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 $output .= '
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <title>'.$title.'</title>
-        <meta http-equiv="Content-Type" content="text/html; charset='.$site_encoding.'" />
-        <meta http-equiv="Content-Type" content="text/javascript; charset='.$site_encoding.'" />
+        <meta charset='.$site_encoding.' />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" type="text/css" href="themes/'.$theme.'/'.$theme.'_1024.css" title="1024" />
         <link rel="stylesheet" type="text/css" href="themes/'.$theme.'/'.$theme.'_1280.css" title="1280" />
         <link rel="icon" href="img/favicon.ico" />
-        <script type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript"></script>
         <script type="text/javascript" src="libs/js/general.js"></script>
         <script type="text/javascript" src="libs/js/layout.js"></script>
     </head>
