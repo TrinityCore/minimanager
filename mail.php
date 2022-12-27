@@ -21,10 +21,11 @@ function print_mail_form()
                         <br />
                         <table class=\"top_hidden\" style=\"width: 720px;\">
                             <tr>
-                                <td align=\"left\">{$lang_mail['recipient']}: <input type=\"text\" name=\"to\" size=\"32\" value=\"$to\" maxlength=\"225\" /></td>
-                                <td align=\"left\">{$lang_mail['subject']}: <input type=\"text\" name=\"subject\" size=\"32\" maxlength=\"50\" /></td>
-                                <td width=\"1\" align=\"right\">
-                                    <select name=\"type\">";
+                                <td align=\"left\"><label for='to'>{$lang_mail['recipient']}</label>: <input type=\"text\" name=\"to\" id='to' size=\"32\" value=\"$to\" maxlength=\"225\" /></td>
+                                <td align=\"left\"><label for='subject'>{$lang_mail['subject']}</label>: <input type=\"text\" name=\"subject\" id='subject' size=\"32\" maxlength=\"50\" /></td>
+                                <td width=\"1\" align=\"left\">
+                                <label for='type'>{$lang_mail['mail_type']}:</label>
+                                    <select name=\"type\" id='type'>";
     if ($type == "email")
         $output .= "
                                         <option value=\"email\">{$lang_mail['email']}</option>
@@ -49,12 +50,12 @@ function print_mail_form()
                             </tr>
                             <tr>
                                 <td colspan=\"3\">{$lang_mail['group_send']}:
-                                    <select name=\"group_send\">
+                                    <select name=\"group_send\" title='Group send'>
                                         <optgroup label=\"{$lang_mail['both']}\">
                                             <option value=\"gm_level\">{$lang_mail['gm_level']}</option>
                                         </optgroup>
                                         <optgroup label=\"{$lang_mail['email']}\">
-                                            <option value=\"locked\">{$lang_mail['locked_accouns']}</option>
+                                            <option value=\"locked\">{$lang_mail['locked_accounts']}</option>
                                             <option value=\"banned\">{$lang_mail['banned_accounts']}</option>
                                         </optgroup>
                                         <optgroup label=\"{$lang_mail['ingame_mail']}\">
@@ -62,13 +63,13 @@ function print_mail_form()
                                             <option value=\"online\">{$lang_mail['online']}</option>
                                         </optgroup>
                                     </select>
-                                    <select name=\"group_sign\">
+                                    <select name=\"group_sign\" title='Group operator'>
                                         <option value=\"=\">=</option>
                                         <option value=\"&lt;\">&lt;</option>
                                         <option value=\">\">&gt;</option>
                                         <option value=\"!=\">!=</option>
                                     </select>
-                                    <input type=\"text\" name=\"group_value\" size=\"20\" maxlength=\"40\" />
+                                    <input type=\"text\" name=\"group_value\" size=\"20\" maxlength=\"40\" title='Group parameter' />
                                 </td>
                             </tr>
                             <tr>
@@ -81,9 +82,9 @@ function print_mail_form()
                             </tr>
                             <tr>
                                 <td colspan=\"3\" align=\"right\">
-                                    {$lang_mail['money']} : <input type=\"text\" name=\"money\" value=\"0\" size=\"10\" maxlength=\"10\" />
-                                    {$lang_mail['item']} : <input type=\"text\" name=\"att_item\" value=\"0\" size=\"10\" maxlength=\"10\" />
-                                    {$lang_mail['stack']} : <input type=\"text\" name=\"att_stack\" value=\"0\" size=\"10\" maxlength=\"10\" />
+                                    <label for='money'>{$lang_mail['money']}</label> : <input type=\"text\" name=\"money\" id='money' value=\"0\" size=\"10\" maxlength=\"10\" />
+                                    <label for='att_item'>{$lang_mail['item']}</label> : <input type=\"text\" name=\"att_item\" id='att_item' value=\"0\" size=\"10\" maxlength=\"10\" />
+                                    <label for='att_stack'>{$lang_mail['stack']}</label> : <input type=\"text\" name=\"att_stack\" id='att_item' value=\"0\" size=\"10\" maxlength=\"10\" />
                                 </td>
                             </tr>
                             <tr>
@@ -94,7 +95,8 @@ function print_mail_form()
                     </fieldset>
                     <fieldset style=\"width: 770px;\">
                         <legend>{$lang_mail['mail_body']}</legend>
-                        <br /><textarea name=\"body\" rows=\"14\" cols=\"92\"></textarea><br />
+                        <br /><textarea name=\"body\" rows=\"14\" cols=\"92\" 
+                        placeholder='{$lang_mail['placeholder']}'></textarea><br />
                         <br />
                         <table>
                             <tr>

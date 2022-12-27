@@ -72,17 +72,17 @@ function search() {
                         <form action=\"game_object.php?action=do_search&amp;error=2\" method=\"post\" name=\"form\">
                             <table class=\"hidden\">
                                 <tr>
-                                    <td>{$lang_game_object['entry']}:</td>
-                                    <td><input type=\"text\" size=\"14\" maxlength=\"11\" name=\"entry\" /></td>
-                                    <td>{$lang_game_object['name']}:</td>
-                                    <td colspan=\"3\"><input type=\"text\" size=\"45\" maxlength=\"100\" name=\"name\" /></td>
+                                    <td><label for='entry'>{$lang_game_object['entry']}</label>:</td>
+                                    <td><input type=\"text\" size=\"14\" maxlength=\"11\" name=\"entry\" id='entry' /></td>
+                                    <td><label for='name'>{$lang_game_object['name']}</label>:</td>
+                                    <td colspan=\"3\"><input type=\"text\" size=\"45\" maxlength=\"100\" name=\"name\" id='name' /></td>
                                 </tr>
                                 <tr>
-                                    <td>{$lang_game_object['script_name']}</td>
-                                    <td><input type=\"text\" size=\"14\" maxlength=\"100\" name=\"ScriptName\" /></td>
-                                    <td >{$lang_game_object['type']}:</td>
+                                    <td><label for='script_name'>{$lang_game_object['script_name']}</label></td>
+                                    <td><input type=\"text\" size=\"14\" maxlength=\"100\" name=\"ScriptName\" id='script_name' /></td>
+                                    <td ><label for='type'>{$lang_game_object['type']}</label>:</td>
                                     <td colspan=\"3\">
-                                        <select name=\"type\">
+                                        <select name=\"type\" id='type'>
                                             <option value=\"-1\">{$lang_game_object['select']}</option>";
     foreach ($go_type as $type)
         $output .= "
@@ -92,16 +92,16 @@ function search() {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>{$lang_game_object['displayId']}:</td>
-                                    <td><input type=\"text\" size=\"14\" maxlength=\"11\" name=\"displayId\" /></td>
-                                    <td>{$lang_game_object['faction']}:</td>
-                                    <td><input type=\"text\" size=\"14\" maxlength=\"11\" name=\"faction\" /></td>
-                                    <td>{$lang_game_object['flags']}:</td>
-                                    <td><input type=\"text\" size=\"15\" maxlength=\"11\" name=\"flags\" /></td>
+                                    <td><label for='displayId'>{$lang_game_object['displayId']}</label>:</td>
+                                    <td><input type=\"text\" size=\"14\" maxlength=\"11\" name=\"displayId\" id='displayId' /></td>
+                                    <td><label for='faction'>{$lang_game_object['faction']}</label>:</td>
+                                    <td><input type=\"text\" size=\"14\" maxlength=\"11\" name=\"faction\" id='faction' /></td>
+                                    <td><label for='flags'>{$lang_game_object['flags']}</label>:</td>
+                                    <td><input type=\"text\" size=\"15\" maxlength=\"11\" name=\"flags\" id='flags' /></td>
                                 </tr>
                                 <tr>
-                                    <td>{$lang_game_object['custom_search']}:</td>
-                                    <td colspan=\"3\"><input type=\"text\" size=\"45\" maxlength=\"512\" name=\"custom_search\" /></td>
+                                    <td><label for='custom_search'>{$lang_game_object['custom_search']}</label>:</td>
+                                    <td colspan=\"3\"><input type=\"text\" size=\"45\" maxlength=\"512\" name=\"custom_search\" id='custom_search' /></td>
                                     <td colspan=\"2\">";
 
     makebutton($lang_game_object['search'], "javascript:do_submit()",150);

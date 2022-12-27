@@ -23,7 +23,7 @@ function cleanup() {
                                         <td>
                                             <form action=\"cleanup.php\" method=\"get\" name=\"form\">
                                                 <input type=\"hidden\" name=\"action\" value=\"run_cleanup\" />
-                                                <select name=\"cleanup_by\">
+                                                <select name=\"cleanup_by\" title='{$lang_cleanup['cleanup_by']}'>
                                                     <optgroup label=\"{$lang_cleanup['clean_chars']}\">
                                                         <option value=\"char_lvl\">{$lang_cleanup['char_level']}</option>
                                                         <option value=\"totaltime\">{$lang_cleanup['tot_play_time']}</option>
@@ -39,7 +39,7 @@ function cleanup() {
                                                         <option value=\"num_of_char_in_guild\">{$lang_cleanup['chars_in_guild']}</option>
                                                     </optgroup>
                                                 </select>
-                                                <select name=\"cleanup_sign\">
+                                                <select name=\"cleanup_sign\" title='Cleanup operator'>
                                                     <option value=\"=\">=</option>
                                                     <option value=\"<\"><</option>
                                                     <option value=\"<=\"><=</option>
@@ -47,7 +47,7 @@ function cleanup() {
                                                     <option value=\">=\">>=</option>
                                                     <option value=\"!=\">!=</option>
                                                 </select>
-                                                <input type=\"text\" size=\"25\" maxlength=\"40\" name=\"cleanup_value\" />
+                                                <input type=\"text\" size=\"25\" maxlength=\"40\" name=\"cleanup_value\" title='Cleanup parameter' />
                                         </td>
                                         <td>";
 
