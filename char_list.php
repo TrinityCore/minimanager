@@ -303,8 +303,11 @@ function browse_chars(&$sqlr, &$sqlc)
         $owner_acc_name = $acc['username'];
         $lastseen = date('Y-m-d G:i:s', $char[10]);
 
-        $guild_name = $sqlc->fetch_row($sqlc->query('SELECT BINARY name AS name FROM guild WHERE guildid = '
-            .$char[11].''));
+        $guild_name = $sqlc->fetch_row(
+            $sqlc->query(sprintf(
+                'SELECT BINARY name AS name FROM guild WHERE guildid = %d',
+                $char[11]
+            )));
 
         if (($user_lvl >= $owner_gmlvl)||($owner_acc_name == $user_name))
         {
