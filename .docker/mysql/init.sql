@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS mmftc;
-USE mmftc;
+CREATE DATABASE IF NOT EXISTS mmfpm;
+USE mmfpm;
 --
 -- Table structure for table `mm_forum_posts`
 --
