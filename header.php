@@ -113,10 +113,6 @@ $output .= '
                     <td class="table_top_left" valign="top">';
 unset($title);
 
-// Add more memory to PHP if needed by MM
-    if (ini_get('memory_limit') < 16)
-        @ini_set('memory_limit', '16M');
-
 //---------------------Guest login Predefines----------------------------------
 if ($allow_anony && empty($_SESSION['logged_in']))
 {
@@ -133,11 +129,6 @@ $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_d
 //----Check if a user has login, if Guest mode is enabled, code above will login as Guest
 if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION['realm_id']) && empty($_GET['err']))
 {
-    // check for host php script max memory allowed,
-    // setting it higher if it is not enough for MiniManager to run
-    if (ini_get('memory_limit') < 16)
-        @ini_set('memory_limit', '16M');
-
     // resuming logged in user settings
     session_regenerate_id();
     $user_lvl = $_SESSION['user_lvl'];
