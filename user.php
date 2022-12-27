@@ -170,7 +170,7 @@ function browse_users(&$sqlr, &$sqlc)
                                         <td>
                                             <form action="user.php" method="get" name="form">
                                                 <input type="hidden" name="error" value="3" />
-                                                <input type="text" size="24" maxlength="50" name="search_value" value="'.$search_value.'" />
+                                                <input type="text" size="24" maxlength="50" name="search_value" value="'.$search_value.'" placeholder="Search..." />
                                                 <select name="search_by" title="Search by">
                                                     <option value="username"'.($search_by === 'username' ? ' selected="selected"' : '').'>'.$lang_user['by_name'].'</option>
                                                     <option value="id"'.($search_by === 'id' ? ' selected="selected"' : '').'>'.$lang_user['by_id'].'</option>
@@ -212,7 +212,7 @@ function browse_users(&$sqlr, &$sqlc)
     if($user_lvl >= $action_permission['insert'])
         $output.= '
                                 <th width="1%">
-                                    <input name="allbox" type="checkbox" value="Check All" onclick="CheckAll(document.form1);" />
+                                    <input name="allbox" type="checkbox" value="Check All" onclick="CheckAll(document.form1);" title="Check all" />
                                 </th>';
     else
         $output .= '
@@ -243,7 +243,7 @@ function browse_users(&$sqlr, &$sqlc)
                             <tr>';
             if ($user_lvl >= $action_permission['insert'])
                 $output .= '
-                                <td><input type="checkbox" name="check[]" value="'.$data['id'].'" onclick="CheckCheckAll(document.form1);" /></td>';
+                                <td><input type="checkbox" name="check[]" value="'.$data['id'].'" onclick="CheckCheckAll(document.form1);" title="Check all" /></td>';
             else
                 $output .= '
                                 <td></td>';

@@ -56,7 +56,7 @@ class tickets
 							<tr>";
 		if($user_lvl >= $action_permission['delete'])
 			$output .="
-								<th width=\"7%\"><input name=\"allbox\" type=\"checkbox\" value=\"Check All\" onclick=\"CheckAll(document.form);\" /></th>";
+								<th width=\"7%\"><input name=\"allbox\" type=\"checkbox\" value=\"Check All\" onclick=\"CheckAll(document.form);\" title='Check all' /></th>";
 		if($user_lvl >= $action_permission['update'])
 			$output .="
 								<th width=\"7%\">{$lang_global['edit']}</th>";
@@ -73,7 +73,7 @@ class tickets
 							<tr>";
 			if($user_lvl >= $action_permission['delete'])
 			$output .="
-								<td><input type=\"checkbox\" name=\"check[]\" value=\"$ticket[0]\" onclick=\"CheckCheckAll(document.form);\" /></td>";
+								<td><input type=\"checkbox\" name=\"check[]\" value=\"$ticket[0]\" onclick=\"CheckCheckAll(document.form);\" title='Check all' /></td>";
 			if($user_lvl >= $action_permission['update'])
 				$output .="
 								<td><a href=\"ticket.php?action=edit_ticket&amp;id=$ticket[0]\">{$lang_global['edit']}</a></td>";

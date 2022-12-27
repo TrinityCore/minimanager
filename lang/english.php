@@ -45,7 +45,8 @@ $lang_global = [
   'language_5' => 'Taiwanese',
   'language_6' => 'Spanish',
   'language_7' => 'Mexican',
-  'language_8' => 'Russian'
+  'language_8' => 'Russian',
+  'search_by' => 'Search...'
 ];
 
 
@@ -787,7 +788,8 @@ $lang_cleanup = [
   'back_cleaning' => 'Back Cleaning',
   'clean_db' => 'Clean Database',
   'arenateams_deleted' => 'Arena Team(s) deleted!',
-  'no_arenateams_del' => 'No Arena Team(s) deleted!'
+  'no_arenateams_del' => 'No Arena Team(s) deleted!',
+  'cleanup_by' => "Clean up by",
 ];
 
 
@@ -843,7 +845,7 @@ function lang_mail()
     'group_send' => 'Group Send',
     'both' => 'Both',
     'gm_level' => 'GM Level',
-    'locked_accouns' => 'Locked Accouns',
+    'locked_accounts' => 'Locked Accounts',
     'banned_accounts' => 'Banned Accounts',
     'char_level' => 'Character Level',
     'online' => 'Online',
@@ -868,6 +870,7 @@ function lang_mail()
 	'text' => 'Text',
 	'checked' => 'Checked',
 	'id' => 'ID',
+    'placeholder' => 'Your message here...',
       ];
   return $lang_mail;
 }
