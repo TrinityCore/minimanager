@@ -1,4 +1,7 @@
 <?php
+
+define("HEADER_LOADED", true);
+
 // Check if gzip is installed, if yes -> activate gzip compression
 if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandler"); else ob_start();
 
@@ -6,7 +9,7 @@ $time_start = microtime(true);
 // resuming login session if available, or start new one
 if (ini_get('session.auto_start'));
 else
-    session_start();
+    session_start(['secure']);
 
 //---------------------Load Default and User Configuration---------------------
 if (file_exists('./scripts/config.php'))

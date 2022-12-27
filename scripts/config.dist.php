@@ -1,6 +1,5 @@
 <?php
 
-
 //#############################################################################
 //
 // configuration note.
@@ -410,5 +409,10 @@ $developer_test_mode =  true;
 
 $multi_realm_mode    =  true;
 
+/**
+ * Do not remove
+ */
+if (!defined('HEADER_LOADED')) {
+  header('Location: /');
+}
 
-?>
