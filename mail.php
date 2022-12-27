@@ -184,7 +184,7 @@ function send_mail()
 
             $body = str_replace("\n", "<br />", $body);
             $body = str_replace("\r", " ", $body);
-            $body = str_replace(array("\r\n", "\n", "\r"), '<br />', $body);
+            $body = str_replace(["\r\n", "\n", "\r"], '<br />', $body);
             $body = preg_replace( "/([^\/=\"\]])((http|ftp)+(s)?:\/\/[^<>\s]+)/i", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>",  $body);
             $body = preg_replace('/([^\/=\"\]])(www\.)(\S+)/', '\\1<a href="https://\\2\\3" target="_blank">\\2\\3</a>', $body);
 
@@ -209,7 +209,7 @@ function send_mail()
             elseif (isset($group_value))
             {
                 //group send
-                $email_array = array();
+                $email_array = [];
                 switch ($group_send)
                 {
                     case "gm_level":
@@ -276,8 +276,8 @@ function send_mail()
                 if ($sqlc->num_rows($result) == 1)
                 {
                     $receiver = $sqlc->result($result, 0, 'name');
-                    $mails = array();
-                    array_push($mails, array($receiver, $subject, $body, $att_gold, $att_item, $att_stack));
+                    $mails = [];
+                    array_push($mails, [$receiver, $subject, $body, $att_gold, $att_item, $att_stack]);
                     send_ingame_mail($realm_id, $mails);
                 }
                 else
@@ -290,7 +290,7 @@ function send_mail()
             elseif(isset($group_value))
             {
                 //group send
-                $char_array = array();
+                $char_array = [];
                 switch ($group_send)
                 {
                     case "gm_level":
@@ -318,10 +318,10 @@ function send_mail()
                     default:
                         redirect("mail.php?error=5");
                 }
-                $mails = array();
+                $mails = [];
                 foreach ($char_array as $receiver)
                 {
-                    array_push($mails, array($receiver, $subject, $body, $att_gold, $att_item, $att_stack));
+                    array_push($mails, [$receiver, $subject, $body, $att_gold, $att_item, $att_stack]);
                 }
                 send_ingame_mail($realm_id, $mails);
                 redirect("mail.php?error=2");
@@ -395,7 +395,7 @@ function send_ingame_mail($realm_id, $massmails)
             }
         }
         $result = str_replace("TC>","",$result);
-        $result = str_replace(array("\r\n", "\n", "\r"), '<br />', $result);
+        $result = str_replace(["\r\n", "\n", "\r"], '<br />', $result);
         $mess_str .= "<br /><br />".$result;
         $telnet->Disconnect();
     }

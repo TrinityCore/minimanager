@@ -65,15 +65,15 @@ function char_skill(&$sqlr, &$sqlc)
                                                 <th><a href="char_skill.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=2&amp;dir='.$dir.'"'.($order_by==2 ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['skill_value'].'</a></th>
                                             </tr>';
 
-            $skill_array = array();
-            $class_array = array();
-            $prof_1_array = array();
-            $prof_2_array = array();
-            $weapon_array = array();
-            $armor_array = array();
-            $language_array = array();
+            $skill_array = [];
+            $class_array = [];
+            $prof_1_array = [];
+            $prof_2_array = [];
+            $weapon_array = [];
+            $armor_array = [];
+            $language_array = [];
 
-            $skill_rank_array = array(
+            $skill_rank_array = [
                 75  => $lang_char['apprentice'],
                 150 => $lang_char['journeyman'],
                 225 => $lang_char['expert'],
@@ -81,7 +81,7 @@ function char_skill(&$sqlr, &$sqlc)
                 375 => $lang_char['master'],
                 450 => $lang_char['inherent'],
                 385 => $lang_char['wise']
-            );
+            ];
             krsort($skill_rank_array, SORT_NUMERIC);
 
             $result = $sqlc->query('SELECT skill, value, max FROM character_skills WHERE guid = '.$id.'');
@@ -96,19 +96,19 @@ function char_skill(&$sqlr, &$sqlc)
                 $max = $char_skill['max'];
 
                 if (skill_get_type($skill, $sqlm) == 6)
-                    array_push($weapon_array , array(($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max));
+                    array_push($weapon_array , [($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max]);
                 elseif (skill_get_type($skill, $sqlm) == 7)
-                    array_push($class_array , array(($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max));
+                    array_push($class_array , [($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max]);
                 elseif (skill_get_type($skill, $sqlm) == 8)
-                    array_push($armor_array , array(($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max));
+                    array_push($armor_array , [($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max]);
                 elseif (skill_get_type($skill, $sqlm) == 9)
-                    array_push($prof_2_array , array(($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max));
+                    array_push($prof_2_array , [($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max]);
                 elseif (skill_get_type($skill, $sqlm) == 10)
-                    array_push($language_array , array(($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max));
+                    array_push($language_array , [($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max]);
                 elseif (skill_get_type($skill, $sqlm) == 11)
-                    array_push($prof_1_array , array(($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max));
+                    array_push($prof_1_array , [($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max]);
                 else
-                    array_push($skill_array , array(($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max));
+                    array_push($skill_array , [($user_lvl ? $skill : ''), skill_get_name($skill, $sqlm), $temp, $max]);
             }
             unset($char_skill);
 

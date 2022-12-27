@@ -154,7 +154,7 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
                     <div id="menuwrapper">
                         <ul id="menubar">';
     $lang_header = lang_header();
-    $action_permission = array();
+    $action_permission = [];
     foreach ($menu_array as $trunk)
     {
         // ignore "invisible array" this is for setting security read/write values

@@ -154,7 +154,7 @@ function search() {
 
     $search_value = $sql->quote_smart($_GET['search_value']);
     $search_by = $sql->quote_smart($_GET['search_by']);
-    $search_menu = array('sender', 'receiver');
+    $search_menu = ['sender', 'receiver'];
     // if (!array_key_exists($search_by, $search_menu)) $search_by = 'sender';
 
     $start = (isset($_GET['start'])) ? $sql->quote_smart($_GET['start']) : 0;

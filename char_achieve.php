@@ -238,7 +238,7 @@ function char_achievements(&$sqlr, &$sqlc)
                                             </td>
                                         </tr>';
             $result = $sqlc->query('SELECT achievement, date FROM character_achievement WHERE guid = '.$id.'');
-            $char_achieve = array();
+            $char_achieve = [];
             while ($temp = $sqlc->fetch_assoc($result))
                 $char_achieve[$temp['achievement']] = $temp['date'];
             $result = $sqlc->query('SELECT achievement, date FROM character_achievement WHERE guid = \''.$id.'\' order by date DESC limit 4');
@@ -248,10 +248,10 @@ function char_achievements(&$sqlr, &$sqlc)
             $main_cats = achieve_get_main_category($sqlm);
             $sub_cats  = achieve_get_sub_category($sqlm);
 
-            $output_achieve_main_cat = array();
-            $output_u_achieve_main_cat = array();
-            $output_achieve_sub_cat = array();
-            $output_u_achieve_sub_cat = array();
+            $output_achieve_main_cat = [];
+            $output_u_achieve_main_cat = [];
+            $output_achieve_sub_cat = [];
+            $output_u_achieve_sub_cat = [];
 
             $js_main_cats = '
                     var main_cats = new Array();

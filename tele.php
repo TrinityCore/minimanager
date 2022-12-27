@@ -41,7 +41,7 @@ function browse_tele()
     {
         $search_value = $sqlw->quote_smart($_GET['search_value']);
         $search_by = $sqlw->quote_smart($_GET['search_by']);
-        $search_menu = array("name", "id", "map");
+        $search_menu = ["name", "id", "map"];
 
         if (!in_array($search_by, $search_menu))
             $search_by = 'name';

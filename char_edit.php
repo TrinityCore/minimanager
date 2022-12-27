@@ -156,7 +156,7 @@ function edit_char() { //form needs update, uneditable fields have been removed 
             $sql->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
             $query2 = $sql->query("SELECT bag,slot,item,itemEntry FROM character_inventory ci JOIN item_instance ii ON ci.item = ii.guid WHERE ci.guid = '$id' ORDER BY bag,slot");
 
-            $inv = array();
+            $inv = [];
             $count = 0;
 
             while ($slot = $sql->fetch_row($query2))
@@ -335,7 +335,7 @@ function do_edit_char() {
                 //some items need to be deleted
                 if($check)
                 {
-                    $item_offset = array(
+                    $item_offset = [
                         "a0" => EQ_DATA_OFFSET_EQU_HEAD,
                         "a1" => EQ_DATA_OFFSET_EQU_NECK,
                         "a2" => EQ_DATA_OFFSET_EQU_SHOULDER,
@@ -355,7 +355,7 @@ function do_edit_char() {
                         "a16" => EQ_DATA_OFFSET_EQU_OFF_HAND,
                         "a17" => EQ_DATA_OFFSET_EQU_RANGED,
                         "a18" => EQ_DATA_OFFSET_EQU_TABARD
-                    );
+                    ];
 
                     foreach ($check as $item_num)
                     {

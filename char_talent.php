@@ -60,7 +60,7 @@ function char_talent(&$sqlr, &$sqlc)
                 $sqlm = new SQL;
                 $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
 
-                $tabs = array();
+                $tabs = [];
                 $l = 0;
 
                 while (($talent = $sqlc->fetch_assoc($result)) && ($l < $talent_points_used))
@@ -69,7 +69,7 @@ function char_talent(&$sqlr, &$sqlc)
                     {
                         if (isset($tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']]))
                             $l -=$tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']][1];
-                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = array($talent['spell'], '5', '5');
+                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = [$talent['spell'], '5', '5'];
                         $l += 5;
 
                         if ($tab['field_13'])
@@ -80,7 +80,7 @@ function char_talent(&$sqlr, &$sqlc)
                         if (isset($tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']]))
                             $l -=$tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']][1];
 
-                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = array($talent['spell'], '4', ($tab['field_8'] ? '2' : '5'));
+                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = [$talent['spell'], '4', ($tab['field_8'] ? '2' : '5')];
                         $l += 4;
 
                         if ($tab['field_13'])
@@ -91,7 +91,7 @@ function char_talent(&$sqlr, &$sqlc)
                         if (isset($tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']]))
                             $l -=$tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']][1];
 
-                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = array($talent['spell'],'3', ($tab['field_7'] ? '2' : '5'));
+                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = [$talent['spell'],'3', ($tab['field_7'] ? '2' : '5')];
                         $l += 3;
 
                         if ($tab['field_13'])
@@ -102,7 +102,7 @@ function char_talent(&$sqlr, &$sqlc)
                         if (isset($tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']]))
                             $l -=$tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']][1];
 
-                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = array($talent['spell'],'2', ($tab['field_6'] ? '2' : '5'));
+                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = [$talent['spell'],'2', ($tab['field_6'] ? '2' : '5')];
                         $l += 2;
 
                         if ($tab['field_13'])
@@ -113,7 +113,7 @@ function char_talent(&$sqlr, &$sqlc)
                         if (isset($tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']]))
                             $l -=$tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']][1];
 
-                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = array($talent['spell'],'1', ($tab['field_5'] ? '2' : '5'));
+                        $tabs[$tab['field_1']][$tab['field_2']][$tab['field_3']] = [$talent['spell'],'1', ($tab['field_5'] ? '2' : '5')];
                         $l += 1;
 
                         if ($tab['field_13'])
@@ -207,10 +207,10 @@ function char_talent(&$sqlr, &$sqlc)
                 if ($sqlc->num_rows($result))
                 {
                     $glyphs = $sqlc->fetch_assoc($result);
-                    $glyphs = array($glyphs['glyph1'], $glyphs['glyph2'], $glyphs['glyph3'], $glyphs['glyph4'], $glyphs['glyph5'], $glyphs['glyph6']); // didnt want to recode the block down there
+                    $glyphs = [$glyphs['glyph1'], $glyphs['glyph2'], $glyphs['glyph3'], $glyphs['glyph4'], $glyphs['glyph5'], $glyphs['glyph6']]; // didnt want to recode the block down there
                 }
                 else
-                    $glyphs = array(0,0,0,0,0,0,0);
+                    $glyphs = [0,0,0,0,0,0,0];
 
                 for($i=0;$i<6;++$i)
                 {
@@ -258,7 +258,7 @@ function talent_dependencies(&$tabs, &$tab, &$i, &$sqlm)
     {
         if(empty($tabs[$dep['field_1']][$dep['field_2']][$dep['field_3']]))
         {
-            $tabs[$dep['field_1']][$dep['field_2']][$dep['field_3']] = array($dep['field_'.($tab['field_16'] + 1).''], ''.($tab['field_16'] + 1).'', (($tab['field_16'] < 4) ? ($dep['field_'.($tab['field_16'] + 2).''] ? '2' : '5') : '5'));
+            $tabs[$dep['field_1']][$dep['field_2']][$dep['field_3']] = [$dep['field_'.($tab['field_16'] + 1).''], ''.($tab['field_16'] + 1).'', (($tab['field_16'] < 4) ? ($dep['field_'.($tab['field_16'] + 2).''] ? '2' : '5') : '5')];
             $i += ($tab['field_16'] + 1);
 
             if ($dep['field_13'])

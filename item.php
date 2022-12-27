@@ -14,10 +14,10 @@ function output_status_options($stat_type_offset)
 {
     global $lang_item, $output;
 
-    $stat_type = array( 0 =>    "", 1 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "",12 => "",
+    $stat_type = [0 =>    "", 1 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "",12 => "",
                         13 =>   "",14 => "",15 => "",16 => "",17 => "",18 => "",19 => "",20 => "",21 => "",22 => "",
                         23 =>   "",24 => "",25 => "",26 => "",27 => "",28 => "",29 => "",30 => "",31 => "",32 => "",
-                        33 =>   "",34 => "",35 => "",36 => "");
+                        33 =>   "",34 => "",35 => "",36 => ""];
 
     if (!$stat_type_offset)
         $stat_type_offset = 0;
@@ -66,7 +66,7 @@ function output_dmgtype_options($dmg_type_offset)
 {
     global $lang_item, $output;
 
-    $dmg_type  = array( 0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "");
+    $dmg_type  = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => ""];
 
     if (!$dmg_type_offset)
         $dmg_type_offset = 0;
@@ -1336,8 +1336,8 @@ function edit() {
                                     <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['type']}:</td></tr>
                                     <tr>";
 
-        $class = array( 0 =>    "", 1 => "", 2 => "", 4 => "", 5 => "", 6 => "", 7 => "", 9 => "", 11 => "", 12 => "", 13 => "",
-                        14 =>   "",15 => "" );
+        $class = [0 =>    "", 1 => "", 2 => "", 4 => "", 5 => "", 6 => "", 7 => "", 9 => "", 11 => "", 12 => "", 13 => "",
+                        14 =>   "",15 => ""];
         $class[$item['class']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1361,18 +1361,18 @@ function edit() {
                                         </td>";
         unset($class);
 
-        $subclass = array(
-          0 => array(0 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => ""),
-          1 => array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => ""),
-          2 => array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 10 => "",
-              11 => "", 12 => "", 13 => "", 14 => "", 15 => "", 16 => "", 17 => "", 18 => "", 19 => "", 20 => ""),
-          4 => array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => ""),
-          6 => array(2 => "", 3 => ""),
-          7 => array(0 => "", 1 => "", 2 => "", 3 => ""),
-          9 => array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => "",10 => ""),
-          11 => array(2 => "", 3 => ""),
-          13 => array(0 => "", 1 => "")
-        );
+        $subclass = [
+          0 => [0 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => ""],
+          1 => [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => ""],
+          2 => [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 10 => "",
+              11 => "", 12 => "", 13 => "", 14 => "", 15 => "", 16 => "", 17 => "", 18 => "", 19 => "", 20 => ""],
+          4 => [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => ""],
+          6 => [2 => "", 3 => ""],
+          7 => [0 => "", 1 => "", 2 => "", 3 => ""],
+          9 => [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => "",10 => ""],
+          11 => [2 => "", 3 => ""],
+          13 => [0 => "", 1 => ""]
+        ];
 
         $subclass[$item['class']][$item['subclass']] = " selected=\"selected\" ";
 
@@ -1469,7 +1469,7 @@ function edit() {
                                     <tr>";
         unset($subclass);
 
-        $quality = array( 0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "" );
+        $quality = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => ""];
         $quality[$item['Quality']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1487,9 +1487,9 @@ function edit() {
                                         </td>";
         unset($quality);
 
-        $inv_type = array( 0 =>     "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => "", 11 => "", 12 => "",
+        $inv_type = [0 =>     "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => "", 11 => "", 12 => "",
                            13 =>    "", 14 => "", 15 => "", 16 => "", 17 => "", 18 => "", 19 => "", 20 => "", 21 => "", 22 => "", 23 => "",
-                           24 =>    "", 25 => "", 26 => "");
+                           24 =>    "", 25 => "", 26 => ""];
         $inv_type[$item['InventoryType']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1535,7 +1535,7 @@ function edit() {
                                         <td><input type=\"text\" name=\"itemset\" size=\"10\" maxlength=\"30\" value=\"{$item['itemset']}\" /></td>";
         unset($inv_type);
 
-        $bonding = array( 0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "" );
+        $bonding = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => ""];
         $bonding[$item['bonding']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1584,7 +1584,7 @@ function edit() {
                                     <td>".makeinfocell($lang_item_edit['stackable'],$lang_item_edit['stackable_desc'])."</td>
                                     <td><input type=\"text\" name=\"stackable\" size=\"6\" maxlength=\"5\" value=\"{$item['stackable']}\" /></td>
                                     <td>".makeinfocell($lang_item_edit['bag_family'],$lang_item_edit['bag_family_desc'])."</td>";
-        $bagfamily = array( 0 => "", 1 => "", 2 => "", 3 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => "", 12 => "" );
+        $bagfamily = [0 => "", 1 => "", 2 => "", 3 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => "", 12 => ""];
         $bagfamily[$item['BagFamily']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1610,7 +1610,7 @@ function edit() {
 
         unset($bagfamily);
 
-        $Material = array( -1 => "", 0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => "");
+        $Material = [-1 => "", 0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 6 => "", 7 => "", 8 => ""];
         $Material[$item['Material']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1632,7 +1632,7 @@ function edit() {
                                     </td>";
         unset($Material);
 
-        $PageMaterial = array( 0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "");
+        $PageMaterial = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => ""];
         $PageMaterial[$item['PageMaterial']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1682,8 +1682,8 @@ function edit() {
                                 </tr>";
 
 
-        $LanguageID = array( 0 => "", 1 => "", 2 => "", 3 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => "", 11 => "",
-                   12 => "", 13 => "", 14 => "", 33 => "");
+        $LanguageID = [0 => "", 1 => "", 2 => "", 3 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => "", 11 => "",
+                   12 => "", 13 => "", 14 => "", 33 => ""];
         $LanguageID[$item['LanguageID']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1709,7 +1709,7 @@ function edit() {
                                     </td>";
         unset($LanguageID);
 
-        $sheath = array( 0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 7 => "");
+        $sheath = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => "", 7 => ""];
         $sheath[$item['sheath']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1874,7 +1874,7 @@ function edit() {
                                 <td>".makeinfocell($lang_item_edit['armor_dmg_mod'],$lang_item_edit['armor_dmg_mod_desc'])."</td>
                                 <td colspan=\"2\"><input type=\"text\" name=\"ArmorDamageModifier\" size=\"10\" maxlength=\"40\" value=\"{$item['ArmorDamageModifier']}\" /></td>";
 
-        $ammo_type  = array( 0 => "", 2 => "", 3 => "" );
+        $ammo_type  = [0 => "", 2 => "", 3 => ""];
         $ammo_type [$item['ammo_type']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1927,7 +1927,7 @@ function edit() {
                             <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
                             <td><input type=\"text\" name=\"spellid_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_1']}\" /></td>";
 
-        $spelltrigger_1  = array( 0 => "", 1 => "", 2 => "", 4 => "");
+        $spelltrigger_1  = [0 => "", 1 => "", 2 => "", 4 => ""];
         $spelltrigger_1 [$item['spelltrigger_1']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1963,7 +1963,7 @@ function edit() {
                             <td><input type=\"text\" name=\"spellid_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_2']}\" /></td>";
         unset($spelltrigger_1);
 
-        $spelltrigger_2  = array( 0 => "", 1 => "", 2 => "", 4 => "");
+        $spelltrigger_2  = [0 => "", 1 => "", 2 => "", 4 => ""];
         $spelltrigger_2 [$item['spelltrigger_2']] = " selected=\"selected\" ";
 
         $output .= "
@@ -1999,7 +1999,7 @@ function edit() {
                             <td><input type=\"text\" name=\"spellid_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_3']}\" /></td>";
         unset($spelltrigger_2);
 
-        $spelltrigger_3  = array( 0 => "", 1 => "", 2 => "", 4 => "");
+        $spelltrigger_3  = [0 => "", 1 => "", 2 => "", 4 => ""];
         $spelltrigger_3 [$item['spelltrigger_3']] = " selected=\"selected\" ";
 
         $output .= "
@@ -2035,7 +2035,7 @@ function edit() {
                             <td><input type=\"text\" name=\"spellid_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_4']}\" /></td>";
         unset($spelltrigger_3);
 
-        $spelltrigger_4  = array( 0 => "", 1 => "", 2 => "", 4 => "");
+        $spelltrigger_4  = [0 => "", 1 => "", 2 => "", 4 => ""];
         $spelltrigger_4 [$item['spelltrigger_4']] = " selected=\"selected\" ";
 
         $output .= "
@@ -2071,7 +2071,7 @@ function edit() {
                             <td><input type=\"text\" name=\"spellid_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_5']}\" /></td>";
         unset($spelltrigger_4);
 
-        $spelltrigger_5  = array( 0 => "", 1 => "", 2 => "", 4 => "");
+        $spelltrigger_5  = [0 => "", 1 => "", 2 => "", 4 => ""];
         $spelltrigger_5 [$item['spelltrigger_5']] = " selected=\"selected\" ";
 
         $output .= "
@@ -2111,8 +2111,8 @@ function edit() {
                 <table class=\"lined\" style=\"width: 720px;\">
                     <tr>";
 
-        $AllowableClass  = array( -1 => "", 1 => "", 2 => "", 4 => "", 8 => "", 16 => "", 32 => "", 64 => "", 128 => "",
-                                256 => "", 512 => "", 1024 => "");
+        $AllowableClass  = [-1 => "", 1 => "", 2 => "", 4 => "", 8 => "", 16 => "", 32 => "", 64 => "", 128 => "",
+                                256 => "", 512 => "", 1024 => ""];
 
         if($item['AllowableClass'] == -1) $AllowableClass[-1] = " selected=\"selected\" ";
         else
@@ -2150,8 +2150,8 @@ function edit() {
                         </td>";
         unset($AllowableClass);
 
-        $AllowableRace  = array( -1 => "", 1 => "", 2 => "", 4 => "", 8 => "", 16 => "", 32 => "", 64 => "", 128 => "",
-                     256 => "", 512 => "");
+        $AllowableRace  = [-1 => "", 1 => "", 2 => "", 4 => "", 8 => "", 16 => "", 32 => "", 64 => "", 128 => "",
+                     256 => "", 512 => ""];
 
         if($item['AllowableRace'] == -1) $AllowableRace[-1] = " selected=\"selected\" ";
         else
@@ -2205,7 +2205,7 @@ function edit() {
                         <td><input type=\"text\" name=\"RequiredReputationFaction\" size=\"15\" maxlength=\"30\" value=\"{$item['RequiredReputationFaction']}\" /></td>";
         unset($AllowableRace);
 
-        $RequiredReputationRank  = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5=> "", 6 => "", 7 => "");
+        $RequiredReputationRank  = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5=> "", 6 => "", 7 => ""];
         $RequiredReputationRank [$item['RequiredReputationRank']] = " selected=\"selected\" ";
 
         $output .= "
@@ -2238,7 +2238,7 @@ function edit() {
                 <table class=\"lined\" style=\"width: 720px;\">
                     <tr>";
 
-        $socketColor_1  = array(0 => "", 1 => "", 2 => "", 4 => "", 8=> "");
+        $socketColor_1  = [0 => "", 1 => "", 2 => "", 4 => "", 8=> ""];
         $socketColor_1 [$item['socketColor_1']] = " selected=\"selected\" ";
 
         $output .= "
@@ -2258,7 +2258,7 @@ function edit() {
                     <tr>";
         unset($socketColor_1);
 
-        $socketColor_2  = array(0 => "", 1 => "", 2 => "", 4 => "", 8=> "");
+        $socketColor_2  = [0 => "", 1 => "", 2 => "", 4 => "", 8=> ""];
         $socketColor_2 [$item['socketColor_2']] = " selected=\"selected\" ";
 
         $output .= "
@@ -2278,7 +2278,7 @@ function edit() {
                     <tr>";
         unset($socketColor_2);
 
-        $socketColor_3  = array(0 => "", 1 => "", 2 => "", 4 => "", 8=> "");
+        $socketColor_3  = [0 => "", 1 => "", 2 => "", 4 => "", 8=> ""];
         $socketColor_3 [$item['socketColor_3']] = " selected=\"selected\" ";
 
         $output .= "

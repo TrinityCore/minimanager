@@ -61,7 +61,7 @@ function browse_users(&$sqlr, &$sqlc)
         // injection prevention
         $search_value = $sqlr->quote_smart($_GET['search_value']);
         $search_by = $sqlr->quote_smart($_GET['search_by']);
-        $search_menu = array('username', 'id', 'SecurityLevel', 'greater_gmlevel', 'email', 'joindate', 'last_ip', 'failed_logins', 'greater_failed_logins', 'lesser_failed_logins', 'last_login', 'online', 'banned', 'locked', 'expansion');
+        $search_menu = ['username', 'id', 'SecurityLevel', 'greater_gmlevel', 'email', 'joindate', 'last_ip', 'failed_logins', 'greater_failed_logins', 'lesser_failed_logins', 'last_login', 'online', 'banned', 'locked', 'expansion'];
         if (in_array($search_by, $search_menu));
         else
             $search_by = 'username';
@@ -1261,12 +1261,12 @@ require_once 'scripts/config.php';
 
 $command = "error";
 
-   $client = new SoapClient(NULL, array(
+   $client = new SoapClient(NULL, [
        'location' => "https://$soapaddr:$soap_port/",
        'uri'      => 'urn:TC',
        'login'    => $soap_user,
        'password' => $soap_pass,
-   ));
+   ]);
 
    switch ($cmd)
    {

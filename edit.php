@@ -154,6 +154,7 @@ function edit_user(&$sqlr, &$sqlc)
                                 </tr>';
             while ($char = $sqlc->fetch_assoc($result))
             {
+//                var_dump($char);die;
                 $output .= '
                                 <tr>
                                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---></td>

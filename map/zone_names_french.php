@@ -1,5 +1,5 @@
 <?php
-$zones = Array(
+$zones = [
 1 => 'Dun Morogh',
 2 => 'Longrivage',
 3 => 'Terres ingrates',
@@ -2263,5 +2263,5 @@ $zones = Array(
 4677 => 'Pavillon du Concordat argenté',
 4679 => 'La Caverne lugubre',
 4688 => 'claytonio test area',
-);
+];
 ?>

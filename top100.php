@@ -37,7 +37,7 @@ function top100($realmid, &$sqlr, &$sqlc)
     $dir = ($dir) ? 0 : 1;
     //==========================$_GET and SECURE end========================
 
-    $type_list = array('level', 'stat', 'defense', 'attack', 'resist', 'crit_hit', 'pvp');
+    $type_list = ['level', 'stat', 'defense', 'attack', 'resist', 'crit_hit', 'pvp'];
     if (in_array($type, $type_list));
     else
         $type = 'level';

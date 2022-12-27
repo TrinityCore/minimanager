@@ -10,43 +10,43 @@ function stats($action, &$sqlr, &$sqlc)
 
     $race =
         [
-            1  => [1, $lang_id_tab['human'],'',''],
-            2  => [2, $lang_id_tab['orc'],'',''],
-            3  => [3, $lang_id_tab['dwarf'],'',''],
-            4  => [4, $lang_id_tab['nightelf'],'',''],
-            5  => [5, $lang_id_tab['undead'],'',''],
-            6  => [6, $lang_id_tab['tauren'],'',''],
-            7  => [7, $lang_id_tab['gnome'],'',''],
-            8  => [8, $lang_id_tab['troll'],'',''],
-            10 => [10,$lang_id_tab['bloodelf'],'',''],
-            11 => [11,$lang_id_tab['draenei'],'','']
+        1  => [1, $lang_id_tab['human'],'',''],
+        2  => [2, $lang_id_tab['orc'],'',''],
+        3  => [3, $lang_id_tab['dwarf'],'',''],
+        4  => [4, $lang_id_tab['nightelf'],'',''],
+        5  => [5, $lang_id_tab['undead'],'',''],
+        6  => [6, $lang_id_tab['tauren'],'',''],
+        7  => [7, $lang_id_tab['gnome'],'',''],
+        8  => [8, $lang_id_tab['troll'],'',''],
+        10 => [10,$lang_id_tab['bloodelf'],'',''],
+        11 => [11,$lang_id_tab['draenei'],'','']
         ];
 
     $class =
         [
-            1  => [1, $lang_id_tab['warrior'],'',''],
-            2  => [2, $lang_id_tab['paladin'],'',''],
-            3  => [3, $lang_id_tab['hunter'],'',''],
-            4  => [4, $lang_id_tab['rogue'],'',''],
-            5  => [5, $lang_id_tab['priest'],'',''],
-            6  => [6, $lang_id_tab['death_knight'],'',''],
-            7  => [7, $lang_id_tab['shaman'],'',''],
-            8  => [8, $lang_id_tab['mage'],'',''],
-            9  => [9, $lang_id_tab['warlock'],'',''],
-            11 => [11,$lang_id_tab['druid'],'','']
+        1  => [1, $lang_id_tab['warrior'],'',''],
+        2  => [2, $lang_id_tab['paladin'],'',''],
+        3  => [3, $lang_id_tab['hunter'],'',''],
+        4  => [4, $lang_id_tab['rogue'],'',''],
+        5  => [5, $lang_id_tab['priest'],'',''],
+        6  => [6, $lang_id_tab['death_knight'],'',''],
+        7  => [7, $lang_id_tab['shaman'],'',''],
+        8  => [8, $lang_id_tab['mage'],'',''],
+        9  => [9, $lang_id_tab['warlock'],'',''],
+        11 => [11,$lang_id_tab['druid'],'','']
         ];
 
     $level =
         [
-            1 => [1,1,9,'',''],
-            2 => [2,10,19,'',''],
-            3 => [3,20,29,'',''],
-            4 => [4,30,39,'',''],
-            5 => [5,40,49,'',''],
-            6 => [6,50,59,'',''],
-            7 => [7,60,69,'',''],
-            8 => [8,70,79,'',''],
-            9 => [9,80,80,'','']
+        1 => [1,1,9,'',''],
+        2 => [2,10,19,'',''],
+        3 => [3,20,29,'',''],
+        4 => [4,30,39,'',''],
+        5 => [5,40,49,'',''],
+        6 => [6,50,59,'',''],
+        7 => [7,60,69,'',''],
+        8 => [8,70,79,'',''],
+        9 => [9,80,80,'','']
         ];
 
     $total_chars = $sqlc->result($sqlc->query('SELECT count(*) FROM characters'.( ($action) ? ' WHERE online= 1' : '' ).''), 0);

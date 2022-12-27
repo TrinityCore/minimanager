@@ -1,6 +1,6 @@
 <?php
 
-$character_race = Array(
+$character_race = [
   1 => 'Humain',
   2 => 'Orc',
   3 => 'Nain',
@@ -11,9 +11,9 @@ $character_race = Array(
   8 => 'Troll',
   9 => 'Goblin',
   10 => 'Elfe de sang',
-  11 => 'Draenaï');
+  11 => 'Draenaï'];
 
-$character_class = Array(
+$character_class = [
   1 => 'Guerrier',
   2 => 'Paladin',
   3 => 'Chasseur',
@@ -23,19 +23,19 @@ $character_class = Array(
   7 => 'Chaman',
   8 => 'Mage',
   9 => 'Démoniste',
-  11 => 'Druide');
+  11 => 'Druide'];
 
-$lang_defs = Array(
-  'maps_names' => Array('Azeroth','Outreterre','Norfendre'),
+$lang_defs = [
+  'maps_names' => ['Azeroth','Outreterre','Norfendre'],
   'total' => 'Total',
-  'faction' => Array('Alliance', 'Horde'),
+  'faction' => ['Alliance', 'Horde'],
   'name' => 'Nom',
   'race' => 'Race',
   'class' => 'Classe',
   'level' => 'lvl',
   'click_to_next' => 'Click: go to next',
   'click_to_first' => 'Click: go to first'
-);
+];
 
 include "zone_names_".$lang.".php";
 ?>

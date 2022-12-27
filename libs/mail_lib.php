@@ -22,14 +22,14 @@ function get_char_name($id)
 }
 
 // Mail Source
-$mail_source = Array
-(
+$mail_source =
+    [
     "0" => "Normal",
     "2" => "Auction",
     "3" => "Creature",
     "4" => "GameObject",
     "5" => "Item",
-);
+    ];
 
 function get_mail_source($id)
 {
@@ -38,22 +38,22 @@ function get_mail_source($id)
 }
 
 // Check State
-$check_state = Array
-(
+$check_state =
+    [
     //"0" => "Not Read",
     "1" => "Read",
     "2" => "Ret", //"Returned"
     "4" => "Co", //"Copied Checked"
     "8" => "COD", //"COD Pay Checked"
     "16" => "B" //"Mail has body"
-);
+    ];
 
 function bitMask($mask = 0) 
 {
     if(!is_numeric($mask))
-        return array();
+        return [];
 
-    $return = array();
+    $return = [];
     while ($mask > 0) 
     {
         for($i = 0, $n = 0; $i <= $mask; $i = 1 * pow(2, $n), $n++)

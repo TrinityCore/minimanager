@@ -1008,12 +1008,12 @@ class Database {
    * @return string
    */
   private static function bcBin2Dec($data) {
-	$parts = array(
+	$parts = [
 		unpack('V', substr($data, 12, 4)),
 		unpack('V', substr($data, 8, 4)),
 		unpack('V', substr($data, 4, 4)),
 		unpack('V', substr($data, 0, 4)),
-	);
+    ];
 
 	foreach($parts as &$part)
 		if($part[1] < 0)

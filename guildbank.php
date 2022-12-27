@@ -49,7 +49,7 @@ function guild_bank(&$sqlr, &$sqlc)
         $guild_name  = $sqlc->result($result, 0, 'name');
         $bank_gold   = $sqlc->result($result, 0, 'BankMoney');
         $result = $sqlc->query('SELECT TabId, TabName, TabIcon FROM guild_bank_tab WHERE guildid = '.$guild_id.' LIMIT 6');
-        $tabs = array();
+        $tabs = [];
 
         while ($tab = $sqlc->fetch_assoc($result))
         {
@@ -97,7 +97,7 @@ function guild_bank(&$sqlr, &$sqlc)
                     <div id="tab_content">';
 
         $result = $sqlc->query('SELECT gbi.SlotId, itemEntry, count as stack_count FROM guild_bank_item gbi INNER JOIN item_instance ii on ii.guid = gbi.item_guid WHERE gbi.guildid = '.$guild_id.' AND TabID = '.$current_tab.'');
-        $gb_slots = array();
+        $gb_slots = [];
 
         while ($tab = $sqlc->fetch_assoc($result))
             if ($tab['itemEntry'])

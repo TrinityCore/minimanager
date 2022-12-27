@@ -99,7 +99,7 @@ class SQL //MySQL
 
   function quote_smart($value){
   if( is_array($value) ) {
-    return array_map( array(&$this,'quote_smart') , $value);
+    return array_map( [&$this,'quote_smart'], $value);
   } else {
     if( $value === '' ) $value = NULL;
     if (function_exists('mysql_real_escape_string'))

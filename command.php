@@ -2,6 +2,7 @@
 
 // page header, and any additional required libraries
 include 'header.php';
+
 // minimum permission to view page
 valid_login($action_permission['read']);
 //#############################################################################
@@ -14,7 +15,7 @@ function print_commands_form()
     $levels = $gm_level_arr;
     $sqlw = new SQL;
     $sqlw->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
-    $query = $sqlw->query('SELECT name, help, security FROM command WHERE security <= '.$user_lvl.'');
+    $query = $sqlw->query('SELECT name, help FROM command WHERE security <= '.$user_lvl.'');
 
     while ($data = $sqlw->fetch_assoc($query))
     {

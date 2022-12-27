@@ -36,7 +36,7 @@ function browse_teams()
     {
         $search_value = $sqlc->quote_smart($_GET['search_value']);
         $search_by = $sqlc->quote_smart($_GET['search_by']);
-        $search_menu = array('atname', 'leadername', 'atid');
+        $search_menu = ['atname', 'leadername', 'atid'];
 
         if (!in_array($search_by, $search_menu))
             $search_by = 'atid';

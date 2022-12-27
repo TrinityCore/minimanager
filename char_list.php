@@ -49,7 +49,7 @@ function browse_chars(&$sqlr, &$sqlc)
     {
         $search_value = $sqlr->quote_smart($_GET['search_value']);
         $search_by = (isset($_GET['search_by'])) ? $sqlr->quote_smart($_GET['search_by']) : 'name';
-        $search_menu = array('name', 'guid', 'account', 'level', 'greater_level', 'lesser_level', 'guild', 'race', 'class', 'map', 'greater_rank', 'online', 'gold', 'item');
+        $search_menu = ['name', 'guid', 'account', 'level', 'greater_level', 'lesser_level', 'guild', 'race', 'class', 'map', 'greater_rank', 'online', 'gold', 'item'];
 
         if (in_array($search_by, $search_menu));
         else

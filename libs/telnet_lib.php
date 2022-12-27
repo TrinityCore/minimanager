@@ -32,7 +32,7 @@ class telnet_lib
     {
         $rv = 0;
         $vers = explode('.',PHP_VERSION);
-        $needvers = array(4,3,0);
+        $needvers = [4,3,0];
         $j = count($vers);
         $k = count($needvers);
     

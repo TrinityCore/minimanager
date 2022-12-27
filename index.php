@@ -197,7 +197,7 @@ function front(&$sqlr, &$sqlc, &$sqlm)
             $result = $sqlc->query('SELECT race FROM characters WHERE account = '.$user_id.'
                                     AND totaltime = (SELECT MAX(totaltime) FROM characters WHERE account = '.$user_id.') LIMIT 1');
             if ($sqlc->num_rows($result))
-                $order_side = (in_array($sqlc->result($result, 0),array(2,5,6,8,10))) ? ' AND race IN (2,5,6,8,10) ' : ' AND race IN (1,3,4,7,11) ';
+                $order_side = (in_array($sqlc->result($result, 0), [2,5,6,8,10])) ? ' AND race IN (2,5,6,8,10) ' : ' AND race IN (1,3,4,7,11) ';
         }
         if($order_by == 'ip')
             $result = $sqlr->query('SELECT id, last_ip FROM account WHERE online = 1 ORDER BY last_ip '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'');

@@ -127,7 +127,7 @@ function do_run_patch()
     }
     unset($use_db);
 
-    $new_queries = array();
+    $new_queries = [];
     $line = 0;
 
     $queries = explode("\n",$query);
