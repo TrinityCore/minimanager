@@ -120,7 +120,7 @@ function sql_table_dump ($dbhost, $dbuser, $dbpass, $database, $table, $construc
 			$row[$j] = addslashes($row[$j]);
 			$row[$j] = preg_replace("\n","\\n",$row[$j]);
 			if (isset($row[$j])) {
-				if ($sql_0->field_type($query,$j) == "int") fwrite($fp, "$row[$j]")or die (error($lang_backup['file_write_err']));
+				if ($sql_0->field_type($j,$query) == "int") fwrite($fp, "$row[$j]")or die (error($lang_backup['file_write_err']));
 					else fwrite($fp, "'$row[$j]'")or die (error($lang_backup['file_write_err']));
 				}else fwrite($fp, "''")or die (error($lang_backup['file_write_err']));
 			if ($j<($num_fields-1)) fwrite($fp, ",")or die (error($lang_backup['file_write_err']));

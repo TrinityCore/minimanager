@@ -1,0 +1,12 @@
+{
+  "name": "trinitycore/minimanager",
+  "description": "Web portal for TrinityCore emulator",
+  "type": "project",
+  "license": "gpl-2.0",
+  "minimum-stability": "stable",
+  "require": {
+    "php": "^7.4|^8.0|^8.1",
+    "ext-gmp": "*",
+    "ext-mysqli": "*"
+  }
+}

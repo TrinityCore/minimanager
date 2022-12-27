@@ -1,7 +1,7 @@
 <?php
     //hide undefined variables in some cases (some errorpages for ex.)
     if (!isset($debug))
-        error_reporting('E_NONE'); // fuck this, we need a real fix
+        error_reporting(0); // fuck this, we need a real fix
 
     // level 1 debug prints total queries,
     //  so we would have to close these, or we can't have debug output
@@ -40,7 +40,7 @@
                 </div>
                 <div id="body_buttom">';
     // show login and register button at bottom of every page if guest mode is activated
-    if($allow_anony && empty($_SESSION['logged_in']))
+    if($allow_anony && empty($_SESSION['logged_in']) && !strpos($_SERVER["REQUEST_URI"], "login"))
     {
         $lang_login = lang_login();
         $output .= '

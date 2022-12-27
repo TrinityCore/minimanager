@@ -14,7 +14,7 @@ unset($_SESSION['logged_in']);
 
 if (strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') === false)
 {
-    header('Location: https://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']), '/\\').'/login.php');
+    header('Location: //'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['PHP_SELF']), '/\\').'/login.php');
     exit();
 }
 else

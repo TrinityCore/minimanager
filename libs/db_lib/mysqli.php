@@ -24,7 +24,7 @@ class SQL //MySQLi
 
         if ($this->link_id){
             if (!empty($use_names)) $this->query("SET NAMES '$use_names'");
-        } else die($lang_global['err_sql_conn_db']);
+        } else die($lang_global['err_sql_conn_db'] . " DB: {$db_name}");
     }
 
     function db($db_name) {
@@ -93,11 +93,11 @@ class SQL //MySQLi
         return ($query_id) ? @mysqli_free_result($query_id) : false;
     }
 
-    function field_type($query_id = 0,$field_offset){
+    function field_type($field_offset, $query_id = 0){
         return false; //TODO
     }
 
-    function field_name($query_id = 0,$field_offset){
+    function field_name($field_offset,$query_id = 0){
         return false; //TODO
     }
 
@@ -118,11 +118,11 @@ class SQL //MySQLi
         global $tot_queries;
         $tot_queries += $this->num_queries;
         if ($this->link_id){
-            if ($this->query_result) @mysqli_free_result($this->query_result);
-            return @mysqli_close($this->link_id);
+            if ($this->query_result instanceof mysqli_result) mysqli_free_result($this->query_result);
+            return mysqli_close($this->link_id);
         } else return false;
     }
-    
+
     function start_transaction(){
         return;
     }
@@ -132,3 +132,7 @@ class SQL //MySQLi
     }
 }
 ?>
+
+
+
+

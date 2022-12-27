@@ -481,7 +481,7 @@ function dobackup()
                             $row[$j] = preg_replace("/\n/","\\n",$row[$j]);
                             if (isset($row[$j]))
                             {
-                                if ($sql->field_type($acc_query,$j) == "int")
+                                if ($sql->field_type($j,$acc_query) == "int")
                                     $result .= "$row[$j]";
                                 else
                                     $result .= "'$row[$j]'" ;
@@ -550,7 +550,7 @@ function dobackup()
 
                                     if (isset($row[$j]))
                                     {
-                                        if ($sql->field_type($char_query,$j) == "int")
+                                        if ($sql->field_type($j,$char_query) == "int")
                                             $result .= "$row[$j]";
                                         else
                                             $result .= "'$row[$j]'" ;

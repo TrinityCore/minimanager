@@ -8,46 +8,46 @@ function stats($action, &$sqlr, &$sqlc)
     global $output, $lang_global, $lang_stat, $lang_id_tab, $lang_index,
            $realm_id, $realm_db, $theme;
 
-    $race = Array
-    (
-        1  => array(1, $lang_id_tab['human'],'',''),
-        2  => array(2, $lang_id_tab['orc'],'',''),
-        3  => array(3, $lang_id_tab['dwarf'],'',''),
-        4  => array(4, $lang_id_tab['nightelf'],'',''),
-        5  => array(5, $lang_id_tab['undead'],'',''),
-        6  => array(6, $lang_id_tab['tauren'],'',''),
-        7  => array(7, $lang_id_tab['gnome'],'',''),
-        8  => array(8, $lang_id_tab['troll'],'',''),
-        10 => array(10,$lang_id_tab['bloodelf'],'',''),
-        11 => array(11,$lang_id_tab['draenei'],'','')
-    );
+    $race =
+        [
+            1  => [1, $lang_id_tab['human'],'',''],
+            2  => [2, $lang_id_tab['orc'],'',''],
+            3  => [3, $lang_id_tab['dwarf'],'',''],
+            4  => [4, $lang_id_tab['nightelf'],'',''],
+            5  => [5, $lang_id_tab['undead'],'',''],
+            6  => [6, $lang_id_tab['tauren'],'',''],
+            7  => [7, $lang_id_tab['gnome'],'',''],
+            8  => [8, $lang_id_tab['troll'],'',''],
+            10 => [10,$lang_id_tab['bloodelf'],'',''],
+            11 => [11,$lang_id_tab['draenei'],'','']
+        ];
 
-    $class = Array
-    (
-        1  => array(1, $lang_id_tab['warrior'],'',''),
-        2  => array(2, $lang_id_tab['paladin'],'',''),
-        3  => array(3, $lang_id_tab['hunter'],'',''),
-        4  => array(4, $lang_id_tab['rogue'],'',''),
-        5  => array(5, $lang_id_tab['priest'],'',''),
-        6  => array(6, $lang_id_tab['death_knight'],'',''),
-        7  => array(7, $lang_id_tab['shaman'],'',''),
-        8  => array(8, $lang_id_tab['mage'],'',''),
-        9  => array(9, $lang_id_tab['warlock'],'',''),
-        11 => array(11,$lang_id_tab['druid'],'','')
-    );
+    $class =
+        [
+            1  => [1, $lang_id_tab['warrior'],'',''],
+            2  => [2, $lang_id_tab['paladin'],'',''],
+            3  => [3, $lang_id_tab['hunter'],'',''],
+            4  => [4, $lang_id_tab['rogue'],'',''],
+            5  => [5, $lang_id_tab['priest'],'',''],
+            6  => [6, $lang_id_tab['death_knight'],'',''],
+            7  => [7, $lang_id_tab['shaman'],'',''],
+            8  => [8, $lang_id_tab['mage'],'',''],
+            9  => [9, $lang_id_tab['warlock'],'',''],
+            11 => [11,$lang_id_tab['druid'],'','']
+        ];
 
-    $level = Array
-    (
-        1 => array(1,1,9,'',''),
-        2 => array(2,10,19,'',''),
-        3 => array(3,20,29,'',''),
-        4 => array(4,30,39,'',''),
-        5 => array(5,40,49,'',''),
-        6 => array(6,50,59,'',''),
-        7 => array(7,60,69,'',''),
-        8 => array(8,70,79,'',''),
-        9 => array(9,80,80,'','')
-    );
+    $level =
+        [
+            1 => [1,1,9,'',''],
+            2 => [2,10,19,'',''],
+            3 => [3,20,29,'',''],
+            4 => [4,30,39,'',''],
+            5 => [5,40,49,'',''],
+            6 => [6,50,59,'',''],
+            7 => [7,60,69,'',''],
+            8 => [8,70,79,'',''],
+            9 => [9,80,80,'','']
+        ];
 
     $total_chars = $sqlc->result($sqlc->query('SELECT count(*) FROM characters'.( ($action) ? ' WHERE online= 1' : '' ).''), 0);
 
@@ -86,7 +86,8 @@ function stats($action, &$sqlr, &$sqlc)
                       <font class="bold">'.$lang_index['tot_users_online'].' : '.$total_chars.'</font><br /><br />';
         else
         {
-            $query = $sqlr->query('SELECT count(*) FROM account UNION SELECT count(*) FROM account_access WHERE SecurityLevel > 0');
+            $query = $sqlr->query('SELECT count(*) FROM account UNION ALL SELECT count(*) FROM account_access WHERE SecurityLevel > 0');
+
             $total_acc = $sqlr->result($query, 0);
             $total_gms = $sqlr->result($query, 1);
             unset($query);
@@ -151,7 +152,7 @@ function stats($action, &$sqlr, &$sqlc)
                                                 <tr align="left">
                                                     <td colspan="2">
                                                         '.$lang_stat['average_of'].' '.round($total_chars/$total_acc,1).' '.$lang_stat['chars_per_acc'].'<br />
-                                                        '.$lang_stat['total_of'].' '.$total_gms.' '.$lang_stat['gms_one_for'].' '.round($total_acc/$total_gms,1).' '.$lang_stat['players'].'
+                                                        '.$lang_stat['total_of'].' '.$total_gms.' '.$lang_stat['gms_one_for'].' '.round(max($total_acc, 1)/max($total_gms, 1)).' '.$lang_stat['players'].'
                                                     </td>
                                                     <td colspan="2">
                                                     </td>
@@ -346,29 +347,29 @@ function stats($action, &$sqlr, &$sqlc)
             $output .= '
                                                     <th>'.$class[$id[0]][1].'<br />'.$class[$id[0]][2].'</th>';
         }
-    unset($class);
-    $output .= '
+        unset($class);
+        $output .= '
                                                 </tr>
                                             </table>
                                             <br />
                                         </td>
                                     </tr>';
 
-    // CLASS END
-    // LEVEL
-    foreach ($level as $id)
-    {
-        $level[$id[0]][3] = $sqlc->result($sqlc->query('SELECT count(guid) FROM characters WHERE level >= '.$id[1].' AND level <= '.$id[2].'
+        // CLASS END
+        // LEVEL
+        foreach ($level as $id)
+        {
+            $level[$id[0]][3] = $sqlc->result($sqlc->query('SELECT count(guid) FROM characters WHERE level >= '.$id[1].' AND level <= '.$id[2].'
                             '.$order_race.' '.$order_class.' '.$order_side.(($action) ? ' AND online= 1' : '').''), 0);
-        $level[$id[0]][4] = round((($level[$id[0]][3])*100)/$total_chars,1);
-    }
-    unset($order_level);
-    unset($order_class);
-    unset($order_race);
-    unset($total_chars);
-    unset($order_side);
+            $level[$id[0]][4] = round((($level[$id[0]][3])*100)/$total_chars,1);
+        }
+        unset($order_level);
+        unset($order_class);
+        unset($order_race);
+        unset($total_chars);
+        unset($order_side);
 
-    $output .= '
+        $output .= '
                     <tr align="left">
                         <td>
                             <h1>'.$lang_stat['chars_by_level'].'</h1>
@@ -378,24 +379,24 @@ function stats($action, &$sqlr, &$sqlc)
                         <td>
                             <table class="bargraph">
                                 <tr>';
-    foreach ($level as $id)
-    {
-        $height = ($level[$id[0]][4])*3;
-        $output .= '
+        foreach ($level as $id)
+        {
+            $height = ($level[$id[0]][4])*3;
+            $output .= '
                                     <td><a href="stat.php?action='.$action.'&amp;level='.$id[1].'" class="graph_link">'.$level[$id[0]][4].'%<img src="themes/'.$theme.'/column.gif" width="77" height="'.$height.'" alt="'.$level[$id[0]][3].'" /></a></td>';
-    }
-    unset($height);
+        }
+        unset($height);
 
-    $output .= '
+        $output .= '
                                 </tr>
                                 <tr>';
-    foreach ($level as $id)
-        $output .= '
+        foreach ($level as $id)
+            $output .= '
                                     <th>'.$level[$id[0]][1].'-'.$level[$id[0]][2].'<br />'.$level[$id[0]][3].'</th>';
-    unset($id);
-    unset($level);
+        unset($id);
+        unset($level);
 
-    $output .= '
+        $output .= '
                                 </tr>
                             </table>
                             <br />
@@ -404,11 +405,11 @@ function stats($action, &$sqlr, &$sqlc)
                     </tr>
                     <tr>
                         <td>';
-    // LEVEL END
+        // LEVEL END
 
-    makebutton($lang_stat['reset'], 'stat.php', 720);
+        makebutton($lang_stat['reset'], 'stat.php', 720);
 
-    $output .= '
+        $output .= '
                         </td>
                     </tr>
                 </table>
