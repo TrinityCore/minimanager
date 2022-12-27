@@ -201,4 +201,27 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $sta
 
     return $page_string;
 }
+
+/**
+ * Build URIs for top100 table header links
+ */
+function buildTopUrl($linkCategory, $type, $start, $sortOrder)
+{
+    return "top100.php?" . http_build_query([
+            'order_by' => $linkCategory,
+            'type' => $type,
+            'start' => $start,
+            'sort_order' => $sortOrder  === 'ASC' ? 'DESC' : 'ASC'
+        ]);
+}
+
+/**
+ * Build class name for top100 table header links
+ */
+function buildClass($type, $orderBy, $sortOrder) {
+    return $orderBy == $type
+        ? $sortOrder
+        : '';
+}
+
 ?>

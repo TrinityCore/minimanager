@@ -28,13 +28,8 @@ function top100($realmid, &$sqlr, &$sqlc)
     else
         $order_by = 'level';
 
-    $dir = (isset($_GET['dir'])) ? $sqlc->quote_smart($_GET['dir']) : 1;
-    if (preg_match('/^[01]{1}$/', $dir));
-    else
-        $dir=1;
+    $dir = (in_array($_GET['sort_order'], ['ASC', 'DESC'])) ? $_GET['sort_order'] : null;
 
-    $order_dir = ($dir) ? 'DESC' : 'DESC';
-    $dir = ($dir) ? 0 : 1;
     //==========================$_GET and SECURE end========================
 
     $type_list = ['level', 'stat', 'defense', 'attack', 'resist', 'crit_hit', 'pvp'];
@@ -131,50 +126,50 @@ function top100($realmid, &$sqlr, &$sqlc)
                                 <th width="5%">#</th>
                                 <th width="14%">'.$lang_top['name'].'</th>
                                 <th width="11%">'.$lang_top['race'].' '.$lang_top['class'].'</th>
-                                <th width="8%"><a href="top100.php?type='.$type.'&amp;order_by=level&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='level' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['level'].'</a></th>';
+                                <th width="8%"><a href="'.buildTopUrl('level', $type, $start, $dir).'" class="'.buildClass('level', $order_by, $dir).'">'.$lang_top['level'].'</a></th>';
     if ($type === 'level')
     {
         $output .= '
                                 <th width="22%">'.$lang_top['guild'].'</th>
-                                <th width="20%"><a href="top100.php?type='.$type.'&amp;order_by=money&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='money' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['money'].'</a></th>
-                                <th width="20%"><a href="top100.php?type='.$type.'&amp;order_by=totaltime&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='totaltime' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['time_played'].'</a></th>';
+                                <th width="20%"><a href="'.buildTopUrl('money', $type, $start, $dir).'" class="'.buildClass('money', $order_by, $dir).'">'.$lang_top['money'].'</a></th>
+                                <th width="20%"><a href="'.buildTopUrl('totaltime', $type, $start, $dir).'" class="'.buildClass('totaltime', $order_by, $dir).'">'.$lang_top['time_played'].'</a></th>';
     }
     elseif ($type === 'stat')
     {
         $output .= '
-                                <th width="11%"><a href="top100.php?type='.$type.'&amp;order_by=health&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='health' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['health'].'</a></th>
-                                <th width="10%"><a href="top100.php?type='.$type.'&amp;order_by=mana&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='mana' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['mana'].'</a></th>
-                                <th width="9%"><a href="top100.php?type='.$type.'&amp;order_by=str&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='str' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['str'].'</a></th>
-                                <th width="8%"><a href="top100.php?type='.$type.'&amp;order_by=agi&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='agi' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['agi'].'</a></th>
-                                <th width="8%"><a href="top100.php?type='.$type.'&amp;order_by=sta&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='sta' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['sta'].'</a></th>
-                                <th width="8%"><a href="top100.php?type='.$type.'&amp;order_by=intel&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='intel' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['intel'].'</a></th>
-                                <th width="8%"><a href="top100.php?type='.$type.'&amp;order_by=spi&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='spi' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['spi'].'</a></th>';
+                                <th width="11%"><a href="'.buildTopUrl('health', $type, $start, $dir).'" class="'.buildClass('health', $order_by, $dir).'">'.$lang_top['health'].'</a></th>
+                                <th width="10%"><a href="'.buildTopUrl('mana', $type, $start, $dir).'" class="'.buildClass('mana', $order_by, $dir).'">'.$lang_top['mana'].'</a></th>
+                                <th width="9%"><a href="'.buildTopUrl('str', $type, $start, $dir).'" class="'.buildClass('str', $order_by, $dir).'">'.$lang_top['str'].'</a></th>
+                                <th width="8%"><a href="'.buildTopUrl('agi', $type, $start, $dir).'" class="'.buildClass('agi', $order_by, $dir).'">'.$lang_top['agi'].'</a></th>
+                                <th width="8%"><a href="'.buildTopUrl('sta', $type, $start, $dir).'" class="'.buildClass('sta', $order_by, $dir).'">'.$lang_top['sta'].'</a></th>
+                                <th width="8%"><a href="'.buildTopUrl('intel', $type, $start, $dir).'" class="'.buildClass('intel', $order_by, $dir).'">'.$lang_top['intel'].'</a></th>
+                                <th width="8%"><a href="'.buildTopUrl('spi', $type, $start, $dir).'" class="'.buildClass('spi', $order_by, $dir).'">'.$lang_top['spi'].'</a></th>';
     }
     elseif ($type === 'defense')
     {
         $output .= '
-                                <th width="16%"><a href="top100.php?type='.$type.'&amp;order_by=armor&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='armor' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['armor'].'</a></th>
-                                <th width="16%"><a href="top100.php?type='.$type.'&amp;order_by=block&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='block' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['block'].'</a></th>
-                                <th width="15%"><a href="top100.php?type='.$type.'&amp;order_by=dodge&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='dodge' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['dodge'].'</a></th>
-                                <th width="15%"><a href="top100.php?type='.$type.'&amp;order_by=parry&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='parry' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['parry'].'</a></th>';
+                                <th width="16%"><a href="'.buildTopUrl('armor', $type, $start, $dir).'" class="'.buildClass('armor', $order_by, $dir).'">'.$lang_top['armor'].'</a></th>
+                                <th width="16%"><a href="'.buildTopUrl('block', $type, $start, $dir).'" class="'.buildClass('block', $order_by, $dir).'">'.$lang_top['block'].'</a></th>
+                                <th width="15%"><a href="'.buildTopUrl('dodge', $type, $start, $dir).'" class="'.buildClass('dodge', $order_by, $dir).'">'.$lang_top['dodge'].'</a></th>
+                                <th width="15%"><a href="'.buildTopUrl('parry', $type, $start, $dir).'" class="'.buildClass('parry', $order_by, $dir).'">'.$lang_top['parry'].'</a></th>';
     }
     elseif ($type === 'resist')
     {
         $output .= '
-                                <th width="10%"><a href="top100.php?type='.$type.'&amp;order_by=holy&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='holy' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['holy'].'</a></th>
-                                <th width="10%"><a href="top100.php?type='.$type.'&amp;order_by=fire&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='fire' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['fire'].'</a></th>
-                                <th width="10%"><a href="top100.php?type='.$type.'&amp;order_by=nature&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='nature' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['nature'].'</a></th>
-                                <th width="10%"><a href="top100.php?type='.$type.'&amp;order_by=frost&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='frost' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['frost'].'</a></th>
-                                <th width="11%"><a href="top100.php?type='.$type.'&amp;order_by=shadow&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='shadow' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['shadow'].'</a></th>
-                                <th width="11%"><a href="top100.php?type='.$type.'&amp;order_by=arcane&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='arcane' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['arcane'].'</a></th>';
+                                <th width="10%"><a href="'.buildTopUrl('holy', $type, $start, $dir).'" class="'.buildClass('holy', $order_by, $dir).'">'.$lang_top['holy'].'</a></th>
+                                <th width="10%"><a href="'.buildTopUrl('fire', $type, $start, $dir).'" class="'.buildClass('fire', $order_by, $dir).'">'.$lang_top['fire'].'</a></th>
+                                <th width="10%"><a href="'.buildTopUrl('nature', $type, $start, $dir).'" class="'.buildClass('nature', $order_by, $dir).'">'.$lang_top['nature'].'</a></th>
+                                <th width="10%"><a href="'.buildTopUrl('frost', $type, $start, $dir).'" class="'.buildClass('frost', $order_by, $dir).'">'.$lang_top['frost'].'</a></th>
+                                <th width="11%"><a href="'.buildTopUrl('shadow', $type, $start, $dir).'" class="'.buildClass('shadow', $order_by, $dir).'">'.$lang_top['shadow'].'</a></th>
+                                <th width="11%"><a href="'.buildTopUrl('arcane', $type, $start, $dir).'" class="'.buildClass('arcane', $order_by, $dir).'">'.$lang_top['arcane'].'</a></th>';
     }
     elseif ($type === 'pvp')
     {
         $output .= '
-                                <th width="20%"><a href="top100.php?type='.$type.'&amp;order_by=honor&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='honor' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['rank'].'</a></th>
-                                <th width="14%">'.$lang_top['honor_points'].'</th>
-                                <th width="14%"><a href="top100.php?type='.$type.'&amp;order_by=kills&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='kills' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['kills'].'</a></th>
-                                <th width="14%"><a href="top100.php?type='.$type.'&amp;order_by=arena&amp;start='.$start.'&amp;dir='.$dir.'"'.($order_by==='arena' ? ' class="'.$order_dir.'"' : '').'>'.$lang_top['arena_points'].'</a></th>';
+                                <th width="20%"><a href="'.buildTopUrl('rank', $type, $start, $dir).'" class="'.buildClass('rank', $order_by, $dir).'">'.$lang_top['rank'].'</a></th>
+                                <th width="14%"><a href="'.buildTopUrl('honor', $type, $start, $dir).'" class="'.buildClass('honor', $order_by, $dir).'">'.$lang_top['honor_points'].'</a></th>
+                                <th width="14%"><a href="'.buildTopUrl('kills', $type, $start, $dir).'" class="'.buildClass('kills', $order_by, $dir).'">'.$lang_top['kills'].'</a></th>
+                                <th width="14%"><a href="'.buildTopUrl('arena', $type, $start, $dir).'" class="'.buildClass('arena', $order_by, $dir).'">'.$lang_top['arena_points'].'</a></th>';
     }
     $output .= '
                             </tr>';
@@ -348,6 +343,7 @@ else
     top100($realm_id, $sqlr, $sqlc);
 }
 
+
 unset($action);
 unset($action_permission);
 unset($lang_top);
@@ -356,3 +352,4 @@ require_once 'footer.php';
 
 
 ?>
+
