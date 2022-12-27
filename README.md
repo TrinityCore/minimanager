@@ -9,7 +9,11 @@ The minimum required version of PHP is currently PHP 7.4. However, as [support f
 , you
 should upgrade to PHP 8.0 **as soon as possible**.
 
-A docker compose configuration has been provided for convenience. Note that you ma
+A docker compose configuration has been provided for convenience. Note that you do not need to apply the `mmfpm.sql` 
+when using the docker configuration - an init script does this during build.
+```
+docker-compose -f ./.docker/docker-compose.yml up -d
+```
 
 ### Configuration
 
