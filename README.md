@@ -31,5 +31,16 @@ cp scripts/config.dist.php config.php
 - Check to make sure you have the necessary GM level set in `auth.account_access`
 
 
+### Updates to existing minimanager installations
+For older installations, a change was made to improve the security of the application (though in its current state, 
+more work must be done). Ensure your `config.php` includes the following lines, preferably near the bottom:
+
+```php
+if (!defined('HEADER_LOADED')) {
+  header('Location: /');
+}
+```
+
+This is to ensure direct navigation to the configuration file is not permitted. 
 
 
