@@ -44,7 +44,7 @@ $sql_search_limit =  100;                         // limit number of maximum sea
 $mmfpm_db['addr']     = '127.0.0.1:3306';         // SQL server IP:port this DB located on, use `mysql` if local docker
 $mmfpm_db['user']     = 'root';                   // SQL server login this DB located on
 $mmfpm_db['pass']     = '1';                      // SQL server pass this DB located on
-$mmfpm_db['name']     = 'mmfpm';                  // MiniManager DB name
+$mmfpm_db['name']     = 'mmftc';                  // MiniManager DB name
 $mmfpm_db['encoding'] = 'utf8';                   // SQL connection encoding
 
 $realm_db['addr']     = '127.0.0.1:3306';         // SQL server IP:port this realmd located on
@@ -196,7 +196,7 @@ $simple_register       = false;     // Sets the registration to a simple form. N
 // allow all => empty array
 // e.g: "120-122.55.255-0.255-0"
 
-$valid_ip_mask = [];
+$valid_ip_mask = array();
 /* Sample config, you may have more then 1
 $valid_ip_mask[0] = '255-0.255-0.255-0.255-0';
 $valid_ip_mask[1] = '120-122.55.255-0.255-0';
@@ -274,17 +274,17 @@ $backup_dir = 'backup';    // make sure webserver have the permission to write/r
 //#############################################################################
 //---- Account Levels ----
 
-$gm_level_arr =
-    [
- -1 => [-1,      'Guest',      '',''],
-  0 => [0,     'Player',      '',''],
-  1 => [1,  'Moderator',   'Mod',''],
-  2 => [2, 'Gamemaster',    'GM',''], // change the name and alias as required
-  3 => [3, 'BugTracker',    'BT',''],
-  4 => [4,      'Admin', 'Admin',''],
-  5 => [5,      'SysOp', 'SysOp',''],
-  6 => [6,    'Unknown',   'UnK',''], // Add additional levels as required
-    ];
+$gm_level_arr = array
+(
+ -1 => array(-1,      'Guest',      '',''),
+  0 => array( 0,     'Player',      '',''),
+  1 => array( 1,  'Moderator',   'Mod',''),
+  2 => array( 2, 'Gamemaster',    'GM',''), // change the name and alias as required
+  3 => array( 3, 'BugTracker',    'BT',''),
+  4 => array( 4,      'Admin', 'Admin',''),
+  5 => array( 5,      'SysOp', 'SysOp',''),
+  6 => array( 6,    'Unknown',   'UnK',''), // Add additional levels as required
+);
 
 
 //#############################################################################
@@ -308,80 +308,85 @@ $gm_level_arr =
 // --    level 2 can delete items, but cannot add or edit
 // --    level 3 can add and edit, but cannot delete
 
-$menu_array =
-    [
-  ['index.php',        'main',
-      [
-      ['ahstats.php','auctionhouse', 0,5,5,5],
-      ['arenateam.php', 'arena_teams', 0,5,5,5], // has own level security, but has yet to honor the new security system.
-      ['guild.php',      'guilds', 0,5,5,5],
-      ['honor.php',       'honor', 0,5,5,5],
-      ['top100.php',      'top100', 0,5,5,5],
-      ['forum.php',      'forums', 0,5,5,5], // has own level security, but has yet to honor the new security system.
-      ['stat.php',  'statistics', 0,5,5,5],
-      ['javascript:void(0);" onclick="window.open
+$menu_array = array
+(
+  array
+  (              'index.php',        'main', array
+    (
+      array(   'ahstats.php','auctionhouse', 0,5,5,5),
+      array( 'arenateam.php', 'arena_teams', 0,5,5,5), // has own level security, but has yet to honor the new security system.
+      array(     'guild.php',      'guilds', 0,5,5,5),
+      array(     'honor.php',       'honor', 0,5,5,5),
+      array(    'top100.php',      'top100', 0,5,5,5),
+      array(     'forum.php',      'forums', 0,5,5,5), // has own level security, but has yet to honor the new security system.
+      array(      'stat.php',  'statistics', 0,5,5,5),
+      array('javascript:void(0);" onclick="window.open
               (\'./map/\', \'./map/\', \'toolbar=0, location=0, directories=0, status=0, menubar=0, scrollbars=no, resizable=no, copyhistory=1, width=966, height=732\')',
-                               'player_map', 0,5,5,5], // this page has yet to honor the new security system, but it is a read only page
-      ],
-  ],
-  ['#',      'tools',
-      [
-      ['user.php',   'accounts', 1,5,5,5],
-      ['char_list.php', 'characters', 0,5,5,5],
-      ['command.php',    'command', 0,5,5,5],
-      ['mail.php',       'mail', 1,5,5,5],
-      ['mail_on.php',    'mail_on', 3,5,5,5],
-      ['ticket.php',    'tickets', 2,5,5,5],
-      ['banned.php','banned_list', 3,5,5,5],
-      ['cleanup.php',    'cleanup', 5,5,5,5],
-      ['irc.php',        'irc', 0,5,5,5],
-      ],
-  ],
-  ['#',         'db',
-      [
-      ['events.php',     'events', 0,5,5,5],
-      ['instances.php',  'instances', 0,5,5,5],
-      ['item.php',      'items', 1,5,5,5],
-      ['creature.php',  'creatures', 5,5,5,5], // this page has yet to honor the new security system, please use with caution.
-      ['game_object.php','game_object', 5,5,5,5], // this page has yet to honor the new security system, please use with caution.
-      ['tele.php',  'teleports', 1,5,5,5],
-      ['backup.php',     'backup', 5,5,5,5], // this page has yet to honor the new security system, please use with caution.
-      ['run_patch.php',  'run_patch', 3,5,5,5],
-      ['repair.php',     'repair', 3,5,5,5],
-      ],
-  ],
-  ['#',     'system',
-      [
-      ['realm.php',      'realm', 1,5,5,5],
-      ['motd.php',   'add_motd', 1,5,5,5],
-      ['spelld.php',     'spelld', 1,5,5,5],
-      ['message.php',    'message', 1,5,5,5],
-      ['ssh.php',   'ssh_line', 1,5,5,5],
-      ],
-  ],
-  ['#',  'invisible',
-      [
-      ['javascript:void(0);" onclick="window.open(\'./forum.html\', \'forum\')', 'forums',0,0,0,0],
-      ['char.php', 'character', 0,5,5,5],
-      ['char_inv.php', 'character', 0,5,5,5],
-      ['char_quest.php', 'character', 0,5,5,5],
-      ['char_achieve.php', 'character', 0,5,5,5],
-      ['char_skill.php', 'character', 0,5,5,5],
-      ['char_talent.php', 'character', 0,5,5,5],
-      ['char_rep.php', 'character', 0,5,5,5],
-      ['char_pets.php', 'character', 0,5,5,5],
-      ['char_friends.php', 'character', 0,5,5,5],
-      ['char_extra.php', 'character', 0,5,5,5],
-      ['char_spell.php', 'character', 0,5,5,5],
-      ['char_mail.php', 'character', 0,5,5,5],
-      ['char_edit.php', 'char_edit', 0,5,5,5],
-      ['edit.php', 'myaccount', 0,5,5,5],
-      ['index.php', 'startpage',-1,5,5,5],
-      ['guildbank.php', 'guildbank', 0,5,5,5], // under development
-      ['realm.php',     'realm', 0,5,5,5], // this last one is special, if this is not here, users are unable to switch realms
-      ],                                                 // if READ is set to level 3, only level 3 and above can switch realms.
-  ],                                                   // INSERT, UPDATE and DELETE should have no effect, but best to keep it at 5.
-    ];
+                               'player_map', 0,5,5,5), // this page has yet to honor the new security system, but it is a read only page
+    ),
+  ),
+  array
+  (                       '#',      'tools', array
+    (
+      array(       'user.php',   'accounts', 1,5,5,5),
+      array(  'char_list.php', 'characters', 0,5,5,5),
+      array(    'command.php',    'command', 0,5,5,5),
+      array(       'mail.php',       'mail', 1,5,5,5),
+      array(    'mail_on.php',    'mail_on', 3,5,5,5),
+      array(     'ticket.php',    'tickets', 2,5,5,5),
+      array(     'banned.php','banned_list', 3,5,5,5),
+      array(    'cleanup.php',    'cleanup', 5,5,5,5),
+      array(        'irc.php',        'irc', 0,5,5,5),
+    ),
+  ),
+  array
+  (                       '#',         'db', array
+    (
+      array(     'events.php',     'events', 0,5,5,5),
+      array(  'instances.php',  'instances', 0,5,5,5),
+      array(       'item.php',      'items', 1,5,5,5),
+      array(   'creature.php',  'creatures', 5,5,5,5), // this page has yet to honor the new security system, please use with caution.
+      array('game_object.php','game_object', 5,5,5,5), // this page has yet to honor the new security system, please use with caution.
+      array(       'tele.php',  'teleports', 1,5,5,5),
+      array(     'backup.php',     'backup', 5,5,5,5), // this page has yet to honor the new security system, please use with caution.
+      array(  'run_patch.php',  'run_patch', 3,5,5,5),
+      array(     'repair.php',     'repair', 3,5,5,5),
+    ),
+  ),
+  array
+  (                       '#',     'system', array
+    (
+      array(      'realm.php',      'realm', 1,5,5,5),
+      array(       'motd.php',   'add_motd', 1,5,5,5),
+      array(     'spelld.php',     'spelld', 1,5,5,5),
+      array(    'message.php',    'message', 1,5,5,5),
+      array(        'ssh.php',   'ssh_line', 1,5,5,5),
+    ),
+  ),
+  array
+  (                        '#',  'invisible', array
+    (
+      array('javascript:void(0);" onclick="window.open(\'./forum.html\', \'forum\')', 'forums',0,0,0,0),
+      array(        'char.php', 'character', 0,5,5,5),
+      array(    'char_inv.php', 'character', 0,5,5,5),
+      array(  'char_quest.php', 'character', 0,5,5,5),
+      array('char_achieve.php', 'character', 0,5,5,5),
+      array(  'char_skill.php', 'character', 0,5,5,5),
+      array( 'char_talent.php', 'character', 0,5,5,5),
+      array(    'char_rep.php', 'character', 0,5,5,5),
+      array(   'char_pets.php', 'character', 0,5,5,5),
+      array('char_friends.php', 'character', 0,5,5,5),
+      array(  'char_extra.php', 'character', 0,5,5,5),
+      array(  'char_spell.php', 'character', 0,5,5,5),
+      array(  'char_mail.php', 'character', 0,5,5,5),
+      array(   'char_edit.php', 'char_edit', 0,5,5,5),
+      array(        'edit.php', 'myaccount', 0,5,5,5),
+      array(       'index.php', 'startpage',-1,5,5,5),
+      array(   'guildbank.php', 'guildbank', 0,5,5,5), // under development
+      array(       'realm.php',     'realm', 0,5,5,5), // this last one is special, if this is not here, users are unable to switch realms
+    ),                                                 // if READ is set to level 3, only level 3 and above can switch realms.
+  ),                                                   // INSERT, UPDATE and DELETE should have no effect, but best to keep it at 5.
+);
 
 
 $debug = 0; // 0 - no debug, only fatal errors.
