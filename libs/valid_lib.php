@@ -27,7 +27,7 @@ function valid_email($email='')
             // gets domain name
             list($username,$domain) = split('@',$email);
             // checks for if MX records in the DNS
-            $mxhosts = array();
+            $mxhosts = [];
             if (getmxrr($domain, $mxhosts))
             {
                 // mx records found
@@ -61,7 +61,7 @@ else
 {
     function getmxrr($hostname, &$mxhosts)
     {
-        $mxhosts = array();
+        $mxhosts = [];
         exec('%SYSTEMDIRECTORY%\nslookup.exe -q=mx '.escapeshellarg($hostname), $result_arr);
         foreach($result_arr as $line)
         {

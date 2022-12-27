@@ -49,9 +49,9 @@ function char_rep(&$sqlr, &$sqlc)
             $output .= '
                             <br /><br />';
 
-            $temp_out = array
-            (
-                1 => array('
+            $temp_out =
+                [
+                1 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -60,8 +60,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i1" class="lined" style="width: 535px; display: table;">',0),
-                2 => array('
+                                        <table id="i1" class="lined" style="width: 535px; display: table;">',0],
+                2 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -70,8 +70,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i2" class="lined" style="width: 535px; display: table;">',0),
-                3 => array('
+                                        <table id="i2" class="lined" style="width: 535px; display: table;">',0],
+                3 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -80,8 +80,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i3" class="lined" style="width: 535px; display: table;">',0),
-                4 => array('
+                                        <table id="i3" class="lined" style="width: 535px; display: table;">',0],
+                4 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -90,8 +90,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i4" class="lined" style="width: 535px; display: table;">',0),
-                5 => array('
+                                        <table id="i4" class="lined" style="width: 535px; display: table;">',0],
+                5 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -100,8 +100,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i5" class="lined" style="width: 535px; display: table;">',0),
-                6 => array('
+                                        <table id="i5" class="lined" style="width: 535px; display: table;">',0],
+                6 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -110,8 +110,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i6" class="lined" style="width: 535px; display: table;">',0),
-                7 => array('
+                                        <table id="i6" class="lined" style="width: 535px; display: table;">',0],
+                7 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -120,8 +120,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i7" class="lined" style="width: 535px; display: table;">',0),
-                8 => array('
+                                        <table id="i7" class="lined" style="width: 535px; display: table;">',0],
+                8 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -130,8 +130,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i8" class="lined" style="width: 535px; display: table;">',0),
-                9 => array('
+                                        <table id="i8" class="lined" style="width: 535px; display: table;">',0],
+                9 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -140,8 +140,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i9" class="lined" style="width: 535px; display: table;">',0),
-               10 => array('
+                                        <table id="i9" class="lined" style="width: 535px; display: table;">',0],
+               10 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -150,8 +150,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i10" class="lined" style="width: 535px; display: table;">',0),
-               11 => array('
+                                        <table id="i10" class="lined" style="width: 535px; display: table;">',0],
+               11 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -160,8 +160,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i11" class="lined" style="width: 535px; display: table;">',0),
-               12 => array('
+                                        <table id="i11" class="lined" style="width: 535px; display: table;">',0],
+               12 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -170,8 +170,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i12" class="lined" style="width: 535px; display: table;">',0),
-                0 => array('
+                                        <table id="i12" class="lined" style="width: 535px; display: table;">',0],
+                0 => ['
                             <table class="lined" style="width: 550px;">
                                 <tr>
                                     <th colspan="3" align="left">
@@ -180,8 +180,8 @@ function char_rep(&$sqlr, &$sqlc)
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table id="i13" class="lined" style="width: 535px; display: table;">',0),
-            );
+                                        <table id="i13" class="lined" style="width: 535px; display: table;">',0],
+                ];
 
             $sqlm = new SQL;
             $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);

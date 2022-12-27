@@ -9,7 +9,7 @@
 
 $site_encoding = "gb2312";
 
-$forum_lang = Array(
+$forum_lang = [
 
 	// BBCode you can replace this by images off course
 	"image" => "Í¼Æ¬",
@@ -87,5 +87,5 @@ $forum_lang = Array(
 
 	// move_topic
 	"where" => "ÄãÒª°ÑÕâ¸öÖ÷ÌâÒÆ¶¯µ½ÄÇÀï?",
-);
+];
 ?>

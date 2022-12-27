@@ -12,7 +12,7 @@
  */
  
 
-$lang_global = array(
+$lang_global = [
 	// ----- GENERAL ERROR CODES -----
 	'err_sql_conn_db' => 'Chyba - PÅ™ipojenÃ­ k databÃ¡zi nebylo navÃ¡zÃ¡no!',
 	'err_sql_open_db' => 'Chyba - Nelze otevÅ™Ã­t databÃ¡zi!',
@@ -51,9 +51,9 @@ $lang_global = array(
 	'language_6' => 'Å panÄ›lÅ¡tina',
 	'language_7' => 'MexikÃ¡nÅ¡tina',
 	'language_8' => 'RuÅ¡tina'
-);
+];
 
-$lang_login = array(
+$lang_login = [
 	// ----- LOGIN.PHP -----
 	'login' => 'PÅ™ihlÃ¡Å¡enÃ­',
 	'username' => 'JmÃ©no',
@@ -69,9 +69,9 @@ $lang_login = array(
 	'remember_me' => 'Pamatovat si mÄ›',
 	'pass_recovery' => 'ZapomnÄ›li jste heslo?',
 	'after_registration' => 'VytvoÅ™enÃ­ ÃºÄtu probÄ›hlo ÃºspÄ›Å¡nÄ›!'
-	);
+];
 	
-$lang_guild = array(
+$lang_guild = [
 	// ----- GUILD.PHP -----
 	'by_name' => 'podle jmÃ©na',
 	'by_guild_leader' => 'podle vÅ¯dce',
@@ -100,9 +100,9 @@ $lang_guild = array(
 	'guild_id' => 'ID spolku',
 	'guild_search_result' => 'VÃ½sledky vyhledÃ¡vÃ¡nÃ­ spolkÅ¯',
 	'browse_guilds' => 'ProchÃ¡zenÃ­ spolkÅ¯'
-	);
+];
 	
-$lang_register = array(
+$lang_register = [
 	// ----- REGISTER.PHP -----
 	'create_acc' => 'VytvoÅ™enÃ­ ÃºÄtu',
 	'username' => 'JmÃ©no',
@@ -145,9 +145,9 @@ $lang_register = array(
 	'invited_info' => 'NapiÅ¡te prosÃ­m jmÃ©no ÃºÄtu hrÃ¡Äe, kterÃ½ vÃ¡s sem pozval k zaregistrovÃ¡nÃ­.',
 	'email_address_used' => 'Tento email jiÅ¾ mÃ¡ ÃºÄet.<br/>Pro tuto emailovou adresu nemÅ¯Å¾e bÃ½t vytvoÅ™eno vÃ­ce ÃºÄtÅ¯.',
 	'referrer_not_found' => 'NaneÅ¡tÄ›stÃ­ zadanÃ½ ÃºÄet nebyl v naÅ¡Ã­ databÃ¡zi nalezen.<br/>ProsÃ­me ujistÄ›te se, Å¾e jste zadali platnÃ© jmÃ©no ÃºÄtu nebo nechejte polÃ­Äko &quot;PozvanÃ½&quot; prÃ¡zdnÃ©.',
-	);
+];
 	
-$lang_index = array(
+$lang_index = [
 	// ----- INDEX.PHP -----
 	'realm' => 'SvÄ›t',
 	'online' => 'Online',
@@ -166,9 +166,9 @@ $lang_index = array(
 	'latency' => 'Latence',
 	'a_latency' => 'Průměrná latence',
 	'guild' => 'Spolek'
-	);
+];
 	
-$lang_header = array(
+$lang_header = [
 	// ----- HEADER.PHP -----
 	'main' => 'HlavnÃ­',
 	'users' => 'UÅ¾ivatelÃ©',
@@ -207,15 +207,15 @@ $lang_header = array(
 	'statistics_on' => 'Online statistiky',
 	'instances' => 'Instance',
 	'top100' => '100 nej'
-	);
+];
 	
-$lang_footer = array(
+$lang_footer = [
 	// -----FOOTER.PHP -----
 	'bugs_to_admin' => 'ProblÃ©my a chyby hlÃ¡sit',
 	'site_admin' => 'SprÃ¡vci webu'
-	);
+];
 
-$lang_repair = array(
+$lang_repair = [
 	// ----- REPAIR.PHP -----
 	'repair_optimize' => 'Opravit / optimalizovat tabulky',
 	'repair' => 'Opravit',
@@ -229,9 +229,9 @@ $lang_repair = array(
 	'tables' => 'Tabulky',
 	'select_tables' => 'Vyberte tabulky, kterÃ© na kterÃ½ch bude operace provedena.',
 	'repair_error' => 'Chyba'
-	);
+];
 	
-$lang_backup = array(
+$lang_backup = [
 	// ----- BACKUP.PHP -----
 	'backup_options' => 'NastavenÃ­ zÃ¡lohovÃ¡nÃ­',
 	'select_option' => 'OznaÄte volby zÃ¡lohovÃ¡nÃ­',
@@ -259,9 +259,9 @@ $lang_backup = array(
 	'que_executed' => 'SQL dotazy provedeny ÃºspÄ›Å¡nÄ›',
 	'tables_to_save' => 'NÃ¡sledujÃ­cÃ­ tabulky budou uloÅ¾eny',
 	'save_all_realms' => 'UloÅ¾it data ze vÅ¡ech svÄ›tÅ¯'
-	);
+];
 	
-$lang_banned = array(
+$lang_banned = [
 	// ----- BANNED.PHP -----
 	'add_to_banned' => 'PÅ™idat do blokovanÃ½ch',
 	'tot_banned' => 'Celkem blokovanÃ½ch',
@@ -283,9 +283,9 @@ $lang_banned = array(
 	'ban_time' => 'Blokovat na dobu (hodin)',
 	'entry' => 'PoloÅ¾ka (JmÃ©no ÃºÄtu / IP)',
 	'acc_not_found' => 'ÃšÄet nenalezen'
-	);
+];
 	
-$lang_char = array(
+$lang_char = [
 	// ----- CHAR.PHP -----
 	'online' => 'PÅ™ipojenÃ½',
 	'offline' => 'OdpojenÃ½',
@@ -367,9 +367,9 @@ $lang_char = array(
 	'achievement_title' => 'Titulek ÃºspÄ›chu',
 	'achievement_date' => 'Datum',
 	'no_com_achievements' => 'Å½Ã¡dnÃ© dokonÄenÃ© ÃºspÄ›chy'
-	);
+];
 	
-$lang_item = array(
+$lang_item = [
 	// ----- ITEM TOOLTIP -----
 	'head' => 'Hlava',
 	'gloves' => 'Rukavice',
@@ -551,9 +551,9 @@ $lang_item = array(
 	'CA_RATING' => 'VyhnutÃ­ se kritickÃ©mu Ãºderu',
 	'RESILIENCE_RATING' => 'Odolnost',
 	'HASTE_RATING' => 'SpÄ›ch'
-);
+];
 
-$lang_char_list = array(
+$lang_char_list = [
 	// ----- CHAR_LIST.PHP -----
 	'cleanup' => 'VyÄiÅ¡tÄ›nÃ­',
 	'by_name' => 'podle jmÃ©na',
@@ -591,9 +591,9 @@ $lang_char_list = array(
 	'browse_chars' => 'ProchÃ¡zenÃ­ postav',
 	'chars_gold' => 'mÃ¡ &lt; zlata(C)',
 	'by_item' => 'mÃ¡ vÄ›c id'
-	);
+];
 	
-$lang_cleanup = array(
+$lang_cleanup = [
 	// ----- CLEANUP.PHP -----
 	'cleanup_options' => 'Volby vyÄiÅ¡tÄ›nÃ­',
 	'clean_chars' => 'ÄŒistit postavy',
@@ -622,9 +622,9 @@ $lang_cleanup = array(
 	'clean_db' => 'Äistit databÃ¡zi',
 	'arenateams_deleted' => 'SmazÃ¡ny arÃ©novÃ© tÃ½my!!',
 	'no_arenateams_del' => 'Å½Ã¡dnÃ© arÃ©novÃ½ tÃ½my nebyly smazÃ¡ny!'
-	);
+];
 	
-$lang_edit = array(
+$lang_edit = [
 	// ----- EDIT.PHP -----
 	'edit_acc' => 'Editovat vÃ¡Å¡ ÃºÄet',
 	'id' => 'ID',
@@ -654,9 +654,9 @@ $lang_edit = array(
 	'wotlk' => 'WOTLK',
 	'tot_chars' => 'Celkem postav',
 	'invited_by' => 'PozvanÃ½'
-	);
+];
 	
-$lang_mail = array(
+$lang_mail = [
 	// ----- MAIL.PHP -----
 	'mail_type' => 'Typ poÅ¡ty',
 	'mail_options' => 'Volby poÅ¡ty',
@@ -685,17 +685,17 @@ $lang_mail = array(
 	'option_unavailable' => 'NemÅ¯Å¾ete pouÅ¾Ã­t tuto volbu pÅ™i aktuÃ¡lnÃ­ konfiguraci.',
 	'use_currect_option' => 'NÄ›kterÃ© z voleb \'SkupinovÃ©ho rozesÃ­lÃ¡nÃ­\' mohou bÃ½t pouÅ¾ity pouze s \'HernÃ­m poÅ¡tou\' nebo\'Emailem\', ale ne s obÄ›ma.',
 	'send_mail' => 'Odeslat poÅ¡tu'
-	);
+];
 	
-$lang_motd = array(
+$lang_motd = [
 	// ----- MOTD.PHP -----
 	'post_motd' => 'Poslat ZprÃ¡vu dne',
 	'post_rules' => 'PoznÃ¡mka: dÃ©lka je omezena na 255 znakÅ¯.<br />HTML znaÄky jsou pouÅ¾itelnÃ©.',
 	'err_max_len' => 'PÅ™ekroÄen limit max. dÃ©lky',
 	'add_motd' => 'PÅ™idat ZprÃ¡vu dne'
-	);
+];
 
-$lang_run_patch = array(
+$lang_run_patch = [
 	// -----RUN_PATCH.PHP -----
 	'err_in_line' => 'Chyba syntaxe SQL v dotazu ÄÃ­slo ',
 	'run_sql_file_only' => 'MÅ¯Å¾ete provÃ¡dÄ›t pouze soubory .sql nebo .qbquery.',
@@ -709,15 +709,15 @@ $lang_run_patch = array(
 	'query_executed' => 'SQL dotaz(y) provedeny ÃºspÄ›Å¡nÄ›.',
 	'no_query_found' => 'VrÃ¡cen nulovÃ½ vÃ½sledek / Å½Ã¡dnÃ© dotazy nenalezeny.',
 	'run_patch' => 'Spustit SQL aktualizaci'
-	);
+];
 	
-$lang_ssh = array(
+$lang_ssh = [
 	// ----- SSH.PHP -----
 	'server_offline' => 'SSH/Telnet server se zdÃ¡ bÃ½t vypnutÃ½!',
 	'config_server_properly' => 'UjistÄ›te se, Å¾e jste sprÃ¡vnÄ› nastavili vÃ¡Å¡ SSH/Telnet server, a Å¾e je momentÃ¡lnÄ› online.'
-	);
+];
 	
-$lang_realm = array(
+$lang_realm = [
 	// ----- REALM.PHP -----
 	'add_realm' => 'PÅ™idat svÄ›t',
 	'tot_realms' => 'Celkem svÄ›tÅ¯',
@@ -762,9 +762,9 @@ $lang_realm = array(
 	'conf_from_file' => '** Tento svÄ›t vypadÃ¡, Å¾e nemÃ¡ sprÃ¡vnÃ© nastavenÃ­ v konfiguraÄnÃ­m souboru config.php.<br />Nastavte jej sprÃ¡vnÄ› pÅ™ed pouÅ¾itÃ­m v CMS.',
 	'offline' => 'Vypnuto',
 	'status' => 'Stav'
-	);
+];
 	
-$lang_ticket = array(
+$lang_ticket = [
 	// ----- TICKET.PHP -----
 	'id' => 'ID',
 	'sender' => 'OdesÃ­latel',
@@ -786,9 +786,9 @@ $lang_ticket = array(
 	'ticket_updated' => 'LÃ­stek aktualizovÃ¡n',
 	'ticket_update_err' => 'Chyba aktualizace lÃ­stku',
 	'browse_tickets' => 'ProchÃ¡zet lÃ­stky',
-	);
+];
 	
-$lang_user = array(
+$lang_user = [
 	// ----- USER.PHP -----
 	'add_acc' => 'NovÃ½ ÃºÄet',
 	'cleanup' => 'Ãšklid',
@@ -861,9 +861,9 @@ $lang_user = array(
 	'classic' => 'KlasickÃ½',
 	'tbc' => 'TBC',
   'wotlk' => 'WOTLK'
-	);
+];
 	
-$lang_stat = array(
+$lang_stat = [
 	// ----- STAT.PHP -----
 	'srv_statistics' => 'Statistiky serveru',
 	'general_info' => 'ObecnÃ© informace',
@@ -885,9 +885,9 @@ $lang_stat = array(
 	'uptime_prec' => 'Procenta doby bÄ›hu od prvnÃ­ho spuÅ¡tÄ›nÃ­',
  	'unique_ip' => 'UnikÃ¡tnÃ­ IP adresy za poslednÃ­ch 24 hodin',
 	'on_statistics' => 'Online statistiky'
-);
+];
 
-$lang_tele = array(
+$lang_tele = [
 	// ----- TELE.PHP -----
 	'loc_name' => 'JmÃ©no mÃ­sta',
 	'loc_id' => 'ID mÃ­sta',
@@ -913,9 +913,9 @@ $lang_tele = array(
 	'tele_locations' => 'TeleportovacÃ­ mÃ­sta',
 	'add_new' => 'PÅ™idat novÃ©',
 	'add_new_tele' => 'PÅ™idat teleportovacÃ­ mÃ­sto'
-);
+];
 
-$lang_command = array(
+$lang_command = [
 	// ----- COMMAND.PHP -----
 	'command_list' => 'DostupnÃ© pÅ™Ã­kazy',
 	'level0' => 'HrÃ¡Ä',
@@ -929,9 +929,9 @@ $lang_command = array(
 	'description' => 'Popis',
 	'change_level' => 'ZmÄ›nit ÃºroveÅˆ vybranÃ½ch pÅ™Ã­kazÅ¯',
 	'save' => 'UloÅ¾it'
-	);
+];
 
-$lang_item_edit = array(
+$lang_item_edit = [
 	// ----- ITEM.PHP -----
 	'search_item' => 'HledÃ¡nÃ­ vÄ›cÃ­',
 	'model_id' => 'Id modelu',
@@ -1167,10 +1167,10 @@ $lang_item_edit = array(
   'condition_value1' => 'Hodnota podmÃ­nky 1', 
   'condition_value1_desc' => 'Vlajka hodnota podmÃ­nky 1', 
   'condition_value2' => 'Hodnota podmÃ­nky 2', 
-  'condition_value2_desc' => 'Vlajka hodnota podmÃ­nky 2' 	
-);
+  'condition_value2_desc' => 'Vlajka hodnota podmÃ­nky 2'
+];
 
-$lang_creature = array(
+$lang_creature = [
 	// ----- CREATURE.PHP -----
 	'none' => 'Å½Ã¡dnÃ½',
 	'custom' => 'VlastnÃ­',
@@ -1471,9 +1471,9 @@ $lang_creature = array(
 	'heroic' => 'ID hrdinskÃ©ho umÃ­stÄ›nÃ­',
 	'heroic_desc' => 'HrdinskÃ© id je pouÅ¾ito, pokud bytost mÃ¡ odliÅ¡nou Å¡ablonu pro instance v normÃ¡lnÃ­m a hrdinskÃ©m reÅ¾imu. Ta s heroic_entry je pouÅ¾ita v normÃ¡lnÃ­m reÅ¾imu. NulovÃ¡ hodnota znamenÃ¡, Å¾e tato Å¡ablon je pouÅ¾ita v normÃ¡lnÃ­m reÅ¾imu a hrdinskÃ½ reÅ¾im, pokud jinÃ¡ bytost ukazuje se svÃ½m heroic_point na tuto bytost.',
 	'locales' => 'Lokalizace'
-  );
+];
 
-$lang_game_object = array(
+$lang_game_object = [
 	// ----- GAME_OBJECT.PHP -----
 	'unknown' => 'NeznÃ¡mÃ½',
 	'custom_search' => 'VlastnÃ­ filtr',
@@ -1583,9 +1583,9 @@ $lang_game_object = array(
 	'datas' => 'PÅ™Ã­davnÃ¡ data',
 	'data' => 'Data',
 	'data_desc' => 'DatovÃ© poloÅ¾ky s rÅ¯znÃ½m vÃ½znamem pro rÅ¯znÃ½ typ polÃ­Äek. KaÅ¾dÃ½ typ mÃ¡ jedineÄnÃ© poloÅ¾ky.<br />Pro vÃ­ce informacÃ­ navÅ¡tivte https://trinitycore.info/index.php/Main_Page'
-);
+];
 
-$lang_auctionhouse = array(
+$lang_auctionhouse = [
 	// ----- AHSTATS.PHP -----
     'auctionhouse' => 'AukÄnÃ­ dÅ¯m',
     'seller' => 'Prodejce',
@@ -1607,9 +1607,9 @@ $lang_auctionhouse = array(
 	'seller_name' => 'JmÃ©no prodejce',
 	'buyer_name' => 'JmÃ©no kupujÃ­cÃ­ho',
 	'tot_found' => 'Celkem vÄ›cÃ­ nalezeno'
-);
+];
 
-$lang_id_tab = array(
+$lang_id_tab = [
 	// ----- ID_TAB.PHP -----
 	'TALENT_STARLIGHT_WRATH_1' => 'Starlight Wrath Rank 1',
 	'TALENT_STARLIGHT_WRATH_2' => 'Starlight Wrath Rank 2',
@@ -3895,10 +3895,10 @@ $lang_id_tab = array(
 	'CHAR_AURA_TRUESHOT_AURA_RANK_2' => 'Trueshot Aura Rank 2',
 	'CHAR_AURA_TRUESHOT_AURA_RANK_3' => 'Trueshot Aura Rank 3',
 	'CHAR_AURA_TRUESHOT_AURA_RANK_4' => 'Trueshot Aura Rank 4',
-); 
+];
 
 	 
-$lang_arenateam = array( 
+$lang_arenateam = [
  	// ----- ARENATEAM.PHP ----- 
  	'by_name' => 'podle jmÃ©na', 
  	'by_team_leader' => 'podle vÅ¯dce arÃ©novÃ©ho tÃ½mu', 
@@ -3941,10 +3941,10 @@ $lang_arenateam = array(
  	'this_season' => 'Tuto sezÃ³nu', 
  	'standings' => 'UmÃ­stÄ›nÃ­ :', 
   'tot_found' => 'Celkem nalezeno', 
- 	'arenateam' => 'ArÃ©novÃ½ tÃ½m' 
-); 
+ 	'arenateam' => 'ArÃ©novÃ½ tÃ½m'
+];
 
-$lang_honor = array( 
+$lang_honor = [
  	// ----- HONOR.PHP ----- 
  	'allied' => 'Aliance', 
  	'horde' => 'Horda', 
@@ -3955,10 +3955,10 @@ $lang_honor = array(
  	'level' => 'ÃšroveÅˆ', 
  	'honor points' => 'BodÅ¯ cti', 
  	'honor' => 'Hodnost', 
- 	'guild' => 'Spolek' 
-); 	
+ 	'guild' => 'Spolek'
+];
 
-$lang_events = array(
+$lang_events = [
       // ----- EVENTS.PHP -----
       'total' => 'Celkem',
       'descr' => 'JmÃ©no udÃ¡losti',
@@ -3966,28 +3966,28 @@ $lang_events = array(
       'occur' => 'ÄŒetnost<br><small>dny/hodiny',
       'length' => 'DÃ©lka<br><small>dny/hodiny',
       'events' => 'UdÃ¡losti'
-);
+];
 
 
-$lang_instances = array(
+$lang_instances = [
      	// ----- INSTANCES.PHP -----
       'map' => 'Mapa',
 	    'level_min' => 'MinimÃ¡lnÃ­ ÃºroveÅˆ',
    	  'level_max' => 'MaximÃ¡lnÃ­ ÃºroveÅˆ',
    	  'max_players' => 'Maximum hrÃ¡ÄÅ¯',
    	  'reset_delay' => 'Prodleva restartu',
-	);
+];
 
-$lang_captcha = array(
+$lang_captcha = [
 	// ----- FORM.PHP -----
 	'security_image' => 'BezpeÄnostnÃ­ obrÃ¡zek',
 	'security_code' => 'BezpeÄnostnÃ­ kÃ³d',
 	'imput_security_code' => 'ProsÃ­m zadejte bezpeÄnostnÃ­ kÃ³d',
 	'submit' => 'Odeslat',
 	'invalid_code' => 'ChybnÃ½ kÃ³d!'
-	);
+];
   
-$lang_top = array(
+$lang_top = [
 	// ----- TOP100.PHP -----
 	'name' => 'JmÃ©no',
 	'race' => 'Rasa',
@@ -4001,7 +4001,7 @@ $lang_top = array(
 	'arena_points' => 'ArÃ©ny',
 	'time_played' => 'ÄŒas hranÃ­',
 	'online' => 'PÅ™ipojenÃ­'
-	);
+];
 
 
 

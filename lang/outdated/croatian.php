@@ -9,7 +9,7 @@
 
 // odkomentiraj iducu liniju ako se ne prikazuju dobro hrvatska slova
 
-$lang_global = array(
+$lang_global = [
 	// ----- GENERAL ERROR CODES -----
 	'err_sql_conn_db' => 'Greška - Veza sa bazom nije ostvarena !',
 	'err_sql_open_db' => 'Greška - Ne mogu otvoriti bazu !',
@@ -48,9 +48,9 @@ $lang_global = array(
 	'language_6' => 'Spanish',
 	'language_7' => 'Mexican',
 	'language_8' => 'Russian'
-	);
+];
 
-$lang_login = array(
+$lang_login = [
 	// ----- LOGIN.PHP -----
 	'login' => 'Logiranje',
 	'username' => 'Korisnik',
@@ -66,9 +66,9 @@ $lang_login = array(
 	'remember_me' => 'Zapamti me',
 	'pass_recovery' => 'Izgubljena šifra?',
 	'after_registration' => 'Your account creation was successful!' //TODO
-	);
+];
 	
-$lang_guild = array(
+$lang_guild = [
 	// ----- GUILD.PHP -----
 	'my_guilds' => 'My Guilds',
 	'id' => 'ID',
@@ -101,9 +101,9 @@ $lang_guild = array(
 	'guild_search_result' => 'Guilds Search Results',
 	'show_guilds' => 'Show all Guilds',
 	'browse_guilds' => 'Browse Guilds'
-	);
+];
 	
-$lang_register = array(
+$lang_register = [
 	// ----- REGISTER.PHP -----
 	'create_acc' => 'Kreiraj račun',
 	'username' => 'Korisnik',
@@ -146,9 +146,9 @@ $lang_register = array(
 	'invited_info' => 'Please write the account name of the player who invited you to register here.',
 	'email_address_used' => 'This email has an account already.<br/>No more accounts can be created for this email address.',
 	'referrer_not_found' => 'Unfortunately the specified account was not found in our database.<br/>Please ensure you have entered a valid account name or leave the &quot;Invited by&quot;-field blank.',
-	);
+];
 	
-$lang_index = array(
+$lang_index = [
 	// ----- INDEX.PHP -----
 	'realm' => 'Svijet',
 	'online' => 'Online',
@@ -167,9 +167,9 @@ $lang_index = array(
 	'latency' => 'Latency',
 	'a_latency' => 'Average Latency',
 	'guild' => 'Guild'
-	);
+];
 	
-$lang_header = array(
+$lang_header = [
 	// ----- HEADER.PHP -----
 	'main' => 'Početna',
 	'users' => 'Users',
@@ -208,15 +208,15 @@ $lang_header = array(
 	'statistics_on' => 'Online Statistics',
 	'instances' => 'Instance information',
 	'top100' => 'TOP 100'
-	);
+];
 	
-$lang_footer = array(
+$lang_footer = [
 	// -----FOOTER.PHP -----
 	'bugs_to_admin' => 'Probleme i bugove prijaviti',
 	'site_admin' => 'Adminu'
-	);
+];
 
-$lang_repair = array(
+$lang_repair = [
 	// ----- REPAIR.PHP -----
 	'repair_optimize' => 'Popravi / Optimiziraj tablice',
 	'repair' => 'Popravi',
@@ -230,9 +230,9 @@ $lang_repair = array(
 	'tables' => 'Tablice',
 	'select_tables' => 'Izaberi tablice na kojima ćeš nešto raditi.',
 	'repair_error' => 'Greška'
-	);
+];
 	
-$lang_backup = array(
+$lang_backup = [
 	// ----- BACKUP.PHP -----
 	'backup_options' => 'Backup Options',
 	'select_option' => 'Select backup opton',
@@ -260,9 +260,9 @@ $lang_backup = array(
 	'que_executed' => 'Uspješno izvršeno',
 	'tables_to_save' => 'The following tables will be Saved',
 	'save_all_realms' => 'Save data from all Realms'
-	);
+];
 	
-$lang_banned = array(
+$lang_banned = [
 	// ----- BANNED.PHP -----
 	'add_to_banned' => 'Dodaj u ban listu',
 	'tot_banned' => 'Ukupno banirano',
@@ -284,9 +284,9 @@ $lang_banned = array(
 	'ban_time' => 'Vremenski ban (sati)',
 	'entry' => 'Unos (Račun / IP)',
 	'acc_not_found' => 'Račun nije pronađen'
-	);
+];
 	
-$lang_char = array(
+$lang_char = [
 	// ----- CHAR.PHP -----
 	'online' => 'Online',
 	'offline' => 'Offline',
@@ -368,9 +368,9 @@ $lang_char = array(
 	'achievement_title' => 'Achievement Title',
 	'achievement_date' => 'Date',
 	'no_com_achievements' => 'No Achievements Completed'
-	);
+];
 	
-$lang_item = array(
+$lang_item = [
 	// ----- ITEM TOOLTIP -----
 	'head' => 'Head',
 	'gloves' => 'Gloves',
@@ -552,9 +552,9 @@ $lang_item = array(
 	'CA_RATING' => 'Crit Avoid',
 	'RESILIENCE_RATING' => 'Resistance',
 	'HASTE_RATING' => 'Haste'
-	);
+];
 
-$lang_char_list = array(
+$lang_char_list = [
 	// ----- CHAR_LIST.PHP -----
 	'cleanup' => 'Počisti',
 	'by_name' => 'po Imenu',
@@ -592,9 +592,9 @@ $lang_char_list = array(
 	'browse_chars' => 'Pretraga likova',
 	'chars_gold' => 'ima &lt; zlata(C)',
 	'by_item' => 'ima item ID'
-	);
+];
 	
-$lang_cleanup = array(
+$lang_cleanup = [
 	// ----- CLEANUP.PHP -----
 	'cleanup_options' => 'Opcije brisanja',
 	'clean_chars' => 'Obriši likove',
@@ -623,9 +623,9 @@ $lang_cleanup = array(
 	'clean_db' => 'Čišćenje baze',
 	'arenateams_deleted' => 'Arena Team(s) deleted!',
 	'no_arenateams_del' => 'No Arena Team(s) deleted!'
-	);
+];
 	
-$lang_edit = array(
+$lang_edit = [
 	// ----- EDIT.PHP -----
 	'edit_acc' => 'Editiraj račun',
 	'id' => 'ID',
@@ -655,9 +655,9 @@ $lang_edit = array(
 	'wotlk' => 'WOTLK',
 	'tot_chars' => 'Ukupno likova',
 	'invited_by' => 'Invited By'
-	);
+];
 
-$lang_mail = array(
+$lang_mail = [
 	// ----- MAIL.PHP -----
 	'mail_type' => 'Mail Type',
 	'mail_options' => 'Mail Options',
@@ -686,17 +686,17 @@ $lang_mail = array(
 	'option_unavailable' => 'You cannot use this option at current configurations.',
 	'use_currect_option' => 'Some of the \'Group Send\' options can be used only with \'inGame mail\' or \'Email\' but not with both.',
 	'send_mail' => 'Send Mail'
-	);
+];
 
-$lang_motd = array(
+$lang_motd = [
 	// ----- MOTD.PHP -----
 	'post_motd' => 'Pošalji poruku dana',
 	'post_rules' => 'Notice: the length is limited to 255 chars.<br />HTML tags are usable.',
 	'err_max_len' => 'Max. length limit Exceeded',
 	'add_motd' => 'Dodaj poruku'
-	);
+];
 
-$lang_run_patch = array(
+$lang_run_patch = [
 	// -----RUN_PATCH.PHP -----
 	'err_in_line' => 'SQL syntax error in query number ',
 	'run_sql_file_only' => 'You may only run .sql or .qbquery files.',
@@ -710,15 +710,15 @@ $lang_run_patch = array(
 	'query_executed' => 'SQL izvršen uspješno.',
 	'no_query_found' => 'Nema rezultata.',
 	'run_patch' => 'Pokreni SQL datoteku'
-	);
+];
 
-$lang_ssh = array(
+$lang_ssh = [
 	// ----- SSH.PHP -----
 	'server_offline' => 'SSH/Telnet Server appears to be Offline!',
 	'config_server_properly' => 'Make sure you have configured your SSH/Telnet server properly, and it is currently online.'
-	);
+];
 
-$lang_realm = array(
+$lang_realm = [
 	// ----- REALM.PHP -----
 	'add_realm' => 'Add Realm',
 	'tot_realms' => 'Total Realms',
@@ -763,9 +763,9 @@ $lang_realm = array(
 	'conf_from_file' => '** This realm appear not to have proper configuration in config.php file.<br />Make sure to properly configure it before using under CMS.',
 	'offline' => 'Offline',
 	'status' => 'Status'
-	);
+];
 	
-$lang_ticket = array(
+$lang_ticket = [
 	// ----- TICKET.PHP -----
 	'id' => 'ID',
 	'sender' => 'Sender',
@@ -787,9 +787,9 @@ $lang_ticket = array(
 	'ticket_updated' => 'Ticket Updated',
 	'ticket_update_err' => 'Error Updating Ticket',
 	'browse_tickets' => 'Browse Tickets'
-	);
+];
 
-$lang_user = array(
+$lang_user = [
 	// ----- USER.PHP -----
 	'add_acc' => 'Novi račun',
 	'cleanup' => 'Počisti',
@@ -862,9 +862,9 @@ $lang_user = array(
 	'classic' => 'Klasični WOW',
 	'tbc' => 'TBC',
 	'wotlk' => 'WOTLK'
-	);
+];
 	
-$lang_stat = array(
+$lang_stat = [
 	// ----- STAT.PHP -----
 	'srv_statistics' => 'Statistike servera',
 	'general_info' => 'Informacije',
@@ -886,9 +886,9 @@ $lang_stat = array(
 	'uptime_prec' => ' Uptime percentage since first run',
 	'unique_ip' => 'Unique IPs last 24 Hour',
 	'on_statistics' => 'Online Statistics'
-	);
+];
 
-$lang_tele = array(
+$lang_tele = [
 	// ----- TELE.PHP -----
 	'loc_name' => 'Location Name',
 	'loc_id' => 'Location ID',
@@ -914,9 +914,9 @@ $lang_tele = array(
 	'tele_locations' => 'Teleport Locations',
 	'add_new' => 'Add New',
 	'add_new_tele' => 'Add New Teleport Location'
-	);
+];
 
-$lang_command = array(
+$lang_command = [
 	// ----- COMMAND.PHP -----
 	'command_list' => 'Dostupne komande',
 	'level0' => 'Igrač',
@@ -930,9 +930,9 @@ $lang_command = array(
 	'description' => 'Opis',
 	'change_level' => 'Change Checked Command(s) Level',
 	'save' => 'Spremi'
-	);
+];
 
-$lang_item_edit = array(
+$lang_item_edit = [
 	// ----- ITEM.PHP -----
 	'search_item' => 'Search for Item(s)',
 	'model_id' => 'Model Id',
@@ -1169,9 +1169,9 @@ $lang_item_edit = array(
 	'condition_value1_desc' => 'Condition Value 1 flag',
 	'condition_value2' => 'Condition Value 2',
 	'condition_value2_desc' => 'Condition Value 2 flag',
-	);
+];
 
-$lang_creature = array(
+$lang_creature = [
 	// ----- CREATURE.PHP -----
 	'none' => 'None',
 	'custom' => 'Custom',
@@ -1473,9 +1473,9 @@ $lang_creature = array(
 	'heroic' => 'Heroic Spawn ID',
 	'heroic_desc' => 'A heroic id is used when a creature has a different template for instances in normal and heroic mode. The one with the heroic_entry is the one used in the normal mode. A zero values means, this template is used for normal and heroic mode, or only heroic mode, if another creature point with its heroic_entry to this creature.',
 	'locales' => 'Localisation'
-	);
+];
 
-$lang_game_object = array(
+$lang_game_object = [
 	// ----- GAME_OBJECT.PHP -----
 	'unknown' => 'Unknown',
 	'custom_search' => 'Custom Filter',
@@ -1585,9 +1585,9 @@ $lang_game_object = array(
 	'datas' => 'Additional Datas',
 	'data' => 'Data',
 	'data_desc' => 'Data fields specific for different type field values. Each type has unique fields.<br />For more informaton visit https://trinitycore.info/index.php/Main_Page'
-	);
+];
 
-$lang_auctionhouse = array(
+$lang_auctionhouse = [
 	// ----- AHSTATS.PHP -----
 	'auctionhouse' => 'Auction House',
 	'seller' => 'Seller',
@@ -1609,9 +1609,9 @@ $lang_auctionhouse = array(
 	'seller_name' => 'Seller Name',
 	'buyer_name' => 'Buyer Name',
 	'tot_found' => 'Total Items Found'
-	);
+];
 
-$lang_id_tab = array(
+$lang_id_tab = [
 	// ----- ID_TAB.PHP -----
 	'TALENT_STARLIGHT_WRATH_1' => 'Starlight Wrath Rank 1',
 	'TALENT_STARLIGHT_WRATH_2' => 'Starlight Wrath Rank 2',
@@ -3897,9 +3897,9 @@ $lang_id_tab = array(
 	'CHAR_AURA_TRUESHOT_AURA_RANK_2' => 'Trueshot Aura Rank 2',
 	'CHAR_AURA_TRUESHOT_AURA_RANK_3' => 'Trueshot Aura Rank 3',
 	'CHAR_AURA_TRUESHOT_AURA_RANK_4' => 'Trueshot Aura Rank 4',
-	);
+];
 
-$lang_arenateam = array(
+$lang_arenateam = [
 	// ----- ARENATEAM.PHP -----
 	'by_name' => 'by Name',
 	'by_team_leader' => 'by Arena Team Leader',
@@ -3943,9 +3943,9 @@ $lang_arenateam = array(
 	'standings' => 'Standing :',
 	'tot_found' => 'Total Found',
 	'arenateam' => 'Arena Team'
-	);
+];
 
-	$lang_honor = array(
+	$lang_honor = [
 	// ----- HONOR.PHP -----
 	'allied' => 'Alliance',
 	'horde' => 'Horde',
@@ -3957,9 +3957,9 @@ $lang_arenateam = array(
 	'honor points' => 'Honor Points',
 	'honor' => 'Rank',
 	'guild' => 'Guild'
-	);
+    ];
 
-$lang_events = array(
+$lang_events = [
 	// ----- EVENTS.PHP -----
 	'total' => 'Total',
 	'descr' => 'Event name',
@@ -3967,27 +3967,27 @@ $lang_events = array(
 	'occur' => 'Occurance<br><small>days/hours',
 	'length' => 'Length<br><small>days/hours',
 	'events' => 'Events'
-	);
+];
 
-$lang_instances = array(
+$lang_instances = [
 	// ----- INSTANCES.PHP -----
 	'map' => 'Mapa',
 	'level_min' => 'Minimum level',
 	'level_max' => 'Maximum level',
 	'max_players' => 'Maximum players',
 	'reset_delay' => 'Reset delay',
-	);
+];
 
-	$lang_captcha = array(
+	$lang_captcha = [
 	// ----- FORM.PHP -----
 	'security_image' => 'Security Image',
 	'security_code' => 'Security Code',
 	'imput_security_code' => 'Please Input the Security Code',
 	'submit' => 'Submit',
 	'invalid_code' => 'Invalid Code!'
-	);
+    ];
 
-$lang_top = array(
+$lang_top = [
 	// ----- TOP100.PHP -----
 	'name' => 'Name',
 	'race' => 'Race',
@@ -4001,6 +4001,6 @@ $lang_top = array(
 	'arena_points' => 'Arena',
 	'time_played' => 'Time Played',
 	'online' => 'Online'
-	); 
+];
 
 ?>

@@ -7,7 +7,7 @@
  * Translator: ÁúÐ¥Ìì, lkou, AnDa
  */
 
-$lang_global = array(
+$lang_global = [
 	// ----- GENERAL ERROR CODES -----
 	'err_sql_conn_db' => '´íÎó - ÎÞ·¨Óë·þÎñÆ÷½¨Á¢Á¬½Ó !',
 	'err_sql_open_db' => '´íÎó - ²»ÄÜ´ò¿ªÊý¾Ý¿â!',
@@ -46,9 +46,9 @@ $lang_global = array(
 	'language_6' => 'Spanish',
 	'language_7' => 'Mexican',
 	'language_8' => 'Russian'
-	);
+];
 
-$lang_login = array(
+$lang_login = [
 	// ----- LOGIN.PHP -----
 	'login' =>'µÇÂ½',
 	'username' => 'ÕÊºÅ',
@@ -64,9 +64,9 @@ $lang_login = array(
 	'remember_me' => '¼Ç×¡ÃÜÂë',
 	'pass_recovery' => 'Íü¼ÇÃÜÂë?',
 	'after_registration' => 'Your account creation was successful!'
-	);
+];
 
-$lang_guild = array(
+$lang_guild = [
 	// ----- GUILD.PHP -----
 	'my_guilds' => 'My Guilds',
 	'id' => 'ID',
@@ -99,9 +99,9 @@ $lang_guild = array(
 	'guild_search_result' => 'Guilds Search Results',
 	'show_guilds' => 'Show all Guilds',
 	'browse_guilds' => 'Browse Guilds'
-	);
+];
 
-$lang_register = array(
+$lang_register = [
 	// ----- REGISTER.PHP -----
 	'create_acc' =>'ÐÂ½¨ÕÊºÅ',
 	'username' => 'ÕÊºÅÃû³Æ',
@@ -144,9 +144,9 @@ $lang_register = array(
 	'invited_info' => 'Please write the account name of the player who invited you to register here.',
 	'email_address_used' => 'This email has an account already.<br/>No more accounts can be created for this email address.',
 	'referrer_not_found' => 'Unfortunately the specified account was not found in our database.<br/>Please ensure you have entered a valid account name or leave the &quot;Invited by&quot;-field blank.',
-	);
+];
 
-$lang_index = array(
+$lang_index = [
 	// ----- INDEX.PHP -----
 	'realm' =>'·ÖÇø',
 	'online' => 'ÔÚÏßÍæ¼Ò',
@@ -167,10 +167,10 @@ $lang_index = array(
 	'guild' => 'Guild',
 	'trinity_rev' => 'Trinity Rev',
 	'using_db' => 'using db'
-	);
+];
 function lang_header()
 {
-$lang_header = array(
+$lang_header = [
 	// ----- HEADER.PHP -----
 	'main' =>'ÍøÕ¾Ö÷Ò³',
 	'users' => 'Íæ¼Ò²Ëµ¥',
@@ -209,16 +209,16 @@ $lang_header = array(
 	'statistics_on' => 'ÔÚÏßÈËÊý',
 	'instances' => 'Instance information',
 	'top100' => 'TOP 100'
-	);
+];
   return $lang_header;
 }
-$lang_footer = array(
+$lang_footer = [
 	// -----FOOTER.PHP -----
 	'bugs_to_admin' => 'ÍøÕ¾ÎÊÌâºÍ½¨ÒéÇë±¨¸æ¸ø',
 	'site_admin' => 'ÍøÕ¾¹ÜÀíÔ±'
-	);
+];
 
-$lang_repair = array(
+$lang_repair = [
 	// ----- REPAIR.PHP -----
 	'repair_optimize' => 'ÐÞ¸´ / ÓÅ»¯ Êý¾Ý±íµ¥',
 	'repair' => 'ÐÞ¸´',
@@ -232,9 +232,9 @@ $lang_repair = array(
 	'tables' => '±í',
 	'select_tables' => 'Ñ¡ÔñÄãÒª²Ù×÷µÄ±í',
 	'repair_error' => '´íÎó'
-	);
+];
 
-$lang_backup = array(
+$lang_backup = [
 	// ----- BACKUP.PHP -----
 	'backup_options' =>'±¸·ÝÑ¡Ïî',
 	'select_option' => 'Ñ¡Ôñ±¸·ÝÑ¡Ïî',
@@ -262,9 +262,9 @@ $lang_backup = array(
 	'que_executed' => '²éÑ¯ÔËÐÐ³É¹¦',
 	'tables_to_save' => 'ÏÂÁÐÊý¾Ý±í½«±£´æ',
 	'save_all_realms' => '±£´æËùÓÐ·þÎñÆ÷·ÖÇøÊý¾Ý'
-	);
+];
 
-$lang_banned = array(
+$lang_banned = [
 	// ----- BANNED.PHP -----
 	'add_to_banned' =>'¼ÓÈëºÚÃûµ¥',
 	'tot_banned' => '·â½û×ÜÊý',
@@ -286,9 +286,9 @@ $lang_banned = array(
 	'ban_time' => '·â½û×ÜÊ±¼ä (Ð¡Ê±)',
 	'entry' => 'ÊäÈë (ÕÊ»§ / IP)',
 	'acc_not_found' => 'ÕË»§²»´æÔÚ'
-	);
+];
 
-$lang_char = array(
+$lang_char = [
 	// ----- CHAR.PHP -----
 	'online' =>'ÔÚÏß',
 	'offline' => 'ÀëÏß',
@@ -375,9 +375,9 @@ $lang_char = array(
 	'achievement_title' => 'Achievement Title',
 	'achievement_date' => 'Date',
 	'no_com_achievements' => 'No Achievements Completed'
-	);
+];
 
-$lang_item = array(
+$lang_item = [
 	// ----- ITEM TOOLTIP -----
 	'head' => 'Í·²¿',
 	'gloves' => 'ÊÖ',
@@ -559,9 +559,9 @@ $lang_item = array(
 	'CA_RATING' => '±¬»÷»íÃâ',
 	'RESILIENCE_RATING' => 'ÈÍÐÔ',
 	'HASTE_RATING' => '¶ãÉÁ'
-	);
+];
 
-$lang_char_list = array(
+$lang_char_list = [
 	// ----- CHAR_LIST.PHP -----
 	'cleanup' =>'Çå³ý',
 	'by_name' => '°´:Ãû×Ö',
@@ -599,9 +599,9 @@ $lang_char_list = array(
 	'browse_chars' => 'ä¯ÀÀ½ÇÉ«',
 	'chars_gold' => '°´:½ðÇ®',
 	'by_item' => '°´:ÎïÆ·ID'
-	);
+];
 
-$lang_cleanup = array(
+$lang_cleanup = [
 	// ----- CLEANUP.PHP -----
 	'cleanup_options' =>'ÇåÀíÑ¡Ïî',
 	'clean_chars' => '½ÇÉ«ÇåÀí',
@@ -630,9 +630,9 @@ $lang_cleanup = array(
 	'clean_db' => 'ÇåÀíÊý¾Ý¿â',
 	'arenateams_deleted' => '¾º¼¼×é¶Ó±»É¾³ý!',
 	'no_arenateams_del' => 'Ã»ÓÐ¾º¼¼×é¶Ó±»É¾³ý!'
-	);
+];
 
-$lang_edit = array(
+$lang_edit = [
 	// ----- EDIT.PHP -----
 	'edit_acc' =>'±à¼­ÕÊºÅ',
 	'id' => 'ID',
@@ -662,9 +662,9 @@ $lang_edit = array(
 	'wotlk' => 'WOTLK',
 	'tot_chars' => 'ÈËÎï×ÜÊý',
 	'invited_by' => 'Invited By'
-);
+];
 
-$lang_mail = array(
+$lang_mail = [
 	// ----- MAIL.PHP -----
 	'mail_type' => 'ÓÊ¼þÀàÐÍ',
 	'mail_options' => 'ÓÊ¼þÑ¡Ïî',
@@ -693,17 +693,17 @@ $lang_mail = array(
 	'option_unavailable' => 'Äã²»ÄÜÊ¹ÓÃÏÖÔÚ½á¹¹ÖÐµÄÑ¡Ïî.',
 	'use_currect_option' => 'Ä³Ð© \'ÈºÌå·¢ËÍ\' Ñ¡ÏîÖ»ÄÜÓÃÓë\'ÓÎÏ·ÄÚÓÊ¼þ\' »òÕß \'µç×ÓÓÊ¼þ\' ,²»ÄÜÍ¬Ê±ÓÃÓÚÁ½ÖÖ·½Ê½.',
 	'send_mail' => '·¢ËÍÓÊ¼þ'
-	);
+];
 
-$lang_motd = array(
+$lang_motd = [
 	// ----- MOTD.PHP -----
 	'post_motd' => '·¢²¼Ã¿ÈÕÐÅÏ¢',
 	'post_rules' => '×¢Òâ: ³¤¶È±»ÏÞÖÆÔÚ255¸ö×Ö·û.<br />¿ÉÒÔÊ¹ÓÃHTML´úÂë.',
 	'err_max_len' => '³¬¹ý×î´ó³¤¶ÈÏÞÖÆ',
 	'add_motd' => 'Ìí¼ÓÈÕ³£ÐÅÏ¢'
-	);
+];
 
-$lang_run_patch = array(
+$lang_run_patch = [
 	// -----RUN_PATCH.PHP -----
 	'err_in_line' => 'MYSQLÓï·¨´íÎóÊý×Ö ',
 	'run_sql_file_only' => 'ÄãÖ»ÄÜÔËÐÐ . sql »ò.qbquery ÎÄ¼þ.',
@@ -717,15 +717,15 @@ $lang_run_patch = array(
 	'query_executed' => 'SQL Óï¾äÔËÐÐ³É¹¦.',
 	'no_query_found' => 'ÔËÐÐ0Ìõ½á¹û / Î´·¢ÏÖÎÊÌâ.',
 	'run_patch' => 'ÔËÐÐ SQL ²¹¶¡'
-	);
+];
 
-$lang_ssh = array(
+$lang_ssh = [
 	// ----- SSH.PHP -----
 	'server_offline' => 'SSH/Ô¶³Ì·þÎñÆ÷ÀëÏß!',
 	'config_server_properly' => 'È·±£ÄãÕýÈ·ÅäÖÃSSH/Ô¶³Ì·þÎñÆ÷,²¢ÇÒÏÖÔÚÔÚÏß.'
-	);
+];
 
-$lang_realm = array(
+$lang_realm = [
 	// ----- REALM.PHP -----
 	'add_realm' => 'Ôö¼Ó·ÖÇø',
 	'tot_realms' => '·ÖÇø×ÜÊý',
@@ -770,9 +770,9 @@ $lang_realm = array(
 	'conf_from_file' => '** ÕâÌõ¾¯¸æ³öÏÖÊÇÒòÎªÃ»ÓÐÕýÈ·µÄÅäÖÃconfig.phpÎÄ¼þ.<br />Ê¹ÓÃCMSÇ°ÇëÕýÈ·ÅäÖÃËü.',
 	'offline' => 'ÀëÏß',
 	'status' => '·þÎñÆ÷×´Ì¬'
-	);
+];
 
-$lang_ticket = array(
+$lang_ticket = [
 	// ----- TICKET.PHP -----
 	'id' =>'ID',
 	'sender' => '·¢ËÍÈË',
@@ -794,9 +794,9 @@ $lang_ticket = array(
 	'ticket_updated' => 'ÐÅÏ¢¸üÐÂ',
 	'ticket_update_err' => 'ÐÅÏ¢¸üÐÂ´íÎó',
 	'browse_tickets' => 'ä¯ÀÀÐÅÏ¢',
-	);
+];
 
-$lang_user = array(
+$lang_user = [
 	// ----- USER.PHP -----
 	'add_acc' => '½¨Á¢ÐÂÕÊºÅ',
 	'cleanup' => 'Çå³ý',
@@ -869,9 +869,9 @@ $lang_user = array(
 	'classic' => 'ÆÕÍ¨',
 	'tbc' => 'TBC',
 	'wotlk' => 'WOTLK'
-	);
+];
 
-$lang_stat = array(
+$lang_stat = [
 	// ----- STAT.PHP -----
 	'srv_statistics' => '·þÎñÆ÷Í³¼Æ',
 	'general_info' => 'Ò»°ãÐÅÏ¢',
@@ -893,9 +893,9 @@ $lang_stat = array(
 	'uptime_prec' => ' ·þÎñÊ±¼ä°Ù·Ö±È',
 	'unique_ip' => '×î½ü 24 Ð¡Ê±ÄÚµÇÂ½µÄIP',
 	'on_statistics' => 'ÔÚÏßÈËÊý'
-	);
+];
 
-$lang_tele = array(
+$lang_tele = [
 	// ----- TELE.PHP -----
 	'loc_name' => 'Î»ÖÃÃû³Æ',
 	'loc_id' => 'Î»ÖÃ ID',
@@ -921,9 +921,9 @@ $lang_tele = array(
 	'tele_locations' => '´«ËÍÎ»ÖÃ',
 	'add_new' => 'Ôö¼ÓÐÂµÄ',
 	'add_new_tele' => 'Ôö¼ÓÐÂµÄ´«ËÍÎ»ÖÃ'
-	);
+];
 
-$lang_command = array(
+$lang_command = [
 	// ----- COMMAND.PHP -----
 	'command_list' => '¿ÉÒÔÊ¹ÓÃµÄÃüÁî',
 	'level0' => 'Íæ¼Ò',
@@ -937,9 +937,9 @@ $lang_command = array(
 	'description' => 'ÃèÊö',
 	'change_level' => 'ÐÞ¸ÄÃüÁîµÈ¼¶',
 	'save' => '±£´æ'
-	);
+];
 
-$lang_item_edit = array(
+$lang_item_edit = [
 	// ----- ITEM.PHP -----
 	'search_item' => 'ÎïÆ·²éÕÒ',
 	'model_id' => 'Ä£ÐÍId',
@@ -1176,9 +1176,9 @@ $lang_item_edit = array(
 	'condition_value1_desc' => '×´¿öÖµ 1 ±êÖ¾',
 	'condition_value2' => '×´¿öÖµ 2',
 	'condition_value2_desc' => '×´¿öÖµ 2 ±êÖ¾',
-	);
+];
 
-$lang_creature = array(
+$lang_creature = [
 	// ----- CREATURE.PHP -----
 	'none' => 'ÎÞ',
 	'custom' => '×Ô¶¨Òå',
@@ -1480,9 +1480,9 @@ $lang_creature = array(
 	'heroic' => 'Heroic Spawn ID',
 	'heroic_desc' => 'A heroic id is used when a creature has a different template for instances in normal and heroic mode. The one with the heroic_entry is the one used in the normal mode. A zero values means, this template is used for normal and heroic mode, or only heroic mode, if another creature point with its heroic_entry to this creature.',
 	'locales' => 'Localisation'
-	);
+];
 
-$lang_game_object = array(
+$lang_game_object = [
 	// ----- GAME_OBJECT.PHP -----
 	'unknown' => 'Î´Öª',
 	'custom_search' => '×Ô¶¨Òå¹ýÂËÆ÷',
@@ -1592,9 +1592,9 @@ $lang_game_object = array(
 	'datas' => 'ÁíÍâµÄÊý¾Ý',
 	'data' => 'Êý¾Ý',
 	'data_desc' => 'Êý¾ÝÎª²»Í¬ÀàÐÍµÄÖµ. Ã¿¸öÀàÐÍÓÐ¶ÀÌØµÄÁìÓò.<br />¸ü¶àÐÅÏ¢²Î¿¼ https://trinitycore.info/index.php/Main_Page'
-	);
+];
 
-$lang_auctionhouse = array(
+$lang_auctionhouse = [
 	// ----- AHSTATS.PHP -----
 	'auctionhouse' => 'ÅÄÂôÐÐ',
 	'seller' => '³öÊÛÕß',
@@ -1616,9 +1616,9 @@ $lang_auctionhouse = array(
 	'seller_name' => 'ÂôÖ÷Ãû',
 	'buyer_name' => 'ÂòÖ÷Ãû',
 	'tot_found' => '×Ü¼ÆÕÒµ½'
-	);
+];
 
-$lang_id_tab = array(
+$lang_id_tab = [
 	// ----- ID_TAB.PHP -----
 	'TALENT_STARLIGHT_WRATH_1' => 'ÐÇ¹â·ßÅ­µÈ¼¶ 1', //TODO
 	'TALENT_STARLIGHT_WRATH_2' => 'ÐÇ¹â·ßÅ­µÈ¼¶ 2',
@@ -3905,9 +3905,9 @@ $lang_id_tab = array(
 	'CHAR_AURA_TRUESHOT_AURA_RANK_3' => 'Trueshot Aura Rank 3',
 	'CHAR_AURA_TRUESHOT_AURA_RANK_4' => 'Trueshot Aura Rank 4',
 	'unknown' => 'Unknown'
-	);
+];
 
-$lang_arenateam = array(
+$lang_arenateam = [
 	// ----- ARENATEAM.PHP -----
 	'by_name' =>'°´ÕÕÃû×Ö',
 	'by_team_leader' => '°´ÕÕ¶Ó³¤',
@@ -3951,9 +3951,9 @@ $lang_arenateam = array(
 	'standings' => '³ÖÐø :',
 	'tot_found' => '·¢ÏÖ×ÜÊý',
 	'arenateam' => '¾º¼¼×é¶Ó'
-	);
+];
 
-	$lang_honor = array(
+	$lang_honor = [
 	// ----- HONOR.PHP -----
 	'allied' => 'ÁªÃË',
 	'horde' => '²¿Âä',
@@ -3965,9 +3965,9 @@ $lang_arenateam = array(
 	'honor points' => 'ÈÙÓþµãÊý',
 	'honor' => 'µÈ¼¶',
 	'guild' => '¹«»á'
-	);
+    ];
 
-$lang_events = array(
+$lang_events = [
 	// ----- EVENTS.PHP -----
 	'total' => '×ÜÊý',
 	'descr' => 'ÊÂ¼þÃû³Æ',
@@ -3975,27 +3975,27 @@ $lang_events = array(
 	'occur' => 'µÈ´ýÊ±¼ä<br><small>Ìì/Ð¡Ê±',
 	'length' => '³ÖÐøÊ±¼ä<br><small>Ìì/Ð¡Ê±',
 	'events' => 'ÊÂ¼þ'
-	);
+];
 
-$lang_instances = array(
+$lang_instances = [
 	// ----- INSTANCES.PHP -----
 	'map' => 'Map',
 	'level_min' => 'Minimum level',
 	'level_max' => 'Maximum level',
 	'max_players' => 'Maximum players',
 	'reset_delay' => 'Reset delay',
-	);
+];
 
-$lang_captcha = array(
+$lang_captcha = [
 	// ----- FORM.PHP -----
 	'security_image' => 'Security Image',
 	'security_code' => 'Security Code',
 	'imput_security_code' => 'Please Input the Security Code',
 	'submit' => 'Submit',
 	'invalid_code' => 'Invalid Code!'
-	);
+];
 
-$lang_top = array(
+$lang_top = [
 	// ----- TOP100.PHP -----
 	'name' => 'Name',
 	'race' => 'Race',
@@ -4009,6 +4009,6 @@ $lang_top = array(
 	'arena_points' => 'Arena',
 	'time_played' => 'Time Played',
 	'online' => 'Online'
-	);
+];
 
 ?>

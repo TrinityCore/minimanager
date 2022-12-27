@@ -1,5 +1,5 @@
 <?php
-$zones = Array(
+$zones = [
 1 => 'Dun Morogh',
 2 => 'Longshore',
 3 => 'Badlands',
@@ -1722,7 +1722,7 @@ $zones = Array(
 4093 => 'The Sun Forge',
 4094 => 'Sunwell Plateau',
 4095 => 'Magisters` Terrace',
-4096 => 'Claytön`s WoWEdit Land',
+4096 => 'Claytï¿½n`s WoWEdit Land',
 4097 => 'Winterfin Caverns',
 4098 => 'Glimmer Bay',
 4099 => 'Winterfin Retreat',
@@ -2268,5 +2268,5 @@ $zones = Array(
 4679 => 'The Forlorn Cavern',
 4688 => 'claytonio test area',
 4692 => 'Quel`Delar`s Rest'
-);
+];
 ?>

@@ -3,7 +3,7 @@ class DBLayer
 {
 	var $link_id;
 	var $query_result;
-	var $saved_queries = array();
+	var $saved_queries = [];
 	var $num_queries = 0;
 
 	function DBLayer($db_host, $db_username, $db_password, $db_name)

@@ -54,7 +54,7 @@ onmouseover=\"toolTip('".addslashes(get_item_tooltip($item[1]))."','item_tooltip
 
 function handle_url_tag($url, $link = ''){
     // From PunBB
-    $full_url = str_replace(array(' ', '\'', '`', '"'), array('%20', '', '', ''), $url);
+    $full_url = str_replace([' ', '\'', '`', '"'], ['%20', '', '', ''], $url);
     if (strpos($url, 'www.') === 0)            // If it starts with www, we add https://
         $full_url = 'https://'.$full_url;
     else if (strpos($url, 'ftp.') === 0)    // Else if it starts with ftp, we add ftp://

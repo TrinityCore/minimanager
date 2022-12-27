@@ -15,8 +15,8 @@ function browse_auctions(&$sqlr, &$sqlc)
 
     $red = "\"#DD5047\"";
     $blue = "\"#0097CD\"";
-    $sidecolor = array(1 => $blue,2 => $red,3 => $blue,4 => $blue,5 => $red,6 => $red,7 => $blue,8 => $red,10 => $red,11 => $blue);
-    $hiddencols = array(1,8,9,10);
+    $sidecolor = [1 => $blue,2 => $red,3 => $blue,4 => $blue,5 => $red,6 => $red,7 => $blue,8 => $red,10 => $red,11 => $blue];
+    $hiddencols = [1,8,9,10];
 
     //$sqlc = new SQL;
     //$sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
@@ -44,7 +44,7 @@ function browse_auctions(&$sqlr, &$sqlc)
 
         if ($sqlc->num_rows($result))
         {
-            $order_side = (in_array($sqlc->result($result, 0, 'race'),array(2,5,6,8,10))) ? " AND `characters`.`race` IN (2,5,6,8,10) " : " AND `characters`.`race` IN (1,3,4,7,11) ";
+            $order_side = (in_array($sqlc->result($result, 0, 'race'), [2,5,6,8,10])) ? " AND `characters`.`race` IN (2,5,6,8,10) " : " AND `characters`.`race` IN (1,3,4,7,11) ";
         }
         else
             $order_side = "";

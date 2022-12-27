@@ -45,7 +45,7 @@ function browse_spells()
     {
         $search_value = $sqlw->quote_smart($_GET['search_value']);
         $search_by = $sqlw->quote_smart($_GET['search_by']);
-        $search_menu = array('entry', 'disable_mask', 'comment');
+        $search_menu = ['entry', 'disable_mask', 'comment'];
         if (in_array($search_by, $search_menu));
         else
             $search_by = 'entry';

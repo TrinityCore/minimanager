@@ -27,8 +27,8 @@ $maps_count = count($lang_defs['maps_names']);
 
 $Horde_races = 0x2B2;
 $Alliance_races = 0x44D;
-$outland_inst   = array(540,542,543,544,545,546,547,548,550,552,553,554,555,556,557,558,559,562,564,565);
-$northrend_inst = array(533,574,575,576,578,599,600,601,602,603,604,608,615,616,617,619,624);
+$outland_inst   = [540,542,543,544,545,546,547,548,550,552,553,554,555,556,557,558,559,562,564,565];
+$northrend_inst = [533,574,575,576,578,599,600,601,602,603,604,608,615,616,617,619,624];
 
 require_once "../libs/js/JsHttpRequest/Php.php";
 $JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
@@ -42,12 +42,12 @@ if(!$realm_db->isValid())
 $realm_db->query("SET NAMES $database_encoding");
 
 $gm_online = 0;
-$gm_accounts = array();
+$gm_accounts = [];
 $query = $realm_db->query("SELECT GROUP_CONCAT(`AccountID` SEPARATOR ' ') FROM `account_access` WHERE `SecurityLevel`>'0'");
 if($query)
     if($result = $realm_db->fetch_row($query))
         $gm_accounts = explode(' ', $result[0]);
-$groups = array();
+$groups = [];
 $characters_db = new DBLayer($host, $user, $password, $db);
 if(!$characters_db->isValid())
 {
@@ -60,11 +60,11 @@ if($query)
     while($result = $characters_db->fetch_assoc($query))
         $groups[$result['memberGuid']] = $result['leaderGuid'];
 
-$Count = array();
+$Count = [];
 for($i = 0; $i < $maps_count; $i++) {
-    $Count[$i] = array(0,0);
+    $Count[$i] = [0,0];
     }
-$arr = array();
+$arr = [];
 $i=$maps_count;
 $query = $characters_db->query("SELECT `guid`,`account`,`playerFlags`,`name`,`class`,`race`, `level`, `gender`, `position_x`,`position_y`,`map`,`zone`,`extra_flags` FROM `characters` WHERE `online`='1' ORDER BY `name`");
 while($result = $characters_db->fetch_assoc($query))

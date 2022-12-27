@@ -122,10 +122,10 @@ function del_acc($acc_id)
                             FROM '.$value[0].' 
                             WHERE '.$value[1].' = '.$acc_id.'');
             if ($sqlr->affected_rows())
-            return array(true, $del_char);
+            return [true, $del_char];
         }
     }
-    return array(false, $del_char);
+    return [false, $del_char];
 }
 
 

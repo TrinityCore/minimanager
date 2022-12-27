@@ -56,7 +56,7 @@ function repair_form()
                                 </tr>
                             </table>';
     $sql = new SQL;
-    $mm_dbs=array($realm_db, $mmfpm_db);
+    $mm_dbs= [$realm_db, $mmfpm_db];
 
     foreach ($mm_dbs as $db)
     {
@@ -92,7 +92,7 @@ function repair_form()
         $output .= '
                             </table>';
     }
-    $mm_dbs=array($world_db, $characters_db);
+    $mm_dbs= [$world_db, $characters_db];
 
     foreach ($mm_dbs as $dbs)
     {
