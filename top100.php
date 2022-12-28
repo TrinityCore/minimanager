@@ -41,7 +41,7 @@ function top100($realmid, &$sqlr, &$sqlc)
         ? "WHERE characters.account NOT IN (SELECT AccountID FROM {$realm_db['name']}.account_access WHERE SecurityLevel > 1)"
         : null;
 
-    $result = $sqlc->query("SELECT count(*) FROM characters {$s}");
+    $result = $sqlc->query("SELECT count(*) FROM characters {$showGms}");
     $all_record = $sqlc->result($result, 0);
     $all_record = (($all_record < 100) ? $all_record : 100);
 
