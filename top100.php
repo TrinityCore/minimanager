@@ -28,7 +28,10 @@ function top100($realmid, &$sqlr, &$sqlc)
     else
         $order_by = 'level';
 
-    $sort_order = (in_array($_GET['sort_order'], ['ASC', 'DESC'])) ? $_GET['sort_order'] : null;
+    $sort_order = (
+        isset($_GET['sort_order'])
+        && in_array($_GET['sort_order'], ['ASC', 'DESC'])
+    ) ? $_GET['sort_order'] : null;
 
     //==========================$_GET and SECURE end========================
 
@@ -37,11 +40,8 @@ function top100($realmid, &$sqlr, &$sqlc)
     else
         $type = 'level';
 
-    $showGms = !isset($_GET['show_gms'])
-        ? "WHERE characters.account NOT IN (SELECT AccountID FROM {$realm_db['name']}.account_access WHERE SecurityLevel > 1)"
-        : null;
+    $result = $sqlc->query("SELECT count(*) FROM characters");
 
-    $result = $sqlc->query("SELECT count(*) FROM characters {$showGms}");
     $all_record = $sqlc->result($result, 0);
     $all_record = (($all_record < 100) ? $all_record : 100);
 
@@ -49,7 +49,8 @@ function top100($realmid, &$sqlr, &$sqlc)
     $result = $sqlc->query('SELECT characters.guid, BINARY characters.name AS name, characters.race, characters.class, characters.gender, characters.level, characters.totaltime, characters.online, characters.money, COALESCE(guild_member.guildid,0) as gname, character_stats.maxhealth as health, characters.power1 AS mana, character_stats.strength AS str, character_stats.agility AS agi, character_stats.stamina AS sta,
                             character_stats.intellect AS intel, character_stats.spirit AS spi, character_stats.armor, character_stats.blockPct AS block, character_stats.dodgePct AS dodge, character_stats.parryPct AS parry, character_stats.attackPower AS ap, character_stats.rangedAttackPower AS ranged_ap, character_stats.resHoly AS holy, character_stats.resFire AS fire,
                             character_stats.resNature AS nature, character_stats.resFrost AS frost, character_stats.resShadow AS shadow, character_stats.resArcane AS arcane, character_stats.critPct AS melee_crit, character_stats.rangedCritPct AS range_crit, characters.totalHonorPoints AS honor, characters.totalKills AS kills, characters.arenaPoints AS arena
-                            FROM characters LEFT JOIN character_stats ON character_stats.guid = characters.guid LEFT JOIN guild_member ON guild_member.guid = characters.guid ' . $showGms . ' ORDER BY '.$order_by.' '.$sort_order.' LIMIT '.$start.', '.$itemperpage.'');
+                            FROM characters LEFT JOIN character_stats ON character_stats.guid = characters.guid LEFT JOIN guild_member ON guild_member.guid = characters.guid WHERE characters.account NOT IN (SELECT AccountID FROM ' . $realm_db['name'] . '.account_access WHERE SecurityLevel > 1) ORDER BY '.$order_by.' '.$sort_order.' LIMIT '.$start.', '.$itemperpage.'');
+
     //mindmg,maxdmg,minrangeddmg,maxrangeddmg,expertise,off_expertise,meleehit,rangehit,spellhit missing
 
     //==========================top tage navigaion starts here========================
