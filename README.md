@@ -24,7 +24,7 @@ docker-compose -f ./.docker/docker-compose.yml up -d
 
 - Make a copy of the configuration file, and make changes as necessary
 ```shell
-cp scripts/config.dist.php config.php
+cp scripts/config.dist.php scripts/config.php
 ```
 
 - Ensure you have an account created in your TrinityCore installation
