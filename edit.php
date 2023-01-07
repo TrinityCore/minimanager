@@ -242,8 +242,7 @@ function edit_user(&$sqlr, &$sqlc)
             {
                 while (($file = readdir($dh)) == true)
                 {
-                    if (($file == '.') || ($file == '..') || ($file == '.htaccess') || ($file == 'index.html') || ($file == '.svn'));
-                    else
+                    if (!in_array($file, ['.', '..', '.htaccess', 'index.php']))
                     {
                         $output .= '
                                                     <option value="'.$file.'"';
