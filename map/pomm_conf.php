@@ -13,6 +13,7 @@
     2006-2009 Modified by killdozer.
 */
 
+define('HEADER_LOADED', true);
 
 require_once("func.php");
 
