@@ -124,7 +124,7 @@ $server[2]['talent_rate']   =  1;          // Talent rate set for this server, n
 //#############################################################################
 //---- Mail configuration ----
 
-$admin_mail  = 'mail@mail.com';      // mail used for bug reports and other user contact
+$github_repo  = 'https://github.com/TrinityCore/minimanager';      // mail used for bug reports and other user contact
 $mailer_type = 'smtp';               // type of mailer to be used("mail", "sendmail", "smtp")
 $from_mail   = 'mail@mail.com';      // all emails will be sent from this email
 

@@ -66,9 +66,8 @@
 
     $lang_footer = lang_footer();
     $output .=
-                                $lang_footer['bugs_to_admin'].'<a href="mailto:'.$admin_mail.'"> '.$lang_footer['site_admin'].'</a><br />';
+                                $lang_footer['bugs_to_admin'].'<a href="'.$github_repo.'">GitHub Repo</a><br />';
     unset($lang_footer);
-    unset($admin_mail);
     $output .= sprintf('
                                 Execute time: %.5f', (microtime(true) - $time_start));
     unset($time_start);

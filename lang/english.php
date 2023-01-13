@@ -289,8 +289,7 @@ function lang_footer()
 {
   $lang_footer =
       [
-    'bugs_to_admin' => 'Problems and bug reports to',
-    'site_admin' => 'Site Admin',
+    'bugs_to_admin' => 'Problems and bug reports to the ',
       ];
   return $lang_footer;
 }
