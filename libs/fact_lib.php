@@ -74,6 +74,7 @@ function fact_get_fact_id()
     1098 => ['Knights of the Ebon Blade', 'Wrath of the Lich King',11,91,0,0,0,0,3200,0,0,0],
     1106 => ['Argent Crusade',            'Wrath of the Lich King',11,94,32767,0,0,0,0,0,0,0],
     1119 => ['The Sons of Hodir',         'Wrath of the Lich King',11,97,1791,0,0,0,-42000,0,0,0],
+    1156 => ['Ashen Veredict',            'Wrath of the Lich King',11,104,2097151,0,0,0,0,0,0,0],
 
       87 => ['Bloodsail Buccaneers',           'Other',12,0,1791,0,0,0,-6500,0,0,0],
       92 => ['Gelkis Clan Centaur',            'Other',12,2,1791,0,0,0,2000,0,0,0],
