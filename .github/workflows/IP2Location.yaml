@@ -1,0 +1,54 @@
+name: Automatically update IP2Location database
+
+on:
+# Runs on the first day of each month
+  schedule:
+    - cron: '0 5 1 * *'
+  workflow_dispatch: { }
+
+jobs:
+  download_extract_and_commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Unzip Utility
+        run: sudo apt-get install unzip -y
+
+      - name: Define Paths and Files
+        run: |
+          echo "DOWNLOAD_URL=https://download.ip2location.com/lite/IP2LOCATION-LITE-DB1.BIN.ZIP" >> $GITHUB_ENV
+          echo "DOWNLOAD_FILENAME=IP2LOCATION-LITE-DB1.BIN.ZIP" >> $GITHUB_ENV
+          echo "TARGET_DIR=libs/IP2Location/databases/" >> $GITHUB_ENV
+
+      - name: Create Target Directory
+        run: mkdir -p ${{ env.TARGET_DIR }}
+
+      - name: Download and Extract File (Overwriting Existing)
+        run: |
+          echo "Downloading and extracting to ${{ env.TARGET_DIR }}..."
+          curl -sS -L -o ${{ env.TARGET_DIR }}${{ env.DOWNLOAD_FILENAME }} ${{ env.DOWNLOAD_URL }}
+          unzip -o ${{ env.TARGET_DIR }}${{ env.DOWNLOAD_FILENAME }} -d ${{ env.TARGET_DIR }}
+          echo "Cleaning up ZIP file..."
+          rm ${{ env.TARGET_DIR }}${{ env.DOWNLOAD_FILENAME }}
+
+      - name: Set up Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit if changes exist
+        run: |
+          git add ${{ env.TARGET_DIR }}
+          git diff --quiet --exit-code --cached || git commit -m "chore(auto): Update IP2Location database"
+
+      - name: Push changes
+        run: git push origin ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
