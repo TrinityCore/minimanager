@@ -183,7 +183,7 @@ $defaultoption         = 2;         // if the above is false then set what the d
 $enable_captcha        = false;     // false = no security image check (enable for protection against 'bot' registrations)
 $captcha_char_limit    = 6;         // Defines the number of characters your captcha will have
 $captcha_width         = 400;       // Captcha window width
-$captcha_height        = 80;        //Captcha window height 
+$captcha_height        = 80;        // Captcha window height 
                                     // captcha needs php GD & FreeType Library support
 $send_mail_on_creation = false;     // true = send mail at account creation.
 $create_acc_locked     = 0;         // if set to '1' newly created accounts will be made locked to registered IP, disallowing user to login from other IPs.
@@ -262,7 +262,7 @@ $map_time_to_show_gmonline  = 3000;     // time to show GM online
 // NOTE : Righ now only for Creature.php
 
 $locales_search_option =  0;         // No search option, don't use locales_XXX for search
-$site_encoding         = 'utf-8';    // used charset
+$site_encoding         = 'UTF-8';    // meta used charset
 
 
 //#############################################################################
@@ -319,7 +319,7 @@ $menu_array =
       ['top100.php',      'top100', 0,5,5,5],
       ['forum.php',      'forums', 0,5,5,5], // has own level security, but has yet to honor the new security system.
       ['stat.php',  'statistics', 0,5,5,5],
-      ['map',  'player_map', 0,5,5,5], // this page has yet to honor the new security system, but it is a read only page
+      ['map/index.php',  'player_map', 0,5,5,5], // this page has yet to honor the new security system, but it is a read only page
       ],
   ],
   ['#',      'tools',

@@ -22,7 +22,6 @@ require_once("func.php");
 
 if ( !ini_get('session.auto_start') ) 
 	session_start();
-require_once("../scripts/config.dist.php");
 require_once("../scripts/config.php");
 require_once '../libs/data_lib.php';
 
