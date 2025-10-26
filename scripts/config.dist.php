@@ -157,8 +157,8 @@ $proxy_cfg['pass'] = '';
 //#############################################################################
 //---- External Links ----
 
-$tooltip_script             = 'https://wow.zamimg.com/widgets/power.js';
-$tooltip_url                = 'https://www.wowhead.com';
+$tooltip_script             = 'https://aowow.trinitycore.info/static/widgets/power.js';
+$tooltip_url                = 'https://aowow.trinitycore.info';
 $item_datasite              = $tooltip_url . '/?item=';
 $quest_datasite             = $tooltip_url . '/?quest=';
 $creature_datasite          = $tooltip_url . '/?npc=';
