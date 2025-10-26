@@ -28,34 +28,18 @@ function front(&$sqlr, &$sqlc, &$sqlm)
 
         function format_uptime($seconds)
         {
-            $secs  = intval($seconds % 60);
-            $mins  = intval($seconds / 60 % 60);
-            $hours = intval($seconds / 3600 % 24);
-            $days  = intval($seconds / 86400);
+            $days = (int)($seconds / 86400);
+            $hours = (int)(($seconds % 86400) / 3600);
+            $mins = (int)(($seconds % 3600) / 60);
+            $secs = (int)($seconds % 60);
 
-            $uptimeString='';
+            $parts = [];
+            if ($days) $parts[] = $days . ' day' . ($days !== 1 ? 's' : '');
+            if ($hours) $parts[] = $hours . ' hour' . ($hours !== 1 ? 's' : '');
+            if ($mins) $parts[] = $mins . ' minute' . ($mins !== 1 ? 's' : '');
+            if ($secs) $parts[] = $secs . ' second' . ($secs !== 1 ? 's' : '');
 
-            if ($days)
-            {
-                $uptimeString .= $days;
-                $uptimeString .= ((1 === $days) ? ' day' : ' days');
-            }
-            if ($hours)
-            {
-                $uptimeString .= ((0 < $days) ? ', ' : '').$hours;
-                $uptimeString .= ((1 === $hours) ? ' hour' : ' hours');
-            }
-            if ($mins)
-            {
-                $uptimeString .= ((0 < $days || 0 < $hours) ? ', ' : '').$mins;
-                $uptimeString .= ((1 === $mins) ? ' minute' : ' minutes');
-            }
-            if ($secs)
-            {
-                $uptimeString .= ((0 < $days || 0 < $hours || 0 < $mins) ? ', ' : '').$secs;
-                $uptimeString .= ((1 === $secs) ? ' second' : ' seconds');
-            }
-            return $uptimeString;
+            return implode(', ', $parts);
         }
 
         $staticUptime = $lang_index['realm'].' <em>'.htmlentities(get_realm_name($realm_id)).'</em> '.$lang_index['online'].' for '.format_uptime($uptimetime);
