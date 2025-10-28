@@ -75,9 +75,11 @@ function achieve_get_sub_category(&$sqlm)
 {
     $sub_cat = [];
     $result = $sqlm->query('SELECT id, parentid, name01 FROM dbc_achievement_category WHERE parentid != -1 ORDER BY `order` ASC');
-    $temp = $sqlm->fetch_assoc($result);
-    while ($sub_cat[$temp['parentid']][$temp['id']] = $temp['name01'])
-        $temp = $sqlm->fetch_assoc($result);
+
+    while ($temp = $sqlm->fetch_assoc($result))
+    {
+        $sub_cat[$temp['parentid']][$temp['id']] = $temp['name01'];
+    }
 
     return $sub_cat;
 }
