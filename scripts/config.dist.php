@@ -43,50 +43,50 @@ $sql_search_limit =  100;                         // limit number of maximum sea
 
 $mmfpm_db['addr']     = '127.0.0.1:3306';         // SQL server IP:port this DB located on, use `mysql` if local docker
 $mmfpm_db['user']     = 'root';                   // SQL server login this DB located on
-$mmfpm_db['pass']     = '1';                      // SQL server pass this DB located on
+$mmfpm_db['pass']     = 'mmfpm_pass';             // SQL server pass this DB located on
 $mmfpm_db['name']     = 'mmfpm';                  // MiniManager DB name
-$mmfpm_db['encoding'] = 'utf8';                   // SQL connection encoding
+$mmfpm_db['encoding'] = 'utf8mb4';                // SQL connection encoding
 
 $realm_db['addr']     = '127.0.0.1:3306';         // SQL server IP:port this realmd located on
 $realm_db['user']     = 'root';                   // SQL server login this realmd located on
-$realm_db['pass']     = '1';                      // SQL server pass this realmd located on
+$realm_db['pass']     = 'realm_db_pass';          // SQL server pass this realmd located on
 $realm_db['name']     = 'auth';                   // realmd DB name
-$realm_db['encoding'] = 'utf8';                   // SQL connection encoding
+$realm_db['encoding'] = 'utf8mb4';                // SQL connection encoding
 
           // position in array must represent realmd ID
 $world_db[1]['addr']          = '127.0.0.1:3306'; // SQL server IP:port this DB located on
 $world_db[1]['user']          = 'root';           // SQL server login this DB located on
-$world_db[1]['pass']          = '1';              // SQL server pass this DB located on
-$world_db[1]['name']          = 'world';         // World Database name, by default "world"
-$world_db[1]['encoding']      = 'utf8';           // SQL connection encoding
+$world_db[1]['pass']          = 'world_db_pass';  // SQL server pass this DB located on
+$world_db[1]['name']          = 'world';          // World Database name, by default "world"
+$world_db[1]['encoding']      = 'utf8mb4';        // SQL connection encoding
 
                // position in array must represent realmd ID
 $characters_db[1]['addr']     = '127.0.0.1:3306'; // SQL server IP:port this DB located on
 $characters_db[1]['user']     = 'root';           // SQL server login this DB located on
-$characters_db[1]['pass']     = '1';              // SQL server pass this DB located on
+$characters_db[1]['pass']     = 'char_db_pass';   // SQL server pass this DB located on
 $characters_db[1]['name']     = 'characters';     // Character Database name
-$characters_db[1]['encoding'] = 'utf8';           // SQL connection encoding
+$characters_db[1]['encoding'] = 'utf8mb4';        // SQL connection encoding
 
 /* Sample Second Realm config
-          // position in array must represent realmd ID
+// position in array must represent realmd ID
 $world_db[2]['addr']          = '127.0.0.1:3306'; // SQL server IP:port this DB located on
 $world_db[2]['user']          = 'root';           // SQL server login this DB located on
 $world_db[2]['pass']          = '1';              // SQL server pass this DB located on
 $world_db[2]['name']          = 'world';          // World Database name, by default "world"
-$world_db[2]['encoding']      = 'utf8';           // SQL connection encoding
-               // position in array must represent realmd ID
+$world_db[2]['encoding']      = 'utf8mb4';        // SQL connection encoding
+// position in array must represent realmd ID
 $characters_db[2]['addr']     = '127.0.0.1:3306'; // SQL server IP:port this DB located on
 $characters_db[2]['user']     = 'root';           // SQL server login this DB located on
-$characters_db[2]['pass']     = '1';              // SQL server pass this DB located on
-$characters_db[2]['name']     = 'characters';     // Character Database name
-$characters_db[2]['encoding'] = 'utf8';           // SQL connection encoding
+$characters_db[2]['pass']     = 'char_2_pass';    // SQL server pass this DB located on
+$characters_db[2]['name']     = 'characters2';    // Character Database name
+$characters_db[2]['encoding'] = 'utf8mb4';        // SQL connection encoding
 */
 
 
 //#############################################################################
 //---- Game Server Configuration ----
 
-        // position in array must represent realmd ID, same as in $world_db
+// position in array must represent realmd ID, same as in $world_db
 $server[1]['addr']          = '127.0.0.1'; // Game Server IP, as seen by MiniManager, from your webhost
 $server[1]['addr_wan']      = '127.0.0.1'; // Game Server IP, as seen by clients - Must be external address
 $server[1]['game_port']     =  8085;       // Game Server port
@@ -107,7 +107,7 @@ $soap_pass                  = 'SOAP_PASS'; // SOAP Password
 
 
 /* Sample Second Realm config
-        // position in array must represent realmd ID, same as in $world_db
+// position in array must represent realmd ID, same as in $world_db
 $server[2]['addr']          = '127.0.0.1'; // Game Server IP, as seen by MiniManager, from your webhost
 $server[2]['addr_wan']      = '127.0.0.1'; // Game Server IP, as seen by clients - Must be external address
 $server[2]['game_port']     =  8085;       // Game Server port
@@ -124,7 +124,7 @@ $server[2]['talent_rate']   =  1;          // Talent rate set for this server, n
 //#############################################################################
 //---- Mail configuration ----
 
-$github_repo  = 'https://github.com/TrinityCore/minimanager';      // mail used for bug reports and other user contact
+$github_repo = 'https://github.com/TrinityCore/minimanager';      // mail used for bug reports and other user contact
 $mailer_type = 'smtp';               // type of mailer to be used("mail", "sendmail", "smtp")
 $from_mail   = 'mail@mail.com';      // all emails will be sent from this email
 
@@ -175,22 +175,22 @@ $item_icons                 = 'img/icons'; // and this is where it will save to 
 //#############################################################################
 //---- New account creation Options ----
 
-$disable_acc_creation  = false;     // true = Do not allow new accounts to be created
-$enable_server_code    = false;     // Enables additional passphrase that must be entered during registration
-$server_code           = 'trinity'; // if above is true, this is the passphrase that must be entered during registration
-$expansion_select      = true;      // true = Shows option to select expansion or classic. (false = no option, WOTLK enabled by default)
-$defaultoption         = 2;         // if the above is false then set what the default option will be (2 = WOTLK, 1 = TBC, 0 = Classic)
-$enable_captcha        = false;     // false = no security image check (enable for protection against 'bot' registrations)
-$captcha_char_limit    = 6;         // Defines the number of characters your captcha will have
-$captcha_width         = 400;       // Captcha window width
-$captcha_height        = 80;        // Captcha window height 
-                                    // captcha needs php GD & FreeType Library support
-$send_mail_on_creation = false;     // true = send mail at account creation.
-$create_acc_locked     = 0;         // if set to '1' newly created accounts will be made locked to registered IP, disallowing user to login from other IPs.
-$validate_mail_host    = false;     // actualy make sure the mail host provided in email is valid/accessible host.
-$require_account_verify = false;    // If set to true, an email will be sent to registered email address requiring verification before account creation
-$limit_acc_per_ip      = false;     // true = limit to one account per IP
-$simple_register       = false;     // Sets the registration to a simple form. Name, Password, Expansion and Email.
+$disable_acc_creation   = false;     // true = Do not allow new accounts to be created
+$enable_server_code     = false;     // Enables additional passphrase that must be entered during registration
+$server_code            = 'trinity'; // if above is true, this is the passphrase that must be entered during registration
+$expansion_select       = true;      // true = Shows option to select expansion or classic. (false = no option, WOTLK enabled by default)
+$defaultoption          = 2;         // if the above is false then set what the default option will be (2 = WOTLK, 1 = TBC, 0 = Classic)
+$enable_captcha         = false;     // false = no security image check (enable for protection against 'bot' registrations)
+$captcha_char_limit     = 6;         // Defines the number of characters your captcha will have
+$captcha_width          = 400;       // Captcha window width
+$captcha_height         = 80;        // Captcha window height 
+                                     // captcha needs php GD & FreeType Library support
+$send_mail_on_creation  = false;     // true = send mail at account creation.
+$create_acc_locked      = 0;         // if set to '1' newly created accounts will be made locked to registered IP, disallowing user to login from other IPs.
+$validate_mail_host     = false;     // actualy make sure the mail host provided in email is valid/accessible host.
+$require_account_verify = false;     // If set to true, an email will be sent to registered email address requiring verification before account creation
+$limit_acc_per_ip       = false;     // true = limit to one account per IP
+$simple_register        = false;     // Sets the registration to a simple form. Name, Password, Expansion and Email.
 
 // this option will limit account creation to users from selected net range(s).
 // allow all => empty array
@@ -207,11 +207,11 @@ $valid_ip_mask[2] = '190.50.33-16.255-0';
 //#############################################################################
 //---- Login Options ----
 
-$remember_me_checked  = false;      // "Remember Me" cookie check box default, false = unchecked
+$remember_me_checked  = false;     // "Remember Me" cookie check box default, false = unchecked
 
-$allow_anony         =  true;       // allow anonymouse login, aka guest account
-$anony_uname         = 'Guest';     // guest account name, this is purely cosmetic
-$anony_realm_id      =  1;          // guest account default realm
+$allow_anony          =  true;     // allow anonymouse login, aka guest account
+$anony_uname          = 'Guest';   // guest account name, this is purely cosmetic
+$anony_realm_id       =  1;        // guest account default realm
 
 // permission level for guest access is -1
 // set it like how you set any page permission level in menu config below, using the value -1
@@ -276,7 +276,7 @@ $backup_dir = 'backup';    // make sure webserver have the permission to write/r
 
 $gm_level_arr =
     [
- -1 => [-1,      'Guest',      '',''],
+ -1 => [-1,      'Guest',     '',''],
   0 => [0,     'Player',      '',''],
   1 => [1,  'Moderator',   'Mod',''],
   2 => [2, 'Gamemaster',    'GM',''], // change the name and alias as required

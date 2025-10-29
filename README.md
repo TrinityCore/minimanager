@@ -17,7 +17,7 @@ docker-compose -f ./.docker/docker-compose.yml up -d
 
 ### Configuration
 
-- Ensure you have an `mmfpm` MySQL database created
+- Ensure you have an `mmfpm` MySQL (utf8mb4) database created
 - Apply `mmfpm.sql` to your newly created database
   - `mysql -u trinity -p mmfpm < SQL/mmfpm.sql`
 - Extract 333a_dbc.zip, and apply the SQL file to the `mmfpm` database
