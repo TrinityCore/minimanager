@@ -2,15 +2,11 @@
 
 //#############################################################################
 //
-// configuration note.
+// Configuration note.
 //
 // Do not edit, move or delete this file.
 //
-// Option 1 (recommended)
-//  Copy config.user.php as config.php.
-//  Copy only the settings you want to change into config.php
-//  Make changes there.
-//
+// Recommended
 // Option 2
 //  Copy this file as config.php,
 //  Make changes there.
@@ -30,7 +26,7 @@ $show_version['svnrev_lvl']  =  '5';    // Minimum account level to show SVN Rev
 //---- SQL Configuration ----
 //
 //  SQL server type  :
-//  'MySQL'   - Mysql (Do not use it. You will have SQL attacks!)
+//  'MySQL'   - MySQL (Do not use it. You will have SQL attacks!)
 //  'PgSQL'   - PostgreSQL
 //  'MySQLi'  - MySQLi
 //  'SQLLite' - SQLLite

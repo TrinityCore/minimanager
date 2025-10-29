@@ -5,9 +5,7 @@ TrinityCore Web management tool
 
 Ensure you have `ext-gmp` and `ext-mysqli` extensions included and enabled on your installation of PHP.
 
-The minimum required version of PHP is currently PHP 7.4. However, as [support for 7.4 EOL'd in November 2022](https://www.php.net/supported-versions.php)
-, you
-should upgrade to PHP 8.0 **as soon as possible**.
+The minimum required version of PHP is currently PHP 8.1.33.
 
 A docker compose configuration has been provided for convenience. Note that you do not need to apply the `mmfpm.sql` 
 when using the docker configuration - an init script does this during build.
@@ -28,7 +26,7 @@ cp scripts/config.dist.php scripts/config.php
 ```
 
 - Ensure you have an account created in your TrinityCore installation
-- Check to make sure you have the necessary GM level set in `auth.account_access`
+- Check to make sure you have the necessary SecurityLevel set in `auth.account_access`
 
 ### Updates to existing minimanager installations
 For older installations, a change was made to improve the security of the application (though in its current state, 

@@ -1,14 +1,12 @@
 RECOMMENDED REQUIREMENTS:
 
  WebServer with PHP support.
- MySQL 5.0.61 and above.     ( https://dev.mysql.com/downloads/mysql/5.0.html#downloads )
- PHP 5.1.0 and above.        ( https://www.php.net/downloads.php)
+ MySQL 8.0.44 and above.     ( https://dev.mysql.com/downloads/mysql/ )
+ PHP 8.1.33 and above.        ( https://www.php.net/downloads.php)
 
  For windows users:
-  If you are using Apache2,  ( https://httpd.apache.org/ )
-   we recommend PHP VC6 TS.
-  If you are not using Apache2,
-   we recommend PHP VC9 NTS.
+  If you are using Apache2.4,  ( https://httpd.apache.org/ )
+   we recommend PHP VS16/VS17 x64 Thread Safe.
 
  Opera Web Browser 10.
  Java SE 5.0.
@@ -16,17 +14,11 @@ RECOMMENDED REQUIREMENTS:
 
 INSTALLATION:
 
- Copy miniManager into any of your webserver folders.
+ Copy MiniManager into any of your webserver folders.
 
  Configuration:
 
- - Option 1 (recommended)
-    Copy /scripts/config.user.php as /scripts/config.php.
-    Copy only the settings you want to change,
-     from /scripts/config.dist.php into /scripts/config.php
-    Make changes there.
-
- - Option 2
+ - Recommended
     Copy /scripts/config.dist.php as /scripts/config.php,
     Make changes there.
 
@@ -38,4 +30,4 @@ If some aspect of installation settings are not covered by this guide,
 
 
 Last Updated
-9/3/2009
+29/10/2025

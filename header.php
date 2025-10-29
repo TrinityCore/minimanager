@@ -13,16 +13,9 @@ else
 
 //---------------------Load Default and User Configuration---------------------
 if (file_exists('./scripts/config.php'))
-{
-    if (file_exists('./scripts/config.dist.php'))
-        require_once './scripts/config.dist.php';
-    else
-        exit('<center><br><code>\'scripts/config.dist.php\'</code> not found,<br>
-            please restore <code>\'scripts/config.dist.php\'</code></center>');
     require_once './scripts/config.php';
-}
 else
-    exit('<center><br><code>\'scripts/config.php\'</code> not found,<br>
+    exit('<center><br><code>Configuration file \'scripts/config.php\'</code> not found,<br>
         please copy <code>\'scripts/config.dist.php\'</code> to
         <code>\'scripts/config.php\'</code> and make appropriate changes.');
 
@@ -88,7 +81,7 @@ require_once 'scripts/get_lib.php';
 // sets encoding defined in config for language support
 header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-header('Pragma: no-cache');
+
 $output .= '
 <!DOCTYPE html>
 <html xmlns="https://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
