@@ -39,7 +39,7 @@ function spell_get_icon($auraid, &$sqlm)
 
             if ($get_icons_from_web)
             {
-                // Directly use Wowhead
+                // Directly use web CDN
                 return $get_icons_web_cdn . $aura . '.jpg';
             }
 
@@ -53,14 +53,14 @@ function spell_get_icon($auraid, &$sqlm)
                     unlink($local_path);
             }
 
-            // If not found locally, fetch from Wowhead
-            $wowhead_url = $get_icons_web_cdn . $aura . '.jpg';
+            // If not found locally, fetch from web CDN
+            $web_url = $get_icons_web_cdn . $aura . '.jpg';
             if (!$get_icons_from_web)
             {
                 if (!file_exists($item_icons))
                     mkdir($item_icons, 0755, true);
 
-                $data = @file_get_contents($wowhead_url);
+                $data = @file_get_contents($web_url);
                 if ($data)
                 {
                     file_put_contents($local_path, $data);
@@ -68,7 +68,7 @@ function spell_get_icon($auraid, &$sqlm)
                 }
                 else
                 {
-                    return $wowhead_url;
+                    return $web_url;
                 }
             }
         }
