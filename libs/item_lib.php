@@ -66,7 +66,7 @@ function get_item_name($item_id, &$sqlw=0)
 
 function get_item_icon($itemid, &$sqlm=0, &$sqlw=0)
 {
-    global $mmfpm_db, $world_db, $realm_id, $proxy_cfg, $get_icons_from_web, $item_icons;
+    global $mmfpm_db, $world_db, $realm_id, $get_icons_from_web, $get_icons_web_cdn, $item_icons;
 
     // not all functions that call this function will pass reference to existing SQL links
     // so we need to check and overload when needed
@@ -98,160 +98,54 @@ function get_item_icon($itemid, &$sqlm=0, &$sqlw=0)
     {
         $result = $sqlm->query("SELECT `field_5` FROM `dbc_itemdisplayinfo` WHERE `id`=$displayid LIMIT 1");
 
-        if($result)
+        if ($result)
         {
             $item_uppercase = $sqlm->result($result, 0);
             $item = strtolower($item_uppercase);
 
             if ($item)
             {
-                if (file_exists(''.$item_icons.'/'.$item.'.jpg'))
+                if ($get_icons_from_web)
                 {
-                    if (filesize(''.$item_icons.'/'.$item.'.jpg') > 349)
+                    // Directly use Wowhead CDN
+                    return $get_icons_web_cdn . $item . '.jpg';
+                }
+
+                // Local fallback
+                $local_path = $item_icons . '/' . $item . '.jpg';
+                if (file_exists($local_path))
+                {
+                    if (filesize($local_path) > 349)
+                        return $local_path;
+                    else
                     {
-                        return ''.$item_icons.'/'.$item.'.jpg';
+                        unlink($local_path);
+                    }
+                }
+
+                // If not found locally, fetch from Wowhead CDN
+                $wowhead_url = $get_icons_web_cdn . $item . '.jpg';
+                if (!$get_icons_from_web)
+                {
+                    if (!file_exists($item_icons))
+                        mkdir($item_icons, 0755, true);
+
+                    $data = @file_get_contents($wowhead_url);
+                    if ($data)
+                    {
+                        file_put_contents($local_path, $data);
+                        return $local_path;
                     }
                     else
                     {
-                        $sqlm->query('DELETE FROM dbc_itemdisplayinfo WHERE id = '.$displayid.'');
-                        if (file_exists(''.$item_icons.'/'.$item.'.jpg'))
-                            unlink(''.$item_icons.'/'.$item.'.jpg');
-                        $item = '';
+                        return $wowhead_url;
                     }
                 }
-                else
-                    $item = '';
             }
-            else
-                $item = '';
         }
-        else
-            $item = '';
     }
-    else
-        $item = '';
 
-    if($get_icons_from_web)
-    {
-        $xmlfilepath="https://www.wowhead.com/item=";
-        $proxy = $proxy_cfg['addr'];
-        $port = $proxy_cfg['port'];
-
-        if (empty($proxy_cfg['addr']))
-        {
-            $proxy = "www.wowhead.com";
-            $xmlfilepath = "item=";
-            $port = 80;
-        }
-
-        if ($item == '')
-        {
-            //get the icon name
-            $fp = @fsockopen($proxy, $port, $errno, $errstr, 0.5);
-            if (!$fp)
-                return "img/INV/INV_blank_32.gif";
-            $out = "GET /$xmlfilepath$itemid HTTP/1.0\r\nHost: www.wowhead.com\r\n";
-            if (!empty($proxy_cfg['user']))
-                $out .= "Proxy-Authorization: Basic ". base64_encode ("{$proxy_cfg['user']}:{$proxy_cfg['pass']}")."\r\n";
-            $out .="Connection: Close\r\n\r\n";
-
-            $temp = "";
-            fwrite($fp, $out);
-            while ($fp && !feof($fp))
-                $temp .= fgets($fp, 4096);
-            fclose($fp);
-
-            $wowhead_string = $temp;
-            $temp_string1 = strstr($wowhead_string, "Icon.create(");
-            $temp_string2 = substr($temp_string1, 12, 50);
-            $temp_string3 = strtok($temp_string2, ',');
-            $temp_string4 = substr($temp_string3, 1, strlen($temp_string3) - 2);
-            $icon_name = $temp_string4;
-
-            $item_uppercase = $icon_name;
-            $item = strtolower($item_uppercase);
-        }
-
-        if (file_exists(''.$item_icons.'/'.$item.'.jpg'))
-        {
-            if (filesize(''.$item_icons.'/'.$item.'.jpg') > 349)
-            {
-                $sqlm->query('REPLACE INTO dbc_itemdisplayinfo (id, field_5) VALUES (\''.$displayid.'\', \''.$item.'\')');
-                return ''.$item_icons.'/'.$item.'.jpg';
-            }
-            else
-            {
-                $sqlm->query('DELETE FROM dbc_itemdisplayinfo WHERE id = '.$displayid.'');
-                if (file_exists(''.$item_icons.'/'.$item.'.jpg'))
-                    unlink(''.$item_icons.'/'.$item.'.jpg');
-            }
-        }
-
-        //get the icon itself
-        if (empty($proxy_cfg['addr']))
-        {
-            $proxy = "static.wowhead.com";
-            $port = 80;
-        }
-        $fp = @fsockopen($proxy, $port, $errno, $errstr, 0.5);
-        if (!$fp)
-            return "img/INV/INV_blank_32.gif";
-        $iconfilename = strtolower($item);
-        $file = "https://static.wowhead.com/images/icons/medium/$iconfilename.jpg";
-        $out = "GET $file HTTP/1.0\r\nHost: static.wowhead.com\r\n";
-        if (!empty($proxy_cfg['user']))
-            $out .= "Proxy-Authorization: Basic ". base64_encode ("{$proxy_cfg['user']}:{$proxy_cfg['pass']}")."\r\n";
-        $out .="Connection: Close\r\n\r\n";
-        fwrite($fp, $out);
-
-        //remove header
-        while ($fp && !feof($fp))
-        {
-            $headerbuffer = fgets($fp, 4096);
-            if (urlencode($headerbuffer) == "%0D%0A")
-                break;
-        }
-
-        if (file_exists(''.$item_icons.'/'.$item.'.jpg'))
-        {
-            if (filesize(''.$item_icons.'/'.$item.'.jpg') > 349)
-            {
-                $sqlm->query('REPLACE INTO dbc_itemdisplayinfo (id, field_5) VALUES (\''.$displayid.'\', \''.$item.'\')');
-                return ''.$item_icons.'/'.$item.'.jpg';
-            }
-            else
-            {
-                $sqlm->query('DELETE FROM dbc_itemdisplayinfo WHERE id = '.$displayid.'');
-                if (file_exists(''.$item_icons.'/'.$item.'.jpg'))
-                    unlink(''.$item_icons.'/'.$item.'.jpg');
-            }
-        }
-
-        $img_file = fopen("$item_icons/$item.jpg", 'wb');
-        while (!feof($fp))
-            fwrite($img_file,fgets($fp, 4096));
-        fclose($fp);
-        fclose($img_file);
-
-        if (file_exists(''.$item_icons.'/'.$item.'.jpg'))
-        {
-            if (filesize(''.$item_icons.'/'.$item.'.jpg') > 349)
-            {
-                $sqlm->query('REPLACE INTO dbc_itemdisplayinfo (id, field_5) VALUES (\''.$displayid.'\', \''.$item.'\')');
-                return ''.$item_icons.'/'.$item.'.jpg';
-            }
-            else
-            {
-                $sqlm->query('DELETE FROM dbc_itemdisplayinfo WHERE id = '.$displayid.'');
-                if (file_exists(''.$item_icons.'/'.$item.'.jpg'))
-                    unlink(''.$item_icons.'/'.$item.'.jpg');
-            }
-        }
-        else
-            return "img/INV/INV_blank_32.gif";
-    }
-    else
-        return "img/INV/INV_blank_32.gif";
+    return 'img/INV/INV_blank_32.gif'; // fallback
 }
 
 

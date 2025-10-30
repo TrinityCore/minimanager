@@ -165,6 +165,7 @@ $achievement_datasite       = $tooltip_url . '/?achievement=';
 $talent_calculator_datasite = 'https://www.wowarmory.com/talent-calc.xml?cid=';
 
 $get_icons_from_web         =  false;      // wherever to get icons from the web.
+$get_icons_web_cdn          = 'https://wow.zamimg.com/images/wow/icons/medium/'; // icons CDN provider (when get_icons_from_web is enabled)
 $item_icons                 = 'img/icons'; // and this is where it will save to and get from.
 
 
