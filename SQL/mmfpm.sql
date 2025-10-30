@@ -27,8 +27,10 @@ CREATE TABLE `mm_forum_posts` (
 --
 
 LOCK TABLES `mm_forum_posts` WRITE;
+/*!40000 ALTER TABLE `mm_forum_posts` DISABLE KEYS */;
 INSERT INTO `mm_forum_posts`(`id`,`authorid`,`authorname`,`forum`,`topic`,`lastpost`,`name`,`text`,`time`,`annouced`,`sticked`) VALUES
 (1,0,'miniManagerTeam',1,1,1,'Hello Admin!','[b]Hi[/b] !!:D<br><br>If you are reading this, that means that you have [i]correctly[/i] installed this forum, XD<br><br><br><br>So what\' s next?<br><br>Edit [color=red]forum.conf.php[/color]<br><br><br><br>And enjoy!<br><br><br><br>Report bugs at [url=https://github.com/TrinityCore/minimanager/issues]MiniManager tracker[/url]<br><br><br><br>Bye!<br><br>miniManagerTeam','00/00/00 00:00:00',1,0);
+/*!40000 ALTER TABLE `mm_forum_posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -50,7 +52,9 @@ CREATE TABLE `mm_motd` (
 --
 
 LOCK TABLES `mm_motd` WRITE;
+/*!40000 ALTER TABLE `mm_motd` DISABLE KEYS */;
 INSERT INTO `mm_motd` VALUES (1, 1, '02/05/10 14:29:07 Posted by: MiniManager Team', 'Hello Admin\r\n\r\nhelp supporting Minimanager\r\n\r\nhttps://github.com/TrinityCore/minimanager/issues\r\n\r\nif you found a bug or improved it, please contribute\r\n\r\nor it will eventually stop development from lack of interrest from community ');
+/*!40000 ALTER TABLE `mm_motd` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
