@@ -254,7 +254,6 @@ function lang_header()
     'ssh_line' => 'Commandes SSH',
 
     'forums' => 'Forums',
-    'irc' => 'Applet IRC',
     'bugreport' => 'Bug Report',
 
     // please check the length at 'My Account' Menu

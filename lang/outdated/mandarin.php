@@ -199,7 +199,6 @@ $lang_header = [
 	'command' => 'ÓÎÏ·ÃüÁî',
 	'creatures' => 'ÉúÎïÊý¾Ý',
 	'player_map' => 'ÔÚÏßÍæ¼ÒËùÔÚÎ»ÖÃ',
-	'irc' => 'IRCÁÄÌì',
 	'repair' => 'ÐÞ¸´/ÓÅ»¯',
 	'game_object' => 'ÓÎÏ·ÎïÌå/¶ÔÏó',
 	'forums' => 'ÂÛÌ³',

@@ -196,7 +196,6 @@ $lang_header = [
 	'command' => 'فرمان ها',
 	'creatures' => 'جانور ها',
 	'player_map' => 'نقشه بازی کنان',
-	'irc' => 'IRC Applet',
 	'repair' => 'تعمیر/بهینه',
 	'game_object' => 'اجسام بازی',
 	'forums' => 'تالار گفتگو',

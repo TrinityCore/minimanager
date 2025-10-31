@@ -200,7 +200,6 @@ $lang_header = [
 	'command' => 'Kommandoer',
 	'creatures' => 'Dyr',
 	'player_map' => 'Spiller kart',
-	'irc' => 'IRC Applet',  //TODO
 	'repair' => 'Repair/Optimize',  //TODO
 	'game_object' => 'Game Object',
 	'forums' => 'Forums',

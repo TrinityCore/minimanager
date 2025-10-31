@@ -3,7 +3,7 @@ name: Automatically update IP2Location database
 on:
 # Runs on the first day of each month
   schedule:
-    - cron: '0 5 1 * *'
+    - cron: '0 9 1 * *'
   workflow_dispatch: { }
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
       - name: Create Target Directory
         run: mkdir -p ${{ env.TARGET_DIR }}
 
-      - name: Download and Extract File (Overwriting Existing)
+      - name: Download and Extract File
         run: |
           echo "Downloading and extracting to ${{ env.TARGET_DIR }}..."
           curl -sS -L -o ${{ env.TARGET_DIR }}${{ env.DOWNLOAD_FILENAME }} ${{ env.DOWNLOAD_URL }}

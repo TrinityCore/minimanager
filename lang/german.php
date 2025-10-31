@@ -267,7 +267,6 @@ $lang_header =
   'ssh_line' => 'SSH Zeile',
 
   'forums' => 'Forum',
-  'irc' => 'IRC Applet',
   'bugreport' => 'Bug Report',
 
   // please check the length at 'My Account' Menu

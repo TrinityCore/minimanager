@@ -197,7 +197,6 @@ $lang_header = [
 	'command' => 'PÅ™Ã­kazy',
 	'creatures' => 'Bytosti',
 	'player_map' => 'Mapa hrÃ¡ÄÅ¯',
-	'irc' => 'IRC Applet',
 	'repair' => 'Opravit/Optimalizovat',
 	'game_object' => 'HernÃ­ objekty',
 	'forums' => 'DiskusnÃ­ fÃ³ra',

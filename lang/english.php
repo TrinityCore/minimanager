@@ -271,7 +271,6 @@ function lang_header()
     'ssh_line' => 'SSH line',
 
     'forums' => 'Forums',
-    'irc' => 'IRC Applet',
 
     // please check the length at 'My Account' Menu
     'realms' => '------Realms------',

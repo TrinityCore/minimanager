@@ -200,7 +200,6 @@ $lang_header = [
 	'command' => 'Komutlar',
 	'creatures' => 'Yaratýklar',
 	'player_map' => 'Oyuncu Haritasý',
-	'irc' => 'IRC Applet',  //TODO
 	'repair' => 'Repair/Optimize',  //TODO
 	'game_object' => 'Game Object',
 	'forums' => 'Forums',

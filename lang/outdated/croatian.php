@@ -198,7 +198,6 @@ $lang_header = [
 	'command' => 'Komande',
 	'creatures' => 'Mobovi',
 	'player_map' => 'Karta svijeta',
-	'irc' => 'IRC chat',
 	'repair' => 'Popravi/Optimiziraj',
 	'game_object' => 'Objekti',
 	'forums' => 'Forum',

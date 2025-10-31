@@ -199,7 +199,6 @@ $lang_header = [
 	'command' => 'Comandi',
 	'creatures' => 'Creature',
 	'player_map' => 'Mappa del Mondo',
-	'irc' => 'Canale IRC',
 	'repair' => 'Ripara/Ottimizza',
 	'game_object' => 'Oggetti del Gioco',
 	'forums' => 'Forum',

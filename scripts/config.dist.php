@@ -7,7 +7,7 @@
 // Do not edit, move or delete this file.
 //
 // Recommended
-// Option 2
+//
 //  Copy this file as config.php,
 //  Make changes there.
 
@@ -49,14 +49,14 @@ $realm_db['pass']     = 'realm_db_pass';          // SQL server pass this realmd
 $realm_db['name']     = 'auth';                   // realmd DB name
 $realm_db['encoding'] = 'utf8mb4';                // SQL connection encoding
 
-          // position in array must represent realmd ID
+// position in array must represent realmd ID
 $world_db[1]['addr']          = '127.0.0.1:3306'; // SQL server IP:port this DB located on
 $world_db[1]['user']          = 'root';           // SQL server login this DB located on
 $world_db[1]['pass']          = 'world_db_pass';  // SQL server pass this DB located on
 $world_db[1]['name']          = 'world';          // World Database name, by default "world"
 $world_db[1]['encoding']      = 'utf8mb4';        // SQL connection encoding
 
-               // position in array must represent realmd ID
+// position in array must represent realmd ID
 $characters_db[1]['addr']     = '127.0.0.1:3306'; // SQL server IP:port this DB located on
 $characters_db[1]['user']     = 'root';           // SQL server login this DB located on
 $characters_db[1]['pass']     = 'char_db_pass';   // SQL server pass this DB located on
@@ -133,14 +133,6 @@ $smtp_cfg['pass'] = '';              // pass
 
 
 //#############################################################################
-//---- IRC Options ------
-
-$irc_cfg['server']  = 'irc.rizon.net'; // irc server
-$irc_cfg['port']    =  6667;            // port
-$irc_cfg['channel'] = 'Trinityscripts';    // channel
-
-
-//#############################################################################
 //---- HTTP Proxy Configuration ----
 // configure only if requierd
 
@@ -165,7 +157,7 @@ $achievement_datasite       = $tooltip_url . '/?achievement=';
 $talent_calculator_datasite = 'https://www.wowarmory.com/talent-calc.xml?cid=';
 
 $get_icons_from_web         =  false;      // wherever to get icons from the web.
-$get_icons_web_cdn          = 'https://aowow.trinitycore.info/static/images/wow/icons/medium/'; // icons CDN provider (when get_icons_from_web is enabled)
+$get_icons_web_cdn          = 'https://aowow.trinitycore.info/static/images/wow/icons/medium/'; // icons CDN provider
 $item_icons                 = 'img/icons'; // and this is where it will save to and get from.
 
 
@@ -329,7 +321,6 @@ $menu_array =
       ['ticket.php',    'tickets', 2,5,5,5],
       ['banned.php','banned_list', 3,5,5,5],
       ['cleanup.php',    'cleanup', 5,5,5,5],
-      ['irc.php',        'irc', 0,5,5,5],
       ],
   ],
   ['#',         'db',

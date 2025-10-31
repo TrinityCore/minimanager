@@ -1,15 +1,13 @@
 RECOMMENDED REQUIREMENTS:
 
  WebServer with PHP support.
- MySQL 8.0.44 and above.     ( https://dev.mysql.com/downloads/mysql/ )
- PHP 8.1.33 and above.        ( https://www.php.net/downloads.php)
+ MySQL 8.0.44 and above.        ( https://dev.mysql.com/downloads/mysql/ )
+ PHP 8.1.33 and above.          ( https://www.php.net/downloads.php )
 
- For windows users:
-  If you are using Apache2.4,  ( https://httpd.apache.org/ )
+ For Windows users:
+  If you are using Apache 2.4,  ( https://httpd.apache.org/ )
    we recommend PHP VS16/VS17 x64 Thread Safe.
 
- Opera Web Browser 10.
- Java SE 5.0.
 
 
 INSTALLATION:
