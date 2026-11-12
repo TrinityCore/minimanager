@@ -393,7 +393,10 @@ function set_def_realm(&$sqlr)
         $_SESSION['realm_id'] = $id;
     unset($id);
 
+    // only plain same-site paths (the header passes the script path here), never another host
     $url = (isset($_GET['url'])) ? $_GET['url'] : 'index.php';
+    if (!preg_match('#^/?[\w./-]+$#', $url) || '//' === substr($url, 0, 2))
+        $url = 'index.php';
     redirect($url);
 }
 

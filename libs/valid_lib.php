@@ -25,7 +25,7 @@ function valid_email($email='')
         if ($validate_mail_host)
         {
             // gets domain name
-            list($username,$domain) = split('@',$email);
+            list($username,$domain) = explode('@', $email, 2);
             // checks for if MX records in the DNS
             $mxhosts = [];
             if (getmxrr($domain, $mxhosts))

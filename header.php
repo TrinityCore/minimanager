@@ -191,7 +191,7 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
             {
                 $set = ($realm_id === $realm['id']) ? '>' : '';
                 $output .= '
-                            <li><a href="realm.php?action=set_def_realm&amp;id='.$realm['id'].'&amp;url='.$_SERVER['PHP_SELF'].'">'.htmlentities($set.' '.$realm['name']).'</a></li>';
+                            <li><a href="realm.php?action=set_def_realm&amp;id='.$realm['id'].'&amp;url='.urlencode($_SERVER['SCRIPT_NAME']).'">'.htmlentities($set.' '.$realm['name']).'</a></li>';
             }
         }
         unset($set);
