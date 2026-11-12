@@ -134,6 +134,28 @@ foreach ($menu_array as $trunk)
             $action_permission = ['read' => $branch[2], 'insert' => $branch[3], 'update' => $branch[4], 'delete' => $branch[5]];
 unset($branch, $trunk, $lookup_file);
 
+//---------------------Logged in user re-check---------------------------------
+// GM level depends on the realm, re-read it when the realm changes.
+// level and ban state are also re-read at most once a minute.
+// runs before the err check below, so valid_login() never sees a stale level.
+if (!empty($_SESSION['logged_in']))
+{
+    $lvl_realm = ( isset($_GET['r_id']) ) ? (int)$_GET['r_id'] : $_SESSION['realm_id'];
+    if (!isset($_SESSION['lvl_realm'], $_SESSION['lvl_time'])
+        || $_SESSION['lvl_realm'] != $lvl_realm || 60 < time() - $_SESSION['lvl_time'])
+    {
+        if (!$sqlr->num_rows($sqlr->query('SELECT id FROM account WHERE id = '.(int)$_SESSION['user_id'].' AND id NOT IN (SELECT id FROM account_banned WHERE active = 1)')))
+        {
+            session_destroy();
+            redirect('login.php');
+        }
+        $_SESSION['user_lvl'] = get_user_lvl($sqlr, $_SESSION['user_id'], $lvl_realm);
+        $_SESSION['lvl_realm'] = $lvl_realm;
+        $_SESSION['lvl_time'] = time();
+    }
+    unset($lvl_realm);
+}
+
 //----Check if a user has login, if Guest mode is enabled, code above will login as Guest
 if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION['realm_id']) && empty($_GET['err']))
 {
