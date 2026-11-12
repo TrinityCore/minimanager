@@ -3,7 +3,8 @@
 // page header, and any additional required libraries
 require_once 'header.php';
 // we get the error message which was passed to us
-$err = (isset($_GET['err'])) ? ($_GET['err']) : ((defined('ERROR_MSG')) ? ERROR_MSG : 'Oopsy...');
+// ERROR_MSG is built server side and may hold markup; the query string never may
+$err = (isset($_GET['err'])) ? htmlspecialchars($_GET['err'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : ((defined('ERROR_MSG')) ? ERROR_MSG : 'Oopsy...');
 
 //  we start with a lead of 10 spaces,
 //  because last line of header is an opening tag with 8 spaces
