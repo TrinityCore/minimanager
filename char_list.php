@@ -46,7 +46,7 @@ function browse_chars(&$sqlr, &$sqlc)
     // Multi-condition search support (AND)
     $search_values = isset($_GET['search_value']) ? (array)$_GET['search_value'] : [''];
     $search_bys = isset($_GET['search_by']) ? (array)$_GET['search_by'] : ['name'];
-    $search_menu = ['name', 'guid', 'account', 'level', 'greater_level', 'lesser_level', 'guild', 'race', 'class', 'map', 'greater_rank', 'online', 'gold', 'item', 'gender'];
+    $search_menu = ['name', 'guid', 'account', 'level', 'greater_level', 'lesser_level', 'guild', 'race', 'class', 'map', 'greater_rank', 'online', 'gold', 'item', 'gender', 'logout_time'];
 
     $where_clauses = [];
     $search_url = '';
@@ -135,6 +135,23 @@ function browse_chars(&$sqlr, &$sqlc)
             else
                 $where_clauses[] = '1=0';
         }
+        elseif ($field === 'logout_time')
+        {
+            if (preg_match('/^([<>=])?\s*(\d{4}-\d{2}-\d{2})$/', $val_raw, $dm))
+            {
+                $op = !empty($dm[1]) ? $dm[1] : '=';
+                $ts_start = strtotime($dm[2] . ' 00:00:00');
+                $ts_end   = strtotime($dm[2] . ' 23:59:59');
+                if ($op === '<')
+                    $where_clauses[] = 'characters.logout_time > 0 AND characters.logout_time < ' . $ts_start;
+                elseif ($op === '>')
+                    $where_clauses[] = 'characters.logout_time > ' . $ts_end;
+                else
+                    $where_clauses[] = 'characters.logout_time BETWEEN ' . $ts_start . ' AND ' . $ts_end;
+            }
+            else
+                $where_clauses[] = '1=0';
+        }
         else
             $where_clauses[] = "characters.$field LIKE '%$val%'";
     }
@@ -220,6 +237,7 @@ function browse_chars(&$sqlr, &$sqlc)
                                                                 <option value=\"race\"".($f_by == 'race' ? " selected=\"selected\"" : "").">{$lang_char_list['by_race_id']}</option>
                                                                 <option value=\"class\"".($f_by == 'class' ? " selected=\"selected\"" : "").">{$lang_char_list['by_class_id']}</option>
                                                                 <option value=\"gender\"".($f_by == 'gender' ? " selected=\"selected\"" : "").">Género</option>
+                                                                <option value=\"logout_time\"".($f_by == 'logout_time' ? " selected=\"selected\"" : "").">Last Online (&lt; = &gt; YYYY-MM-DD)</option>
                                                                 <option value=\"map\"".($f_by == 'map' ? " selected=\"selected\"" : "").">{$lang_char_list['by_map_id']}</option>
                                                                 <option value=\"online\"".($f_by == 'online' ? " selected=\"selected\"" : "").">{$lang_char_list['by_online']}</option>
                                                                 <option value=\"gold\"".($f_by == 'gold' ? " selected=\"selected\"" : "").">{$lang_char_list['chars_gold']}</option>

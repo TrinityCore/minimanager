@@ -116,6 +116,17 @@ function browse_users(&$sqlr, &$sqlc)
             }
             $where_clauses[] = !empty($matched_ips) ? 'account.last_ip IN (' . implode(',', $matched_ips) . ')' : '1=0';
         }
+        elseif ($field === 'last_login')
+        {
+            if (preg_match('/^([<>=])?\s*(\d{4}-\d{2}-\d{2})$/', $val_raw, $dm))
+            {
+                $op = !empty($dm[1]) ? $dm[1] : '=';
+                $d_str = $sqlr->quote_smart($dm[2]);
+                $where_clauses[] = "DATE(account.last_login) $op '$d_str'";
+            }
+            else
+                $where_clauses[] = '`account`.last_login LIKE "%' . $val . '%"';
+        }
         else
             $where_clauses[] = '`account`.' . $field . ' LIKE "%' . $val . '%"';
     }
@@ -233,7 +244,7 @@ function browse_users(&$sqlr, &$sqlc)
                                                             <option value="failed_logins"'.($f_by === 'failed_logins' ? ' selected="selected"' : '').'>'.$lang_user['by_failed_loggins'].'</option>
                                                             <option value="greater_failed_logins"'.($f_by === 'greater_failed_logins' ? ' selected="selected"' : '').'>'.$lang_user['by_greater_failed_loggins'].'</option>
                                                             <option value="lesser_failed_logins"'.($f_by === 'lesser_failed_logins' ? ' selected="selected"' : '').'>'.$lang_user['by_lesser_failed_loggins'].'</option>
-                                                            <option value="last_login"'.($f_by === 'last_login' ? ' selected="selected"' : '').'>'.$lang_user['by_last_login'].'</option>
+                                                            <option value="last_login"'.($f_by === 'last_login' ? ' selected="selected"' : '').'>'.$lang_user['by_last_login'].' (&lt; = &gt; YYYY-MM-DD)</option>
                                                             <option value="online"'.($f_by === 'online' ? ' selected="selected"' : '').'>'.$lang_user['by_online'].'</option>
                                                             <option value="locked"'.($f_by === 'locked' ? ' selected="selected"' : '').'>'.$lang_user['by_locked'].'</option>
                                                             <option value="banned"'.($f_by === 'banned' ? ' selected="selected"' : '').'>'.$lang_user['by_banned'].'</option>
