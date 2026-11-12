@@ -825,6 +825,8 @@ function lang_edit()
     'error_updating' => 'Update action Error! - Non of the fields changed?',
     'del_error' => 'Unexpected Delete Error.',
     'edit_your_acc' => 'Edit Your Account',
+    'current_pass' => 'Current password',
+    'current_pass_wrong' => 'The current password is wrong.',
     'save' => 'Save',
       ];
   return $lang_edit;

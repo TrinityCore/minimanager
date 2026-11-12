@@ -9,7 +9,12 @@ $time_start = microtime(true);
 // resuming login session if available, or start new one
 if (ini_get('session.auto_start'));
 else
+{
+    // SameSite keeps the session cookie off cross-site POSTs; JS never needs it
+    ini_set('session.cookie_samesite', 'Lax');
+    ini_set('session.cookie_httponly', '1');
     session_start();
+}
 
 //---------------------Load Default and User Configuration---------------------
 if (file_exists('./scripts/config.php'))

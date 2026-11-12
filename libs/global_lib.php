@@ -59,6 +59,33 @@ function redirect($url)
 
 
 //#############################################################################
+// CSRF protection: one random token per session.
+// put csrf_field() in every form (or csrf=csrf_token() in action links)
+// and call csrf_check() first in every handler that changes data.
+function csrf_token()
+{
+    if (empty($_SESSION['csrf']))
+        $_SESSION['csrf'] = bin2hex(random_bytes(32));
+    return $_SESSION['csrf'];
+}
+
+function csrf_field()
+{
+    return '<input type="hidden" name="csrf" value="'.csrf_token().'" />';
+}
+
+function csrf_check()
+{
+    $token = $_POST['csrf'] ?? $_GET['csrf'] ?? '';
+    if (!is_string($token) || empty($_SESSION['csrf']) || !hash_equals($_SESSION['csrf'], $token))
+    {
+        http_response_code(403);
+        exit('Invalid or expired security token. Go back, reload the page and try again.');
+    }
+}
+
+
+//#############################################################################
 // returns the highest GM level of an account on a realm, 0 if it has none
 function get_user_lvl(&$sqlr, $user_id, $realm_id)
 {

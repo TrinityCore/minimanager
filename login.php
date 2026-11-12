@@ -53,7 +53,7 @@ function dologin(&$sqlr)
                 $_SESSION['client_ip'] = (isset($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : getenv('REMOTE_ADDR');
                 $_SESSION['logged_in'] = true;
                 if (isset($_POST['remember']) && $_POST['remember'] != '')
-                    setcookie(session_name(), session_id(), time()+60*60*24*7);
+                    setcookie(session_name(), session_id(), ['expires' => time()+60*60*24*7, 'path' => ini_get('session.cookie_path'), 'httponly' => true, 'samesite' => 'Lax']);
                 redirect('index.php');
             }
         }

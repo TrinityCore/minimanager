@@ -39,7 +39,7 @@ function show_realm(&$sqlr)
                         <tr>
                             <td>';
     if($user_lvl >= $action_permission['insert'])
-        makebutton($lang_realm['add_realm'], 'realm.php?action=add_realm', 130);
+        makebutton($lang_realm['add_realm'], 'realm.php?action=add_realm&amp;csrf='.csrf_token(), 130);
     makebutton($lang_global['back'], 'javascript:window.history.back()', 130);
     $output .= '
                             </td>
@@ -153,6 +153,7 @@ function edit_realm(&$sqlr)
                         <legend>'.$lang_realm['edit_realm'].'</legend>
                         <form method="get" action="realm.php" name="form">
                             <input type="hidden" name="action" value="doedit_realm" />
+                            '.csrf_field().'
                             <input type="hidden" name="id" value="'.$id.'" />
                             <table class="flat">
                                 <tr>
@@ -261,6 +262,7 @@ function doedit_realm(&$sqlr)
 {
     global $action_permission;
     valid_login($action_permission['update']);
+    csrf_check();
 
     if (empty($_GET['id']) ||
         empty($_GET['new_name']) ||
@@ -323,7 +325,7 @@ function del_realm(&$sqlr)
                         <tr>
                             <td>';
 
-    makebutton($lang_global['yes'], 'realm.php?action=dodel_realm&amp;id='.$id.'" type ="wrn', 130);
+    makebutton($lang_global['yes'], 'realm.php?action=dodel_realm&amp;id='.$id.'&amp;csrf='.csrf_token().'" type ="wrn', 130);
     makebutton($lang_global['no'], 'realm.php" type="def', 130);
 
     unset($id);
@@ -342,6 +344,7 @@ function dodel_realm(&$sqlr)
 {
     global $action_permission;
     valid_login($action_permission['delete']);
+    csrf_check();
 
     if(empty($_GET['id']))
         redirect('realm.php?error=1');
@@ -367,6 +370,7 @@ function add_realm(&$sqlr)
 {
     global $action_permission;
     valid_login($action_permission['insert']);
+    csrf_check();
 
     if ($sqlr->query('INSERT INTO realmlist (id, name, address, port, icon, flag, timezone)
                         VALUES (NULL,"'.TRINITY.'", "127.0.0.1", 8085 ,0 ,0 ,1)'))
