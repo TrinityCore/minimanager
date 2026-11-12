@@ -52,115 +52,87 @@ function browse_auctions(&$sqlr, &$sqlc)
     else
         $order_side = "";
 
-    //==========================Browse/Search CHECK==============================
-    $search_by = '';
-    $search_value = '';
+    //==========================Browse/Search CHECK (Multi-AND)==============================
+    $search_values = isset($_GET['search_value']) ? (array)$_GET['search_value'] : [''];
+    $search_bys    = isset($_GET['search_by']) ? (array)$_GET['search_by'] : ['item_name'];
+    $search_class   = (isset($_GET['search_class']) && is_numeric($_GET['search_class'])) ? intval($_GET['search_class']) : -1;
+    $search_quality = (isset($_GET['search_quality']) && is_numeric($_GET['search_quality'])) ? intval($_GET['search_quality']) : -1;
+    $min_req  = (isset($_GET['min_req']) && $_GET['min_req'] !== '' && is_numeric($_GET['min_req'])) ? intval($_GET['min_req']) : '';
+    $max_req  = (isset($_GET['max_req']) && $_GET['max_req'] !== '' && is_numeric($_GET['max_req'])) ? intval($_GET['max_req']) : '';
+    $min_ilvl = (isset($_GET['min_ilvl']) && $_GET['min_ilvl'] !== '' && is_numeric($_GET['min_ilvl'])) ? intval($_GET['min_ilvl']) : '';
+    $max_ilvl = (isset($_GET['max_ilvl']) && $_GET['max_ilvl'] !== '' && is_numeric($_GET['max_ilvl'])) ? intval($_GET['max_ilvl']) : '';
+
     $search_filter = '';
-    $search_class = -1;
-    $search_quality = -1;
+    $search_url = '';
+    $active_filters = [];
 
-    if((isset($_GET['search_value']) && isset($_GET['search_by'])) || (isset($_GET['search_class'])) || (isset($_GET['search_quality'])) )
+    if ($search_class >= 0) {
+        $search_filter .= " AND `item_template`.`class` = $search_class";
+        $search_url .= "&amp;search_class=$search_class";
+    }
+    if ($search_quality >= 0) {
+        $search_filter .= " AND `item_template`.`Quality` = $search_quality";
+        $search_url .= "&amp;search_quality=$search_quality";
+    }
+    if ($min_req !== '') {
+        $search_filter .= " AND `item_template`.`RequiredLevel` >= $min_req";
+        $search_url .= "&amp;min_req=$min_req";
+    }
+    if ($max_req !== '') {
+        $search_filter .= " AND `item_template`.`RequiredLevel` <= $max_req";
+        $search_url .= "&amp;max_req=$max_req";
+    }
+    if ($min_ilvl !== '') {
+        $search_filter .= " AND `item_template`.`ItemLevel` >= $min_ilvl";
+        $search_url .= "&amp;min_ilvl=$min_ilvl";
+    }
+    if ($max_ilvl !== '') {
+        $search_filter .= " AND `item_template`.`ItemLevel` <= $max_ilvl";
+        $search_url .= "&amp;max_ilvl=$max_ilvl";
+    }
+
+    $allowed_ah_by = ['item_name', 'item_id', 'seller_name', 'buyer_name'];
+    for ($idx = 0; $idx < count($search_values); $idx++)
     {
-        $search_value = $sqlc->quote_smart($_GET['search_value']);
-        $search_by = $sqlc->quote_smart($_GET['search_by']);
-        $search_class = $sqlc->quote_smart($_GET['search_class']);
-        $search_quality = $sqlc->quote_smart($_GET['search_quality']);
+        $val_raw = trim((string)$search_values[$idx]);
+        $field = isset($search_bys[$idx]) ? $search_bys[$idx] : 'item_name';
+        if (!in_array($field, $allowed_ah_by))
+            $field = 'item_name';
 
-        switch ($search_by)
+        if ($val_raw === '')
+            continue;
+
+        $active_filters[] = ['by' => $field, 'val' => $val_raw];
+        $search_url .= '&amp;search_by%5B%5D=' . urlencode($field) . '&amp;search_value%5B%5D=' . urlencode($val_raw);
+        $val = $sqlc->quote_smart($val_raw);
+
+        if ($field === 'item_name')
+            $search_filter .= " AND `item_template`.`name` LIKE '%$val%'";
+        elseif ($field === 'item_id')
+            $search_filter .= " AND `item_instance`.`itemEntry` = " . intval($val_raw);
+        elseif ($field === 'seller_name')
         {
-            case "item_name":
-                if(( ($search_class >= 0) || ($search_quality >= 0)) && (!isset($search_value) ))
-                {
-                    if ($search_class >= 0)
-                        $search_filter = "AND item_template.class = '$search_class'";
-                    if ($search_quality >= 0)
-                        $search_filter = "AND item_template.Quality = '$search_quality'";
-                }
-                else
-                {
-                    $item_prefix = "";
-                    if ($search_class >= 0)
-                        $item_prefix .= "AND item_template.class = '$search_class' ";
-                    if ($search_quality >= 0)
-                        $item_prefix .= "AND item_template.Quality = '$search_quality' ";
-
-                    $result = $sqlc->query("SELECT `entry` FROM `".$world_db[$realm_id]['name']."`.`item_template` WHERE `name` LIKE '%$search_value%' $item_prefix");
-                    $search_filter = "AND item_instance.itemEntry IN(0";
-
-                    while ($item = $sqlc->fetch_row($result))
-                        $search_filter .= ", $item[0]";
-
-                    $search_filter .= ")";
-                }
-                break;
-
-            case "item_id":
-                $search_filter = "AND item_instance.itemEntry = '$search_value'";
-                break;
-
-            case "seller_name":
-                if(( ($search_class >= 0) || ($search_quality >= 0)) && (!isset($search_value) ))
-                {
-                    if ($search_class >= 0)
-                        $search_filter = "AND item_template.class = '$search_class'";
-                    if ($search_quality >= 0)
-                        $search_filter = "AND item_template.Quality = '$search_quality'";
-                }
-                else
-                {
-                    $item_prefix = "";
-                    if ($search_class >= 0)
-                        $item_prefix .= "AND item_template.class = '$search_class' ";
-                    if ($search_quality >= 0)
-                        $item_prefix .= "AND item_template.Quality = '$search_quality' ";
-
-                    $result = $sqlc->query("SELECT `guid` FROM `characters` WHERE BINARY `name` LIKE '%$search_value%'");
-                    $search_filter = $item_prefix;
-                    $search_filter .= "AND auctionhouse.itemowner IN(0";
-
-                    while ($char = $sqlc->fetch_row($result))
-                        $search_filter .= ", $char[0]";
-
-                    $search_filter .= ")";
-                    $search_filter .= $item_prefix;
-                }
-                break;
-
-            case "buyer_name":
-                if(( ($search_class >= 0) || ($search_quality >= 0)) && (!isset($search_value) ))
-                {
-                    if ($search_class >= 0) $search_filter = "AND item_template.class = '$search_class'";
-                    if ($search_quality >= 0) $search_filter = "AND item_template.Quality = '$search_quality'";
-                }
-                else
-                {
-                    $item_prefix = "";
-                    if ($search_class >= 0)
-                        $item_prefix .= "AND item_template.class = '$search_class' ";
-                    if ($search_quality >= 0)
-                        $item_prefix .= "AND item_template.Quality = '$search_quality' ";
-
-                    $result = $sqlc->query("SELECT guid FROM `characters` WHERE BINARY name LIKE '%$search_value%'");
-                    $search_filter = $item_prefix;
-                    $search_filter .= "AND auctionhouse.buyguid IN(-1";
-
-                    while ($char = $sqlc->fetch_row($result))
-                        $search_filter .= ", $char[0]";
-
-                    $search_filter .= ")";
-                }
-                break;
-
-            default:
-                redirect("ahstats.php?error=1");
+            $res_s = $sqlc->query("SELECT `guid` FROM `characters` WHERE BINARY `name` LIKE '%$val%'");
+            $s_ids = [0];
+            while ($rs = $sqlc->fetch_row($res_s))
+                $s_ids[] = intval($rs[0]);
+            $search_filter .= " AND `auctionhouse`.`itemowner` IN (" . implode(',', $s_ids) . ")";
         }
-        $query_1 = $sqlc->query("SELECT count(*) FROM `".$characters_db[$realm_id]['name']."`.`auctionhouse` LEFT JOIN `".$characters_db[$realm_id]['name']."`.`characters` ON `auctionhouse`.`itemowner`=`characters`.`guid` LEFT JOIN `".$characters_db[$realm_id]['name']."`.`characters` c2 ON `c2`.`guid`=`auctionhouse`.`buyguid` LEFT JOIN `".$characters_db[$realm_id]['name']."`.`item_instance` ON `auctionhouse`.`itemguid`=`item_instance`.`guid` LEFT JOIN `".$world_db[$realm_id]['name']."`.`item_template` ON `item_instance`.`itemEntry`=`item_template`.`entry` WHERE `item_instance`.`itemEntry` IS NOT NULL AND `item_instance`.`itemEntry` > 0 $search_filter $order_side");
-    }
-    else
-    {
-        $query_1 = $sqlc->query("SELECT count(*) FROM auctionhouse INNER JOIN item_instance ON auctionhouse.itemguid = item_instance.guid WHERE item_instance.itemEntry > 0");
+        elseif ($field === 'buyer_name')
+        {
+            $res_b = $sqlc->query("SELECT `guid` FROM `characters` WHERE BINARY `name` LIKE '%$val%'");
+            $b_ids = [-1];
+            while ($rb = $sqlc->fetch_row($res_b))
+                $b_ids[] = intval($rb[0]);
+            $search_filter .= " AND `auctionhouse`.`buyguid` IN (" . implode(',', $b_ids) . ")";
+        }
     }
 
+    $has_search = ($search_filter !== '');
+    if (empty($active_filters))
+        $active_filters[] = ['by' => 'item_name', 'val' => ''];
+
+    $query_1 = $sqlc->query("SELECT count(*) FROM `".$characters_db[$realm_id]['name']."`.`auctionhouse` LEFT JOIN `".$characters_db[$realm_id]['name']."`.`characters` ON `auctionhouse`.`itemowner`=`characters`.`guid` LEFT JOIN `".$characters_db[$realm_id]['name']."`.`characters` c2 ON `c2`.`guid`=`auctionhouse`.`buyguid` LEFT JOIN `".$characters_db[$realm_id]['name']."`.`item_instance` ON `auctionhouse`.`itemguid`=`item_instance`.`guid` LEFT JOIN `".$world_db[$realm_id]['name']."`.`item_template` ON `item_instance`.`itemEntry`=`item_template`.`entry` WHERE `item_instance`.`itemEntry` IS NOT NULL AND `item_instance`.`itemEntry` > 0 $search_filter $order_side");
     $result = $sqlc->query("SELECT BINARY `characters`.`name` AS `seller`, `item_instance`.`itemEntry` AS `itemid`, `item_template`.`name` AS `itemname`, `auctionhouse`.`buyoutprice` AS `buyout`, TIMESTAMPDIFF(SECOND, NOW(), FROM_UNIXTIME(`auctionhouse`.`time`)), BINARY `c2`.`name` AS `encherisseur`, `auctionhouse`.`lastbid`, `auctionhouse`.`startbid`, `item_instance`.`count` AS qty, `characters`.`race` AS seller_race, `c2`.`race` AS buyer_race FROM `".$characters_db[$realm_id]['name']."`.`auctionhouse` LEFT JOIN `".$characters_db[$realm_id]['name']."`.`characters` ON `auctionhouse`.`itemowner`=`characters`.`guid` LEFT JOIN `".$characters_db[$realm_id]['name']."`.`characters` c2 ON `c2`.`guid`=`auctionhouse`.`buyguid` LEFT JOIN `".$characters_db[$realm_id]['name']."`.`item_instance` ON `auctionhouse`.`itemguid`=`item_instance`.`guid` LEFT JOIN `".$world_db[$realm_id]['name']."`.`item_template` ON `item_instance`.`itemEntry`=`item_template`.`entry` WHERE `item_instance`.`itemEntry` IS NOT NULL AND `item_instance`.`itemEntry` > 0 $search_filter $order_side ORDER BY `auctionhouse`.`$order_by` $order_dir LIMIT $start, $itemperpage");
     $all_record = $sqlc->result($query_1,0);
 
@@ -170,39 +142,72 @@ function browse_auctions(&$sqlr, &$sqlc)
             <table class=\"top_hidden\">
                 <tr>
                     <td width=\"80%\">
+                        <script type=\"text/javascript\">
+                            function addAhFilter() {
+                                var container = document.getElementById(\"ah_filters_container\");
+                                var rows = container.getElementsByClassName(\"ah_filter_row\");
+                                var clone = rows[0].cloneNode(true);
+                                clone.getElementsByTagName(\"input\")[0].value = \"\";
+                                var remBtn = clone.getElementsByClassName(\"rem_ah_filter_btn\")[0];
+                                if (remBtn) remBtn.style.display = \"inline-block\";
+                                container.appendChild(clone);
+                            }
+                            function removeAhFilter(btn) {
+                                var container = document.getElementById(\"ah_filters_container\");
+                                if (container.getElementsByClassName(\"ah_filter_row\").length > 1) {
+                                    btn.parentNode.remove();
+                                }
+                            }
+                        </script>
                         <form action=\"ahstats.php\" method=\"get\" name=\"form\">
                         <input type=\"hidden\" name=\"error\" value=\"2\" />
                             <table class=\"hidden\">
                                 <tr>
-                                    <td>
-                                        <input type=\"text\" size=\"24\" name=\"search_value\" value=\"$search_value\" />
+                                    <td valign=\"top\">
+                                        <div id=\"ah_filters_container\">";
+    foreach ($active_filters as $f_idx => $flt)
+    {
+        $f_by = $flt['by'];
+        $f_val = htmlspecialchars($flt['val']);
+        $show_rem = ($f_idx > 0) ? 'inline-block' : 'none';
+        $output .= "
+                                            <div class=\"ah_filter_row\" style=\"margin-bottom:3px; white-space:nowrap;\">
+                                                <input type=\"text\" size=\"20\" name=\"search_value[]\" value=\"$f_val\" placeholder=\"Buscar...\" />
+                                                <select name=\"search_by[]\">
+                                                    <option".($f_by == 'item_name' ? " selected=\"selected\"" : "")." value=\"item_name\">{$lang_auctionhouse['item_name']}</option>
+                                                    <option".($f_by == 'item_id' ? " selected=\"selected\"" : "")." value=\"item_id\">{$lang_auctionhouse['item_id']}</option>
+                                                    <option".($f_by == 'seller_name' ? " selected=\"selected\"" : "")." value=\"seller_name\">{$lang_auctionhouse['seller_name']}</option>
+                                                    <option".($f_by == 'buyer_name' ? " selected=\"selected\"" : "")." value=\"buyer_name\">{$lang_auctionhouse['buyer_name']}</option>
+                                                </select>
+                                                <button type=\"button\" class=\"rem_ah_filter_btn\" onclick=\"removeAhFilter(this)\" style=\"display:$show_rem; cursor:pointer;\" title=\"Quitar filtro\">-</button>
+                                            </div>";
+    }
+    $output .= "
+                                        </div>
                                     </td>
-                                    <td>
-                                        <select name=\"search_by\">
-                                            <option".($search_by == 'item_name' ? " selected=\"selected\"" : "")." value=\"item_name\">{$lang_auctionhouse['item_name']}</option>
-                                            <option".($search_by == 'item_id' ? " selected=\"selected\"" : "")." value=\"item_id\">{$lang_auctionhouse['item_id']}</option>
-                                            <option".($search_by == 'seller_name' ? " selected=\"selected\"" : "")." value=\"seller_name\">{$lang_auctionhouse['seller_name']}</option>
-                                            <option".($search_by == 'buyer_name' ? " selected=\"selected\"" : "")." value=\"buyer_name\">{$lang_auctionhouse['buyer_name']}</option>
-                                        </select>
+                                    <td valign=\"top\">
+                                        <button type=\"button\" onclick=\"addAhFilter()\" style=\"cursor:pointer;\" title=\"Añadir otra condición AND\">+</button>
                                     </td>
-                                    <td>
-                                        <select name=\"search_class\">
-                                            <option".($search_class == -1 ? " selected=\"selected\"" : "")." value=\"-1\">{$lang_auctionhouse['all']}</option>
+                                    <td valign=\"top\" style=\"white-space:nowrap;\">
+                                        <select name=\"search_class\" title=\"Tipo de objeto\">
+                                            <option".($search_class == -1 ? " selected=\"selected\"" : "")." value=\"-1\">Tipo: {$lang_auctionhouse['all']}</option>
                                             <option".($search_class == 0 ? " selected=\"selected\"" : "")." value=\"0\">{$lang_item['consumable']}</option>
                                             <option".($search_class == 1 ? " selected=\"selected\"" : "")." value=\"1\">{$lang_item['bag']}</option>
                                             <option".($search_class == 2 ? " selected=\"selected\"" : "")." value=\"2\">{$lang_item['weapon']}</option>
+                                            <option".($search_class == 3 ? " selected=\"selected\"" : "")." value=\"3\">Gema</option>
                                             <option".($search_class == 4 ? " selected=\"selected\"" : "")." value=\"4\">{$lang_item['armor']}</option>
                                             <option".($search_class == 5 ? " selected=\"selected\"" : "")." value=\"5\">{$lang_item['reagent']}</option>
+                                            <option".($search_class == 6 ? " selected=\"selected\"" : "")." value=\"6\">Proyectil</option>
                                             <option".($search_class == 7 ? " selected=\"selected\"" : "")." value=\"7\">{$lang_item['trade_goods']}</option>
                                             <option".($search_class == 9 ? " selected=\"selected\"" : "")." value=\"9\">{$lang_item['recipe']}</option>
                                             <option".($search_class == 11 ? " selected=\"selected\"" : "")." value=\"11\">{$lang_item['quiver']}</option>
+                                            <option".($search_class == 13 ? " selected=\"selected\"" : "")." value=\"13\">Llave</option>
                                             <option".($search_class == 14 ? " selected=\"selected\"" : "")." value=\"14\">{$lang_item['permanent']}</option>
                                             <option".($search_class == 15 ? " selected=\"selected\"" : "")." value=\"15\">{$lang_item['misc_short']}</option>
+                                            <option".($search_class == 16 ? " selected=\"selected\"" : "")." value=\"16\">Glifo</option>
                                         </select>
-                                    </td>
-                                    <td>
-                                        <select name=\"search_quality\">
-                                            <option".($search_quality == -1 ? " selected=\"selected\"" : "")." value=\"-1\">{$lang_auctionhouse['all']}</option>
+                                        <select name=\"search_quality\" title=\"Calidad\">
+                                            <option".($search_quality == -1 ? " selected=\"selected\"" : "")." value=\"-1\">Calidad: {$lang_auctionhouse['all']}</option>
                                             <option".($search_quality == 0 ? " selected=\"selected\"" : "")." value=\"0\">{$lang_item['poor']}</option>
                                             <option".($search_quality == 1 ? " selected=\"selected\"" : "")." value=\"1\">{$lang_item['common']}</option>
                                             <option".($search_quality == 2 ? " selected=\"selected\"" : "")." value=\"2\">{$lang_item['uncommon']}</option>
@@ -211,16 +216,22 @@ function browse_auctions(&$sqlr, &$sqlc)
                                             <option".($search_quality == 5 ? " selected=\"selected\"" : "")." value=\"5\">{$lang_item['legendary']}</option>
                                             <option".($search_quality == 6 ? " selected=\"selected\"" : "")." value=\"6\">{$lang_item['artifact']}</option>
                                         </select>
+                                        <br />
+                                        <div style=\"margin-top:4px;\">
+                                            Nvl Uso: <input type=\"text\" size=\"3\" maxlength=\"3\" name=\"min_req\" value=\"$min_req\" placeholder=\"Min\" /> - <input type=\"text\" size=\"3\" maxlength=\"3\" name=\"max_req\" value=\"$max_req\" placeholder=\"Max\" />
+                                            &nbsp;|&nbsp;
+                                            iLvl: <input type=\"text\" size=\"4\" maxlength=\"4\" name=\"min_ilvl\" value=\"$min_ilvl\" placeholder=\"Min\" /> - <input type=\"text\" size=\"4\" maxlength=\"4\" name=\"max_ilvl\" value=\"$max_ilvl\" placeholder=\"Max\" />
+                                        </div>
                                     </td>
-                                    <td>";
+                                    <td valign=\"top\">";
 
     makebutton($lang_global['search'], "javascript:do_submit()",80);
 
     $output .= "
                                     </td>
-                                    <td>";
+                                    <td valign=\"top\">";
 
-    (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? makebutton($lang_global['back'], "javascript:window.history.back()",80) : $output .= "";
+    ($has_search) ? makebutton("Limpiar", "ahstats.php",80) : $output .= "";
 
     $output .= "
                                     </td>
@@ -230,20 +241,20 @@ function browse_auctions(&$sqlr, &$sqlc)
                     </td>
                     <td width=\"25%\" align=\"right\">";
 
-    $output .= generate_pagination("ahstats.php?order_by=$order_by".( (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? "&amp;search_by=$search_by&amp;search_value=$search_value&amp;search_quality=$search_quality&amp;search_class=$search_class&amp;error=2" : "" )."&amp;dir=".(($dir) ? 0 : 1), $all_record, $itemperpage, $start);
+    $output .= generate_pagination("ahstats.php?order_by=$order_by".( $has_search ? "$search_url&amp;error=2" : "" )."&amp;dir=".(($dir) ? 0 : 1), $all_record, $itemperpage, $start);
     $output .= "
                     </td>
                 </tr>
             </table>
             <table class=\"lined\">
                 <tr>
-                    <th width=\"10%\"><a href=\"ahstats.php?order_by=itemowner&amp;start=$start".( (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? "&amp;search_by=$search_by&amp;search_value=$search_value&amp;search_quality=$search_quality&amp;search_class=$search_class&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='itemowner' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['seller']}</a></th>
-                    <th width=\"20%\"><a href=\"ahstats.php?order_by=itemEntry&amp;start=$start".( (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? "&amp;search_by=$search_by&amp;search_value=$search_value&amp;search_quality=$search_quality&amp;search_class=$search_class&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='itemEntry' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['item']}</a></th>
-                    <th width=\"15%\"><a href=\"ahstats.php?order_by=buyoutprice&amp;start=$start".( (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? "&amp;search_by=$search_by&amp;search_value=$search_value&amp;search_quality=$search_quality&amp;search_class=$search_class&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='buyoutprice' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['buyoutprice']}</a></th>
-                    <th width=\"15%\"><a href=\"ahstats.php?order_by=time&amp;start=$start".( (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? "&amp;search_by=$search_by&amp;search_value=$search_value&amp;search_quality=$search_quality&amp;search_class=$search_class&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='time' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['timeleft']}</a></th>
-                    <th width=\"10%\"><a href=\"ahstats.php?order_by=buyguid&amp;start=$start".( (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? "&amp;search_by=$search_by&amp;search_value=$search_value&amp;search_quality=$search_quality&amp;search_class=$search_class&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='buyguid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['buyer']}</a></th>
-                    <th width=\"15%\"><a href=\"ahstats.php?order_by=lastbid&amp;start=$start".( (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? "&amp;search_by=$search_by&amp;search_value=$search_value&amp;search_quality=$search_quality&amp;search_class=$search_class&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='lastbid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['lastbid']}</a></th>
-                    <th width=\"15%\"><a href=\"ahstats.php?order_by=startbid&amp;start=$start".( (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? "&amp;search_by=$search_by&amp;search_value=$search_value&amp;search_quality=$search_quality&amp;search_class=$search_class&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='startbid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['firstbid']}</a></th>
+                    <th width=\"10%\"><a href=\"ahstats.php?order_by=itemowner&amp;start=$start".( $has_search ? "$search_url&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='itemowner' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['seller']}</a></th>
+                    <th width=\"20%\"><a href=\"ahstats.php?order_by=itemEntry&amp;start=$start".( $has_search ? "$search_url&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='itemEntry' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['item']}</a></th>
+                    <th width=\"15%\"><a href=\"ahstats.php?order_by=buyoutprice&amp;start=$start".( $has_search ? "$search_url&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='buyoutprice' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['buyoutprice']}</a></th>
+                    <th width=\"15%\"><a href=\"ahstats.php?order_by=time&amp;start=$start".( $has_search ? "$search_url&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='time' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['timeleft']}</a></th>
+                    <th width=\"10%\"><a href=\"ahstats.php?order_by=buyguid&amp;start=$start".( $has_search ? "$search_url&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='buyguid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['buyer']}</a></th>
+                    <th width=\"15%\"><a href=\"ahstats.php?order_by=lastbid&amp;start=$start".( $has_search ? "$search_url&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='lastbid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['lastbid']}</a></th>
+                    <th width=\"15%\"><a href=\"ahstats.php?order_by=startbid&amp;start=$start".( $has_search ? "$search_url&amp;error=2" : "" )."&amp;dir=$dir\">".($order_by=='startbid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_auctionhouse['firstbid']}</a></th>
                 </tr>";
 
     global $mmfpm_db, $world_db;
@@ -297,7 +308,7 @@ function browse_auctions(&$sqlr, &$sqlc)
     $output .= "
                 <tr>
                     <td  colspan=\"7\" class=\"hidden\" align=\"right\" width=\"25%\">";
-    $output .= generate_pagination("ahstats.php?order_by=$order_by".( (($search_by && $search_value) || ($search_class != -1) || ($search_quality != -1)) ? "&amp;search_by=$search_by&amp;search_value=$search_value&amp;search_quality=$search_quality&amp;search_class=$search_class&amp;error=2" : "" )."&amp;dir=".(($dir) ? 0 : 1), $all_record, $itemperpage, $start);
+    $output .= generate_pagination("ahstats.php?order_by=$order_by".( $has_search ? "$search_url&amp;error=2" : "" )."&amp;dir=".(($dir) ? 0 : 1), $all_record, $itemperpage, $start);
     $output .= "
                     </td>
                 </tr>
