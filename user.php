@@ -45,11 +45,14 @@ function browse_users(&$sqlr, &$sqlc)
     $search_by = '';
     $search_value = '';
 
+    $is_country_sort = ($order_by === 'country');
     $order_by2 = $order_by;
     if ($order_by == 'SecurityLevel')
         $order_by = 'account_access.SecurityLevel';
     elseif ($order_by == 'online')
         $order_by = 'account.online';
+    elseif ($order_by == 'country')
+        $order_by = 'account.last_ip';
     else
     {
         $order_by = 'account.'.$order_by2;
@@ -229,7 +232,7 @@ function browse_users(&$sqlr, &$sqlc)
                                 <th width="1%"><a href="user.php?order_by=email&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='email' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['email'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=joindate&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='joindate' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['join_date'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=last_ip&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='last_ip' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['ip'].'</a></th>';
-    if ($showcountryflag) $output .= '<th width="1%">País</th>';
+    if ($showcountryflag) $output .= '<th width="1%"><a href="user.php?order_by=country&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($is_country_sort ? ' class="'.$order_dir.'"' : '').'>País</a></th>';
     $output .= '
                                 <th width="1%"><a href="user.php?order_by=failed_logins&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='failed_logins' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['failed_logins'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=locked&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='locked' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['locked'].'</a></th>
@@ -237,7 +240,19 @@ function browse_users(&$sqlr, &$sqlc)
                                 <th width="1%"><a href="user.php?order_by=online&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='online' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['online'].'</a></th>';
 
     //---------------Page Specific Data Starts Here--------------------------
-    while ($data = $sqlr->fetch_assoc($query))
+    $rows_data = [];
+    while ($r = $sqlr->fetch_assoc($query)) {
+        if ($showcountryflag) { $r['_country_info'] = misc_get_country_by_ip($r['last_ip'], $sqlm); }
+        $rows_data[] = $r;
+    }
+    if ($is_country_sort && $showcountryflag) {
+        usort($rows_data, function($a, $b) use ($order_dir) {
+            $ca = $a['_country_info']['country'] ?? 'zzz';
+            $cb = $b['_country_info']['country'] ?? 'zzz';
+            return ($order_dir === 'ASC') ? strcmp($ca, $cb) : strcmp($cb, $ca);
+        });
+    }
+    foreach ($rows_data as $data)
     {
         $data['SecurityLevel'] = (!is_null($data['SecurityLevel'])) ? $data['SecurityLevel'] : 0;
         if (($user_lvl >= $data['SecurityLevel'])||($user_name === $data['username']))
@@ -277,7 +292,7 @@ function browse_users(&$sqlr, &$sqlc)
             else
                 $output .= '
                                 <td>*******</td>';
-            if ($showcountryflag) { $country = misc_get_country_by_ip($data['last_ip'], $sqlm); $output .= '<td>'.(($country['code']) ? '<img src="img/flags/'.$country['code'].'.png" onmousemove="toolTip(\''.addslashes($country['country']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /> '.$country['country'] : '-').'</td>'; }
+            if ($showcountryflag) { $country = $data['_country_info'] ?? misc_get_country_by_ip($data['last_ip'], $sqlm); $output .= '<td>'.(($country['code']) ? '<img src="img/flags/'.$country['code'].'.png" onmousemove="toolTip(\''.addslashes($country['country']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /> '.$country['country'] : '-').'</td>'; }
             $output .= '
                                 <td>'.(($data['failed_logins']) ? $data['failed_logins'] : '-').'</td>
                                 <td>'.(($data['locked']) ? $lang_global['yes_low'] : '-').'</td>
@@ -906,7 +921,7 @@ function edit_user()
 
                                              if ($showcountryflag)
                                              {
-                                                 $country = misc_get_country_by_ip($data['last_ip'], $sqlm);
+                                                 $country = $data['_country_info'] ?? misc_get_country_by_ip($data['last_ip'], $sqlm);
                                                  $output .= '
                                                             '.(($country['code']) ? '<img src="img/flags/'.$country['code'].'.png" onmousemove="toolTip(\''.($country['country']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />' : '-').'';
                                              }
@@ -918,7 +933,7 @@ function edit_user()
                                         <td>***.***.***.***";
                                             if ($showcountryflag)
                                             {
-                                                $country = misc_get_country_by_ip($data['last_ip'], $sqlm);
+                                                $country = $data['_country_info'] ?? misc_get_country_by_ip($data['last_ip'], $sqlm);
                                                 $output .= '
                                                            '.(($country['code']) ? '<img src="img/flags/'.$country['code'].'.png" onmousemove="toolTip(\''.($country['country']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />' : '-').'';
                                             }
