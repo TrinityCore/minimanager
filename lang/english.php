@@ -252,6 +252,7 @@ function lang_header()
     'mail' => 'Mail',
     'tickets' => 'Tickets',
     'banned_list' => 'Banned List',
+  'quest_tracker' => 'Quest Tracker',
     'cleanup' => 'Cleanup',
 
     'events' => 'Events',

@@ -248,6 +248,7 @@ $lang_header =
   'mail' => 'Nachrichten',
   'tickets' => 'Tickets',
   'banned_list' => 'Bannliste',
+  'quest_tracker' => 'Quest Tracker',
   'cleanup' => 'Aufr&auml;umen',
 
   'events' => 'Ereignisse',
