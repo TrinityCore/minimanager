@@ -24,7 +24,8 @@ function browse_users(&$sqlr, &$sqlc)
 
     //-------------------SQL Injection Prevention--------------------------------
     $start = (isset($_GET['start'])) ? $sqlr->quote_smart($_GET['start']) : 0;
-    if (is_numeric($start));
+    if (is_numeric($start))
+        $start = (int)$start;
     else
         $start=0;
 
@@ -883,7 +884,7 @@ function edit_user()
     $r_target = isset($characters_db[$realm_id]) ? $realm_id : array_key_first($characters_db);
                 $sqlc->connect($characters_db[$r_target]['addr'], $characters_db[$r_target]['user'], $characters_db[$r_target]['pass'], $characters_db[$r_target]['name']);
 
-    $id = $sqlr->quote_smart($_GET['id']);
+    $id = (int)$sqlr->quote_smart($_GET['id']);
 
     $result = $sqlr->query("SELECT IFNULL(`account_access`.`SecurityLevel`,0) as `SecurityLevel`, `account`.* FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
     $data = $sqlr->fetch_assoc($result);
