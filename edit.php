@@ -40,6 +40,7 @@ function edit_user(&$sqlr, &$sqlc)
                 <fieldset style="width: 550px;">
                     <legend>'.$lang_edit['edit_acc'].'</legend>
                     <form method="post" action="edit.php?action=doedit_user" name="form">
+                            '.csrf_field().'
                             <table class="flat">
                                 <tr>
                                     <td>'.$lang_edit['id'].'</td>
@@ -282,6 +283,7 @@ function edit_user(&$sqlr, &$sqlc)
 function doedit_user(&$sqlr, &$sqlc)
 {
     global $output, $user_name;
+    csrf_check();
 
     if ( (empty($_POST['pass'])||($_POST['pass'] === ''))
         && (empty($_POST['mail'])||($_POST['mail'] === ''))
