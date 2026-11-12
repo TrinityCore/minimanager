@@ -19,7 +19,7 @@ function dologin(&$sqlr)
     if (255 < strlen($user_name) || 255 < strlen($user_pass))
         redirect('login.php?error=1');
 
-    $result = $sqlr->query('SELECT account.id AS id, username, salt, verifier, SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE username = \''.$user_name.'\'');
+    $result = $sqlr->query('SELECT id, username, salt, verifier FROM account WHERE username = \''.$user_name.'\'');
     if ($require_account_verify)
     {
         $sql2 = new SQL;
@@ -41,20 +41,15 @@ function dologin(&$sqlr)
             redirect('login.php?error=1');
         else
         {
-            $id = $info['id'];
+            $id = (int)$info['id'];
             if ($sqlr->result($sqlr->query('SELECT count(*) FROM account_banned WHERE id = '.$id.' AND active = \'1\''), 0))
                 redirect('login.php?error=3');
             else
             {
                 $_SESSION['user_id'] = $id;
                 $_SESSION['uname'] = $info['username'];
-                
-                if ($info['SecurityLevel'] == NULL)
-                    $_SESSION['user_lvl'] = 0;
-                else
-                    $_SESSION['user_lvl'] = $info['SecurityLevel'];
-                
                 $_SESSION['realm_id'] = $sqlr->quote_smart($_POST['realm']);
+                $_SESSION['user_lvl'] = get_user_lvl($sqlr, $id, $_SESSION['realm_id']);
                 $_SESSION['client_ip'] = (isset($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : getenv('REMOTE_ADDR');
                 $_SESSION['logged_in'] = true;
                 if (isset($_POST['remember']) && $_POST['remember'] != '')

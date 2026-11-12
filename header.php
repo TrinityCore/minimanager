@@ -138,6 +138,12 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
     $user_name = $_SESSION['uname'];
     $user_id = $_SESSION['user_id'];
     $realm_id = ( isset($_GET['r_id']) ) ? (int)$_GET['r_id'] : $_SESSION['realm_id'];
+    // GM level depends on the realm, re-read it when the realm changes
+    if (!empty($_SESSION['logged_in']) && (!isset($_SESSION['lvl_realm']) || $_SESSION['lvl_realm'] != $realm_id))
+    {
+        $_SESSION['user_lvl'] = $user_lvl = get_user_lvl($sqlr, $user_id, $realm_id);
+        $_SESSION['lvl_realm'] = $realm_id;
+    }
     // for MiniManager security system, getting the users' account group name
     $user_lvl_name = id_get_gm_level($user_lvl);
 
