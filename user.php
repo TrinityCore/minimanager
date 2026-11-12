@@ -24,7 +24,8 @@ function browse_users(&$sqlr, &$sqlc)
 
     //-------------------SQL Injection Prevention--------------------------------
     $start = (isset($_GET['start'])) ? $sqlr->quote_smart($_GET['start']) : 0;
-    if (is_numeric($start));
+    if (is_numeric($start))
+        $start = (int)$start;
     else
         $start=0;
 
@@ -454,7 +455,7 @@ function del_user()
     valid_login($action_permission['delete']);
 
     if(isset($_GET['check']))
-        $check = $_GET['check'];
+        $check = array_values(array_filter(array_map('intval', (array)$_GET['check'])));
     else
         redirect("user.php?error=1");
 
@@ -521,7 +522,7 @@ function dodel_user()
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
     if(isset($_GET['check']))
-        $check = $sqlr->quote_smart($_GET['check']);
+        $check = array_values(array_filter(array_map('intval', (array)$_GET['check'])));
     else
         redirect("user.php?error=1");
 
@@ -583,7 +584,7 @@ function backup_user()
     $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
     if(isset($_GET['check']))
-        $check = $sql->quote_smart($_GET['check']);
+        $check = array_values(array_filter(array_map('intval', (array)$_GET['check'])));
     else
         redirect("user.php?error=1");
 
@@ -756,8 +757,7 @@ function add_new()
                     </script>
                     <fieldset style=\"width: 550px;\">
                         <legend>{$lang_user['create_new_acc']}</legend>
-                        <form method=\"get\" action=\"user.php\" name=\"form\">
-                            <input type=\"hidden\" name=\"action\" value=\"doadd_new\" />
+                        <form method=\"post\" action=\"user.php?action=doadd_new\" name=\"form\">
                             <table class=\"flat\">
                                 <tr>
                                     <td>{$lang_user['username']}</td>
@@ -822,13 +822,13 @@ function doadd_new()
     global $lang_global, $realm_db, $action_permission;
     valid_login($action_permission['insert']);
 
-    if ( empty($_GET['new_user']) || empty($_GET['pass']) )
+    if ( empty($_POST['new_user']) || empty($_POST['pass']) )
         redirect("user.php?action=add_new&error=4");
 
     $sqlc = new SQL;
     $sqlc->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $new_user = $sqlc->quote_smart(trim($_GET['new_user']));
+    $new_user = $sqlc->quote_smart(trim($_POST['new_user']));
 
     //make sure username/pass at least 4 chars long and less than max
     if ((strlen($new_user) < 4) || (strlen($new_user) > 15))
@@ -845,11 +845,11 @@ function doadd_new()
     else
         $last_ip = "0.0.0.0";
     
-    list($salt,$verifier) = GetSRP6RegistrationData(trim($_GET['new_user']), $_GET['pass']);
+    list($salt,$verifier) = GetSRP6RegistrationData(trim($_POST['new_user']), $_POST['pass']);
 
-    $new_mail = (isset($_GET['new_mail'])) ? $sqlc->quote_smart(trim($_GET['new_mail'])) : NULL;
-    $locked = (isset($_GET['new_locked'])) ? $sqlc->quote_smart($_GET['new_locked']) : 0;
-    $expansion = (isset($_GET['new_expansion'])) ? $sqlc->quote_smart($_GET['new_expansion']) : 0;
+    $new_mail = (isset($_POST['new_mail'])) ? $sqlc->quote_smart(trim($_POST['new_mail'])) : NULL;
+    $locked = (isset($_POST['new_locked'])) ? (int)$sqlc->quote_smart($_POST['new_locked']) : 0;
+    $expansion = (isset($_POST['new_expansion'])) ? (int)$sqlc->quote_smart($_POST['new_expansion']) : 0;
     $result = $sqlc->query("INSERT INTO account (username,salt,verifier,email, joindate,last_ip,failed_logins,locked,last_login,expansion)
                             VALUES ('$new_user',UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$new_mail',now() ,'$last_ip',0, $locked ,NULL, $expansion)");
     if ($result)
@@ -883,7 +883,7 @@ function edit_user()
     $r_target = isset($characters_db[$realm_id]) ? $realm_id : array_key_first($characters_db);
                 $sqlc->connect($characters_db[$r_target]['addr'], $characters_db[$r_target]['user'], $characters_db[$r_target]['pass'], $characters_db[$r_target]['name']);
 
-    $id = $sqlr->quote_smart($_GET['id']);
+    $id = (int)$sqlr->quote_smart($_GET['id']);
 
     $result = $sqlr->query("SELECT IFNULL(`account_access`.`SecurityLevel`,0) as `SecurityLevel`, `account`.* FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
     $data = $sqlr->fetch_assoc($result);
@@ -1368,13 +1368,21 @@ function doupdate_referral($referredby, $user_id)
 
 function soap_command()
 {
-global $soapaddr, $soap_port, $soap_user, $soap_pass, $cmd, $char, $docmd;
+global $soapaddr, $soap_port, $soap_user, $soap_pass, $cmd, $char, $docmd, $enable_soap, $action_permission;
 
 require_once 'scripts/config.php';
+
+   valid_login($action_permission['update']);
+   if (!$enable_soap)
+      return;
 
    $cmd = $_GET['cmd'];
    $char = $_GET['char'];
    $id = $_GET['id'];
+
+   // character names are letters only (any script)
+   if (!preg_match('/^\p{L}+$/u', $char))
+      return;
 
 $command = "error";
 
@@ -1396,8 +1404,8 @@ $command = "error";
       case "changerace":
            $command = "character changerace $char";
       break;
-      case "cuztomize":
-           $command = "character cuztomize $char";
+      case "customize":
+           $command = "character customize $char";
       break;
       default:
            $command = "error";
