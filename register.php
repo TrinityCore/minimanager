@@ -65,7 +65,9 @@ function doregister(){
     if ($disable_acc_creation)
         redirect("register.php?err=4");
 
-    $last_ip =  (getenv('HTTP_X_FORWARDED_FOR')) ? getenv('HTTP_X_FORWARDED_FOR') : getenv('REMOTE_ADDR');
+    // X-Forwarded-For is client controlled. Behind a reverse proxy, let the web server
+    // set REMOTE_ADDR (Apache mod_remoteip, nginx real_ip) instead.
+    $last_ip = $_SERVER['REMOTE_ADDR'];
 
     if (sizeof($valid_ip_mask))
     {
