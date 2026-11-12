@@ -1277,18 +1277,24 @@ function doedit_user()
     $locked = (isset($_POST['locked'])) ? $sqlr->quote_smart($_POST['locked']) : 0;
     $referredby = $sqlr->quote_smart(trim($_POST['referredby']));
 
-    //make sure username/pass at least 4 chars long and less than max
-    if ((strlen($username) < 4) || (strlen($username) > 15))
-        redirect("user.php?action=edit_user&id=$id&error=8");
+    $result = $sqlr->query("SELECT account.username, IFNULL(account_access.SecurityLevel,0) as SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
+    $old_username = $sqlr->result($result, 0, 'username');
+
+    // only a new username is validated, so existing names like "10#1" stay editable
+    if ($username !== $old_username)
+    {
+        //make sure username/pass at least 4 chars long and less than max
+        if ((strlen($username) < 4) || (strlen($username) > 15))
+            redirect("user.php?action=edit_user&id=$id&error=8");
+        if (!valid_alphabetic($username))
+            redirect("user.php?action=edit_user&error=9&id=$id");
+    }
 
     if ($SecurityLevel >= $user_lvl)
         redirect("user.php?action=edit_user&&id={$_POST['id']}&error=16");
-    if (!valid_alphabetic($username))
-        redirect("user.php?action=edit_user&error=9&id=$id");
     //restricting accsess to lower gmlvl
-    $result = $sqlr->query("SELECT account.username, IFNULL(account_access.SecurityLevel,0) as SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
     $accgmlevel = $sqlr->result($result, 0, 'SecurityLevel');
-    if (($user_lvl <= $accgmlevel) && ($user_name != $sqlr->result($result, 0, 'username')))
+    if (($user_lvl <= $accgmlevel) && ($user_name != $old_username))
         redirect("user.php?error=14");
 
 
