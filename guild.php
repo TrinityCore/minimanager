@@ -295,7 +295,7 @@ function view_guild()
 
     $search_values = isset($_GET['search_value']) ? (array)$_GET['search_value'] : [''];
     $search_bys = isset($_GET['search_by']) ? (array)$_GET['search_by'] : ['cname'];
-    $allowed_search = ['cname', 'pnote', 'offnote', 'race', 'class', 'level', 'account', 'email'];
+    $allowed_search = ['cname', 'pnote', 'offnote', 'race', 'class', 'level', 'account', 'email', 'gender'];
 
     $conditions = [];
     $search_url = '';
@@ -361,6 +361,16 @@ function view_guild()
                 }
                 $conditions[] = !empty($class_ids) ? "c.class IN (" . implode(',', $class_ids) . ")" : "1=0";
             }
+        }
+        elseif ($field === 'gender')
+        {
+            $g_low = strtolower($val_raw);
+            if ($val_raw === '0' || in_array($g_low, ['m', 'male', 'masculino', 'hombre', 'chico']))
+                $conditions[] = "c.gender = 0";
+            elseif ($val_raw === '1' || in_array($g_low, ['f', 'female', 'femenino', 'mujer', 'chica']))
+                $conditions[] = "c.gender = 1";
+            else
+                $conditions[] = "1=0";
         }
         elseif ($field === 'account' || $field === 'email')
         {
@@ -490,6 +500,7 @@ function view_guild()
                                                                     <option value=\"level\"".($f_by === 'level' ? ' selected=\"selected\"' : '').">{$lang_guild['level']}</option>
                                                                     <option value=\"account\"".($f_by === 'account' ? ' selected=\"selected\"' : '').">Cuenta</option>
                                                                     <option value=\"email\"".($f_by === 'email' ? ' selected=\"selected\"' : '').">Email</option>
+                                                                    <option value=\"gender\"".($f_by === 'gender' ? ' selected=\"selected\"' : '').">Género</option>
                                                                 </select>
                                                                 <button type=\"button\" class=\"rem_filter_btn\" onclick=\"removeGuildFilter(this)\" style=\"display:$show_rem; cursor:pointer;\" title=\"Quitar filtro\">-</button>
                                                             </div>";
