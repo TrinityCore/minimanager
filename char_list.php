@@ -43,154 +43,114 @@ function browse_chars(&$sqlr, &$sqlc)
     elseif ($order_by == 'zone')
         $order_by = 'zone '.$order_dir.', map';
 
-    $search_by = '';
-    $search_value = '';
-    if(isset($_GET['search_value']) && isset($_GET['search_by']))
+    // Multi-condition search support (AND)
+    $search_values = isset($_GET['search_value']) ? (array)$_GET['search_value'] : [''];
+    $search_bys = isset($_GET['search_by']) ? (array)$_GET['search_by'] : ['name'];
+    $search_menu = ['name', 'guid', 'account', 'level', 'greater_level', 'lesser_level', 'guild', 'race', 'class', 'map', 'greater_rank', 'online', 'gold', 'item', 'gender'];
+
+    $where_clauses = [];
+    $search_url = '';
+    $active_filters = [];
+    $has_item_search = false;
+    $item_search_val = 0;
+
+    for ($idx = 0; $idx < count($search_values); $idx++)
     {
-        $search_value = $sqlr->quote_smart($_GET['search_value']);
-        $search_by = (isset($_GET['search_by'])) ? $sqlr->quote_smart($_GET['search_by']) : 'name';
-        $search_menu = ['name', 'guid', 'account', 'level', 'greater_level', 'lesser_level', 'guild', 'race', 'class', 'map', 'greater_rank', 'online', 'gold', 'item'];
+        $val_raw = trim((string)$search_values[$idx]);
+        $field = isset($search_bys[$idx]) ? $search_bys[$idx] : 'name';
+        if (!in_array($field, $search_menu))
+            $field = 'name';
 
-        if (in_array($search_by, $search_menu));
-        else
-            $search_by = 'name';
+        if ($val_raw === '')
+            continue;
 
-        unset($search_menu);
+        $active_filters[] = ['by' => $field, 'val' => $val_raw];
+        $search_url .= '&amp;search_by%5B%5D=' . urlencode($field) . '&amp;search_value%5B%5D=' . urlencode($val_raw);
+        $val = $sqlc->quote_smart($val_raw);
 
-        switch ($search_by)
+        if ($field === 'account')
         {
-            //need to get the acc id from other table since input comes as name
-            case "account":
-                if (preg_match('/^[\t\v\b\f\a\n\r\\\"\'\? <>[](){}_=+-|!@#$%^&*~`.,0123456789\0]{1,30}$/', $search_value))
-                    redirect("char_list.php?error=2");
-
-                $result = $sqlr->query("SELECT id FROM account WHERE username LIKE '%$search_value%' LIMIT $start, $itemperpage");
-
-                $where_out = "characters.account IN (0 ";
-                while ($char = $sqlr->fetch_row($result))
-                {
-                    $where_out .= " ,";
-                    $where_out .= $char[0];
-                };
-                $where_out .= ") ";
-                unset($result);
-                break;
-
-            case "level":
-                if (is_numeric($search_value));
-                else
-                    $search_value = 1;
-
-                $where_out ="characters.level = $search_value";
-                break;
-
-            case "greater_level":
-                if (is_numeric($search_value));
-                else
-                    $search_value = 1;
-
-                $where_out ="characters.level > $search_value";
-                break;
-
-            case "lesser_level":
-                if (is_numeric($search_value));
-                else
-                    $search_value = 1;
-
-                $where_out ="characters.level < $search_value";
-                break;
-
-            case "gold":
-                if (is_numeric($search_value));
-                else
-                    $search_value = 1;
-
-                $where_out ="characters.money > $search_value";
-                break;
-
-            case "guild":
-                if (preg_match('/^[\t\v\b\f\a\n\r\\\"\'\? <>[](){}_=+-|!@#$%^&*~`.,0123456789\0]{1,30}$/', $search_value))
-                    redirect("char_list.php?error=2");
-
-                $result = $sqlc->query("SELECT guildid FROM guild WHERE name LIKE '%$search_value%'");
-                $guildid = $sqlc->result($result, 0, 'guildid');
-
-                if (!$search_value)
-                    $guildid = 0;
-
-                $Q1 = "SELECT guid FROM guild_member WHERE guildid = ";
-                $Q1 .= $guildid;
-
-                $result = $sqlc->query($Q1);
-                unset($guildid);
-                unset($Q1);
-                $where_out = "characters.guid IN (0 ";
-                while ($char = $sqlc->fetch_row($result))
-                {
-                    $where_out .= " ,";
-                    $where_out .= $char[0];
-                };
-                $where_out .= ") ";
-                unset($result);
-                break;
-
-            case "item":
-                if (is_numeric($search_value));
-                else
-                    $search_value = 0;
-
-                $result = $sqlc->query("SELECT owner_guid FROM item_instance WHERE itemEntry = '$search_value'");
-
-                $where_out = "characters.guid IN (0 ";
-                while ($char = $sqlc->fetch_row($result))
-                {
-                    $where_out .= " ,";
-                    $where_out .= $char[0];
-                };
-                $where_out .= ") ";
-                unset($result);
-                break;
-
-            case "greater_rank":
-                if (is_numeric($search_value));
-                else
-                    $search_value = 0;
-
-                $where_out ="characters.totalKills > $search_value";
-                break;
-
-           /* case "highest_rank":
-                if (is_numeric($search_value));
-                else
-                    $search_value = 0;
-
-                $where_out ="characters.totalKills = $search_value";
-                break; */
-
-                default:
-                    if (preg_match('/^[\t\v\b\f\a\n\r\\\"\'\? <>[](){}_=+-|!@#$%^&*~`.,0123456789\0]{1,30}$/', $search_value))
-                        redirect("char_list.php?error=2");
-
-                    $where_out ="characters.".$search_by." LIKE '%".$search_value."%'";
+            $val_r = $sqlr->quote_smart($val_raw);
+            $res_acc = $sqlr->query("SELECT id FROM account WHERE username LIKE '%$val_r%'");
+            $acc_ids = [0];
+            while ($r_acc = $sqlr->fetch_row($res_acc))
+                $acc_ids[] = intval($r_acc[0]);
+            $where_clauses[] = 'characters.account IN (' . implode(',', $acc_ids) . ')';
         }
-
-        if ($search_by === "item")
+        elseif ($field === 'level')
+            $where_clauses[] = 'characters.level = ' . intval($val_raw);
+        elseif ($field === 'greater_level')
+            $where_clauses[] = 'characters.level > ' . intval($val_raw);
+        elseif ($field === 'lesser_level')
+            $where_clauses[] = 'characters.level < ' . intval($val_raw);
+        elseif ($field === 'gold')
+            $where_clauses[] = 'characters.money > ' . intval($val_raw);
+        elseif ($field === 'greater_rank')
+            $where_clauses[] = 'characters.totalKills > ' . intval($val_raw);
+        elseif ($field === 'guild')
         {
-            $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname, SUM(item_instance.count) as amount FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid LEFT JOIN item_instance on characters.guid = item_instance.owner_guid WHERE $where_out AND itemEntry = $search_value AND name != '' GROUP BY guid ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+            $res_g = $sqlc->query("SELECT guildid FROM guild WHERE name LIKE '%$val%'");
+            $g_ids = [0];
+            while ($r_g = $sqlc->fetch_row($res_g))
+                $g_ids[] = intval($r_g[0]);
+            $where_clauses[] = 'characters.guid IN (SELECT guid FROM guild_member WHERE guildid IN (' . implode(',', $g_ids) . '))';
+        }
+        elseif ($field === 'item')
+        {
+            $has_item_search = true;
+            $item_search_val = intval($val_raw);
+            $where_clauses[] = 'characters.guid IN (SELECT owner_guid FROM item_instance WHERE itemEntry = ' . $item_search_val . ')';
+        }
+        elseif ($field === 'race')
+        {
+            if (is_numeric($val_raw))
+                $where_clauses[] = 'characters.race = ' . intval($val_raw);
+            else
+            {
+                $r_ids = [0];
+                for ($ri = 1; $ri <= 25; $ri++)
+                    if (stripos((string)char_get_race_name($ri), $val_raw) !== false) $r_ids[] = $ri;
+                $where_clauses[] = 'characters.race IN (' . implode(',', $r_ids) . ')';
+            }
+        }
+        elseif ($field === 'class')
+        {
+            if (is_numeric($val_raw))
+                $where_clauses[] = 'characters.class = ' . intval($val_raw);
+            else
+            {
+                $c_ids = [0];
+                for ($ci = 1; $ci <= 15; $ci++)
+                    if (stripos((string)char_get_class_name($ci), $val_raw) !== false) $c_ids[] = $ci;
+                $where_clauses[] = 'characters.class IN (' . implode(',', $c_ids) . ')';
+            }
+        }
+        elseif ($field === 'gender')
+        {
+            $gl = strtolower($val_raw);
+            if ($val_raw === '0' || in_array($gl, ['m', 'male', 'masculino', 'hombre']))
+                $where_clauses[] = 'characters.gender = 0';
+            elseif ($val_raw === '1' || in_array($gl, ['f', 'female', 'femenino', 'mujer']))
+                $where_clauses[] = 'characters.gender = 1';
+            else
+                $where_clauses[] = '1=0';
         }
         else
-        {
-            $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid WHERE $where_out AND name != '' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
-        }
-
-        $query_1 = $sqlc->query("SELECT count(*) FROM `characters` where $where_out");
-        $query = $sqlc->query($sql_query);
+            $where_clauses[] = "characters.$field LIKE '%$val%'";
     }
+
+    $has_search = !empty($where_clauses);
+    if (!$has_search)
+        $active_filters[] = ['by' => 'name', 'val' => ''];
+
+    $where_sql = $has_search ? implode(' AND ', $where_clauses) . ' AND ' : '';
+    if ($has_item_search)
+        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname, SUM(item_instance.count) as amount FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid LEFT JOIN item_instance on characters.guid = item_instance.owner_guid WHERE $where_sql itemEntry = $item_search_val AND name != '' GROUP BY guid ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
     else
-    {
-        $query_1 = $sqlc->query("SELECT count(*) FROM `characters`");
-        $query = $sqlc->query("SELECT C.guid,BINARY C.name AS name,C.account,C.race,C.class,C.zone,C.map,C.online,C.level, C.gender, C.logout_time,COALESCE(guild_member.guildid,0) as gname FROM characters C LEFT JOIN guild_member ON guild_member.guid = C.guid WHERE name != '' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
-    }
+        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid WHERE $where_sql name != '' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+
+    $query_1 = $sqlc->query("SELECT count(*) FROM `characters` WHERE $where_sql name != ''");
+    $query = $sqlc->query($sql_query);
 
     $all_record = $sqlc->result($query_1,0);
     unset($query_1);
@@ -208,11 +168,11 @@ function browse_chars(&$sqlr, &$sqlc)
     //if($user_lvl >= $action_permission['delete'])
     //              makebutton($lang_char_list['cleanup'], 'cleanup.php', 130);
     makebutton($lang_global['back'], 'javascript:window.history.back()', 130);
-    ($search_by && $search_value) ? makebutton($lang_char_list['characters'], 'char_list.php" type="def', 130) : $output .= '';
+    ($has_search) ? makebutton($lang_char_list['characters'], 'char_list.php" type="def', 130) : $output .= '';
     $output .= '
                                 </td>
                                 <td align="right" width="25%" rowspan="2">';
-    $output .= generate_pagination('char_list.php?order_by='.$order_by.'&amp;dir='.(($dir) ? 0 : 1).( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ), $all_record, $itemperpage, $start);
+    $output .= generate_pagination('char_list.php?order_by='.$order_by.'&amp;dir='.(($dir) ? 0 : 1).$search_url, $all_record, $itemperpage, $start);
     $output .= "
                                 </td>
                             </tr>
@@ -221,24 +181,58 @@ function browse_chars(&$sqlr, &$sqlc)
                                     <table class=\"hidden\">
                                         <tr>
                                             <td>
+                                                <script type=\"text/javascript\">
+                                                    function addCharFilter() {
+                                                        var container = document.getElementById(\"char_filters_container\");
+                                                        var rows = container.getElementsByClassName(\"char_filter_row\");
+                                                        var clone = rows[0].cloneNode(true);
+                                                        clone.getElementsByTagName(\"input\")[0].value = \"\";
+                                                        var remBtn = clone.getElementsByClassName(\"rem_char_filter_btn\")[0];
+                                                        if (remBtn) remBtn.style.display = \"inline-block\";
+                                                        container.appendChild(clone);
+                                                    }
+                                                    function removeCharFilter(btn) {
+                                                        var container = document.getElementById(\"char_filters_container\");
+                                                        if (container.getElementsByClassName(\"char_filter_row\").length > 1) {
+                                                            btn.parentNode.remove();
+                                                        }
+                                                    }
+                                                </script>
                                                 <form action=\"char_list.php\" method=\"get\" name=\"form\">
                                                     <input type=\"hidden\" name=\"error\" value=\"3\" />
-                                                    <input type=\"text\" size=\"24\" maxlength=\"50\" name=\"search_value\" value=\"{$search_value}\" placeholder='{$lang_global['search_by']}' />
-                                                    <select name=\"search_by\" title='{$lang_global['search_by']}'>
-                                                        <option value=\"name\"".($search_by == 'name' ? " selected=\"selected\"" : "").">{$lang_char_list['by_name']}</option>
-                                                        <option value=\"guid\"".($search_by == 'guid' ? " selected=\"selected\"" : "").">{$lang_char_list['by_id']}</option>
-                                                        <option value=\"account\"".($search_by == 'account' ? " selected=\"selected\"" : "").">{$lang_char_list['by_account']}</option>
-                                                        <option value=\"level\"".($search_by == 'level' ? " selected=\"selected\"" : "").">{$lang_char_list['by_level']}</option>
-                                                        <option value=\"greater_level\"".($search_by == 'greater_level' ? " selected=\"selected\"" : "").">{$lang_char_list['greater_level']}</option>
-                                                        <option value=\"lesser_level\"".($search_by == 'lesser_level' ? " selected=\"selected\"" : "").">{$lang_char_list['lesser_level']}</option>
-                                                        <option value=\"guild\"".($search_by == 'guild' ? " selected=\"selected\"" : "").">{$lang_char_list['by_guild']}</option>
-                                                        <option value=\"race\"".($search_by == 'race' ? " selected=\"selected\"" : "").">{$lang_char_list['by_race_id']}</option>
-                                                        <option value=\"class\"".($search_by == 'class' ? " selected=\"selected\"" : "").">{$lang_char_list['by_class_id']}</option>
-                                                        <option value=\"map\"".($search_by == 'map' ? " selected=\"selected\"" : "").">{$lang_char_list['by_map_id']}</option>
-                                                        <option value=\"online\"".($search_by == 'online' ? " selected=\"selected\"" : "").">{$lang_char_list['by_online']}</option>
-                                                        <option value=\"gold\"".($search_by == 'gold' ? " selected=\"selected\"" : "").">{$lang_char_list['chars_gold']}</option>
-                                                        <option value=\"item\"".($search_by == 'item' ? " selected=\"selected\"" : "").">{$lang_char_list['by_item']}</option>
-                                                    </select>
+                                                    <div id=\"char_filters_container\" style=\"display:inline-block; vertical-align:middle;\">";
+    foreach ($active_filters as $f_idx => $flt)
+    {
+        $f_by = $flt['by'];
+        $f_val = htmlspecialchars($flt['val']);
+        $show_rem = ($f_idx > 0) ? 'inline-block' : 'none';
+        $output .= "
+                                                        <div class=\"char_filter_row\" style=\"margin-bottom:3px;\">
+                                                            <input type=\"text\" size=\"24\" maxlength=\"50\" name=\"search_value[]\" value=\"{$f_val}\" placeholder='{$lang_global['search_by']}' />
+                                                            <select name=\"search_by[]\" title='{$lang_global['search_by']}'>
+                                                                <option value=\"name\"".($f_by == 'name' ? " selected=\"selected\"" : "").">{$lang_char_list['by_name']}</option>
+                                                                <option value=\"guid\"".($f_by == 'guid' ? " selected=\"selected\"" : "").">{$lang_char_list['by_id']}</option>
+                                                                <option value=\"account\"".($f_by == 'account' ? " selected=\"selected\"" : "").">{$lang_char_list['by_account']}</option>
+                                                                <option value=\"level\"".($f_by == 'level' ? " selected=\"selected\"" : "").">{$lang_char_list['by_level']}</option>
+                                                                <option value=\"greater_level\"".($f_by == 'greater_level' ? " selected=\"selected\"" : "").">{$lang_char_list['greater_level']}</option>
+                                                                <option value=\"lesser_level\"".($f_by == 'lesser_level' ? " selected=\"selected\"" : "").">{$lang_char_list['lesser_level']}</option>
+                                                                <option value=\"guild\"".($f_by == 'guild' ? " selected=\"selected\"" : "").">{$lang_char_list['by_guild']}</option>
+                                                                <option value=\"race\"".($f_by == 'race' ? " selected=\"selected\"" : "").">{$lang_char_list['by_race_id']}</option>
+                                                                <option value=\"class\"".($f_by == 'class' ? " selected=\"selected\"" : "").">{$lang_char_list['by_class_id']}</option>
+                                                                <option value=\"gender\"".($f_by == 'gender' ? " selected=\"selected\"" : "").">Género</option>
+                                                                <option value=\"map\"".($f_by == 'map' ? " selected=\"selected\"" : "").">{$lang_char_list['by_map_id']}</option>
+                                                                <option value=\"online\"".($f_by == 'online' ? " selected=\"selected\"" : "").">{$lang_char_list['by_online']}</option>
+                                                                <option value=\"gold\"".($f_by == 'gold' ? " selected=\"selected\"" : "").">{$lang_char_list['chars_gold']}</option>
+                                                                <option value=\"item\"".($f_by == 'item' ? " selected=\"selected\"" : "").">{$lang_char_list['by_item']}</option>
+                                                            </select>
+                                                            <button type=\"button\" class=\"rem_char_filter_btn\" onclick=\"removeCharFilter(this)\" style=\"display:$show_rem; cursor:pointer;\" title=\"Quitar filtro\">-</button>
+                                                        </div>";
+    }
+    $output .= "
+                                                    </div>
+                                                    <div style=\"display:inline-block; vertical-align:top;\">
+                                                        <button type=\"button\" onclick=\"addCharFilter()\" style=\"cursor:pointer;\" title=\"Añadir otra condición AND\">+</button>
+                                                    </div>
                                                 </form>
                                             </td>
                                             <td>";
@@ -258,24 +252,24 @@ function browse_chars(&$sqlr, &$sqlc)
                         <table class=\"lined\">
                             <tr>
                                 <th width=\"1%\"><input name=\"allbox\" type=\"checkbox\" value=\"Check All\" onclick=\"CheckAll(document.form1);\" title=\"{$lang_global['check_all']}\" /></th>
-                                <th width=\"1%\"><a href=\"char_list.php?order_by=guid&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='guid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['id']}</a></th>
-                                <th width=\"1%\"><a href=\"char_list.php?order_by=name&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='name' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['char_name']}</a></th>
-                                <th width=\"1%\"><a href=\"char_list.php?order_by=account&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='account' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['account']}</a></th>";
+                                <th width=\"1%\"><a href=\"char_list.php?order_by=guid&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='guid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['id']}</a></th>
+                                <th width=\"1%\"><a href=\"char_list.php?order_by=name&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='name' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['char_name']}</a></th>
+                                <th width=\"1%\"><a href=\"char_list.php?order_by=account&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='account' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['account']}</a></th>";
 
-    if ($search_by === "item")
+    if ($has_item_search)
     {
         $output .= "
-                                <th width=\"1%\"><a href=\"char_list.php?order_by=amount&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='amount' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['amount']}</a></th>";
+                                <th width=\"1%\"><a href=\"char_list.php?order_by=amount&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='amount' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['amount']}</a></th>";
     }
     $output .= "
-                                <th width=\"1%\"><a href=\"char_list.php?order_by=race&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='race' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['race']}</a></th>
-                                <th width=\"1%\"><a href=\"char_list.php?order_by=class&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='class' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['class']}</a></th>
-                                <th width=\"1%\"><a href=\"char_list.php?order_by=level&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='level' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['level']}</a></th>
-                                <th width=\"10%\"><a href=\"char_list.php?order_by=map&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='map '.$order_dir.', zone' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['map']}</a></th>
-                                <th width=\"10%\"><a href=\"char_list.php?order_by=zone&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='zone '.$order_dir.', map' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['zone']}</a></th>
-                                <th width=\"10%\"><a href=\"char_list.php?order_by=gname&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='gname' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['guild']}</a></th>
-                                <th width=\"1%\"><a href=\"char_list.php?order_by=logout_time&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='logout_time' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['lastseen']}</a></th>
-                                <th width=\"1%\"><a href=\"char_list.php?order_by=online&amp;start=$start".( $search_value && $search_by ? "&amp;search_by=$search_by&amp;search_value=$search_value" : "" )."&amp;dir=$dir\">".($order_by=='online' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['online']}</a></th>";
+                                <th width=\"1%\"><a href=\"char_list.php?order_by=race&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='race' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['race']}</a></th>
+                                <th width=\"1%\"><a href=\"char_list.php?order_by=class&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='class' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['class']}</a></th>
+                                <th width=\"1%\"><a href=\"char_list.php?order_by=level&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='level' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['level']}</a></th>
+                                <th width=\"10%\"><a href=\"char_list.php?order_by=map&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='map '.$order_dir.', zone' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['map']}</a></th>
+                                <th width=\"10%\"><a href=\"char_list.php?order_by=zone&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='zone '.$order_dir.', map' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['zone']}</a></th>
+                                <th width=\"10%\"><a href=\"char_list.php?order_by=gname&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='gname' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['guild']}</a></th>
+                                <th width=\"1%\"><a href=\"char_list.php?order_by=logout_time&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='logout_time' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['lastseen']}</a></th>
+                                <th width=\"1%\"><a href=\"char_list.php?order_by=online&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='online' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['online']}</a></th>";
 
     if ($showcountryflag)
     {
@@ -323,7 +317,7 @@ function browse_chars(&$sqlr, &$sqlc)
                                 <td><a href=\"char.php?id=$char[0]\">".htmlentities($char[1])."</a></td>
                                 <td><a href=\"user.php?action=edit_user&amp;error=11&amp;id=$char[2]\">".htmlentities($owner_acc_name)."</a></td>";
 
-            if ($search_by === "item")
+            if ($has_item_search)
             {
                 $output .= "
                                 <td>$char[12]</td>";
@@ -376,7 +370,7 @@ function browse_chars(&$sqlr, &$sqlc)
     $output .= '
                             <tr>
                                 <td colspan="13" align="right" class="hidden" width="25%">';
-    $output .= generate_pagination('char_list.php?order_by='.$order_by.'&amp;dir='.(($dir) ? 0 : 1).( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ), $all_record, $itemperpage, $start);
+    $output .= generate_pagination('char_list.php?order_by='.$order_by.'&amp;dir='.(($dir) ? 0 : 1).$search_url, $all_record, $itemperpage, $start);
     $output .= '
                                 </td>
                             </tr>
