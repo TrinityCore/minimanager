@@ -22,14 +22,14 @@ services:
     image: mysql:5.6.40
     command: --init-file /mysql/init.sql
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - ./mysql/data:/var/lib/mysql
       - ./mysql/init.sql:/mysql/init.sql
     networks:
       - backend
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-rootpassword}
 
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
