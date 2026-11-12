@@ -919,7 +919,11 @@ function forum_do_add_post(){
 	  error($forum_lang["no_such_topic"]);
 	  return;
   }
-  else $topic = $mysql->quote_smart($_POST['topic']);
+  else $topic = (int)$_POST['topic'];
+  if($topic < 1){
+	  error($forum_lang["no_such_topic"]);
+	  return;
+  }
 
 //  $_POST['msg'] = htmlspecialchars($_POST['msg']);
   $msg = trim($mysql->quote_smart($_POST['msg']), " ");
@@ -1050,7 +1054,11 @@ function forum_do_edit_post(){
 	  error($forum_lang["no_such_post"]);
 	  return;
   }
-  else $post = $mysql->quote_smart($_POST['post']);
+  else $post = (int)$_POST['post'];
+  if($post < 1){
+	  error($forum_lang["no_such_post"]);
+	  return;
+  }
 
   if(!isset($_POST['name']))
     $topic = 0;
@@ -1088,7 +1096,7 @@ function forum_do_edit_post(){
   $mysql->query("UPDATE mm_forum_posts SET text = '$msg' WHERE id = $post;");
 
   if($topic == 1){
-    $mysql->query("UPDATE mm_forum_posts SET name = '$name' WHERE topic = {$topicid[0]};");
+    $mysql->query("UPDATE mm_forum_posts SET name = '$name' WHERE topic = ".(int)$topicid[0].";");
   }
 
   $result = $mysql->query("SELECT topic FROM mm_forum_posts WHERE id = $post;");
