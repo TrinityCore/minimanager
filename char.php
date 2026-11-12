@@ -181,7 +181,8 @@ function char_main(&$sqlr, &$sqlc)
                 19 => ['',($EQU_TABARD     ? get_item_icon($EQU_TABARD, $sqlm, $sqlw)    : 0),($EQU_TABARD    ? get_item_border($EQU_TABARD, $sqlw)    : 0)]
                 ];
 
-            // Fetch real items behind transmog
+            // Fetch real items behind transmog and calculate average real Item Level
+            $real_ilvl_entries = [];
             $real_items = [];
             $q_real = $sqlc->query("SELECT ci.slot, ii.itemEntry, ii.transmog FROM character_inventory ci INNER JOIN item_instance ii ON ci.item = ii.guid WHERE ci.guid = $id AND ci.bag = 0 AND ci.slot BETWEEN 0 AND 18");
             while ($r_row = $sqlc->fetch_assoc($q_real))
@@ -189,6 +190,8 @@ function char_main(&$sqlr, &$sqlc)
                 $slot_1based = intval($r_row['slot']) + 1;
                 $real_entry = intval($r_row['itemEntry']);
                 $xmog_entry = intval($r_row['transmog']);
+                if ($real_entry > 0 && $slot_1based !== 4 && $slot_1based !== 19)
+                    $real_ilvl_entries[] = $real_entry;
                 if ($real_entry > 0 && ($xmog_entry > 0 && $xmog_entry !== $real_entry))
                 {
                     $real_items[$slot_1based] = [
@@ -197,6 +200,18 @@ function char_main(&$sqlr, &$sqlc)
                         'border' => get_item_border($real_entry, $sqlw)
                     ];
                 }
+            }
+            $avg_ilvl = 0;
+            if (!empty($real_ilvl_entries))
+            {
+                $ilvl_sum = 0;
+                foreach ($real_ilvl_entries as $e_id)
+                {
+                    $q_ilvl = $sqlw->query("SELECT ItemLevel FROM item_template WHERE entry = $e_id LIMIT 1");
+                    if ($q_ilvl && $sqlw->num_rows($q_ilvl))
+                        $ilvl_sum += intval($sqlw->result($q_ilvl, 0, 'ItemLevel'));
+                }
+                $avg_ilvl = round($ilvl_sum / count($real_ilvl_entries), 1);
             }
 
             if (($user_lvl > $owner_gmlvl)||($owner_name === $user_name))
@@ -263,7 +278,7 @@ function char_main(&$sqlr, &$sqlc)
                                         </font>
                                         <br />'.get_map_name($char['map'], $sqlm).' - '.get_zone_name($char['zone'], $sqlm).'
                                         <br />'.$lang_char['honor_points'].': '.$char['totalHonorPoints'].' / '.$char['arenaPoints'].' - '.$lang_char['honor_kills'].': '.$char['totalKills'].'
-                                        <br />'.$lang_char['guild'].': '.$guild_name.' | '.$lang_char['rank'].': '.htmlentities($guild_rank).'
+                                        <br />'.$lang_char['guild'].': '.$guild_name.' | '.$lang_char['rank'].': '.htmlentities($guild_rank).'<br />Avg Item Level: <b>'.$avg_ilvl.'</b>
                                         <br />'.(($char['online']) ? '<img src="img/up.gif" onmousemove="toolTip(\'Online\', \'item_tooltip\')" onmouseout="toolTip()" alt="online" />' : '<img src="img/down.gif" onmousemove="toolTip(\'Offline\', \'item_tooltip\')" onmouseout="toolTip()" alt="offline" />');
             if ($showcountryflag)
             {
