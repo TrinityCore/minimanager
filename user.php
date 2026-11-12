@@ -14,7 +14,7 @@ valid_login($action_permission['read']);
 function browse_users(&$sqlr, &$sqlc)
 {
     global $output, $lang_global, $lang_user, $mmfpm_db, $action_permission, $user_lvl, $user_name,
-           $itemperpage, $expansion_select, $gm_level_arr, $showcountryflag;
+           $itemperpage, $expansion_select, $gm_level_arr, $showcountryflag, $characters_db, $realm_id;
     if ($showcountryflag) { require_once 'libs/misc_lib.php'; }
 
     $online_pq = "online";
@@ -297,7 +297,23 @@ function browse_users(&$sqlr, &$sqlc)
                                 <td>'.(($data['failed_logins']) ? $data['failed_logins'] : '-').'</td>
                                 <td>'.(($data['locked']) ? $lang_global['yes_low'] : '-').'</td>
                                 <td class="small">'.$data['last_login'].'</td>
-                                <td>'.(($data['online']) ? '<img src="img/up.gif" alt="" />' : '-').'</td>';
+                                <td>';
+            if ($data['online'])
+            {
+                if (!isset($sqlc) || !is_object($sqlc)) { $sqlc = new SQL; }
+                $sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
+                $char_on_q = $sqlc->query("SELECT guid, BINARY name AS name FROM `characters` WHERE account = {$data['id']} AND online = 1 LIMIT 1");
+                if ($sqlc->num_rows($char_on_q))
+                {
+                    $char_on = $sqlc->fetch_assoc($char_on_q);
+                    $output .= '<img src="img/up.gif" alt="" /> <a href="char.php?id='.$char_on['guid'].'">'.$char_on['name'].'</a>';
+                }
+                else
+                    $output .= '<img src="img/up.gif" alt="" />';
+            }
+            else
+                $output .= '-';
+            $output .= '</td>';
 
             $output .= '
                             </tr>';
@@ -1032,7 +1048,21 @@ function edit_user()
                                         <tr>
                                             <td>'.$lang_user['online'].'</td>';
         $output .= "
-                                            <td>".(( $data['online'] ) ? $lang_global['yes'] : $lang_global['no'])."</td>
+                                            <td>";
+        if ($data['online'])
+        {
+            $char_on_edit = $sqlc->query("SELECT guid, BINARY name AS name FROM `characters` WHERE account = {$data['id']} AND online = 1 LIMIT 1");
+            if ($char_on_edit && $sqlc->num_rows($char_on_edit))
+            {
+                $c_on = $sqlc->fetch_assoc($char_on_edit);
+                $output .= $lang_global['yes']." (<a href=\"char.php?id={$c_on['guid']}\">{$c_on['name']}</a>)";
+            }
+            else
+                $output .= $lang_global['yes'];
+        }
+        else
+            $output .= $lang_global['no'];
+        $output .= "</td>
                                         </tr>";
         $query = $sqlr->query("SELECT SUM(numchars) FROM realmcharacters WHERE acctid = '$id'");
         $tot_chars = $sqlr->result($query, 0);
@@ -1059,12 +1089,12 @@ function edit_user()
                                         </tr>";
                 if ($chars_on_realm)
                 {
-                    $char_array = $sqlc->query("SELECT guid, BINARY name AS name, race, class, level, gender FROM `characters` WHERE account = $id");
+                    $char_array = $sqlc->query("SELECT guid, BINARY name AS name, race, class, level, gender, online FROM `characters` WHERE account = $id");
                     while ($char = $sqlc->fetch_array($char_array))
                     {
                         $output .= "
                                         <tr>
-                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---></td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".((isset($char[6]) && $char[6]) ? "<span style=\"color:#00ff00;font-weight:bold;\">---></span> 🟢" : "--->")."</td>
                                             <td>
                                                 <a href=\"char.php?id=$char[0]&amp;realm=$realm[0]\">$char[1]  - <img src='img/c_icons/{$char[2]}-{$char[5]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[2])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" />
                                                 <img src='img/c_icons/{$char[3]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\"/> - lvl ".char_get_level_color($char[4])."</a>";
@@ -1093,12 +1123,12 @@ function edit_user()
                                         </tr>";
             if ($chars_on_realm)
             {
-                $char_array = $sqlc->query("SELECT guid,BINARY name AS name,race,class, level, gender FROM `characters` WHERE account = $id");
+                $char_array = $sqlc->query("SELECT guid, BINARY name AS name, race, class, level, gender, online FROM `characters` WHERE account = $id");
                 while ($char = $sqlc->fetch_array($char_array))
                 {
                     $output .= "
                                         <tr>
-                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---></td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".((isset($char[6]) && $char[6]) ? "<span style=\"color:#00ff00;font-weight:bold;\">---></span> 🟢" : "--->")."</td>
                                             <td>
                                                 <a href=\"char.php?id=$char[0]\">$char[1]  - <img src='img/c_icons/{$char[2]}-{$char[5]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[2])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" />
                                                 <img src='img/c_icons/{$char[3]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\"/> - lvl ".char_get_level_color($char[4])."</a>";
