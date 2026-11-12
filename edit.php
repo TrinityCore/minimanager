@@ -51,6 +51,10 @@ function edit_user(&$sqlr, &$sqlc)
                                     <td>'.$user_name.'</td>
                                 </tr>
                                 <tr>
+                                    <td>'.($lang_edit['current_pass'] ?? 'Current password').'</td>
+                                    <td><input type="password" name="cur_pass" size="42" maxlength="40" autocomplete="current-password" /></td>
+                                </tr>
+                                <tr>
                                     <td>'.$lang_edit['password'].'</td>
                                     <td><input type="password" name="pass" size="42" maxlength="40" placeholder="(unchanged)" /></td>
                                 </tr>
@@ -301,6 +305,13 @@ function doedit_user(&$sqlr, &$sqlc)
     $new_expansion = $sqlr->quote_smart(trim($_POST['expansion']));
     $referredby = $sqlr->quote_smart(trim($_POST['referredby']));
 
+    // the current password is required to change the password or the email
+    $cur = $sqlr->fetch_assoc($sqlr->query('SELECT email, salt, verifier FROM account WHERE username = \''.$user_name.'\''));
+    if (($_POST['pass'] !== '' || $new_mail !== $cur['email'])
+        && !VerifySRP6Login($user_name, $_POST['cur_pass'] ?? '', $cur['salt'], $cur['verifier']))
+        redirect('edit.php?error=6');
+    unset($cur);
+
     //make sure the mail is valid mail format
     if ((valid_email($new_mail)) && (strlen($new_mail) < 225));
     else
@@ -417,6 +428,11 @@ else if(5 == $err)
     $output .= '
             <h1>
                 <font class="error\">'.$lang_edit['del_error'].'</font>
+            </h1>';
+else if(6 == $err)
+    $output .= '
+            <h1>
+                <font class="error\">'.($lang_edit['current_pass_wrong'] ?? 'The current password is wrong.').'</font>
             </h1>';
 else
     $output .= '
