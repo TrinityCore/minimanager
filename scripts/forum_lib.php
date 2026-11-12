@@ -74,29 +74,30 @@ function do_clickable($text){
     $text = preg_replace('#([\s\(\)])(www|ftp)\.(([\w\-]+\.)*[\w]+(:[0-9]+)?(/[^"\s\(\)<\[]*)?)#si', '\'$1\'.handle_url_tag(\'$2.$3\', \'$2.$3\')', $text);
     // Regex [youtube] et [/youtube]
     $uid = $userid;
-    $text = preg_replace("#\[youtube\](.*?)\[/youtube\]#si", "[youtube:$uid]\\1[/youtube:$uid]", $text);
-    $text = preg_replace("#\[media\](([a-z]+?)://([^, \n\r]+))\[/media\]#si", "[media:$uid]\\1[/media:$uid]", $text);
+    $text = preg_replace("#\[youtube\](https?://[^\s<>\"\[]*?)\[/youtube\]#si", "[youtube:$uid]\\1[/youtube:$uid]", $text);
+    $text = preg_replace("#\[media\](https?://[^,\s<>\"\[]+?)\[/media\]#si", "[media:$uid]\\1[/media:$uid]", $text);
     return substr($text, 1);
 }
 
 function bbcode_parse($text, $brfix = 1, $emoticons = 1, $wow = 1){
     // By BlackWizard, https://www.phpcs.com/codes/BBCODE-SIMPLEMENT_17638.aspx
     global $forum_lang, $userid;
-    $text = preg_replace("#\[img\]((ht|f)tp://)([^\r\n\t<\"]*?)\[/img\]#si", "'<img border=\"0\" src=\\1' . str_replace(' ', '%20', '\\3') . '>'", $text);
-    $text = preg_replace("#\[url\]((ht|f)tp://)([^\r\n\t<\"]*?)\[/url\]#si", "'<a href=\"\\1' . str_replace(' ', '%20', '\\3') . '\" target=blank>\\1\\3</a>'", $text);
-    $text = preg_replace("/\[url=(.+?)\](.+?)\[\/url\]/", "<a href=\"$1\" target=\"blank\">$2</a>", $text);
+    // The text is already HTML-escaped: quotes are &quot;, so URLs may not contain raw quotes, angle brackets or spaces.
+    $text = preg_replace("#\[img\](https?://[^\s<>\"\[]+?)\[/img\]#si", "<img border=\"0\" src=\"\\1\" alt=\"\" />", $text);
+    $text = preg_replace("#\[url\](https?://[^\s<>\"\[]+?)\[/url\]#si", "<a href=\"\\1\" target=\"blank\">\\1</a>", $text);
+    $text = preg_replace("#\[url=(?:&quot;)?(https?://[^\s<>\"\]]+?)(?:&quot;)?\](.+?)\[/url\]#si", "<a href=\"\\1\" target=\"blank\">\\2</a>", $text);
     $text = preg_replace("/\[b\](.+?)\[\/b\]/", "<b>$1</b>", $text);
     $text = preg_replace("/\[i\](.+?)\[\/i\]/", "<i>$1</i>", $text);
     $text = preg_replace("/\[u\](.+?)\[\/u\]/", "<u>$1</u>", $text);
     $text = preg_replace("/\[code\](.+?)\[\/code\]/", "<table width=100%><tr><th align=left>Code :</th></tr><tr><td align=left><code>$1</code></td></tr></table>", $text);
     $text = preg_replace("/\[quote\](.+?)\[\/quote\]/", "<table width=100%><tr><th align=left>{$forum_lang["quote"]} :</th></tr><tr><td align=left>$1</td></tr></table>", $text);
     $text = preg_replace("/\[quote=(.+?)\](.+?)\[\/quote\]/", "<table width=100%><tr><th align=left>$1 {$forum_lang["wrote"]} :</th></tr><tr><td align=left>$2</td></tr></table>", $text);
-    $text = preg_replace("/\[color=(.+?)\](.+?)\[\/color\]/", "<font color=$1>$2</font>", $text);
+    $text = preg_replace("/\[color=(#[0-9a-fA-F]{3,6}|[a-zA-Z]+)\](.+?)\[\/color\]/", "<font color=\"$1\">$2</font>", $text);
     $uid = $userid;
-    $text = preg_replace("#\[youtube\](.*?)\[/youtube\]#si", "[youtube:$uid]\\1[/youtube:$uid]", $text);
-    $text = preg_replace("#\[media\](([a-z]+?)://([^, \n\r]+))\[/media\]#si", "[media:$uid]\\1[/media:$uid]", $text);
+    $text = preg_replace("#\[youtube\](https?://[^\s<>\"\[]*?)\[/youtube\]#si", "[youtube:$uid]\\1[/youtube:$uid]", $text);
+    $text = preg_replace("#\[media\](https?://[^,\s<>\"\[]+?)\[/media\]#si", "[media:$uid]\\1[/media:$uid]", $text);
     if($wow = 1)
-        $text = preg_replace_callback("/\[wow\](.+?)\[\/wow\]/","bbcode_callbacks_wow",$text);
+        $text = preg_replace_callback("/\[wow\]([0-9]+)\[\/wow\]/","bbcode_callbacks_wow",$text);
 
     // Emoticons.
     if($emoticons = 1)
@@ -122,17 +123,17 @@ function bbcode_parse($text, $brfix = 1, $emoticons = 1, $wow = 1){
         $text = str_replace(":cool:", "<img src=\"img/emoticons/cool.gif\" />", $text);
     }
 
-    if($brfix = 1)
+    if($brfix == 1)
         $text = str_replace("&lt;br /&gt;", "<br /> ", $text);
     else
         $text = str_replace("<br />", "<br /> ", $text); // no comment :)
 
-    $text = do_clickable(htmlspecialchars_decode($text));
+    $text = do_clickable($text);
     //WindowMediaPlayer
-    $text = preg_replace("#\[media:$uid\](.*?)\[/media:$uid\]#si", "<object id=\"WMP\" type=\"video/x-ms-asf\" data=\"video.asx\" src=\"\\1\" width=\"450\" height=\"350\"><param name=\"AutoStart\" value=\"0\"> <embed width=\"450\" height=\"350\" AutoStart=\"0\" src=\"\\1\" ShowTracker=\"true\" ShowControls=\"true\" ShowGotoBar=\"true\" ShowDisplay=\"true\" ShowStatusBar=\"true\" AutoSize=\"true\" pluginspage=\"https://www.microsoft.com/windows/windowsmedia/download/\"></embed></OBJECT>", $text);
+    $text = preg_replace("#\[media:$uid\](https?://[^,\s<>\"\[]+?)\[/media:$uid\]#si", "<object id=\"WMP\" type=\"video/x-ms-asf\" data=\"video.asx\" src=\"\\1\" width=\"450\" height=\"350\"><param name=\"AutoStart\" value=\"0\"> <embed width=\"450\" height=\"350\" AutoStart=\"0\" src=\"\\1\" ShowTracker=\"true\" ShowControls=\"true\" ShowGotoBar=\"true\" ShowDisplay=\"true\" ShowStatusBar=\"true\" AutoSize=\"true\" pluginspage=\"https://www.microsoft.com/windows/windowsmedia/download/\"></embed></OBJECT>", $text);
     $text = str_replace("[/win:$uid]", "", $text);
     //youtube
-    $text = preg_replace("#\[youtube:$uid\](.*?)\[/youtube:$uid\]#si", "<object width=\"425\" height=\"350\"><param name=\"movie\" value=\"\\1\"></param><embed src=\"\\1\" type=\"application/x-shockwave-flash\" width=\"425\" height=\"350\"></embed></object>"."[/youtube:$uid]", $text);
+    $text = preg_replace("#\[youtube:$uid\](https?://[^\s<>\"\[]*?)\[/youtube:$uid\]#si", "<object width=\"425\" height=\"350\"><param name=\"movie\" value=\"\\1\"></param><embed src=\"\\1\" type=\"application/x-shockwave-flash\" width=\"425\" height=\"350\"></embed></object>"."[/youtube:$uid]", $text);
     $text = str_replace("[/youtube:$uid]", "", $text);
     $text = str_replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/v/", $text);
     $text = str_replace("https://www.youtube.com", "https://youtube.com", $text);
