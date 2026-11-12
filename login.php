@@ -227,15 +227,15 @@ $action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
 
 if ('dologin' === $action)
 {
-    if (isset($_POST['security_code']) && isset($_SESSION['security_code']))
+    if ($enable_captcha)
     {
-        if (($_POST['security_code']) != ($_SESSION['security_code']))
+        $code = $_SESSION['security_code'] ?? '';
+        // one attempt per image, so a code cannot be guessed or replayed
+        unset($_SESSION['security_code']);
+        if ($code === '' || empty($_POST['security_code']) || !hash_equals((string)$code, (string)$_POST['security_code']))
             redirect('login.php?error=8');
     }
-    else
-    {
-        dologin($sqlr);
-    }
+    dologin($sqlr);
 }
 else
     login($sqlr);
