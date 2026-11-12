@@ -1369,13 +1369,21 @@ function doupdate_referral($referredby, $user_id)
 
 function soap_command()
 {
-global $soapaddr, $soap_port, $soap_user, $soap_pass, $cmd, $char, $docmd;
+global $soapaddr, $soap_port, $soap_user, $soap_pass, $cmd, $char, $docmd, $enable_soap, $action_permission;
 
 require_once 'scripts/config.php';
+
+   valid_login($action_permission['update']);
+   if (!$enable_soap)
+      return;
 
    $cmd = $_GET['cmd'];
    $char = $_GET['char'];
    $id = $_GET['id'];
+
+   // character names are letters only (any script)
+   if (!preg_match('/^\p{L}+$/u', $char))
+      return;
 
 $command = "error";
 
@@ -1397,8 +1405,8 @@ $command = "error";
       case "changerace":
            $command = "character changerace $char";
       break;
-      case "cuztomize":
-           $command = "character cuztomize $char";
+      case "customize":
+           $command = "character customize $char";
       break;
       default:
            $command = "error";
