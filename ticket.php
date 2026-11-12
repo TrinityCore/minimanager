@@ -11,7 +11,7 @@ class tickets
 //#############################################################################
 	function browse_tickets(&$sqlc)
 	{
-		global $output, $lang_global, $lang_ticket, $action_permission, $user_lvl, $itemperpage;
+		global $output, $lang_global, $lang_ticket, $action_permission, $user_lvl, $itemperpage, $sqlr, $showcountryflag, $sqlm;
 
 		//==========================$_GET and SECURE=================================
 		$start = (isset($_GET['start'])) ? $sqlc->quote_smart($_GET['start']) : 0;
@@ -32,7 +32,7 @@ class tickets
 		$all_record = $sqlc->result($query_1,0);
 		unset($query_1);
 
-		$query = $sqlc->query("SELECT gm_ticket.id, gm_ticket.playerGuid, gm_ticket.description, BINARY characters.name AS name, characters.online
+		$query = $sqlc->query("SELECT gm_ticket.id, gm_ticket.playerGuid, gm_ticket.description, BINARY characters.name AS name, characters.online, characters.account
 								FROM gm_ticket,characters
 									WHERE gm_ticket.playerGuid = characters.guid
 									  ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
@@ -56,16 +56,18 @@ class tickets
 							<tr>";
 		if($user_lvl >= $action_permission['delete'])
 			$output .="
-								<th width=\"7%\"><input name=\"allbox\" type=\"checkbox\" value=\"Check All\" onclick=\"CheckAll(document.form);\" title='Check all' /></th>";
+								<th width=\"3%\"><input name=\"allbox\" type=\"checkbox\" value=\"Check All\" onclick=\"CheckAll(document.form);\" title='Check all' /></th>";
 		if($user_lvl >= $action_permission['update'])
 			$output .="
-								<th width=\"7%\">{$lang_global['edit']}</th>";
+								<th width=\"5%\">{$lang_global['edit']}</th>";
 		$output .="
-								<th width=\"10%\"><a href=\"ticket.php?order_by=id&amp;start=$start&amp;dir=$dir\">".($order_by=='id' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_ticket['id']}</a></th>
-								<th width=\"16%\"><a href=\"ticket.php?order_by=online&amp;start=$start&amp;dir=$dir\">".($order_by=='online' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."Online?</a></th>
-								<th width=\"16%\"><a href=\"ticket.php?order_by=playerGuid&amp;start=$start&amp;dir=$dir\">".($order_by=='playerGuid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_ticket['sender']}</a></th>";
+								<th width=\"7%\" style=\"white-space:nowrap;\"><a href=\"ticket.php?order_by=id&amp;start=$start&amp;dir=$dir\">".($order_by=='id' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_ticket['id']}</a></th>
+								<th width=\"6%\" style=\"white-space:nowrap;\"><a href=\"ticket.php?order_by=online&amp;start=$start&amp;dir=$dir\">".($order_by=='online' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."Online?</a></th>
+								<th width=\"12%\"><a href=\"ticket.php?order_by=playerGuid&amp;start=$start&amp;dir=$dir\">".($order_by=='playerGuid' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_ticket['sender']}</a></th>";
 		$output .="
-								<th width=\"60%\">{$lang_ticket['ticket_text']}</th>
+								<th width=\"12%\">Account</th>
+                                                                <th width=\"14%\">Last IP</th>
+                                                                <th width=\"41%\">{$lang_ticket['ticket_text']}</th>
 							</tr>";
 		while ($ticket = $sqlc->fetch_row($query))
 		{
@@ -81,7 +83,25 @@ class tickets
 								<td>$ticket[0]</td>
 								<td>".($ticket[4] ? "<img src=\"img/up.gif\" alt=\"online\">" : "<img src=\"img/down.gif\" alt=\"offline\">")."</td>
 								<td><a href=\"char.php?id=$ticket[1]\">".htmlentities($ticket[3])."</a></td>
-								<td>".htmlentities($ticket[2])."</td>
+								";
+                        $acc_id = intval($ticket[5]);
+                        $acc_q = $sqlr->query("SELECT username, last_ip FROM account WHERE id = $acc_id LIMIT 1");
+                        $acc_r = $acc_q ? $sqlr->fetch_assoc($acc_q) : null;
+                        $acc_name = $acc_r ? htmlentities($acc_r['username']) : '-';
+                        $acc_ip = $acc_r ? $acc_r['last_ip'] : '-';
+                        $flag_html = '';
+                        if ($showcountryflag && $acc_ip && $acc_ip !== '-')
+                        {
+                            require_once 'libs/misc_lib.php';
+                            $country = misc_get_country_by_ip($acc_ip, $sqlm);
+                            if (!empty($country['code']))
+                                $flag_html = "<img src=\"img/flags/{$country['code']}.png\" onmousemove=\"toolTip('{$country['country']}', 'item_tooltip')\" onmouseout=\"toolTip()\" alt=\"\" /> ";
+                        }
+                        $ip_link = ($acc_ip && $acc_ip !== '-') ? "<a href=\"user.php?error=3&amp;search_by%5B%5D=last_ip&amp;search_value%5B%5D=$acc_ip\" title=\"Ver cuentas con esta IP\">$acc_ip</a>" : $acc_ip;
+                        $output .= "
+                                                                <td><a href=\"user.php?action=edit_user&amp;error=11&amp;id=$acc_id\">$acc_name</a></td>
+                                                                <td style=\"white-space:nowrap;\">$flag_html$ip_link</td>
+                                                                <td>".htmlentities($ticket[2])."</td>
 							</tr>";
 		}
 		unset($query);
@@ -89,7 +109,7 @@ class tickets
 
 		$output .= "
 							<tr>
-								<td colspan=\"5\" align=\"right\" class=\"hidden\" width=\"25%\">";
+								<td colspan=\"7\" align=\"right\" class=\"hidden\" width=\"25%\">";
 		$output .= generate_pagination("ticket.php?action=browse_tickets&amp;order_by=$order_by&amp;dir=".!$dir, $all_record, $itemperpage, $start);
 		$output .= "
 								</td>
@@ -100,7 +120,7 @@ class tickets
 			makebutton($lang_ticket['del_selected_tickets'], "javascript:do_submit()\" type=\"wrn",230);
 		$output .= "
 								</td>
-								<td colspan=\"2\" align=\"right\" class=\"hidden\">{$lang_ticket['tot_tickets']}: $all_record</td>
+								<td colspan=\"4\" align=\"right\" class=\"hidden\">{$lang_ticket['tot_tickets']}: $all_record</td>
 							</tr>
 						</table>
 					</form>
