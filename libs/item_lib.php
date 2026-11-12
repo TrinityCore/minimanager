@@ -81,7 +81,8 @@ function get_item_icon($itemid, &$sqlm=0, &$sqlw=0)
         $sqlw->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
     }
 
-    $result = $sqlw->query("SELECT `displayid` FROM `item_template` WHERE `entry` = $itemid LIMIT 1");
+    $itemid = intval($itemid);
+    $result = ($itemid > 0) ? $sqlw->query("SELECT `displayid` FROM `item_template` WHERE `entry` = $itemid LIMIT 1") : false;
 
     if ($result)
         $displayid = $sqlw->result($result, 0);
