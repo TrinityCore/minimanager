@@ -9,7 +9,7 @@ valid_login($action_permission['read']);
 //########################################################################################################################
 function show_list()
 {
-    global $lang_global, $lang_banned, $output, $realm_db, $itemperpage, $action_permission, $user_lvl;
+    global $lang_global, $lang_banned, $output, $realm_db, $itemperpage, $action_permission, $user_lvl, $showcountryflag, $sqlm;
     valid_login($action_permission['read']);
 
     $sqlr = new SQL;
@@ -68,20 +68,34 @@ function show_list()
             <table class=\"lined\">
                 <tr>
                     <th width=\"5%\">{$lang_global['delete_short']}</th>
-                    <th width=\"19%\"><a href=\"banned.php?order_by=$key_field&amp;ban_type=$ban_type&amp;dir=$dir\"".($order_by==$key_field ? " class=\"$order_dir\"" : "").">{$lang_banned['ip_acc']}</a></th>
-                    <th width=\"18%\"><a href=\"banned.php?order_by=bandate&amp;ban_type=$ban_type&amp;dir=$dir\"".($order_by=='bandate' ? " class=\"$order_dir\"" : "").">{$lang_banned['bandate']}</a></th>
-                    <th width=\"18%\"><a href=\"banned.php?order_by=unbandate&amp;ban_type=$ban_type&amp;dir=$dir\"".($order_by=='unbandate' ? " class=\"$order_dir\"" : "").">{$lang_banned['unbandate']}</a></th>
+                    <th width=\"15%\"><a href=\"banned.php?order_by=$key_field&amp;ban_type=$ban_type&amp;dir=$dir\"".($order_by==$key_field ? " class=\"$order_dir\"" : "").">{$lang_banned['ip_acc']}</a></th>".($ban_type === "account_banned" ? "
+                    <th width=\"18%\" style=\"white-space:nowrap;\">Last IP</th>" : "")."
+                    <th width=\"16%\"><a href=\"banned.php?order_by=bandate&amp;ban_type=$ban_type&amp;dir=$dir\"".($order_by=='bandate' ? " class=\"$order_dir\"" : "").">{$lang_banned['bandate']}</a></th>
+                    <th width=\"16%\"><a href=\"banned.php?order_by=unbandate&amp;ban_type=$ban_type&amp;dir=$dir\"".($order_by=='unbandate' ? " class=\"$order_dir\"" : "").">{$lang_banned['unbandate']}</a></th>
                     <th width=\"15%\"><a href=\"banned.php?order_by=bannedby&amp;ban_type=$ban_type&amp;dir=$dir\"".($order_by=='bannedby' ? " class=\"$order_dir\"" : "").">{$lang_banned['bannedby']}</a></th>
                     <th width=\"25%\"><a href=\"banned.php?order_by=banreason&amp;ban_type=$ban_type&amp;dir=$dir\"".($order_by=='banreason' ? " class=\"$order_dir\"" : "").">{$lang_banned['banreason']}</a></th>
                 </tr>";
 
     while ($ban = $sqlr->fetch_row($result))
     {
+        $last_ip_td = "";
         if ($ban_type === "account_banned")
         {
-            $result1 = $sqlr->query("SELECT username FROM account WHERE id ='$ban[0]'");
-            $owner_acc_name = $sqlr->result($result1, 0, 'username');
+            $result1 = $sqlr->query("SELECT username, last_ip FROM account WHERE id ='$ban[0]'");
+            $acc_row = $sqlr->fetch_assoc($result1);
+            $owner_acc_name = $acc_row ? $acc_row['username'] : '';
+            $last_ip = $acc_row ? $acc_row['last_ip'] : '-';
+            $flag_html = "";
+            if ($showcountryflag && $last_ip && $last_ip !== '-')
+            {
+                require_once 'libs/misc_lib.php';
+                $country = misc_get_country_by_ip($last_ip, $sqlm);
+                if (!empty($country['code']))
+                    $flag_html = "<img src=\"img/flags/{$country['code']}.png\" onmousemove=\"toolTip('{$country['country']}', 'item_tooltip')\" onmouseout=\"toolTip()\" alt=\"\" /> ";
+            }
             $name_out = "<a href=\"user.php?action=edit_user&amp;error=11&amp;id=$ban[0]\">$owner_acc_name</a>";
+            $last_ip_td = "
+                    <td style=\"white-space:nowrap;\">$flag_html$last_ip</td>";
         }
         else
         {
@@ -96,7 +110,7 @@ function show_list()
                         <img src=\"img/aff_cross.png\" alt=\"\" onclick=\"answerBox('{$lang_global['delete']}: <font color=white>$owner_acc_name</font><br />{$lang_global['are_you_sure']}', del_banned + '$ban[0]');\" style=\"cursor:pointer;\" alt=\"\" />";
         $output .= "
                     </td>
-                    <td>$name_out</td>
+                    <td>$name_out</td>$last_ip_td
                     <td>".date('d-m-Y G:i', $ban[1])."</td>
                     <td>".date('d-m-Y G:i', $ban[2])."</td>
                     <td>$ban[3]</td>
@@ -105,7 +119,7 @@ function show_list()
     }
     $output .= "
                 <tr>
-                    <td colspan=\"6\" align=\"right\" class=\"hidden\">{$lang_banned['tot_banned']} : $all_record</td>
+                    <td colspan=\"".($ban_type === "account_banned" ? 7 : 6)."\" align=\"right\" class=\"hidden\">{$lang_banned['tot_banned']} : $all_record</td>
                 </tr>
             </table>
             <br/>
