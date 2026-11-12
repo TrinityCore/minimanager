@@ -77,6 +77,11 @@ function char_friends(&$sqlr, &$sqlc)
             $sqlm = new SQL;
             $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
 
+            $mutual_friends = [];
+            $q_mut = $sqlc->query("SELECT s1.friend FROM character_social s1 INNER JOIN character_social s2 ON s1.guid = s2.friend AND s1.friend = s2.guid WHERE s1.guid = $id AND s1.flags <= 1 AND s2.flags <= 1");
+            while ($m_row = $sqlc->fetch_row($q_mut))
+                $mutual_friends[intval($m_row[0])] = true;
+
             $result = $sqlc->query('SELECT BINARY name AS name, race, class, map, zone, level, gender, online, account, guid
                                     FROM characters WHERE guid in (SELECT friend FROM character_social WHERE guid = '.$id.' and flags <= 1) ORDER BY '.$order_by.' '.$order_dir.'');
 
@@ -84,20 +89,25 @@ function char_friends(&$sqlr, &$sqlc)
             {
                 $output .= '
                                         <tr>
-                                            <th colspan="7" align="left">'.$lang_char['friends'].'</th>
+                                            <th colspan="9" align="left">'.$lang_char['friends'].'</th>
                                         </tr>
                                         <tr>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=name&amp;dir='.$dir.'"'.($order_by==='name' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['name'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=race&amp;dir='.$dir.'"'.($order_by==='race' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['race'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=class&amp;dir='.$dir.'"'.($order_by==='class' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['class'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=level&amp;dir='.$dir.'"'.($order_by==='level' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['level'].'</a></th>
+                                            <th width="1%">Guild</th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=map&amp;dir='.$dir.'"'.($order_by==='map '.$order_dir.', zone' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['map'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=zone&amp;dir='.$dir.'"'.($order_by==='zone '.$order_dir.', map' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['zone'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=online&amp;dir='.$dir.'"'.($order_by==='online' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['online'].'</a></th>
+                                            <th width="1%">Mutuo</th>
                                         </tr>';
                 while ($data = $sqlc->fetch_assoc($result))
                 {
                     $char_gm_level=$sqlr->result($sqlr->query('SELECT SecurityLevel FROM account_access WHERE AccountID = '.$data['account'].''), 0, 'SecurityLevel');
+                    $q_fg = $sqlc->query('SELECT g.guildid, BINARY g.name AS gname FROM guild_member gm INNER JOIN guild g ON g.guildid = gm.guildid WHERE gm.guid = ' . intval($data['guid']) . ' LIMIT 1');
+                    $fg_row = ($q_fg && $sqlc->num_rows($q_fg)) ? $sqlc->fetch_assoc($q_fg) : null;
+                    $fg_html = $fg_row ? '<a href="guild.php?action=view_guild&amp;realm=' . $realmid . '&amp;error=3&amp;id=' . $fg_row['guildid'] . '">' . htmlentities($fg_row['gname']) . '</a>' : '-';
                     $output .= '
                                         <tr>
                                             <td>';
@@ -112,9 +122,11 @@ function char_friends(&$sqlr, &$sqlc)
                                             <td><img src="img/c_icons/'.$data['race'].'-'.$data['gender'].'.gif" onmousemove="toolTip(\''.char_get_race_name($data['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /></td>
                                             <td><img src="img/c_icons/'.$data['class'].'.gif" onmousemove="toolTip(\''.char_get_class_name($data['class']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /></td>
                                             <td>'.char_get_level_color($data['level']).'</td>
+                                            <td class="small" style="white-space:nowrap;">'.$fg_html.'</td>
                                             <td class="small"><span onmousemove="toolTip(\'MapID:'.$data['map'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_map_name($data['map'], $sqlm).'</span></td>
                                             <td class="small"><span onmousemove="toolTip(\'ZoneID:'.$data['zone'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_zone_name($data['zone'], $sqlm).'</span></td>
                                             <td>'.(($data['online']) ? '<img src="img/up.gif" alt="" />' : '-').'</td>
+                                            <td align="center">'.(isset($mutual_friends[intval($data['guid'])]) ? '<span title="Amigos mutuos" style="font-size:14px;">&#129309;</span>' : '-').'</td>
                                         </tr>';
                 }
             }
@@ -126,20 +138,25 @@ function char_friends(&$sqlr, &$sqlc)
             {
                 $output .= '
                                         <tr>
-                                            <th colspan="7" align="left">'.$lang_char['friendof'].'</th>
+                                            <th colspan="9" align="left">'.$lang_char['friendof'].'</th>
                                         </tr>
                                         <tr>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=name&amp;dir='.$dir.'"'.($order_by==='name' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['name'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=race&amp;dir='.$dir.'"'.($order_by==='race' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['race'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=class&amp;dir='.$dir.'"'.($order_by==='class' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['class'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=level&amp;dir='.$dir.'"'.($order_by==='level' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['level'].'</a></th>
+                                            <th width="1%">Guild</th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=map&amp;dir='.$dir.'"'.($order_by==='map '.$order_dir.', zone' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['map'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=zone&amp;dir='.$dir.'"'.($order_by==='zone '.$order_dir.', map' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['zone'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=online&amp;dir='.$dir.'"'.($order_by==='online' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['online'].'</a></th>
+                                            <th width="1%">Mutuo</th>
                                         </tr>';
                 while ($data = $sqlc->fetch_assoc($result))
                 {
                     $char_gm_level=$sqlr->result($sqlr->query('SELECT SecurityLevel FROM account_access WHERE AccountID = '.$data['account'].''), 0, 'SecurityLevel');
+                    $q_fg = $sqlc->query('SELECT g.guildid, BINARY g.name AS gname FROM guild_member gm INNER JOIN guild g ON g.guildid = gm.guildid WHERE gm.guid = ' . intval($data['guid']) . ' LIMIT 1');
+                    $fg_row = ($q_fg && $sqlc->num_rows($q_fg)) ? $sqlc->fetch_assoc($q_fg) : null;
+                    $fg_html = $fg_row ? '<a href="guild.php?action=view_guild&amp;realm=' . $realmid . '&amp;error=3&amp;id=' . $fg_row['guildid'] . '">' . htmlentities($fg_row['gname']) . '</a>' : '-';
                     $output .= '
                                         <tr>
                                             <td>';
@@ -153,9 +170,11 @@ function char_friends(&$sqlr, &$sqlc)
                                             <td><img src="img/c_icons/'.$data['race'].'-'.$data['gender'].'.gif" onmousemove="toolTip(\''.char_get_race_name($data['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /></td>
                                             <td><img src="img/c_icons/'.$data['class'].'.gif" onmousemove="toolTip(\''.char_get_class_name($data['class']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /></td>
                                             <td>'.char_get_level_color($data['level']).'</td>
+                                            <td class="small" style="white-space:nowrap;">'.$fg_html.'</td>
                                             <td class="small"><span onmousemove="toolTip(\'MapID:'.$data['map'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_map_name($data['map'], $sqlm).'</span></td>
                                             <td class="small"><span onmousemove="toolTip(\'ZoneID:'.$data['zone'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_zone_name($data['zone'], $sqlm).'</span></td>
                                             <td>'.(($data['online']) ? '<img src="img/up.gif" alt="" />' : '-').'</td>
+                                            <td align="center">'.(isset($mutual_friends[intval($data['guid'])]) ? '<span title="Amigos mutuos" style="font-size:14px;">&#129309;</span>' : '-').'</td>
                                         </tr>';
                 }
             }
@@ -174,21 +193,26 @@ function char_friends(&$sqlr, &$sqlc)
             {
                 $output .= '
                                         <tr>
-                                            <th colspan="7" align="left">'.$lang_char['ignored'].'</th>
+                                            <th colspan="9" align="left">'.$lang_char['ignored'].'</th>
                                         </tr>
                                         <tr>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=name&amp;dir='.$dir.'"'.($order_by==='name' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['name'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=race&amp;dir='.$dir.'"'.($order_by==='race' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['race'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=class&amp;dir='.$dir.'"'.($order_by==='class' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['class'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=level&amp;dir='.$dir.'"'.($order_by==='level' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['level'].'</a></th>
+                                            <th width="1%">Guild</th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=map&amp;dir='.$dir.'"'.($order_by==='map '.$order_dir.', zone' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['map'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=zone&amp;dir='.$dir.'"'.($order_by==='zone '.$order_dir.', map' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['zone'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=online&amp;dir='.$dir.'"'.($order_by==='online' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['online'].'</a></th>
+                                            <th width="1%">Mutuo</th>
                                         </tr>';
 
                 while ($data = $sqlc->fetch_assoc($result))
                 {
                     $char_gm_level=$sqlr->result($sqlr->query('SELECT SecurityLevel FROM account_access WHERE AccountID = '.$data['account'].''), 0, 'SecurityLevel');
+                    $q_fg = $sqlc->query('SELECT g.guildid, BINARY g.name AS gname FROM guild_member gm INNER JOIN guild g ON g.guildid = gm.guildid WHERE gm.guid = ' . intval($data['guid']) . ' LIMIT 1');
+                    $fg_row = ($q_fg && $sqlc->num_rows($q_fg)) ? $sqlc->fetch_assoc($q_fg) : null;
+                    $fg_html = $fg_row ? '<a href="guild.php?action=view_guild&amp;realm=' . $realmid . '&amp;error=3&amp;id=' . $fg_row['guildid'] . '">' . htmlentities($fg_row['gname']) . '</a>' : '-';
                     $output .= '
                                         <tr>
                                             <td>';
@@ -202,9 +226,11 @@ function char_friends(&$sqlr, &$sqlc)
                                             <td><img src="img/c_icons/'.$data['race'].'-'.$data['gender'].'.gif" onmousemove="toolTip(\''.char_get_race_name($data['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /></td>
                                             <td><img src="img/c_icons/'.$data['class'].'.gif" onmousemove="toolTip(\''.char_get_class_name($data['class']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /></td>
                                             <td>'.char_get_level_color($data['level']).'</td>
+                                            <td class="small" style="white-space:nowrap;">'.$fg_html.'</td>
                                             <td class="small"><span onmousemove="toolTip(\'MapID:'.$data['map'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_map_name($data['map'], $sqlm).'</span></td>
                                             <td class="small"><span onmousemove="toolTip(\'ZoneID:'.$data['zone'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_zone_name($data['zone'], $sqlm).'</span></td>
                                             <td>'.(($data['online']) ? '<img src="img/up.gif" alt="" />' : '-').'</td>
+                                            <td align="center">'.(isset($mutual_friends[intval($data['guid'])]) ? '<span title="Amigos mutuos" style="font-size:14px;">&#129309;</span>' : '-').'</td>
                                         </tr>';
                 }
             }
@@ -216,20 +242,25 @@ function char_friends(&$sqlr, &$sqlc)
             {
                 $output .= '
                                         <tr>
-                                            <th colspan="7" align="left">'.$lang_char['ignoredby'].'</th>
+                                            <th colspan="9" align="left">'.$lang_char['ignoredby'].'</th>
                                         </tr>
                                         <tr>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=name&amp;dir='.$dir.'"'.($order_by==='name' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['name'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=race&amp;dir='.$dir.'"'.($order_by==='race' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['race'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=class&amp;dir='.$dir.'"'.($order_by==='class' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['class'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=level&amp;dir='.$dir.'"'.($order_by==='level' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['level'].'</a></th>
+                                            <th width="1%">Guild</th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=map&amp;dir='.$dir.'"'.($order_by==='map '.$order_dir.', zone' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['map'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=zone&amp;dir='.$dir.'"'.($order_by==='zone '.$order_dir.', map' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['zone'].'</a></th>
                                             <th width="1%"><a href="char_friends.php?id='.$id.'&amp;realm='.$realmid.'&amp;order_by=online&amp;dir='.$dir.'"'.($order_by==='online' ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['online'].'</a></th>
+                                            <th width="1%">Mutuo</th>
                                         </tr>';
                 while ($data = $sqlc->fetch_assoc($result))
                 {
                     $char_gm_level=$sqlr->result($sqlr->query('SELECT SecurityLevel FROM account_access WHERE AccountID = '.$data['account'].''), 0, 'SecurityLevel');
+                    $q_fg = $sqlc->query('SELECT g.guildid, BINARY g.name AS gname FROM guild_member gm INNER JOIN guild g ON g.guildid = gm.guildid WHERE gm.guid = ' . intval($data['guid']) . ' LIMIT 1');
+                    $fg_row = ($q_fg && $sqlc->num_rows($q_fg)) ? $sqlc->fetch_assoc($q_fg) : null;
+                    $fg_html = $fg_row ? '<a href="guild.php?action=view_guild&amp;realm=' . $realmid . '&amp;error=3&amp;id=' . $fg_row['guildid'] . '">' . htmlentities($fg_row['gname']) . '</a>' : '-';
                     $output .= '
                                         <tr>
                                             <td>';
@@ -243,9 +274,11 @@ function char_friends(&$sqlr, &$sqlc)
                                             <td><img src="img/c_icons/'.$data['race'].'-'.$data['gender'].'.gif" onmousemove="toolTip(\''.char_get_race_name($data['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /></td>
                                             <td><img src="img/c_icons/'.$data['class'].'.gif" onmousemove="toolTip(\''.char_get_class_name($data['class']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /></td>
                                             <td>'.char_get_level_color($data['level']).'</td>
+                                            <td class="small" style="white-space:nowrap;">'.$fg_html.'</td>
                                             <td class="small"><span onmousemove="toolTip(\'MapID:'.$data['map'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_map_name($data['map'], $sqlm).'</span></td>
                                             <td class="small"><span onmousemove="toolTip(\'ZoneID:'.$data['zone'].'\', \'item_tooltip\')" onmouseout="toolTip()">'.get_zone_name($data['zone'], $sqlm).'</span></td>
                                             <td>'.(($data['online']) ? '<img src="img/up.gif" alt="" />' : '-').'</td>
+                                            <td align="center">'.(isset($mutual_friends[intval($data['guid'])]) ? '<span title="Amigos mutuos" style="font-size:14px;">&#129309;</span>' : '-').'</td>
                                         </tr>';
                 }
             }
