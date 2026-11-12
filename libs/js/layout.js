@@ -1,4 +1,3 @@
-// getBrowserWidth is taken from The Man in Blue Resolution Dependent Layout Script
 function getBrowserWidth()
 {
   if (window.innerWidth)
@@ -16,8 +15,6 @@ function getBrowserWidth()
   return 0;
 }
 
-// changeLayout is based on setActiveStyleSheet function by Paul Sowdon 
-// https://www.alistapart.com/articles/alternate/
 function dynamicLayout()
 {
   var i, a;
@@ -26,6 +23,10 @@ function dynamicLayout()
     if (a.getAttribute("title") == 1280)
     {
       ( getBrowserWidth() > 1024) ? a.disabled = false : a.disabled = true;
+    }
+    if (a.getAttribute("title") == 1920)
+    {
+      ( getBrowserWidth() > 1280) ? a.disabled = false : a.disabled = true;
     }
   }
 }

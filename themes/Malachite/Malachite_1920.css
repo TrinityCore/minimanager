@@ -1,0 +1,152 @@
+/*
+ * Project Name: MiniManager for Trinity Server
+ * Date: 17.10.2006 inital version (0.0.1a)
+ * Author: SixSixNine
+ * Copyright: SixSixNine
+ * Email: *****
+ * License: GNU General Public License (GPL)
+ */
+
+html,body{
+	font:10pt Verdana,sans-serif;
+}
+
+.table_top {
+	width: 1445px;
+}
+
+.table_top_middle {
+	width: 460px;
+}
+
+
+/*********** MENU BAR***********/
+#menubar {
+	left:22px;
+}
+
+#menubar a {
+	font-size: .90em;
+}
+
+/*********** MENU BAR END***********/
+
+#username {
+	font:13pt Verdana,sans-serif;
+}
+
+#version {
+	font:9pt Verdana,sans-serif;
+}
+
+input, input.mouseover, a.button {
+	line-height:130%;
+}
+
+fieldset.half_frame{
+	width: 650px;
+}
+fieldset.tquarter_frame{
+	width: 780px;
+}
+fieldset.full_frame{
+	width: 1260px;
+}
+
+/*****TABLES******/
+
+table.top_hidden {
+	width: 1360px;
+}
+
+table.lined {
+	width: 1360px;
+}
+
+/*****TABLES END******/
+
+#body_main {
+    width: 1400px;
+    margin-left: -700px; /* half of the width */
+	font-size: 12px;
+}
+
+.bold {
+	font:14pt Trebuchet MS,sans-serif;
+}
+.small {
+	font-size: 9px;
+}	
+.large_bold {
+	font-size: 14px;
+}
+.large {
+	font-size: 14px;
+}
+.half_line {
+	font-size: 13px;
+}
+
+.table_buttom {
+	width: 1400px;
+}
+
+.table_buttom_middle {
+	width: 1384px;
+}
+
+table.stat_hidden {
+	width: 1360px;
+}
+
+.tot_bar {
+	font-size: 13px;
+}
+
+/*** link tabs ***/
+#tab ul {
+	padding: 0px 50px;
+}
+
+#tab_content {
+	width: 1300px;
+}
+
+#tab_content2 {
+	width: 1260px;
+}
+
+/*** Java layer tabs ***/
+
+.jtabs a  {
+	top: -27px;
+}
+.jtab-container {
+	width: 1300px;
+}
+
+/*** item tooltips***/
+.item_tooltip  td{
+	font-size: 12px;
+}
+.info_tooltip  td{
+	font-size: 12px;
+}
+
+
+
+/* 1920px layout adjustments */
+.small, table.lined td, table.lined th { white-space: nowrap; }
+
+#body_main, .top, .table_buttom { background-size: 100% 100% !important; }
+
+.top { width: 1360px !important; background-size: 100% 100% !important; }
+
+
+/* Ajuste final 1920px */
+.table_top { width: 1400px !important; }
+.table_top_middle { width: 853px !important; background-repeat: repeat-x !important; }
+#body_main { width: 1400px !important; margin-left: -700px !important; }
+div.bubble { width: 1400px !important; box-sizing: border-box !important; }
+table.top_hidden, table.lined { width: 1360px !important; }
+.small, table.lined td, table.lined th { white-space: nowrap !important; }

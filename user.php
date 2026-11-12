@@ -14,7 +14,8 @@ valid_login($action_permission['read']);
 function browse_users(&$sqlr, &$sqlc)
 {
     global $output, $lang_global, $lang_user, $mmfpm_db, $action_permission, $user_lvl, $user_name,
-           $itemperpage, $expansion_select, $gm_level_arr;
+           $itemperpage, $expansion_select, $gm_level_arr, $showcountryflag;
+    if ($showcountryflag) { require_once 'libs/misc_lib.php'; }
 
     $online_pq = "online";
 
@@ -212,7 +213,7 @@ function browse_users(&$sqlr, &$sqlc)
     if($user_lvl >= $action_permission['insert'])
         $output.= '
                                 <th width="1%">
-                                    <input name="allbox" type="checkbox" value="Check All" onclick="CheckAll(document.form1);" title="' . $lang_global['check_all'] . '" />
+                                    <input name="allbox" type="checkbox" value="Check All" onclick="CheckAll(document.form1);" title="' . ($lang_global['check_all'] ?? 'Seleccionar') . '" />
                                 </th>';
     else
         $output .= '
@@ -227,7 +228,9 @@ function browse_users(&$sqlr, &$sqlc)
     $output .='
                                 <th width="1%"><a href="user.php?order_by=email&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='email' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['email'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=joindate&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='joindate' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['join_date'].'</a></th>
-                                <th width="1%"><a href="user.php?order_by=last_ip&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='last_ip' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['ip'].'</a></th>
+                                <th width="1%"><a href="user.php?order_by=last_ip&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='last_ip' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['ip'].'</a></th>';
+    if ($showcountryflag) $output .= '<th width="1%">País</th>';
+    $output .= '
                                 <th width="1%"><a href="user.php?order_by=failed_logins&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='failed_logins' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['failed_logins'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=locked&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='locked' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['locked'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=last_login&amp;start='.$start.( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'&amp;dir='.$dir.'"'.($order_by==='last_login' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['last_login'].'</a></th>
@@ -243,7 +246,7 @@ function browse_users(&$sqlr, &$sqlc)
                             <tr>';
             if ($user_lvl >= $action_permission['insert'])
                 $output .= '
-                                <td><input type="checkbox" name="check[]" value="'.$data['id'].'" onclick="CheckCheckAll(document.form1);" title="' . $lang_global['check_all'] . '" /></td>';
+                                <td><input type="checkbox" name="check[]" value="'.$data['id'].'" onclick="CheckCheckAll(document.form1);" title="' . ($lang_global['check_all'] ?? 'Seleccionar') . '" /></td>';
             else
                 $output .= '
                                 <td></td>';
@@ -274,6 +277,7 @@ function browse_users(&$sqlr, &$sqlc)
             else
                 $output .= '
                                 <td>*******</td>';
+            if ($showcountryflag) { $country = misc_get_country_by_ip($data['last_ip'], $sqlm); $output .= '<td>'.(($country['code']) ? '<img src="img/flags/'.$country['code'].'.png" onmousemove="toolTip(\''.addslashes($country['country']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" /> '.$country['country'] : '-').'</td>'; }
             $output .= '
                                 <td>'.(($data['failed_logins']) ? $data['failed_logins'] : '-').'</td>
                                 <td>'.(($data['locked']) ? $lang_global['yes_low'] : '-').'</td>
@@ -289,9 +293,8 @@ function browse_users(&$sqlr, &$sqlc)
                             <tr>
                                 <td>*</td><td>***</td><td>You</td><td>Have</td><td>No</td>
                                 <td class=\"small\">Permission</td><td>to</td><td>View</td><td>this</td><td>Data</td><td>***</td>';
-            if ($expansion_select)
-                $output .= '
-                                <td>*</td>';
+            if ($expansion_select) $output .= '<td>*</td>';
+            if ($showcountryflag) $output .= '<td>*</td>';
             $output .= '
                             </tr>';
         }
@@ -302,12 +305,12 @@ function browse_users(&$sqlr, &$sqlc)
     if ($expansion_select)
     {
         if ($expansion_select)
-            $output .= '13';
+            $output .= '14';
         else
-        $output .= '12';
+        $output .= '13';
     }
     else
-        $output .= '11';
+        $output .= '12';
 
     $output .= '" class="hidden" align="right" width="25%">';
     $output .= generate_pagination('user.php?order_by='.$order_by.'&amp;dir='.(($dir) ? 0 : 1).( $search_value && $search_by ? '&amp;search_by='.$search_by.'&amp;search_value='.$search_value.'' : '' ).'', $all_record, $itemperpage, $start);
@@ -328,12 +331,12 @@ function browse_users(&$sqlr, &$sqlc)
     if ($expansion_select)
     {
         if ($expansion_select)
-            $output .= '5';
+            $output .= '6';
         else
-            $output .= '4';
+            $output .= '5';
     }
     else
-        $output .= '3';
+        $output .= '4';
     $output .= '" align="right" class="hidden">'.$lang_user['tot_acc'].' : '.$all_record.'</td>
                             </tr>
                         </table>
