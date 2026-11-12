@@ -65,7 +65,7 @@ function browse_users(&$sqlr, &$sqlc)
         // injection prevention
         $search_value = $sqlr->quote_smart($_GET['search_value']);
         $search_by = $sqlr->quote_smart($_GET['search_by']);
-        $search_menu = ['username', 'id', 'SecurityLevel', 'greater_gmlevel', 'email', 'joindate', 'last_ip', 'failed_logins', 'greater_failed_logins', 'lesser_failed_logins', 'last_login', 'online', 'banned', 'locked', 'expansion'];
+        $search_menu = ['username', 'id', 'SecurityLevel', 'greater_gmlevel', 'email', 'joindate', 'last_ip', 'country', 'failed_logins', 'greater_failed_logins', 'lesser_failed_logins', 'last_login', 'online', 'banned', 'locked', 'expansion'];
         if (in_array($search_by, $search_menu));
         else
             $search_by = 'username';
@@ -111,6 +111,22 @@ function browse_users(&$sqlr, &$sqlc)
         {
             $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE failed_logins < '.$search_value.' ORDER BY '.$order_by.' '.$order_dir.' LIMIT '.$start.', '.$itemperpage.'';
             $query_1 = $sqlr->query('SELECT count(*) FROM account WHERE failed_logins < '.$search_value.'');
+        }
+        elseif ($search_by === 'country')
+        {
+            require_once 'libs/misc_lib.php';
+            $matched_ips = [];
+            $q_ips = $sqlr->query("SELECT DISTINCT last_ip FROM account WHERE last_ip != ''");
+            while ($ip_r = $sqlr->fetch_assoc($q_ips))
+            {
+                $c_info = misc_get_country_by_ip($ip_r['last_ip'], $sqlm);
+                if (!empty($c_info['code']) && (stripos($c_info['country'], $search_value) !== false || strcasecmp($c_info['code'], $search_value) === 0))
+                    $matched_ips[] = "'" . $sqlr->quote_smart($ip_r['last_ip']) . "'";
+            }
+
+            $where_ip = !empty($matched_ips) ? 'account.last_ip IN (' . implode(',', $matched_ips) . ')' : '1=0';
+            $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE ' . $where_ip . ' ORDER BY ' . $order_by . ' ' . $order_dir . ' LIMIT ' . $start . ', ' . $itemperpage;
+            $query_1 = $sqlr->query('SELECT count(*) FROM account WHERE ' . $where_ip);
         }
         else
         {
@@ -183,6 +199,7 @@ function browse_users(&$sqlr, &$sqlc)
                                                     <option value="expansion"'.($search_by === 'expansion' ? ' selected="selected"' : '').'>'.$lang_user['by_expansion'].'</option>
                                                     <option value="email"'.($search_by === 'email' ? ' selected="selected"' : '').'>'.$lang_user['by_email'].'</option>
                                                     <option value="joindate"'.($search_by === 'joindate' ? ' selected="selected"' : '').'>'.$lang_user['by_join_date'].'</option>
+                                                    <option value="country"'.($search_by === 'country' ? ' selected="selected"' : '').'>por País</option>
                                                     <option value="last_ip"'.($search_by === 'last_ip' ? ' selected="selected"' : '').'>'.$lang_user['by_ip'].'</option>
                                                     <option value="failed_logins"'.($search_by === 'failed_logins' ? ' selected="selected"' : '').'>'.$lang_user['by_failed_loggins'].'</option>
                                                     <option value="greater_failed_logins"'.($search_by === 'greater_failed_logins' ? ' selected="selected"' : '').'>'.$lang_user['by_greater_failed_loggins'].'</option>
@@ -301,7 +318,8 @@ function browse_users(&$sqlr, &$sqlc)
             if ($data['online'])
             {
                 if (!isset($sqlc) || !is_object($sqlc)) { $sqlc = new SQL; }
-                $sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
+                $r_target = isset($characters_db[$realm_id]) ? $realm_id : array_key_first($characters_db);
+                $sqlc->connect($characters_db[$r_target]['addr'], $characters_db[$r_target]['user'], $characters_db[$r_target]['pass'], $characters_db[$r_target]['name']);
                 $char_on_q = $sqlc->query("SELECT guid, BINARY name AS name FROM `characters` WHERE account = {$data['id']} AND online = 1 LIMIT 1");
                 if ($sqlc->num_rows($char_on_q))
                 {
@@ -813,7 +831,8 @@ function edit_user()
     $sqlm = new SQL;
     $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
     $sqlc = new SQL;
-    $sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
+    $r_target = isset($characters_db[$realm_id]) ? $realm_id : array_key_first($characters_db);
+                $sqlc->connect($characters_db[$r_target]['addr'], $characters_db[$r_target]['user'], $characters_db[$r_target]['pass'], $characters_db[$r_target]['name']);
 
     $id = $sqlr->quote_smart($_GET['id']);
 
@@ -1265,7 +1284,8 @@ function doupdate_referral($referredby, $user_id)
     $sqlm = new SQL;
     $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
     $sqlc = new SQL;
-    $sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
+    $r_target = isset($characters_db[$realm_id]) ? $realm_id : array_key_first($characters_db);
+                $sqlc->connect($characters_db[$r_target]['addr'], $characters_db[$r_target]['user'], $characters_db[$r_target]['pass'], $characters_db[$r_target]['name']);
     $sqlr = new SQL;
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
