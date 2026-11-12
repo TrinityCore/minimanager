@@ -455,7 +455,7 @@ function del_user()
     valid_login($action_permission['delete']);
 
     if(isset($_GET['check']))
-        $check = $_GET['check'];
+        $check = array_values(array_filter(array_map('intval', (array)$_GET['check'])));
     else
         redirect("user.php?error=1");
 
@@ -522,7 +522,7 @@ function dodel_user()
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
     if(isset($_GET['check']))
-        $check = $sqlr->quote_smart($_GET['check']);
+        $check = array_values(array_filter(array_map('intval', (array)$_GET['check'])));
     else
         redirect("user.php?error=1");
 
@@ -584,7 +584,7 @@ function backup_user()
     $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
     if(isset($_GET['check']))
-        $check = $sql->quote_smart($_GET['check']);
+        $check = array_values(array_filter(array_map('intval', (array)$_GET['check'])));
     else
         redirect("user.php?error=1");
 
