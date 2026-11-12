@@ -38,7 +38,8 @@ function valid_login($restrict_lvl)
     else 
         redirect('login.php');
 
-    if ($user_lvl < $restrict_lvl) 
+    // a missing threshold (page not found in $menu_array) must deny, not compare against null
+    if (!is_numeric($restrict_lvl) || $user_lvl < $restrict_lvl)
         redirect('login.php?error=5');
 }
 
