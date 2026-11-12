@@ -919,7 +919,11 @@ function forum_do_add_post(){
 	  error($forum_lang["no_such_topic"]);
 	  return;
   }
-  else $topic = $mysql->quote_smart($_POST['topic']);
+  else $topic = (int)$_POST['topic'];
+  if($topic < 1){
+	  error($forum_lang["no_such_topic"]);
+	  return;
+  }
 
 //  $_POST['msg'] = htmlspecialchars($_POST['msg']);
   $msg = trim($mysql->quote_smart($_POST['msg']), " ");
@@ -1050,7 +1054,11 @@ function forum_do_edit_post(){
 	  error($forum_lang["no_such_post"]);
 	  return;
   }
-  else $post = $mysql->quote_smart($_POST['post']);
+  else $post = (int)$_POST['post'];
+  if($post < 1){
+	  error($forum_lang["no_such_post"]);
+	  return;
+  }
 
   if(!isset($_POST['name']))
     $topic = 0;
@@ -1082,13 +1090,25 @@ function forum_do_edit_post(){
   $msg = str_replace('\n', '<br />', $msg);
   $msg = str_replace('\r', '<br />', $msg);
 
-  $result = $mysql->query("SELECT topic FROM mm_forum_posts WHERE id = $post;");
+  $result = $mysql->query("SELECT topic, authorid FROM mm_forum_posts WHERE id = $post;");
+  if($mysql->num_rows($result)==0){
+    $mysql->close();
+    error($forum_lang["no_such_post"]);
+    return;
+  }
   $topicid = $mysql->fetch_row($result);
+  // Same rule as forum_edit_post(): author or moderator.
+  if($user_lvl == 0 && $topicid[1] != $user_id){
+    $mysql->close();
+    error($forum_lang["no_access"]);
+    return;
+  }
 
   $mysql->query("UPDATE mm_forum_posts SET text = '$msg' WHERE id = $post;");
 
-  if($topic == 1){
-    $mysql->query("UPDATE mm_forum_posts SET name = '$name' WHERE topic = {$topicid[0]};");
+  // Only a moderator or the author of the topic's first post may rename the topic.
+  if($topic == 1 && ($user_lvl > 0 || $topicid[0] == $post)){
+    $mysql->query("UPDATE mm_forum_posts SET name = '$name' WHERE topic = ".(int)$topicid[0].";");
   }
 
   $result = $mysql->query("SELECT topic FROM mm_forum_posts WHERE id = $post;");
@@ -1152,6 +1172,14 @@ function forum_move_topic(){
   $mysql->close();
   // Queries : 1
 }
+function forum_can_read($fid){
+  global $forum_skeleton, $user_lvl;
+  foreach($forum_skeleton as $category){
+    if(isset($category["forums"][$fid]))
+      return $category["level_read"] <= $user_lvl && $category["forums"][$fid]["level_read"] <= $user_lvl;
+  }
+  return false;
+}
 function forum_do_move_topic(){
   global $forum_lang, $forum_skeleton, $maxqueries, $user_lvl, $user_id, $output, $mmfpm_db;
 
@@ -1162,14 +1190,32 @@ function forum_do_move_topic(){
 	  error($forum_lang["no_such_forum"]);
 	  return;
   }
-  else $forum = $mysql->quote_smart($_POST['forum']);
+  else $forum = (int)$_POST['forum'];
   if(!isset($_POST['id'])){
 	  error($forum_lang["no_such_topic"]);
 	  return;
   }
-  else $id = $mysql->quote_smart($_POST['id']);
+  else $id = (int)$_POST['id'];
 
-  $mysql->query("UPDATE mm_forum_posts SET forum = '$forum' WHERE topic = '$id'"); // update topic' s last post id
+  // Same rule as forum_move_topic(): moderators only.
+  if($user_lvl == 0){
+	  error($forum_lang["no_access"]);
+	  return;
+  }
+
+  $topic = $mysql->query("SELECT forum FROM mm_forum_posts WHERE id = $id AND id = `topic`;");
+  if($mysql->num_rows($topic)==0){
+	  error($forum_lang["no_such_topic"]);
+	  return;
+  }
+  $topic = $mysql->fetch_row($topic);
+  // The moderator must be able to read both the source and the destination forum.
+  if(!forum_can_read($topic[0]) || !forum_can_read($forum)){
+	  error($forum_lang["no_access"]);
+	  return;
+  }
+
+  $mysql->query("UPDATE mm_forum_posts SET forum = $forum WHERE topic = $id"); // update topic' s last post id
   redirect("forum.php?action=view_topic&id=$id");
   // Queries : 1
 }
