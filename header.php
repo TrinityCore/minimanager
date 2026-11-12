@@ -118,6 +118,17 @@ if ($allow_anony && empty($_SESSION['logged_in']))
 $sqlr = new SQL;
 $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
+//---------------------Page permissions----------------------------------------
+// resolved for every request, so the err display flag cannot skip it.
+// the first included file is the script PHP actually runs; PHP_SELF can carry path-info.
+$lookup_file = basename(get_included_files()[0]);
+$action_permission = [];
+foreach ($menu_array as $trunk)
+    foreach ($trunk[2] as $branch)
+        if ($branch[0] === $lookup_file)
+            $action_permission = ['read' => $branch[2], 'insert' => $branch[3], 'update' => $branch[4], 'delete' => $branch[5]];
+unset($branch, $trunk, $lookup_file);
+
 //----Check if a user has login, if Guest mode is enabled, code above will login as Guest
 if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION['realm_id']) && empty($_GET['err']))
 {
@@ -130,35 +141,15 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
     // for MiniManager security system, getting the users' account group name
     $user_lvl_name = id_get_gm_level($user_lvl);
 
-    // get the file name that called this header
-    $array = explode ( '/', $_SERVER['PHP_SELF']);
-    $lookup_file = $array[sizeof($array)-1];
-    unset($array);
-
     //---------------------Top Menu----------------------------------------------
     $output .= '
                     <div id="menuwrapper">
                         <ul id="menubar">';
     $lang_header = lang_header();
-    $action_permission = [];
     foreach ($menu_array as $trunk)
     {
-        // ignore "invisible array" this is for setting security read/write values
-        // for not accessible elements not in the navbar!
-        if ('invisible' === $trunk[1])
-        {
-            foreach ($trunk[2] as $branch)
-            {
-                if($branch[0] === $lookup_file)
-                {
-                    $action_permission['read']   = $branch[2];
-                    $action_permission['insert'] = $branch[3];
-                    $action_permission['update'] = $branch[4];
-                    $action_permission['delete'] = $branch[5];
-                }
-            }
-        }
-        else
+        // skip the "invisible" array, it only sets permissions for pages not in the navbar
+        if ('invisible' !== $trunk[1])
         {
             $output .= '
                             <li><a href="'.$trunk[0].'">'.(isset($lang_header[$trunk[1]]) ? $lang_header[$trunk[1]] : $trunk[1]).'</a>';
@@ -167,13 +158,6 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
                     <ul>';
             foreach ($trunk[2] as $branch)
             {
-                if($branch[0] === $lookup_file)
-                {
-                    $action_permission['read']   = $branch[2];
-                    $action_permission['insert'] = $branch[3];
-                    $action_permission['update'] = $branch[4];
-                    $action_permission['delete'] = $branch[5];
-                }
                 if ($user_lvl >= $branch[2])
                     $output .= '
                             <li><a href="'.$branch[0].'">'.(isset($lang_header[$branch[1]]) ? $lang_header[$branch[1]] : $branch[1]).'</a></li>';
@@ -188,7 +172,6 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
     }
     unset($branch);
     unset($trunk);
-    unset($lookup_file);
     unset($menu_array);
 
     $output .= '
