@@ -51,10 +51,17 @@ function do_verify_email() {
 //#####################################################################################################
 function doregister(){
     global $lang_global, $characters_db, $realm_db, $realm_id, $mmfpm_db, $disable_acc_creation, $limit_acc_per_ip, $valid_ip_mask, $expansion_select,
-           $send_mail_on_creation, $create_acc_locked, $from_mail, $mailer_type, $smtp_cfg, $title, $defaultoption, $require_account_verify, $server_code, $enable_server_code;
+           $send_mail_on_creation, $create_acc_locked, $from_mail, $mailer_type, $smtp_cfg, $title, $defaultoption, $require_account_verify, $server_code, $enable_server_code,
+           $enable_captcha;
 
-    if (($_POST['security_code']) != ($_SESSION['security_code']))
-        redirect("register.php?err=13");
+    if ($enable_captcha)
+    {
+        $code = $_SESSION['security_code'] ?? '';
+        // one attempt per image, so a solved code cannot be replayed
+        unset($_SESSION['security_code']);
+        if ($code === '' || empty($_POST['security_code']) || !hash_equals((string)$code, (string)$_POST['security_code']))
+            redirect("register.php?err=13");
+    }
 
     if (empty($_POST['pass']) || empty($_POST['email']) || empty($_POST['username']))
         redirect("register.php?err=1");
@@ -65,7 +72,9 @@ function doregister(){
     if ($disable_acc_creation)
         redirect("register.php?err=4");
 
-    $last_ip =  (getenv('HTTP_X_FORWARDED_FOR')) ? getenv('HTTP_X_FORWARDED_FOR') : getenv('REMOTE_ADDR');
+    // X-Forwarded-For is client controlled. Behind a reverse proxy, let the web server
+    // set REMOTE_ADDR (Apache mod_remoteip, nginx real_ip) instead.
+    $last_ip = $_SERVER['REMOTE_ADDR'];
 
     if (sizeof($valid_ip_mask))
     {
@@ -167,7 +176,7 @@ function doregister(){
     else
     {
         if ($expansion_select)
-            $expansion = (isset($_POST['expansion'])) ? $sql->quote_smart($_POST['expansion']) : 0;
+            $expansion = (isset($_POST['expansion'])) ? max(0, (int)$_POST['expansion']) : 0;
         else
             $expansion = $defaultoption;
 
