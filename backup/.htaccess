@@ -1,0 +1,8 @@
+# Backups hold account data. backup.php reads them from disk; never serve them over HTTP.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>
