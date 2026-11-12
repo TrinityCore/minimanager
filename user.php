@@ -757,8 +757,7 @@ function add_new()
                     </script>
                     <fieldset style=\"width: 550px;\">
                         <legend>{$lang_user['create_new_acc']}</legend>
-                        <form method=\"get\" action=\"user.php\" name=\"form\">
-                            <input type=\"hidden\" name=\"action\" value=\"doadd_new\" />
+                        <form method=\"post\" action=\"user.php?action=doadd_new\" name=\"form\">
                             <table class=\"flat\">
                                 <tr>
                                     <td>{$lang_user['username']}</td>
@@ -823,13 +822,13 @@ function doadd_new()
     global $lang_global, $realm_db, $action_permission;
     valid_login($action_permission['insert']);
 
-    if ( empty($_GET['new_user']) || empty($_GET['pass']) )
+    if ( empty($_POST['new_user']) || empty($_POST['pass']) )
         redirect("user.php?action=add_new&error=4");
 
     $sqlc = new SQL;
     $sqlc->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $new_user = $sqlc->quote_smart(trim($_GET['new_user']));
+    $new_user = $sqlc->quote_smart(trim($_POST['new_user']));
 
     //make sure username/pass at least 4 chars long and less than max
     if ((strlen($new_user) < 4) || (strlen($new_user) > 15))
@@ -846,11 +845,11 @@ function doadd_new()
     else
         $last_ip = "0.0.0.0";
     
-    list($salt,$verifier) = GetSRP6RegistrationData(trim($_GET['new_user']), $_GET['pass']);
+    list($salt,$verifier) = GetSRP6RegistrationData(trim($_POST['new_user']), $_POST['pass']);
 
-    $new_mail = (isset($_GET['new_mail'])) ? $sqlc->quote_smart(trim($_GET['new_mail'])) : NULL;
-    $locked = (isset($_GET['new_locked'])) ? $sqlc->quote_smart($_GET['new_locked']) : 0;
-    $expansion = (isset($_GET['new_expansion'])) ? $sqlc->quote_smart($_GET['new_expansion']) : 0;
+    $new_mail = (isset($_POST['new_mail'])) ? $sqlc->quote_smart(trim($_POST['new_mail'])) : NULL;
+    $locked = (isset($_POST['new_locked'])) ? (int)$sqlc->quote_smart($_POST['new_locked']) : 0;
+    $expansion = (isset($_POST['new_expansion'])) ? (int)$sqlc->quote_smart($_POST['new_expansion']) : 0;
     $result = $sqlc->query("INSERT INTO account (username,salt,verifier,email, joindate,last_ip,failed_logins,locked,last_login,expansion)
                             VALUES ('$new_user',UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$new_mail',now() ,'$last_ip',0, $locked ,NULL, $expansion)");
     if ($result)
