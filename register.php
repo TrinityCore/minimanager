@@ -169,7 +169,7 @@ function doregister(){
     else
     {
         if ($expansion_select)
-            $expansion = (isset($_POST['expansion'])) ? $sql->quote_smart($_POST['expansion']) : 0;
+            $expansion = (isset($_POST['expansion'])) ? max(0, (int)$_POST['expansion']) : 0;
         else
             $expansion = $defaultoption;
 
