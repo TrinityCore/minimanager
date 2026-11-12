@@ -95,7 +95,7 @@ function show_list()
             }
             $name_out = "<a href=\"user.php?action=edit_user&amp;error=11&amp;id=$ban[0]\">$owner_acc_name</a>";
             $last_ip_td = "
-                    <td style=\"white-space:nowrap;\">$flag_html$last_ip</td>";
+                    <td style=\"white-space:nowrap;\">$flag_html".($last_ip && $last_ip !== '-' ? "<a href=\"user.php?error=3&amp;search_by%5B%5D=last_ip&amp;search_value%5B%5D=$last_ip\" title=\"Ver cuentas con esta IP\">$last_ip</a>" : $last_ip)."</td>";
         }
         else
         {
