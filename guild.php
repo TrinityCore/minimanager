@@ -293,74 +293,91 @@ function view_guild()
     $q_amIguildleader = $sqlc->query("select 1 from guild where guildid = '$guild_id' and leaderguid in (select guid from characters where account = '$user_id')");
     $amIguildleader = $sqlc->result($q_amIguildleader, 0, '1');
 
-    $search_value = (isset($_GET['search_value']) && $_GET['search_value'] !== '') ? $sqlc->quote_smart(trim($_GET['search_value'])) : '';
-    $search_by = (isset($_GET['search_by'])) ? $sqlc->quote_smart($_GET['search_by']) : 'cname';
+    $search_values = isset($_GET['search_value']) ? (array)$_GET['search_value'] : [''];
+    $search_bys = isset($_GET['search_by']) ? (array)$_GET['search_by'] : ['cname'];
     $allowed_search = ['cname', 'pnote', 'offnote', 'race', 'class', 'level', 'account', 'email'];
-    if (!in_array($search_by, $allowed_search))
-        $search_by = 'cname';
 
-    $search_sql = '';
-    $search_url = ($search_value !== '') ? "&amp;search_by=$search_by&amp;search_value=".urlencode($search_value) : '';
+    $conditions = [];
+    $search_url = '';
+    $active_filters = [];
 
-    if ($search_value !== '')
+    for ($idx = 0; $idx < count($search_values); $idx++)
     {
-        if ($search_by === 'cname')
-            $search_sql = " AND c.name LIKE '%$search_value%'";
-        elseif ($search_by === 'pnote')
-            $search_sql = " AND gm.Pnote LIKE '%$search_value%'";
-        elseif ($search_by === 'offnote')
-            $search_sql = " AND gm.OFFnote LIKE '%$search_value%'";
-        elseif ($search_by === 'level')
+        $val_raw = trim((string)$search_values[$idx]);
+        $field = isset($search_bys[$idx]) ? $search_bys[$idx] : 'cname';
+        if (!in_array($field, $allowed_search))
+            $field = 'cname';
+
+        if ($val_raw === '')
+            continue;
+
+        $active_filters[] = ['by' => $field, 'val' => $val_raw];
+        $search_url .= "&amp;search_by%5B%5D=" . urlencode($field) . "&amp;search_value%5B%5D=" . urlencode($val_raw);
+        $val = $sqlc->quote_smart($val_raw);
+
+        if ($field === 'cname')
+            $conditions[] = "c.name LIKE '%$val%'";
+        elseif ($field === 'pnote')
+            $conditions[] = "gm.Pnote LIKE '%$val%'";
+        elseif ($field === 'offnote')
+            $conditions[] = "gm.OFFnote LIKE '%$val%'";
+        elseif ($field === 'level')
         {
-            if (is_numeric($search_value))
-                $search_sql = " AND c.level = " . intval($search_value);
-            elseif (preg_match('/^(\d+)\s*-\s*(\d+)$/', $search_value, $m))
-                $search_sql = " AND c.level BETWEEN " . intval($m[1]) . " AND " . intval($m[2]);
+            if (is_numeric($val_raw))
+                $conditions[] = "c.level = " . intval($val_raw);
+            elseif (preg_match('/^(\d+)\s*-\s*(\d+)$/', $val_raw, $m))
+                $conditions[] = "c.level BETWEEN " . intval($m[1]) . " AND " . intval($m[2]);
             else
-                $search_sql = " AND 1=0";
+                $conditions[] = "1=0";
         }
-        elseif ($search_by === 'race')
+        elseif ($field === 'race')
         {
-            if (is_numeric($search_value))
-                $search_sql = " AND c.race = " . intval($search_value);
+            if (is_numeric($val_raw))
+                $conditions[] = "c.race = " . intval($val_raw);
             else
             {
                 $race_ids = [];
                 for ($r_id = 1; $r_id <= 25; $r_id++)
                 {
                     $r_name = char_get_race_name($r_id);
-                    if ($r_name && stripos($r_name, $search_value) !== false)
+                    if ($r_name && stripos($r_name, $val_raw) !== false)
                         $race_ids[] = $r_id;
                 }
-                $search_sql = !empty($race_ids) ? " AND c.race IN (" . implode(',', $race_ids) . ")" : " AND 1=0";
+                $conditions[] = !empty($race_ids) ? "c.race IN (" . implode(',', $race_ids) . ")" : "1=0";
             }
         }
-        elseif ($search_by === 'class')
+        elseif ($field === 'class')
         {
-            if (is_numeric($search_value))
-                $search_sql = " AND c.class = " . intval($search_value);
+            if (is_numeric($val_raw))
+                $conditions[] = "c.class = " . intval($val_raw);
             else
             {
                 $class_ids = [];
                 for ($cl_id = 1; $cl_id <= 15; $cl_id++)
                 {
                     $cl_name = char_get_class_name($cl_id);
-                    if ($cl_name && stripos($cl_name, $search_value) !== false)
+                    if ($cl_name && stripos($cl_name, $val_raw) !== false)
                         $class_ids[] = $cl_id;
                 }
-                $search_sql = !empty($class_ids) ? " AND c.class IN (" . implode(',', $class_ids) . ")" : " AND 1=0";
+                $conditions[] = !empty($class_ids) ? "c.class IN (" . implode(',', $class_ids) . ")" : "1=0";
             }
         }
-        elseif ($search_by === 'account' || $search_by === 'email')
+        elseif ($field === 'account' || $field === 'email')
         {
-            $acc_col = ($search_by === 'account') ? 'username' : 'email';
-            $acc_q = $sqlr->query("SELECT id FROM account WHERE $acc_col LIKE '%$search_value%'");
+            $acc_col = ($field === 'account') ? 'username' : 'email';
+            $val_r = $sqlr->quote_smart($val_raw);
+            $acc_q = $sqlr->query("SELECT id FROM account WHERE $acc_col LIKE '%$val_r%'");
             $acc_ids = [];
             while ($acc_row = $sqlr->fetch_row($acc_q))
                 $acc_ids[] = intval($acc_row[0]);
-            $search_sql = !empty($acc_ids) ? " AND c.account IN (" . implode(',', $acc_ids) . ")" : " AND 1=0";
+            $conditions[] = !empty($acc_ids) ? "c.account IN (" . implode(',', $acc_ids) . ")" : "1=0";
         }
     }
+
+    if (empty($active_filters))
+        $active_filters[] = ['by' => 'cname', 'val' => ''];
+
+    $search_sql = !empty($conditions) ? " AND " . implode(" AND ", $conditions) : '';
 
     $q_guildmemberCount = $sqlc->query("SELECT 1 FROM guild_member gm LEFT JOIN characters c ON c.guid = gm.guid WHERE gm.guildid = '$guild_id'$search_sql");
     $guildmemberCount = $sqlc->num_rows($q_guildmemberCount);
@@ -433,24 +450,58 @@ function view_guild()
                                         <table class=\"hidden\" style=\"width: 100%;\">
                                             <tr>
                                                 <td align=\"left\">
+                                                    <script type=\"text/javascript\">
+                                                        function addGuildFilter() {
+                                                            var container = document.getElementById(\"guild_filters_container\");
+                                                            var rows = container.getElementsByClassName(\"guild_filter_row\");
+                                                            var clone = rows[0].cloneNode(true);
+                                                            clone.getElementsByTagName(\"input\")[0].value = \"\";
+                                                            var remBtn = clone.getElementsByClassName(\"rem_filter_btn\")[0];
+                                                            if (remBtn) remBtn.style.display = \"inline-block\";
+                                                            container.appendChild(clone);
+                                                        }
+                                                        function removeGuildFilter(btn) {
+                                                            var container = document.getElementById(\"guild_filters_container\");
+                                                            if (container.getElementsByClassName(\"guild_filter_row\").length > 1) {
+                                                                btn.parentNode.remove();
+                                                            }
+                                                        }
+                                                    </script>
                                                     <form action=\"guild.php\" method=\"get\" name=\"guild_search_form\" style=\"display:inline;\">
                                                         <input type=\"hidden\" name=\"action\" value=\"view_guild\" />
                                                         <input type=\"hidden\" name=\"error\" value=\"3\" />
                                                         <input type=\"hidden\" name=\"realm\" value=\"$realmid\" />
                                                         <input type=\"hidden\" name=\"id\" value=\"$guild_id\" />
-                                                        <input type=\"text\" size=\"20\" maxlength=\"50\" name=\"search_value\" value=\"".htmlspecialchars($search_value)."\" placeholder=\"{$lang_global['search_by']}\" />
-                                                        <select name=\"search_by\">
-                                                            <option value=\"cname\"".($search_by === 'cname' ? ' selected=\"selected\"' : '').">{$lang_guild['name']}</option>
-                                                            <option value=\"pnote\"".($search_by === 'pnote' ? ' selected=\"selected\"' : '').">{$lang_guild['pnote']}</option>
-                                                            <option value=\"offnote\"".($search_by === 'offnote' ? ' selected=\"selected\"' : '').">{$lang_guild['offnote']}</option>
-                                                            <option value=\"race\"".($search_by === 'race' ? ' selected=\"selected\"' : '').">{$lang_guild['race']}</option>
-                                                            <option value=\"class\"".($search_by === 'class' ? ' selected=\"selected\"' : '').">{$lang_guild['class']}</option>
-                                                            <option value=\"level\"".($search_by === 'level' ? ' selected=\"selected\"' : '').">{$lang_guild['level']}</option>
-                                                            <option value=\"account\"".($search_by === 'account' ? ' selected=\"selected\"' : '').">Cuenta</option>
-                                                            <option value=\"email\"".($search_by === 'email' ? ' selected=\"selected\"' : '').">Email</option>
-                                                        </select>
-                                                        <input type=\"submit\" value=\"{$lang_global['search']}\" class=\"button\" />
-                                                        ".($search_value !== '' ? " <a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id\" class=\"button\">X</a>" : "")."
+                                                        <div id=\"guild_filters_container\" style=\"display:inline-block; vertical-align:middle;\">";
+    foreach ($active_filters as $f_idx => $flt)
+    {
+        $f_by = $flt['by'];
+        $f_val = htmlspecialchars($flt['val']);
+        $show_rem = ($f_idx > 0) ? 'inline-block' : 'none';
+        $output .= "
+                                                            <div class=\"guild_filter_row\" style=\"margin-bottom:3px;\">
+                                                                <input type=\"text\" size=\"20\" maxlength=\"50\" name=\"search_value[]\" value=\"$f_val\" placeholder=\"{$lang_global['search_by']}\" />
+                                                                <select name=\"search_by[]\">
+                                                                    <option value=\"cname\"".($f_by === 'cname' ? ' selected=\"selected\"' : '').">{$lang_guild['name']}</option>
+                                                                    <option value=\"pnote\"".($f_by === 'pnote' ? ' selected=\"selected\"' : '').">{$lang_guild['pnote']}</option>
+                                                                    <option value=\"offnote\"".($f_by === 'offnote' ? ' selected=\"selected\"' : '').">{$lang_guild['offnote']}</option>
+                                                                    <option value=\"race\"".($f_by === 'race' ? ' selected=\"selected\"' : '').">{$lang_guild['race']}</option>
+                                                                    <option value=\"class\"".($f_by === 'class' ? ' selected=\"selected\"' : '').">{$lang_guild['class']}</option>
+                                                                    <option value=\"level\"".($f_by === 'level' ? ' selected=\"selected\"' : '').">{$lang_guild['level']}</option>
+                                                                    <option value=\"account\"".($f_by === 'account' ? ' selected=\"selected\"' : '').">Cuenta</option>
+                                                                    <option value=\"email\"".($f_by === 'email' ? ' selected=\"selected\"' : '').">Email</option>
+                                                                </select>
+                                                                <button type=\"button\" class=\"rem_filter_btn\" onclick=\"removeGuildFilter(this)\" style=\"display:$show_rem; cursor:pointer;\" title=\"Quitar filtro\">-</button>
+                                                            </div>";
+    }
+    $has_active = !empty($conditions);
+    $output .= "
+                                                        </div>
+                                                        <div style=\"display:inline-block; vertical-align:top;\">
+                                                            <button type=\"button\" onclick=\"addGuildFilter()\" style=\"cursor:pointer;\" title=\"Añadir otra condición AND\">+</button>
+                                                            <input type=\"submit\" value=\"{$lang_global['search']}\" class=\"button\" />
+                                                            ".($has_active ? " <a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id\" class=\"button\">X</a>" : "")."
+                                                        </div>
                                                     </form>
                                                 </td>
                                                 <td align=\"right\">".generate_pagination("guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=$order_by&amp;dir=".(($dir) ? 0 : 1).$search_url, $guildmemberCount, $itemperpage, $start)."</td>
