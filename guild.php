@@ -293,7 +293,76 @@ function view_guild()
     $q_amIguildleader = $sqlc->query("select 1 from guild where guildid = '$guild_id' and leaderguid in (select guid from characters where account = '$user_id')");
     $amIguildleader = $sqlc->result($q_amIguildleader, 0, '1');
 
-    $q_guildmemberCount = $sqlc->query("SELECT 1 from guild_member where guildid = '$guild_id'");
+    $search_value = (isset($_GET['search_value']) && $_GET['search_value'] !== '') ? $sqlc->quote_smart(trim($_GET['search_value'])) : '';
+    $search_by = (isset($_GET['search_by'])) ? $sqlc->quote_smart($_GET['search_by']) : 'cname';
+    $allowed_search = ['cname', 'pnote', 'offnote', 'race', 'class', 'level', 'account', 'email'];
+    if (!in_array($search_by, $allowed_search))
+        $search_by = 'cname';
+
+    $search_sql = '';
+    $search_url = ($search_value !== '') ? "&amp;search_by=$search_by&amp;search_value=".urlencode($search_value) : '';
+
+    if ($search_value !== '')
+    {
+        if ($search_by === 'cname')
+            $search_sql = " AND c.name LIKE '%$search_value%'";
+        elseif ($search_by === 'pnote')
+            $search_sql = " AND gm.Pnote LIKE '%$search_value%'";
+        elseif ($search_by === 'offnote')
+            $search_sql = " AND gm.OFFnote LIKE '%$search_value%'";
+        elseif ($search_by === 'level')
+        {
+            if (is_numeric($search_value))
+                $search_sql = " AND c.level = " . intval($search_value);
+            elseif (preg_match('/^(\d+)\s*-\s*(\d+)$/', $search_value, $m))
+                $search_sql = " AND c.level BETWEEN " . intval($m[1]) . " AND " . intval($m[2]);
+            else
+                $search_sql = " AND 1=0";
+        }
+        elseif ($search_by === 'race')
+        {
+            if (is_numeric($search_value))
+                $search_sql = " AND c.race = " . intval($search_value);
+            else
+            {
+                $race_ids = [];
+                for ($r_id = 1; $r_id <= 25; $r_id++)
+                {
+                    $r_name = char_get_race_name($r_id);
+                    if ($r_name && stripos($r_name, $search_value) !== false)
+                        $race_ids[] = $r_id;
+                }
+                $search_sql = !empty($race_ids) ? " AND c.race IN (" . implode(',', $race_ids) . ")" : " AND 1=0";
+            }
+        }
+        elseif ($search_by === 'class')
+        {
+            if (is_numeric($search_value))
+                $search_sql = " AND c.class = " . intval($search_value);
+            else
+            {
+                $class_ids = [];
+                for ($cl_id = 1; $cl_id <= 15; $cl_id++)
+                {
+                    $cl_name = char_get_class_name($cl_id);
+                    if ($cl_name && stripos($cl_name, $search_value) !== false)
+                        $class_ids[] = $cl_id;
+                }
+                $search_sql = !empty($class_ids) ? " AND c.class IN (" . implode(',', $class_ids) . ")" : " AND 1=0";
+            }
+        }
+        elseif ($search_by === 'account' || $search_by === 'email')
+        {
+            $acc_col = ($search_by === 'account') ? 'username' : 'email';
+            $acc_q = $sqlr->query("SELECT id FROM account WHERE $acc_col LIKE '%$search_value%'");
+            $acc_ids = [];
+            while ($acc_row = $sqlr->fetch_row($acc_q))
+                $acc_ids[] = intval($acc_row[0]);
+            $search_sql = !empty($acc_ids) ? " AND c.account IN (" . implode(',', $acc_ids) . ")" : " AND 1=0";
+        }
+    }
+
+    $q_guildmemberCount = $sqlc->query("SELECT 1 FROM guild_member gm LEFT JOIN characters c ON c.guid = gm.guid WHERE gm.guildid = '$guild_id'$search_sql");
     $guildmemberCount = $sqlc->num_rows($q_guildmemberCount);
     //====================SQL INGUILD and GUILDLEADER end========================
 
@@ -360,22 +429,49 @@ function view_guild()
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td align=\"right\">".generate_pagination("guild.php?action=view_guild&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=$order_by&amp;dir=".(($dir) ? 0 : 1)."", $guildmemberCount, $itemperpage, $start)."</td>
+                                    <td>
+                                        <table class=\"hidden\" style=\"width: 100%;\">
+                                            <tr>
+                                                <td align=\"left\">
+                                                    <form action=\"guild.php\" method=\"get\" name=\"guild_search_form\" style=\"display:inline;\">
+                                                        <input type=\"hidden\" name=\"action\" value=\"view_guild\" />
+                                                        <input type=\"hidden\" name=\"error\" value=\"3\" />
+                                                        <input type=\"hidden\" name=\"realm\" value=\"$realmid\" />
+                                                        <input type=\"hidden\" name=\"id\" value=\"$guild_id\" />
+                                                        <input type=\"text\" size=\"20\" maxlength=\"50\" name=\"search_value\" value=\"".htmlspecialchars($search_value)."\" placeholder=\"{$lang_global['search_by']}\" />
+                                                        <select name=\"search_by\">
+                                                            <option value=\"cname\"".($search_by === 'cname' ? ' selected=\"selected\"' : '').">{$lang_guild['name']}</option>
+                                                            <option value=\"pnote\"".($search_by === 'pnote' ? ' selected=\"selected\"' : '').">{$lang_guild['pnote']}</option>
+                                                            <option value=\"offnote\"".($search_by === 'offnote' ? ' selected=\"selected\"' : '').">{$lang_guild['offnote']}</option>
+                                                            <option value=\"race\"".($search_by === 'race' ? ' selected=\"selected\"' : '').">{$lang_guild['race']}</option>
+                                                            <option value=\"class\"".($search_by === 'class' ? ' selected=\"selected\"' : '').">{$lang_guild['class']}</option>
+                                                            <option value=\"level\"".($search_by === 'level' ? ' selected=\"selected\"' : '').">{$lang_guild['level']}</option>
+                                                            <option value=\"account\"".($search_by === 'account' ? ' selected=\"selected\"' : '').">Cuenta</option>
+                                                            <option value=\"email\"".($search_by === 'email' ? ' selected=\"selected\"' : '').">Email</option>
+                                                        </select>
+                                                        <input type=\"submit\" value=\"{$lang_global['search']}\" class=\"button\" />
+                                                        ".($search_value !== '' ? " <a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id\" class=\"button\">X</a>" : "")."
+                                                    </form>
+                                                </td>
+                                                <td align=\"right\">".generate_pagination("guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=$order_by&amp;dir=".(($dir) ? 0 : 1).$search_url, $guildmemberCount, $itemperpage, $start)."</td>
+                                            </tr>
+                                        </table>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <table class=\"lined\" style=\"width: 100%;\">
                                             <tr>
                                                 <th width=\"1%\">{$lang_guild['remove']}</th>
-                                                <th width=\"20%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=cname&amp;start=$start&amp;dir=$dir\">".($order_by=='cname' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['name']}</a></th>
-                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=crace&amp;start=$start&amp;dir=$dir\">".($order_by=='crace' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['race']}</a></th>
-                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=class&amp;start=$start&amp;dir=$dir\">".($order_by=='cclass' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['class']}</a></th>
-                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=clevel&amp;start=$start&amp;dir=$dir\">".($order_by=='clevel' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['level']}</a></th>
-                                                <th width=\"23%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=mrank&amp;start=$start&amp;dir=$dir\">".($order_by=='mrank' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['rank']}</a></th>
+                                                <th width=\"20%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id$search_url&amp;order_by=cname&amp;start=$start&amp;dir=$dir\">".($order_by=='cname' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['name']}</a></th>
+                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id$search_url&amp;order_by=crace&amp;start=$start&amp;dir=$dir\">".($order_by=='crace' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['race']}</a></th>
+                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id$search_url&amp;order_by=class&amp;start=$start&amp;dir=$dir\">".($order_by=='cclass' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['class']}</a></th>
+                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id$search_url&amp;order_by=clevel&amp;start=$start&amp;dir=$dir\">".($order_by=='clevel' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['level']}</a></th>
+                                                <th width=\"23%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id$search_url&amp;order_by=mrank&amp;start=$start&amp;dir=$dir\">".($order_by=='mrank' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['rank']}</a></th>
                                                 <th width=\"25%\">{$lang_guild['pnote']}</th>
                                                 <th width=\"25%\">{$lang_guild['offnote']}</th>
-                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=clogout&amp;start=$start&amp;dir=$dir\">".($order_by=='clogout' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['llogin']}</a></th>
-                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=conline&amp;start=$start&amp;dir=$dir\">".($order_by=='conline' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['online']}</a></th>";
+                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id$search_url&amp;order_by=clogout&amp;start=$start&amp;dir=$dir\">".($order_by=='clogout' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['llogin']}</a></th>
+                                                <th width=\"1%\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id$search_url&amp;order_by=conline&amp;start=$start&amp;dir=$dir\">".($order_by=='conline' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_guild['online']}</a></th>";
     if ($showcountryflag)
     {
         require_once 'libs/misc_lib.php';
@@ -395,7 +491,7 @@ function view_guild()
                             BINARY gm.Pnote, BINARY gm.OFFnote, gender,
                             c.`online` as conline, c.`account`, c.`logout_time` as clogout
                             FROM guild_member as gm left outer join characters as c on c.guid = gm.guid
-                            WHERE gm.guildid = '$guild_id' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
+                            WHERE gm.guildid = '$guild_id'$search_sql ORDER BY $order_by $order_dir LIMIT $start, $itemperpage");
 
     while ($member = $sqlr->fetch_row($members))
     {
@@ -439,7 +535,7 @@ function view_guild()
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td align=\"right\">".generate_pagination("guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id&amp;order_by=$order_by&amp;dir=".!$dir, $guildmemberCount, $itemperpage, $start)."</td>
+                                    <td align=\"right\">".generate_pagination("guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$guild_id$search_url&amp;order_by=$order_by&amp;dir=".!$dir, $guildmemberCount, $itemperpage, $start)."</td>
                                 </tr>
                             </table>
                         </div>
