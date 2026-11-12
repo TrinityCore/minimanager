@@ -109,13 +109,13 @@ function char_mail(&$sqlr, &$sqlc)
                                 <tr valign=top>
                                     <td>'.get_mail_source($mail['messagetype']).'</td>
                                     <td><a href="char.php?id='.$mail['sender'].'">'.get_char_name($mail['sender']).'</a></td>
-                                    <td>'.$mail['subject'].'</td>
+                                    <td>'.htmlspecialchars($mail['subject'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</td>
                                     <td>
                                         <a style="padding:2px;" href="'.$item_datasite.$mail['itemEntry'].'" target="_blank">
                                             <img class="bag_icon" src="'.get_item_icon($mail['itemEntry'], $sqlm).'" alt="" />
                                         </a>
                                     </td>
-                                    <td>'.$mail['body'].'</td>
+                                    <td>'.htmlspecialchars($mail['body'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</td>
                                     <td>
                                         '.substr($mail['money'],  0, -4).'<img src="img/gold.gif" alt="" align="middle" />
                                         '.substr($mail['money'], -4,  2).'<img src="img/silver.gif" alt="" align="middle" />

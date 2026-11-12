@@ -110,7 +110,7 @@ function do_search(&$sqlc)
                 <td>".get_mail_source($mail[1])."</td>
                 <td><a href=\"char.php?id=$mail[2]\">".get_char_name($mail[2])."</a></td>
                 <td><a href=\"char.php?id=$mail[3]\">".get_char_name($mail[3])."</a></td>
-                <td>$mail[4]</td>";
+                <td>".htmlspecialchars($mail[4], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')."</td>";
 
         $output .= "
                 <td>
@@ -120,7 +120,7 @@ function do_search(&$sqlc)
         //$output .= maketooltip("<img src=\"./img/up.gif\" alt= />", $item_datasite{$mail[11]}, $mail[11], "item_tooltip", "target=_blank");
         $output .= "
                 </td>
-                <td>".$mail[5]."</td>
+                <td>".htmlspecialchars($mail[5], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')."</td>
                 <td>$money</td>
                 <td>".get_check_state($mail[9])."</td>
             </tr>";
@@ -247,7 +247,7 @@ function search() {
                     <td>".get_mail_source($mail[1])."</td>
                     <td><a href=\"char.php?id=$mail[2]\">".get_char_name($mail[2])."</a></td>
                     <td><a href=\"char.php?id=$mail[3]\">".get_char_name($mail[3])."</a></td>
-                    <td>$mail[4]</td>
+                    <td>".htmlspecialchars($mail[4], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')."</td>
                     <td>";
         $output .= "
                         <a style=\"padding:2px;\" href=\"$item_datasite{$mail[11]}\" target=\"_blank\">
@@ -256,7 +256,7 @@ function search() {
 
         //maketooltip("<img src=\"./img/up.gif\" alt=\"\">", $item_datasite{$mail[11]}, $mail[11], "item_tooltip", "target=\"_blank\"");
         $output .= "</td>
-                    <td>".$mail[5]."</td>
+                    <td>".htmlspecialchars($mail[5], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')."</td>
                     <td>$money</td>
                     <td>".get_check_state($mail[9])."</td>
                     </tr>";
