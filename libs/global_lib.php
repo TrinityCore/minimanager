@@ -59,6 +59,33 @@ function redirect($url)
 
 
 //#############################################################################
+// CSRF protection: one random token per session.
+// put csrf_field() in every form (or csrf=csrf_token() in action links)
+// and call csrf_check() first in every handler that changes data.
+function csrf_token()
+{
+    if (empty($_SESSION['csrf']))
+        $_SESSION['csrf'] = bin2hex(random_bytes(32));
+    return $_SESSION['csrf'];
+}
+
+function csrf_field()
+{
+    return '<input type="hidden" name="csrf" value="'.csrf_token().'" />';
+}
+
+function csrf_check()
+{
+    $token = $_POST['csrf'] ?? $_GET['csrf'] ?? '';
+    if (!is_string($token) || empty($_SESSION['csrf']) || !hash_equals($_SESSION['csrf'], $token))
+    {
+        http_response_code(403);
+        exit('Invalid or expired security token. Go back, reload the page and try again.');
+    }
+}
+
+
+//#############################################################################
 //redirects to error page with error code
 function error($err)
 {
