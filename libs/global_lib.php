@@ -59,6 +59,14 @@ function redirect($url)
 
 
 //#############################################################################
+// returns the highest GM level of an account on a realm, 0 if it has none
+function get_user_lvl(&$sqlr, $user_id, $realm_id)
+{
+    return (int)$sqlr->result($sqlr->query('SELECT MAX(SecurityLevel) FROM account_access WHERE AccountID = '.(int)$user_id.' AND (RealmID = '.(int)$realm_id.' OR RealmID = -1)'), 0);
+}
+
+
+//#############################################################################
 //redirects to error page with error code
 function error($err)
 {
