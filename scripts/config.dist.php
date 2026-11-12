@@ -320,6 +320,7 @@ $menu_array =
       ['mail_on.php',    'mail_on', 3,5,5,5],
       ['ticket.php',    'tickets', 2,5,5,5],
       ['banned.php','banned_list', 3,5,5,5],
+      ['quest_tracker.php','quest_tracker', 3,3,3,3],
       ['cleanup.php',    'cleanup', 5,5,5,5],
       ],
   ],
