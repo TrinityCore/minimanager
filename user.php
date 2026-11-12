@@ -1089,7 +1089,7 @@ function edit_user()
                                         </tr>";
                 if ($chars_on_realm)
                 {
-                    $char_array = $sqlc->query("SELECT guid, BINARY name AS name, race, class, level, gender, online FROM `characters` WHERE account = $id");
+                    $char_array = $sqlc->query("SELECT c.guid, BINARY c.name AS name, c.race, c.class, c.level, c.gender, c.online, g.guildid, BINARY g.name AS guild_name FROM `characters` c LEFT JOIN `guild_member` gm ON c.guid = gm.guid LEFT JOIN `guild` g ON gm.guildid = g.guildid WHERE c.account = $id");
                     while ($char = $sqlc->fetch_array($char_array))
                     {
                         $output .= "
@@ -1097,7 +1097,7 @@ function edit_user()
                                             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".((isset($char[6]) && $char[6]) ? "<span style=\"color:#00ff00;font-weight:bold;\">---></span> 🟢" : "--->")."</td>
                                             <td>
                                                 <a href=\"char.php?id=$char[0]&amp;realm=$realm[0]\">$char[1]  - <img src='img/c_icons/{$char[2]}-{$char[5]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[2])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" />
-                                                <img src='img/c_icons/{$char[3]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\"/> - lvl ".char_get_level_color($char[4])."</a>";
+                                                <img src='img/c_icons/{$char[3]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\"/> - lvl ".char_get_level_color($char[4])."</a>".(!empty($char[8]) ? " - &lt;<a href=\"guild.php?action=view_guild&amp;error=3&amp;id={$char[7]}\">{$char[8]}</a>&gt;" : "");
                     if ($enable_soap == 1)
                     {
                         $output .= "            <br /> <br />
@@ -1123,7 +1123,7 @@ function edit_user()
                                         </tr>";
             if ($chars_on_realm)
             {
-                $char_array = $sqlc->query("SELECT guid, BINARY name AS name, race, class, level, gender, online FROM `characters` WHERE account = $id");
+                $char_array = $sqlc->query("SELECT c.guid, BINARY c.name AS name, c.race, c.class, c.level, c.gender, c.online, g.guildid, BINARY g.name AS guild_name FROM `characters` c LEFT JOIN `guild_member` gm ON c.guid = gm.guid LEFT JOIN `guild` g ON gm.guildid = g.guildid WHERE c.account = $id");
                 while ($char = $sqlc->fetch_array($char_array))
                 {
                     $output .= "
@@ -1131,7 +1131,7 @@ function edit_user()
                                             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".((isset($char[6]) && $char[6]) ? "<span style=\"color:#00ff00;font-weight:bold;\">---></span> 🟢" : "--->")."</td>
                                             <td>
                                                 <a href=\"char.php?id=$char[0]\">$char[1]  - <img src='img/c_icons/{$char[2]}-{$char[5]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[2])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" />
-                                                <img src='img/c_icons/{$char[3]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\"/> - lvl ".char_get_level_color($char[4])."</a>";
+                                                <img src='img/c_icons/{$char[3]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\"/> - lvl ".char_get_level_color($char[4])."</a>".(!empty($char[8]) ? " - &lt;<a href=\"guild.php?action=view_guild&amp;error=3&amp;id={$char[7]}\">{$char[8]}</a>&gt;" : "");
                     if ($enable_soap == 1)
                     {
                         $output .= "            <br /> <br />
