@@ -273,6 +273,7 @@ function browse_users(&$sqlr, &$sqlc)
     $output .= '
                     <form method="get" action="user.php" name="form1">
                         <input type="hidden" name="action" value="del_user" />
+                        '.csrf_field().'
                         <input type="hidden" name="start" value="'.$start.'" />
                         <input type="hidden" name="backup_op" value="0"/>
                         <table class="lined">
@@ -463,11 +464,12 @@ function del_user()
     //skip to backup
     if (isset($_GET['backup_op'])&&($_GET['backup_op'] == 1))
     {
+        csrf_check();
         for ($i=0; $i<count($check); $i++)
         {
             $pass_array .= "&check%5B%5D=$check[$i]";
         }
-        redirect("user.php?action=backup_user$pass_array");
+        redirect("user.php?action=backup_user$pass_array&csrf=".csrf_token());
     }
 
     $output .= "
@@ -495,7 +497,7 @@ function del_user()
                             <tr>
                                 <td>";
 
-    makebutton($lang_global['yes'], "user.php?action=dodel_user$pass_array\" type=\"wrn" ,130);
+    makebutton($lang_global['yes'], "user.php?action=dodel_user$pass_array&amp;csrf=".csrf_token()."\" type=\"wrn" ,130);
     makebutton($lang_global['no'], "user.php\" type=\"def" ,130);
 
     $output .= "
@@ -516,6 +518,7 @@ function dodel_user()
     global $lang_global, $lang_user, $output, $realm_db, $characters_db, $realm_id, $user_lvl,
            $tab_del_user_characters, $tab_del_user_realmd, $action_permission;
     valid_login($action_permission['delete']);
+    csrf_check();
 
     $sqlr = new SQL;
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
@@ -578,6 +581,7 @@ function backup_user()
 {
     global $lang_global, $lang_user, $output, $realm_db, $characters_db, $realm_id, $user_lvl, $backup_dir, $action_permission;
     valid_login($action_permission['insert']);
+    csrf_check();
 
     $sql = new SQL;
     $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
@@ -758,6 +762,7 @@ function add_new()
                         <legend>{$lang_user['create_new_acc']}</legend>
                         <form method=\"get\" action=\"user.php\" name=\"form\">
                             <input type=\"hidden\" name=\"action\" value=\"doadd_new\" />
+                            ".csrf_field()."
                             <table class=\"flat\">
                                 <tr>
                                     <td>{$lang_user['username']}</td>
@@ -821,6 +826,7 @@ function doadd_new()
 {
     global $lang_global, $realm_db, $action_permission;
     valid_login($action_permission['insert']);
+    csrf_check();
 
     if ( empty($_GET['new_user']) || empty($_GET['pass']) )
         redirect("user.php?action=add_new&error=4");
@@ -917,6 +923,7 @@ function edit_user()
                         <fieldset style="width: 550px;">
                         <legend>'.$lang_user['edit_acc'].'</legend>
                             <form method="post" action="user.php?action=doedit_user" name="form">
+                            '.csrf_field().'
                                 <input type="hidden" name="id" value="'.$id.'" />
                                 <table class="flat">
                                     <tr>
@@ -1169,10 +1176,10 @@ function edit_user()
                     if ($enable_soap == 1)
                     {
                         $output .= "            <br /> <br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=rename&char=$char[1]&id=$id\">Rename</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changefaction&char=$char[1]&id=$id\">Change Faction</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changerace&char=$char[1]&id=$id\">Change Race</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=customize&char=$char[1]&id=$id\">Character Customize</a><br />";
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=rename&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Rename</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changefaction&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Change Faction</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changerace&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Change Race</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=customize&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Character Customize</a><br />";
                     }
                         $output .= "        </td>
                                         </tr>";
@@ -1203,10 +1210,10 @@ function edit_user()
                     if ($enable_soap == 1)
                     {
                         $output .= "            <br /> <br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=rename&char=$char[1]&id=$id\">Rename</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changefaction&char=$char[1]&id=$id\">Change Faction</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changerace&char=$char[1]&id=$id\">Change Race</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=customize&char=$char[1]&id=$id\">Character Customize</a><br />";
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=rename&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Rename</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changefaction&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Change Faction</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changerace&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Change Race</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=customize&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Character Customize</a><br />";
                     }
                         $output .= "        </td>
                                         </tr>";
@@ -1248,6 +1255,7 @@ function doedit_user()
 {
     global $lang_global, $realm_db, $mmfpm_db, $user_lvl, $user_name, $action_permission;
     valid_login($action_permission['update']);
+    csrf_check();
 
     if ( (!isset($_POST['pass'])||($_POST['pass'] === ''))
             && (!isset($_POST['mail'])||($_POST['mail'] === ''))
@@ -1368,6 +1376,7 @@ function doupdate_referral($referredby, $user_id)
 
 function soap_command()
 {
+csrf_check();
 global $soapaddr, $soap_port, $soap_user, $soap_pass, $cmd, $char, $docmd;
 
 require_once 'scripts/config.php';
