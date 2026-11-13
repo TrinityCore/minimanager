@@ -82,7 +82,7 @@ function bbcode_add_editor()
   $output .= "
         <script type=\"text/javascript\" src=\"libs/js/bbcode.js\"></script>
         <div style=\"display:block\">
-          <select>
+          <select id=\"bbcode_select_1\">
             <option>".$bbcode_fonts[0]."</option>";
   for($i=1;$i<count($bbcode_fonts);$i++)
   {
@@ -91,7 +91,7 @@ function bbcode_add_editor()
   }
   $output .= "
           </select>
-          <select>
+          <select id=\"bbcode_select_2\">
             <option>Size</option>";
   for($i=1;$i<8;$i++)
   {
@@ -100,7 +100,7 @@ function bbcode_add_editor()
   }
   $output .= "
           </select>
-          <select>
+          <select id=\"bbcode_select_3\">
             <option>".$bbcode_colors[0][1]."</option>";
   for($i=1;$i<count($bbcode_colors);$i++)
   {

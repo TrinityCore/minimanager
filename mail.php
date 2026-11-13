@@ -84,7 +84,7 @@ function print_mail_form()
                                 <td colspan=\"3\" align=\"right\">
                                     <label for='money'>{$lang_mail['money']}</label> : <input type=\"text\" name=\"money\" id='money' value=\"0\" size=\"10\" maxlength=\"10\" />
                                     <label for='att_item'>{$lang_mail['item']}</label> : <input type=\"text\" name=\"att_item\" id='att_item' value=\"0\" size=\"10\" maxlength=\"10\" />
-                                    <label for='att_stack'>{$lang_mail['stack']}</label> : <input type=\"text\" name=\"att_stack\" id='att_item' value=\"0\" size=\"10\" maxlength=\"10\" />
+                                    <label for='att_stack'>{$lang_mail['stack']}</label> : <input type=\"text\" name=\"att_stack\" id='att_stack' value=\"0\" size=\"10\" maxlength=\"10\" />
                                 </td>
                             </tr>
                             <tr>

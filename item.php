@@ -106,15 +106,15 @@ function search()
         <center>
             <fieldset class=\"full_frame\">
                 <legend>{$lang_item_edit['search_item']}</legend><br />
-                <form action=\"item.php?action=do_search&amp;error=2\" method=\"post\" name=\"form\">
+                <form action=\"item.php?action=do_search&amp;error=2\" method=\"post\" name=\"form\" autocomplete=\"off\">
                     <table class=\"hidden\">
                         <tr>
                             <td align=\"right\">{$lang_item_edit['entry']}:</td>
-                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"entry\" /></td>
+                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"entry\" autocomplete=\"off\" /></td>
                             <td align=\"right\">{$lang_item_edit['item_name']}:</td>
-                            <td align=\"right\" colspan=\"3\"><input type=\"text\" size=\"24\" maxlength=\"35\" name=\"name\" /></td>
+                            <td align=\"right\" colspan=\"3\"><input type=\"text\" size=\"24\" maxlength=\"35\" name=\"name\" autocomplete=\"off\" /></td>
                             <td align=\"right\">{$lang_item_edit['model_id']}:</td>
-                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"displayid\" /></td>
+                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"displayid\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td align=\"right\" width=\"10%\">{$lang_item_edit['class']}:</td>
@@ -182,21 +182,21 @@ function search()
                                 </select>
                             </td>
                             <td align=\"right\" width=\"10%\">{$lang_item_edit['req_level']}:</td>
-                            <td align=\"right\" width=\"10%\"><input type=\"text\" size=\"6\" maxlength=\"3\" name=\"RequiredLevel\" /></td>
+                            <td align=\"right\" width=\"10%\"><input type=\"text\" size=\"6\" maxlength=\"3\" name=\"RequiredLevel\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td align=\"right\">{$lang_item_edit['spell_id']} 1:</td>
-                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"spellid_1\" /></td>
+                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"spellid_1\" autocomplete=\"off\" /></td>
                             <td align=\"right\">{$lang_item_edit['spell_id']} 2:</td>
-                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"spellid_2\" /></td>
+                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"spellid_2\" autocomplete=\"off\" /></td>
                             <td align=\"right\">{$lang_item_edit['spell_id']} 3:</td>
-                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"spellid_3\" /></td>
+                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"spellid_3\" autocomplete=\"off\" /></td>
                             <td align=\"right\">{$lang_item_edit['spell_id']} 4:</td>
-                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"spellid_4\" /></td>
+                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"spellid_4\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td align=\"right\">{$lang_item_edit['item_level']}:</td>
-                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"ItemLevel\" /></td>
+                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"ItemLevel\" autocomplete=\"off\" /></td>
                             <td align=\"right\">{$lang_item_edit['item_set']}:</td>
                             <td align=\"right\" colspan=\"3\">
                                 <select name=\"itemset\">
@@ -210,7 +210,7 @@ function search()
                                 </select>
                             </td>
                             <td align=\"right\">{$lang_item_edit['flags']}:</td>
-                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"Flags\" /></td>
+                            <td align=\"right\"><input type=\"text\" size=\"6\" maxlength=\"6\" name=\"Flags\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td align=\"right\">{$lang_item_edit['bonding']}:</td>
@@ -224,7 +224,7 @@ function search()
                                 </select>
                             </td>
                             <td align=\"right\">{$lang_item_edit['custom_search']}:</td>
-                            <td align=\"right\" colspan=\"2\"><input type=\"text\" size=\"24\" maxlength=\"512\" name=\"custom_search\" /></td>
+                            <td align=\"right\" colspan=\"2\"><input type=\"text\" size=\"24\" maxlength=\"512\" name=\"custom_search\" autocomplete=\"off\" /></td>
                             <td align=\"right\" colspan=\"2\">
                             </td>
                         </tr>
@@ -382,9 +382,9 @@ function add_new() {
                 <script type=\"text/javascript\" src=\"libs/js/tab.js\"></script>
                 <center>
                     <br /><br /><br />
-                    <form method=\"post\" action=\"item.php?action=do_update\" name=\"form1\">
-                        <input type=\"hidden\" name=\"backup_op\" value=\"0\"/>
-                        <input type=\"hidden\" name=\"type\" value=\"add_new\"/>
+                    <form method=\"post\" action=\"item.php?action=do_update\" name=\"form1\" autocomplete=\"off\">
+                        <input type=\"hidden\" name=\"backup_op\" value=\"0\" autocomplete=\"off\"/>
+                        <input type=\"hidden\" name=\"type\" value=\"add_new\" autocomplete=\"off\"/>
                         <div class=\"jtab-container\" id=\"container\">
                             <ul class=\"jtabs\">
                                 <li><a href=\"#\" onclick=\"return showPane('pane1', this)\" id=\"tab1\">{$lang_item_edit['general_tab']}</a></li>
@@ -404,29 +404,29 @@ function add_new() {
                                         <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['general']}:</td></tr>
                                         <tr>
                                             <td>".makeinfocell($lang_item_edit['entry'],$lang_item_edit['entry_desc'])."</td>
-                                            <td><input type=\"text\" name=\"entry\" size=\"8\" maxlength=\"11\" value=\"\" /></td>
+                                            <td><input type=\"text\" name=\"entry\" size=\"8\" maxlength=\"11\" value=\"\" autocomplete=\"off\" /></td>
 
                                             <td>".makeinfocell($lang_item_edit['display_id'],$lang_item_edit['display_id_desc'])."</td>
-                                            <td><input type=\"text\" name=\"displayid\" size=\"8\" maxlength=\"11\" value=\"0\" /></td>
+                                            <td><input type=\"text\" name=\"displayid\" size=\"8\" maxlength=\"11\" value=\"0\" autocomplete=\"off\" /></td>
 
                                             <td>".makeinfocell($lang_item_edit['req_level'],$lang_item_edit['req_level_desc'])."</td>
-                                            <td><input type=\"text\" name=\"RequiredLevel\" size=\"8\" maxlength=\"4\" value=\"0\" /></td>
+                                            <td><input type=\"text\" name=\"RequiredLevel\" size=\"8\" maxlength=\"4\" value=\"0\" autocomplete=\"off\" /></td>
 
                                             <td>".makeinfocell($lang_item_edit['item_level'],$lang_item_edit['item_level_desc'])."</td>
-                                            <td><input type=\"text\" name=\"ItemLevel\" size=\"8\" maxlength=\"4\" value=\"1\" /></td>
+                                            <td><input type=\"text\" name=\"ItemLevel\" size=\"8\" maxlength=\"4\" value=\"1\" autocomplete=\"off\" /></td>
                                         </tr>
 
                                         <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['names']}:</td></tr>
                                         <tr>
                                             <td>".makeinfocell($lang_item_edit['item_name'],$lang_item_edit['item_name_desc'])."</td>
-                                            <td colspan=\"3\"><input type=\"text\" name=\"name\" size=\"30\" maxlength=\"225\" value=\"item_name\" /></td>
+                                            <td colspan=\"3\"><input type=\"text\" name=\"name\" size=\"30\" maxlength=\"225\" value=\"item_name\" autocomplete=\"off\" /></td>
 
                                             <td>".makeinfocell($lang_item_edit['script_name'],$lang_item_edit['script_name_desc'])."</td>
-                                            <td colspan=\"3\"><input type=\"text\" name=\"ScriptName\" size=\"30\" maxlength=\"100\" value=\"internalitemhandler\" /></td>
+                                            <td colspan=\"3\"><input type=\"text\" name=\"ScriptName\" size=\"30\" maxlength=\"100\" value=\"internalitemhandler\" autocomplete=\"off\" /></td>
                                         </tr>
                                         <tr>
                                             <td>".makeinfocell($lang_item_edit['description'],$lang_item_edit['description_desc'])."</td>
-                                            <td colspan=\"3\"><input type=\"text\" name=\"description\" size=\"30\" maxlength=\"225\" value=\"\" /></td>
+                                            <td colspan=\"3\"><input type=\"text\" name=\"description\" size=\"30\" maxlength=\"225\" value=\"\" autocomplete=\"off\" /></td>
                                             <td colspan=\"4\"></td>
                                         </tr>
 
@@ -586,11 +586,11 @@ function add_new() {
                                                 </select>
                                             </td>
                                             <td>".makeinfocell($lang_item_edit['flags'],$lang_item_edit['flags_desc'])."</td>
-                                            <td><input type=\"text\" name=\"Flags\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                            <td><input type=\"text\" name=\"Flags\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                         </tr>
                                         <tr>
                                             <td>".makeinfocell($lang_item_edit['item_set'],$lang_item_edit['item_set_desc'])."</td>
-                                            <td><input type=\"text\" name=\"itemset\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                            <td><input type=\"text\" name=\"itemset\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                             <td>".makeinfocell($lang_item_edit['bonding'],$lang_item_edit['bonding_desc'])."</td>
                                             <td colspan=\"3\">
                                                 <select name=\"bonding\">
@@ -603,7 +603,7 @@ function add_new() {
                                                 </select>
                                             </td>
                                             <td>".makeinfocell($lang_item_edit['start_quest'],$lang_item_edit['start_quest_desc'])."</td>
-                                            <td><input type=\"text\" name=\"startquest\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                            <td><input type=\"text\" name=\"startquest\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                         </tr>
                                     </table>
                                     <br />{$lang_item_edit['short_rules_desc']}<br /><br />
@@ -616,23 +616,23 @@ function add_new() {
                                     <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['vendor']}:</td></tr>
                                     <tr>
                                         <td>".makeinfocell($lang_item_edit['buy_count'],$lang_item_edit['buy_count_desc'])."</td>
-                                        <td><input type=\"text\" name=\"BuyCount\" size=\"8\" maxlength=\"3\" value=\"1\" /></td>
+                                        <td><input type=\"text\" name=\"BuyCount\" size=\"8\" maxlength=\"3\" value=\"1\" autocomplete=\"off\" /></td>
 
                                         <td>".makeinfocell($lang_item_edit['buy_price'],$lang_item_edit['buy_price_desc'])."</td>
-                                        <td><input type=\"text\" name=\"BuyPrice\" size=\"8\" maxlength=\"30\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"BuyPrice\" size=\"8\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                         <td>".makeinfocell($lang_item_edit['sell_price'],$lang_item_edit['sell_price_desc'])."</td>
-                                        <td><input type=\"text\" name=\"SellPrice\" size=\"8\" maxlength=\"30\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"SellPrice\" size=\"8\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                         <td></td><td></td>
                                     </tr>
 
                                     <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['container']}:</td></tr>
                                     <tr>
                                         <td>".makeinfocell($lang_item_edit['max_count'],$lang_item_edit['max_count_desc'])."</td>
-                                        <td><input type=\"text\" name=\"maxcount\" size=\"8\" maxlength=\"5\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"maxcount\" size=\"8\" maxlength=\"5\" value=\"0\" autocomplete=\"off\" /></td>
 
                                         <td>".makeinfocell($lang_item_edit['stackable'],$lang_item_edit['stackable_desc'])."</td>
-                                        <td><input type=\"text\" name=\"stackable\" size=\"8\" maxlength=\"5\" value=\"1\" /></td>
+                                        <td><input type=\"text\" name=\"stackable\" size=\"8\" maxlength=\"5\" value=\"1\" autocomplete=\"off\" /></td>
 
                                         <td>".makeinfocell($lang_item_edit['bag_family'],$lang_item_edit['bag_family_desc'])."</td>
                                         <td>
@@ -650,7 +650,7 @@ function add_new() {
                                             </select>
                                         </td>
                                         <td>".makeinfocell($lang_item_edit['bag_slots'],$lang_item_edit['bag_slots_desc'])."</td>
-                                        <td><input type=\"text\" name=\"ContainerSlots\" size=\"6\" maxlength=\"3\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"ContainerSlots\" size=\"6\" maxlength=\"3\" value=\"0\" autocomplete=\"off\" /></td>
                                     </tr>
                                     <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['materials']}:</td></tr>
                                     <tr>
@@ -681,33 +681,33 @@ function add_new() {
                                             </select>
                                         </td>
                                         <td>".makeinfocell($lang_item_edit['max_durability'],$lang_item_edit['max_durability_desc'])."</td>
-                                        <td><input type=\"text\" name=\"MaxDurability\" size=\"8\" maxlength=\"30\" value=\"10\" /></td>
+                                        <td><input type=\"text\" name=\"MaxDurability\" size=\"8\" maxlength=\"30\" value=\"10\" autocomplete=\"off\" /></td>
                                     </tr>
                                     <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['RandomProperty']}:</td></tr>
                                     <tr>
                                         <td colspan=\"2\">".makeinfocell($lang_item_edit['RandomProperty'],$lang_item_edit['RandomProperty_desc'])."</td>
-                                        <td colspan=\"2\"><input type=\"text\" name=\"RandomProperty\" size=\"8\" maxlength=\"30\" value=\"0\" /></td>
+                                        <td colspan=\"2\"><input type=\"text\" name=\"RandomProperty\" size=\"8\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                         <td colspan=\"2\">".makeinfocell($lang_item_edit['RandomSuffix'],$lang_item_edit['RandomSuffix_desc'])."</td>
-                                        <td colspan=\"2\"><input type=\"text\" name=\"RandomSuffix\" size=\"8\" maxlength=\"10\" value=\"0\" /></td>
+                                        <td colspan=\"2\"><input type=\"text\" name=\"RandomSuffix\" size=\"8\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                                     </tr>
                                     <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['other']}:</td></tr>
                                     <tr>
                                         <td>".makeinfocell($lang_item_edit['area'],$lang_item_edit['area_desc'])."</td>
-                                        <td><input type=\"text\" name=\"area\" size=\"8\" maxlength=\"10\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"area\" size=\"8\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                                         <td>".makeinfocell($lang_item_edit['map'],$lang_item_edit['map_desc'])."</td>
-                                        <td><input type=\"text\" name=\"Map\" size=\"8\" maxlength=\"10\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"Map\" size=\"8\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                                         <td>".makeinfocell($lang_item_edit['page_text'],$lang_item_edit['page_text_desc'])."</td>
-                                        <td><input type=\"text\" name=\"PageText\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"PageText\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                         <td>".makeinfocell($lang_item_edit['unk0'],$lang_item_edit['unk0_desc'])."</td>
-                                        <td><input type=\"text\" name=\"unk0\" size=\"8\" maxlength=\"10\" value=\"-1\" /></td>
+                                        <td><input type=\"text\" name=\"unk0\" size=\"8\" maxlength=\"10\" value=\"-1\" autocomplete=\"off\" /></td>
                                     </tr>
                                     <tr>
                                         <td colspan=\"2\">".makeinfocell($lang_item_edit['disenchant_id'],$lang_item_edit['disenchant_id_desc'])."</td>
-                                        <td><input type=\"text\" name=\"DisenchantID\" size=\"10\" maxlength=\"10\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"DisenchantID\" size=\"10\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                                         <td colspan=\"2\">".makeinfocell($lang_item_edit['req_skill_disenchant'],$lang_item_edit['req_skill_disenchant_desc'])."</td>
-                                        <td><input type=\"text\" name=\"RequiredDisenchantSkill\" size=\"10\" maxlength=\"10\" value=\"-1\" /></td>
+                                        <td><input type=\"text\" name=\"RequiredDisenchantSkill\" size=\"10\" maxlength=\"10\" value=\"-1\" autocomplete=\"off\" /></td>
                                         <td>".makeinfocell($lang_item_edit['lock_id'],$lang_item_edit['lock_id_desc'])."</td>
-                                        <td><input type=\"text\" name=\"lockid\" size=\"8\" maxlength=\"30\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"lockid\" size=\"8\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                     </tr>
                                     <tr>
                                         <td>".makeinfocell($lang_item_edit['lang_id'],$lang_item_edit['lang_id_desc'])."</td>
@@ -742,7 +742,7 @@ function add_new() {
                                             </select>
                                         </td>
                                         <td>".makeinfocell($lang_item_edit['totem_category'],$lang_item_edit['totem_category_desc'])."</td>
-                                        <td><input type=\"text\" name=\"TotemCategory\" size=\"8\" maxlength=\"10\" value=\"0\" /></td>
+                                        <td><input type=\"text\" name=\"TotemCategory\" size=\"8\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                                     </tr>
                                 </table>
                                 <br /><br />
@@ -762,7 +762,7 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value1\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value1\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['stat_type']." 2",$lang_item_edit['stat_type_desc'])."</td>
                                     <td>
                                         <select name=\"stat_type2\">";
@@ -770,7 +770,7 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value2\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value2\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['stat_type']." 3",$lang_item_edit['stat_type_desc'])."</td>
@@ -780,7 +780,7 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value3\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value3\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['stat_type']." 4",$lang_item_edit['stat_type_desc'])."</td>
                                     <td>
                                         <select name=\"stat_type4\">";
@@ -788,7 +788,7 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value4\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value4\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['stat_type']." 5",$lang_item_edit['stat_type_desc'])."</td>
@@ -798,7 +798,7 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value5\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value5\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['stat_type']." 6",$lang_item_edit['stat_type_desc'])."</td>
                                     <td>
                                         <select name=\"stat_type6\">";
@@ -806,7 +806,7 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value6\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value6\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['stat_type']." 7",$lang_item_edit['stat_type_desc'])."</td>
@@ -816,7 +816,7 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value7\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value7\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['stat_type']." 8",$lang_item_edit['stat_type_desc'])."</td>
                                     <td>
                                         <select name=\"stat_type8\">";
@@ -824,7 +824,7 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value8\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value8\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['stat_type']." 9",$lang_item_edit['stat_type_desc'])."</td>
@@ -834,7 +834,7 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value9\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value9\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['stat_type']." 10",$lang_item_edit['stat_type_desc'])."</td>
                                     <td>
                                         <select name=\"stat_type10\">";
@@ -842,36 +842,36 @@ function add_new() {
     $output .= "
                                         </select>
                                     </td>
-                                    <td><input type=\"text\" name=\"stat_value10\" size=\"10\" maxlength=\"6\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"stat_value10\" size=\"10\" maxlength=\"6\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['resis_armor']}:</td></tr>
                                 <tr>
                                     <td colspan=\"2\">".makeinfocell($lang_item['armor'],$lang_item_edit['armor_desc'])."</td>
-                                    <td><input type=\"text\" name=\"armor\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"armor\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                     <td colspan=\"2\">".makeinfocell($lang_item['block'],$lang_item_edit['block_desc'])."</td>
-                                    <td><input type=\"text\" name=\"block\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"block\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                     <td colspan=\"2\">".makeinfocell($lang_item['res_holy'],$lang_item_edit['res_holy_desc'])."</td>
-                                    <td><input type=\"text\" name=\"holy_res\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"holy_res\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                     <td colspan=\"2\">".makeinfocell($lang_item['res_fire'],$lang_item_edit['res_fire_desc'])."</td>
-                                    <td><input type=\"text\" name=\"fire_res\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"fire_res\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                     <td colspan=\"2\">".makeinfocell($lang_item['res_nature'],$lang_item_edit['res_nature_desc'])."</td>
-                                    <td><input type=\"text\" name=\"nature_res\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"nature_res\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                     <td colspan=\"2\">".makeinfocell($lang_item['res_frost'],$lang_item_edit['res_frost_desc'])."</td>
-                                    <td><input type=\"text\" name=\"frost_res\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"frost_res\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                     <td colspan=\"2\">".makeinfocell($lang_item['res_shadow'],$lang_item_edit['res_shadow_desc'])."</td>
-                                    <td><input type=\"text\" name=\"shadow_res\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"shadow_res\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                     <td colspan=\"2\">".makeinfocell($lang_item['res_arcane'],$lang_item_edit['res_arcane_desc'])."</td>
-                                    <td><input type=\"text\" name=\"arcane_res\" size=\"10\" maxlength=\"30\" value=\"0\" /></td>
+                                    <td><input type=\"text\" name=\"arcane_res\" size=\"10\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                             </table>
                             <br /><br />
@@ -883,13 +883,13 @@ function add_new() {
                                 <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['weapon_properties']}:</td></tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['delay'],$lang_item_edit['delay_desc'])."</td>
-                                    <td colspan=\"2\"><input type=\"text\" name=\"delay\" size=\"10\" maxlength=\"11\" value=\"0\" /></td>
+                                    <td colspan=\"2\"><input type=\"text\" name=\"delay\" size=\"10\" maxlength=\"11\" value=\"0\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['ranged_mod'],$lang_item_edit['ranged_mod_desc'])."</td>
-                                    <td colspan=\"2\"><input type=\"text\" name=\"RangedModRange\" size=\"10\" maxlength=\"40\" value=\"0\" /></td>
+                                    <td colspan=\"2\"><input type=\"text\" name=\"RangedModRange\" size=\"10\" maxlength=\"40\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['armor_dmg_mod'],$lang_item_edit['armor_dmg_mod_desc'])."</td>
-                                    <td colspan=\"2\"><input type=\"text\" name=\"ArmorDamageModifier\" size=\"10\" maxlength=\"40\" value=\"0\" /></td>
+                                    <td colspan=\"2\"><input type=\"text\" name=\"ArmorDamageModifier\" size=\"10\" maxlength=\"40\" value=\"0\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['ammo_type'],$lang_item_edit['ammo_type_desc'])."</td>
                                     <td colspan=\"2\">
                                         <select name=\"ammo_type\">
@@ -909,7 +909,7 @@ function add_new() {
                                         </select>
                                     </td>
                                     <td>".makeinfocell($lang_item_edit['dmg_min_max'],$lang_item_edit['dmg_min_max_desc'])."</td>
-                                    <td colspan=\"4\"><input type=\"text\" name=\"dmg_min1\" size=\"8\" maxlength=\"45\" value=\"0\" /> - <input type=\"text\" name=\"dmg_max1\" size=\"8\" maxlength=\"45\" value=\"0\" /></td>
+                                    <td colspan=\"4\"><input type=\"text\" name=\"dmg_min1\" size=\"8\" maxlength=\"45\" value=\"0\" autocomplete=\"off\" /> - <input type=\"text\" name=\"dmg_max1\" size=\"8\" maxlength=\"45\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['damage_type']." 2",$lang_item_edit['damage_type_desc'])."</td>
@@ -920,7 +920,7 @@ function add_new() {
                                         </select>
                                     </td>
                                     <td>".makeinfocell($lang_item_edit['dmg_min_max'],$lang_item_edit['dmg_min_max_desc'])."</td>
-                                    <td colspan=\"4\"><input type=\"text\" name=\"dmg_min2\" size=\"8\" maxlength=\"45\" value=\"0\" /> - <input type=\"text\" name=\"dmg_max2\" size=\"8\" maxlength=\"45\" value=\"0\" /></td>
+                                    <td colspan=\"4\"><input type=\"text\" name=\"dmg_min2\" size=\"8\" maxlength=\"45\" value=\"0\" autocomplete=\"off\" /> - <input type=\"text\" name=\"dmg_max2\" size=\"8\" maxlength=\"45\" value=\"0\" autocomplete=\"off\" /></td>
                                 </tr>
                             </table>
                             <br /><br />
@@ -933,7 +933,7 @@ function add_new() {
                             <tr>
                                 <td colspan=\"2\">{$lang_item_edit['item_spell']} 1</td>
                                 <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellid_1\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellid_1\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_trigger'],$lang_item_edit['spell_trigger_desc'])."</td>
                                 <td>
@@ -945,26 +945,26 @@ function add_new() {
                                     </select>
                                 </td>
                                 <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcharges_1\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcharges_1\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcooldown_1\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcooldown_1\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategory_1\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcategory_1\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategorycooldown_1\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcategorycooldown_1\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellppmRate_1\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellppmRate_1\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr><td colspan=\"6\" class=\"hidden\"></td></tr>
                             <tr>
                                 <td colspan=\"2\">{$lang_item_edit['item_spell']} 2</td>
                                 <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellid_2\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellid_2\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_trigger'],$lang_item_edit['spell_trigger_desc'])."</td>
                                 <td>
@@ -976,26 +976,26 @@ function add_new() {
                                     </select>
                                 </td>
                                 <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcharges_2\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcharges_2\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcooldown_2\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcooldown_2\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategory_2\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcategory_2\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategorycooldown_2\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcategorycooldown_2\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellppmRate_2\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellppmRate_2\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr><td colspan=\"6\" class=\"hidden\"></td></tr>
                             <tr>
                                 <td colspan=\"2\">{$lang_item_edit['item_spell']} 3</td>
                                 <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellid_3\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellid_3\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_trigger'],$lang_item_edit['spell_trigger_desc'])."</td>
                                 <td>
@@ -1007,26 +1007,26 @@ function add_new() {
                                     </select>
                                 </td>
                                 <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcharges_3\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcharges_3\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcooldown_3\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcooldown_3\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategory_3\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcategory_3\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategorycooldown_3\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcategorycooldown_3\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellppmRate_3\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellppmRate_3\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr><td colspan=\"6\" class=\"hidden\"></td></tr>
                             <tr>
                                 <td colspan=\"2\">{$lang_item_edit['item_spell']} 4</td>
                                 <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellid_4\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellid_4\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_trigger'],$lang_item_edit['spell_trigger_desc'])."</td>
                                 <td>
@@ -1038,26 +1038,26 @@ function add_new() {
                                     </select>
                                 </td>
                                 <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcharges_4\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcharges_4\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcooldown_4\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcooldown_4\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategory_4\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcategory_4\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategorycooldown_4\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcategorycooldown_4\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellppmRate_4\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellppmRate_4\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr><td colspan=\"6\" class=\"hidden\"></td></tr>
                             <tr>
                                 <td colspan=\"2\">{$lang_item_edit['item_spell']} 5</td>
                                 <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellid_5\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellid_5\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_trigger'],$lang_item_edit['spell_trigger_desc'])."</td>
                                 <td>
@@ -1069,20 +1069,20 @@ function add_new() {
                                     </select>
                                 </td>
                                 <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcharges_5\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcharges_5\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcooldown_5\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcooldown_5\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategory_5\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellcategory_5\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellcategorycooldown_5\" size=\"6\" maxlength=\"30\" value=\"-1\" /></td>
+                                <td><input type=\"text\" name=\"spellcategorycooldown_5\" size=\"6\" maxlength=\"30\" value=\"-1\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                                <td><input type=\"text\" name=\"spellppmRate_5\" size=\"6\" maxlength=\"30\" value=\"0\" /></td>
+                                <td><input type=\"text\" name=\"spellppmRate_5\" size=\"6\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                              </tr>
                         </table>
                         <br /><br />
@@ -1129,21 +1129,21 @@ function add_new() {
                         </tr>
                         <tr>
                             <td>".makeinfocell($lang_item_edit['req_skill'],$lang_item_edit['req_skill_desc'])."</td>
-                            <td><input type=\"text\" name=\"RequiredSkill\" size=\"15\" maxlength=\"30\" value=\"0\" /></td>
+                            <td><input type=\"text\" name=\"RequiredSkill\" size=\"15\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['req_skill_rank'],$lang_item_edit['req_skill_rank_desc'])."</td>
-                            <td><input type=\"text\" name=\"RequiredSkillRank\" size=\"15\" maxlength=\"30\" value=\"0\" /></td>
+                            <td><input type=\"text\" name=\"RequiredSkillRank\" size=\"15\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td>".makeinfocell($lang_item_edit['req_spell'],$lang_item_edit['req_spell_desc'])."</td>
-                            <td><input type=\"text\" name=\"requiredspell\" size=\"15\" maxlength=\"30\" value=\"0\" /></td>
+                            <td><input type=\"text\" name=\"requiredspell\" size=\"15\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['req_honor_rank'],$lang_item_edit['req_honor_rank_desc'])."</td>
-                            <td><input type=\"text\" name=\"requiredhonorrank\" size=\"15\" maxlength=\"30\" value=\"0\" /></td>
+                            <td><input type=\"text\" name=\"requiredhonorrank\" size=\"15\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td>".makeinfocell($lang_item_edit['req_rep_faction'],$lang_item_edit['req_rep_faction_desc'])."</td>
-                            <td><input type=\"text\" name=\"RequiredReputationFaction\" size=\"15\" maxlength=\"30\" value=\"0\" /></td>
+                            <td><input type=\"text\" name=\"RequiredReputationFaction\" size=\"15\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['req_rep_rank'],$lang_item_edit['req_rep_rank_desc'])."</td>
                             <td>
@@ -1161,7 +1161,7 @@ function add_new() {
                         </tr>
                         <tr>
                             <td colspan=\"2\">".makeinfocell($lang_item_edit['req_city_rank'],$lang_item_edit['req_city_rank_desc'])."</td>
-                            <td colspan=\"2\"><input type=\"text\" name=\"RequiredCityRank\" size=\"15\" maxlength=\"30\" value=\"0\" /></td>
+                            <td colspan=\"2\"><input type=\"text\" name=\"RequiredCityRank\" size=\"15\" maxlength=\"30\" value=\"0\" autocomplete=\"off\" /></td>
                         </tr>
                     </table>
                     <br /><br />
@@ -1183,7 +1183,7 @@ function add_new() {
                             </select>
                         </td>
                         <td>".makeinfocell($lang_item_edit['socket_content']." 1",$lang_item_edit['socket_content_desc'])."</td>
-                        <td><input type=\"text\" name=\"socketContent_1\" size=\"15\" maxlength=\"10\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"socketContent_1\" size=\"15\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['socket_color']." 2",$lang_item_edit['socket_color_desc'])."</td>
@@ -1197,7 +1197,7 @@ function add_new() {
                             </select>
                         </td>
                         <td>".makeinfocell($lang_item_edit['socket_content']." 2",$lang_item_edit['socket_content_desc'])."</td>
-                        <td><input type=\"text\" name=\"socketContent_2\" size=\"15\" maxlength=\"10\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"socketContent_2\" size=\"15\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['socket_color']." 3",$lang_item_edit['socket_color_desc'])."</td>
@@ -1212,13 +1212,13 @@ function add_new() {
                         </td>
 
                         <td>".makeinfocell($lang_item_edit['socket_content']." 3",$lang_item_edit['socket_content_desc'])."</td>
-                        <td><input type=\"text\" name=\"socketContent_3\" size=\"15\" maxlength=\"10\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"socketContent_3\" size=\"15\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['socket_bonus'],$lang_item_edit['socket_bonus_desc'])."</td>
-                        <td><input type=\"text\" name=\"socketBonus\" size=\"15\" maxlength=\"10\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"socketBonus\" size=\"15\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                         <td>".makeinfocell($lang_item_edit['gem_properties'],$lang_item_edit['gem_properties_desc'])."</td>
-                        <td><input type=\"text\" name=\"GemProperties\" size=\"15\" maxlength=\"10\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"GemProperties\" size=\"15\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                     </tr>
                 </table>
                 <br /><br />
@@ -1275,10 +1275,10 @@ function edit() {
                 <script type=\"text/javascript\" src=\"libs/js/tab.js\"></script>
                 <center>
                 <br /><br /><br />
-                    <form method=\"post\" action=\"item.php?action=do_update\" name=\"form1\">
-                        <input type=\"hidden\" name=\"backup_op\" value=\"0\"/>
-                        <input type=\"hidden\" name=\"type\" value=\"edit\"/>
-                        <input type=\"hidden\" name=\"entry\" value=\"$entry\"/>
+                    <form method=\"post\" action=\"item.php?action=do_update\" name=\"form1\" autocomplete=\"off\">
+                        <input type=\"hidden\" name=\"backup_op\" value=\"0\" autocomplete=\"off\"/>
+                        <input type=\"hidden\" name=\"type\" value=\"edit\" autocomplete=\"off\"/>
+                        <input type=\"hidden\" name=\"entry\" value=\"$entry\" autocomplete=\"off\"/>
 
                         <div class=\"jtab-container\" id=\"container\">
                             <ul class=\"jtabs\">
@@ -1309,27 +1309,27 @@ function edit() {
         $output .= "
                                         </td>
                                         <td>".makeinfocell($lang_item_edit['display_id'],$lang_item_edit['display_id_desc'])."</td>
-                                        <td><input type=\"text\" name=\"displayid\" size=\"8\" maxlength=\"11\" value=\"{$item['displayid']}\" /></td>
+                                        <td><input type=\"text\" name=\"displayid\" size=\"8\" maxlength=\"11\" value=\"{$item['displayid']}\" autocomplete=\"off\" /></td>
 
                                         <td>".makeinfocell($lang_item_edit['req_level'],$lang_item_edit['req_level_desc'])."</td>
-                                        <td><input type=\"text\" name=\"RequiredLevel\" size=\"8\" maxlength=\"4\" value=\"{$item['RequiredLevel']}\" /></td>
+                                        <td><input type=\"text\" name=\"RequiredLevel\" size=\"8\" maxlength=\"4\" value=\"{$item['RequiredLevel']}\" autocomplete=\"off\" /></td>
 
                                         <td>".makeinfocell($lang_item_edit['item_level'],$lang_item_edit['item_level_desc'])."</td>
-                                        <td><input type=\"text\" name=\"ItemLevel\" size=\"8\" maxlength=\"4\" value=\"{$item['ItemLevel']}\" /></td>
+                                        <td><input type=\"text\" name=\"ItemLevel\" size=\"8\" maxlength=\"4\" value=\"{$item['ItemLevel']}\" autocomplete=\"off\" /></td>
                                     </tr>
 
                                     <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['names']}:</td></tr>
                                     <tr>
                                         <td>".makeinfocell($lang_item_edit['item_name'],$lang_item_edit['item_name_desc'])."</td>
-                                        <td colspan=\"3\"><input type=\"text\" name=\"name\" size=\"30\" maxlength=\"225\" value=\"{$item['name']}\" /></td>
+                                        <td colspan=\"3\"><input type=\"text\" name=\"name\" size=\"30\" maxlength=\"225\" value=\"{$item['name']}\" autocomplete=\"off\" /></td>
 
                                         <td>".makeinfocell($lang_item_edit['script_name'],$lang_item_edit['script_name_desc'])."</td>
-                                        <td colspan=\"3\"><input type=\"text\" name=\"ScriptName\" size=\"30\" maxlength=\"100\" value=\"{$item['ScriptName']}\" /></td>
+                                        <td colspan=\"3\"><input type=\"text\" name=\"ScriptName\" size=\"30\" maxlength=\"100\" value=\"{$item['ScriptName']}\" autocomplete=\"off\" /></td>
                                     </tr>
 
                                     <tr>
                                         <td>".makeinfocell($lang_item_edit['description'],$lang_item_edit['description_desc'])."</td>
-                                        <td colspan=\"3\"><input type=\"text\" name=\"description\" size=\"30\" maxlength=\"225\" value=\"{$item['description']}\" /></td>
+                                        <td colspan=\"3\"><input type=\"text\" name=\"description\" size=\"30\" maxlength=\"225\" value=\"{$item['description']}\" autocomplete=\"off\" /></td>
                                         <td colspan=\"4\"></td>
                                     </tr>
 
@@ -1527,12 +1527,12 @@ function edit() {
                                         </td>
 
                                         <td>".makeinfocell($lang_item_edit['flags'],$lang_item_edit['flags_desc'])."</td>
-                                        <td><input type=\"text\" name=\"Flags\" size=\"10\" maxlength=\"30\" value=\"{$item['Flags']}\" /></td>
+                                        <td><input type=\"text\" name=\"Flags\" size=\"10\" maxlength=\"30\" value=\"{$item['Flags']}\" autocomplete=\"off\" /></td>
                                     </tr>
 
                                     <tr>
                                         <td>".makeinfocell($lang_item_edit['item_set'],$lang_item_edit['item_set_desc'])."</td>
-                                        <td><input type=\"text\" name=\"itemset\" size=\"10\" maxlength=\"30\" value=\"{$item['itemset']}\" /></td>";
+                                        <td><input type=\"text\" name=\"itemset\" size=\"10\" maxlength=\"30\" value=\"{$item['itemset']}\" autocomplete=\"off\" /></td>";
         unset($inv_type);
 
         $bonding = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5 => ""];
@@ -1552,7 +1552,7 @@ function edit() {
                                         </td>
 
                                         <td>".makeinfocell($lang_item_edit['start_quest'],$lang_item_edit['start_quest_desc'])."</td>
-                                        <td><input type=\"text\" name=\"startquest\" size=\"10\" maxlength=\"30\" value=\"{$item['startquest']}\" /></td>
+                                        <td><input type=\"text\" name=\"startquest\" size=\"10\" maxlength=\"30\" value=\"{$item['startquest']}\" autocomplete=\"off\" /></td>
 
                                     </tr>
                             </table>
@@ -1567,22 +1567,22 @@ function edit() {
                                 <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['vendor']}:</td></tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['buy_count'],$lang_item_edit['buy_count_desc'])."</td>
-                                    <td><input type=\"text\" name=\"BuyCount\" size=\"8\" maxlength=\"3\" value=\"{$item['BuyCount']}\" /></td>
+                                    <td><input type=\"text\" name=\"BuyCount\" size=\"8\" maxlength=\"3\" value=\"{$item['BuyCount']}\" autocomplete=\"off\" /></td>
 
                                     <td>".makeinfocell($lang_item_edit['buy_price'],$lang_item_edit['buy_price_desc'])."</td>
-                                    <td><input type=\"text\" name=\"BuyPrice\" size=\"8\" maxlength=\"30\" value=\"{$item['BuyPrice']}\" /></td>
+                                    <td><input type=\"text\" name=\"BuyPrice\" size=\"8\" maxlength=\"30\" value=\"{$item['BuyPrice']}\" autocomplete=\"off\" /></td>
 
                                     <td>".makeinfocell($lang_item_edit['sell_price'],$lang_item_edit['sell_price_desc'])."</td>
-                                    <td><input type=\"text\" name=\"SellPrice\" size=\"8\" maxlength=\"30\" value=\"{$item['SellPrice']}\" /></td>
+                                    <td><input type=\"text\" name=\"SellPrice\" size=\"8\" maxlength=\"30\" value=\"{$item['SellPrice']}\" autocomplete=\"off\" /></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['container']}:</td></tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['max_count'],$lang_item_edit['max_count_desc'])."</td>
-                                    <td><input type=\"text\" name=\"maxcount\" size=\"6\" maxlength=\"5\" value=\"{$item['maxcount']}\" /></td>
+                                    <td><input type=\"text\" name=\"maxcount\" size=\"6\" maxlength=\"5\" value=\"{$item['maxcount']}\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['stackable'],$lang_item_edit['stackable_desc'])."</td>
-                                    <td><input type=\"text\" name=\"stackable\" size=\"6\" maxlength=\"5\" value=\"{$item['stackable']}\" /></td>
+                                    <td><input type=\"text\" name=\"stackable\" size=\"6\" maxlength=\"5\" value=\"{$item['stackable']}\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['bag_family'],$lang_item_edit['bag_family_desc'])."</td>";
         $bagfamily = [0 => "", 1 => "", 2 => "", 3 => "", 6 => "", 7 => "", 8 => "", 9 => "", 10 => "", 12 => ""];
         $bagfamily[$item['BagFamily']] = " selected=\"selected\" ";
@@ -1603,7 +1603,7 @@ function edit() {
                                         </select>
                                     </td>
                                     <td>".makeinfocell($lang_item_edit['bag_slots'],$lang_item_edit['bag_slots_desc'])."</td>
-                                    <td><input type=\"text\" name=\"ContainerSlots\" size=\"10\" maxlength=\"3\" value=\"{$item['ContainerSlots']}\" /></td>
+                                    <td><input type=\"text\" name=\"ContainerSlots\" size=\"10\" maxlength=\"3\" value=\"{$item['ContainerSlots']}\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                 <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['materials']}:</td></tr>";
@@ -1651,34 +1651,34 @@ function edit() {
 
         $output .= "
                                     <td>".makeinfocell($lang_item_edit['max_durability'],$lang_item_edit['max_durability_desc'])."</td>
-                                    <td><input type=\"text\" name=\"MaxDurability\" size=\"8\" maxlength=\"30\" value=\"{$item['MaxDurability']}\" /></td>
+                                    <td><input type=\"text\" name=\"MaxDurability\" size=\"8\" maxlength=\"30\" value=\"{$item['MaxDurability']}\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['RandomProperty']}:</td></tr>
                                 <tr>
                                     <td colspan=\"2\">".makeinfocell($lang_item_edit['RandomProperty'],$lang_item_edit['RandomProperty_desc'])."</td>
-                                    <td colspan=\"2\"><input type=\"text\" name=\"RandomProperty\" size=\"8\" maxlength=\"30\" value=\"{$item['RandomProperty']}\" /></td>
+                                    <td colspan=\"2\"><input type=\"text\" name=\"RandomProperty\" size=\"8\" maxlength=\"30\" value=\"{$item['RandomProperty']}\" autocomplete=\"off\" /></td>
                                     <td colspan=\"2\">".makeinfocell($lang_item_edit['RandomSuffix'],$lang_item_edit['RandomSuffix_desc'])."</td>
-                                    <td colspan=\"2\"><input type=\"text\" name=\"RandomSuffix\" size=\"8\" maxlength=\"10\" value=\"{$item['RandomSuffix']}\" /></td>
+                                    <td colspan=\"2\"><input type=\"text\" name=\"RandomSuffix\" size=\"8\" maxlength=\"10\" value=\"{$item['RandomSuffix']}\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['other']}:</td></tr>
                                 <tr>
                                     <td>".makeinfocell($lang_item_edit['area'],$lang_item_edit['area_desc'])."</td>
-                                    <td><input type=\"text\" name=\"area\" size=\"8\" maxlength=\"10\" value=\"{$item['area']}\" /></td>
+                                    <td><input type=\"text\" name=\"area\" size=\"8\" maxlength=\"10\" value=\"{$item['area']}\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['map'],$lang_item_edit['map_desc'])."</td>
-                                    <td><input type=\"text\" name=\"Map\" size=\"8\" maxlength=\"10\" value=\"{$item['Map']}\" /></td>
+                                    <td><input type=\"text\" name=\"Map\" size=\"8\" maxlength=\"10\" value=\"{$item['Map']}\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['page_text'],$lang_item_edit['page_text_desc'])."</td>
-                                    <td><input type=\"text\" name=\"PageText\" size=\"6\" maxlength=\"30\" value=\"{$item['PageText']}\" /></td>
+                                    <td><input type=\"text\" name=\"PageText\" size=\"6\" maxlength=\"30\" value=\"{$item['PageText']}\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['unk0'],$lang_item_edit['unk0_desc'])."</td>
-                                    <td><input type=\"text\" name=\"unk0\" size=\"8\" maxlength=\"10\" value=\"{$item['unk0']}\" /></td>
+                                    <td><input type=\"text\" name=\"unk0\" size=\"8\" maxlength=\"10\" value=\"{$item['unk0']}\" autocomplete=\"off\" /></td>
                                 </tr>
                                 <tr>
                                 <tr>
                                     <td colspan=\"2\">".makeinfocell($lang_item_edit['disenchant_id'],$lang_item_edit['disenchant_id_desc'])."</td>
-                                    <td><input type=\"text\" name=\"DisenchantID\" size=\"10\" maxlength=\"10\" value=\"{$item['DisenchantID']}\" /></td>
+                                    <td><input type=\"text\" name=\"DisenchantID\" size=\"10\" maxlength=\"10\" value=\"{$item['DisenchantID']}\" autocomplete=\"off\" /></td>
                                     <td colspan=\"2\">".makeinfocell($lang_item_edit['req_skill_disenchant'],$lang_item_edit['req_skill_disenchant_desc'])."</td>
-                                    <td><input type=\"text\" name=\"RequiredDisenchantSkill\" size=\"10\" maxlength=\"10\" value=\"{$item['RequiredDisenchantSkill']}\" /></td>
+                                    <td><input type=\"text\" name=\"RequiredDisenchantSkill\" size=\"10\" maxlength=\"10\" value=\"{$item['RequiredDisenchantSkill']}\" autocomplete=\"off\" /></td>
                                     <td>".makeinfocell($lang_item_edit['lock_id'],$lang_item_edit['lock_id_desc'])."</td>
-                                    <td><input type=\"text\" name=\"lockid\" size=\"8\" maxlength=\"30\" value=\"{$item['lockid']}\" /></td>
+                                    <td><input type=\"text\" name=\"lockid\" size=\"8\" maxlength=\"30\" value=\"{$item['lockid']}\" autocomplete=\"off\" /></td>
                                 </tr>";
 
 
@@ -1726,7 +1726,7 @@ function edit() {
                                         </select>
                                     </td>
                                     <td>".makeinfocell($lang_item_edit['totem_category'],$lang_item_edit['totem_category_desc'])."</td>
-                                    <td><input type=\"text\" name=\"TotemCategory\" size=\"8\" maxlength=\"10\" value=\"{$item['TotemCategory']}\" /></td>
+                                    <td><input type=\"text\" name=\"TotemCategory\" size=\"8\" maxlength=\"10\" value=\"{$item['TotemCategory']}\" autocomplete=\"off\" /></td>
                                 </tr>
                             </table>
                             <br /><br />
@@ -1746,7 +1746,7 @@ function edit() {
         $output .= "
                                     </select>
                                 </td>
-                                <td><input type=\"text\" name=\"stat_value1\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value1']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value1\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value1']}\" autocomplete=\"off\" /></td>
                                 <td>".makeinfocell($lang_item_edit['stat_type']." 2",$lang_item_edit['stat_type_desc'])."</td>
                                 <td>
                                     <select name=\"stat_type2\">";
@@ -1754,7 +1754,7 @@ function edit() {
         $output .= "
                                     </select>
                                 </td>
-                                <td><input type=\"text\" name=\"stat_value2\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value2']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value2\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value2']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['stat_type']." 3",$lang_item_edit['stat_type_desc'])."</td>
@@ -1764,7 +1764,7 @@ function edit() {
         $output .= "
                                     </select>
                                 </td>
-                                <td><input type=\"text\" name=\"stat_value3\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value3']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value3\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value3']}\" autocomplete=\"off\" /></td>
                                 <td>".makeinfocell($lang_item_edit['stat_type']." 4",$lang_item_edit['stat_type_desc'])."</td>
                                 <td>
                                     <select name=\"stat_type4\">";
@@ -1772,7 +1772,7 @@ function edit() {
         $output .= "
                                     </select>
                                 </td>
-                                <td><input type=\"text\" name=\"stat_value4\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value4']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value4\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value4']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['stat_type']." 5",$lang_item_edit['stat_type_desc'])."</td>
@@ -1782,7 +1782,7 @@ function edit() {
         $output .= "
                                     </select>
                                 </td>
-                                <td><input type=\"text\" name=\"stat_value5\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value5']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value5\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value5']}\" autocomplete=\"off\" /></td>
                                 <td>".makeinfocell($lang_item_edit['stat_type']." 6",$lang_item_edit['stat_type_desc'])."</td>
                                 <td>
                                     <select name=\"stat_type6\">";
@@ -1791,7 +1791,7 @@ function edit() {
                                     </select>
                                 </td>
 
-                                <td><input type=\"text\" name=\"stat_value6\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value6']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value6\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value6']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['stat_type']." 7",$lang_item_edit['stat_type_desc'])."</td>
@@ -1801,7 +1801,7 @@ function edit() {
         $output .= "
                                     </select>
                                 </td>
-                                <td><input type=\"text\" name=\"stat_value7\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value7']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value7\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value7']}\" autocomplete=\"off\" /></td>
                                 <td>".makeinfocell($lang_item_edit['stat_type']." 8",$lang_item_edit['stat_type_desc'])."</td>
                                 <td>
                                     <select name=\"stat_type8\">";
@@ -1809,7 +1809,7 @@ function edit() {
         $output .= "
                                     </select>
                                 </td>
-                                <td><input type=\"text\" name=\"stat_value8\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value8']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value8\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value8']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['stat_type']." 9",$lang_item_edit['stat_type_desc'])."</td>
@@ -1819,7 +1819,7 @@ function edit() {
         $output .= "
                                     </select>
                                 </td>
-                                <td><input type=\"text\" name=\"stat_value9\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value9']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value9\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value9']}\" autocomplete=\"off\" /></td>
                                 <td>".makeinfocell($lang_item_edit['stat_type']." 10",$lang_item_edit['stat_type_desc'])."</td>
                                 <td>
                                     <select name=\"stat_type10\">";
@@ -1827,32 +1827,32 @@ function edit() {
         $output .= "
                                     </select>
                                 </td>
-                                <td><input type=\"text\" name=\"stat_value10\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value10']}\" /></td>
+                                <td><input type=\"text\" name=\"stat_value10\" size=\"10\" maxlength=\"6\" value=\"{$item['stat_value10']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['resis_armor']}:</td></tr>
                             <tr>
                                 <td colspan=\"2\">".makeinfocell($lang_item['armor'],$lang_item_edit['armor_desc'])."</td>
-                                <td><input type=\"text\" name=\"armor\" size=\"10\" maxlength=\"30\" value=\"{$item['armor']}\" /></td>
+                                <td><input type=\"text\" name=\"armor\" size=\"10\" maxlength=\"30\" value=\"{$item['armor']}\" autocomplete=\"off\" /></td>
                                 <td colspan=\"2\">".makeinfocell($lang_item['block'],$lang_item_edit['block_desc'])."</td>
-                                <td><input type=\"text\" name=\"block\" size=\"10\" maxlength=\"30\" value=\"{$item['block']}\" /></td>
+                                <td><input type=\"text\" name=\"block\" size=\"10\" maxlength=\"30\" value=\"{$item['block']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td colspan=\"2\">".makeinfocell($lang_item['res_holy'],$lang_item_edit['res_holy_desc'])."</td>
-                                <td><input type=\"text\" name=\"holy_res\" size=\"10\" maxlength=\"30\" value=\"{$item['holy_res']}\" /></td>
+                                <td><input type=\"text\" name=\"holy_res\" size=\"10\" maxlength=\"30\" value=\"{$item['holy_res']}\" autocomplete=\"off\" /></td>
                                 <td colspan=\"2\">".makeinfocell($lang_item['res_fire'],$lang_item_edit['res_fire_desc'])."</td>
-                                <td><input type=\"text\" name=\"fire_res\" size=\"10\" maxlength=\"30\" value=\"{$item['fire_res']}\" /></td>
+                                <td><input type=\"text\" name=\"fire_res\" size=\"10\" maxlength=\"30\" value=\"{$item['fire_res']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td colspan=\"2\">".makeinfocell($lang_item['res_nature'],$lang_item_edit['res_nature_desc'])."</td>
-                                <td><input type=\"text\" name=\"nature_res\" size=\"10\" maxlength=\"30\" value=\"{$item['nature_res']}\" /></td>
+                                <td><input type=\"text\" name=\"nature_res\" size=\"10\" maxlength=\"30\" value=\"{$item['nature_res']}\" autocomplete=\"off\" /></td>
                                 <td colspan=\"2\">".makeinfocell($lang_item['res_frost'],$lang_item_edit['res_frost_desc'])."</td>
-                                <td><input type=\"text\" name=\"frost_res\" size=\"10\" maxlength=\"30\" value=\"{$item['frost_res']}\" /></td>
+                                <td><input type=\"text\" name=\"frost_res\" size=\"10\" maxlength=\"30\" value=\"{$item['frost_res']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td colspan=\"2\">".makeinfocell($lang_item['res_shadow'],$lang_item_edit['res_shadow_desc'])."</td>
-                                <td><input type=\"text\" name=\"shadow_res\" size=\"10\" maxlength=\"30\" value=\"{$item['shadow_res']}\" /></td>
+                                <td><input type=\"text\" name=\"shadow_res\" size=\"10\" maxlength=\"30\" value=\"{$item['shadow_res']}\" autocomplete=\"off\" /></td>
                                <td colspan=\"2\">".makeinfocell($lang_item['res_arcane'],$lang_item_edit['res_arcane_desc'])."</td>
-                               <td><input type=\"text\" name=\"arcane_res\" size=\"10\" maxlength=\"30\" value=\"{$item['arcane_res']}\" /></td>
+                               <td><input type=\"text\" name=\"arcane_res\" size=\"10\" maxlength=\"30\" value=\"{$item['arcane_res']}\" autocomplete=\"off\" /></td>
                             </tr>
                         </table>
                         <br /><br />
@@ -1865,14 +1865,14 @@ function edit() {
                             <tr class=\"large_bold\"><td colspan=\"8\" class=\"hidden\" align=\"left\">{$lang_item_edit['weapon_properties']}:</td></tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['delay'],$lang_item_edit['delay_desc'])."</td>
-                                <td colspan=\"2\"><input type=\"text\" name=\"delay\" size=\"10\" maxlength=\"11\" value=\"{$item['delay']}\" /></td>
+                                <td colspan=\"2\"><input type=\"text\" name=\"delay\" size=\"10\" maxlength=\"11\" value=\"{$item['delay']}\" autocomplete=\"off\" /></td>
 
                                 <td>".makeinfocell($lang_item_edit['ranged_mod'],$lang_item_edit['ranged_mod_desc'])."</td>
-                                <td colspan=\"2\"><input type=\"text\" name=\"RangedModRange\" size=\"10\" maxlength=\"40\" value=\"{$item['RangedModRange']}\" /></td>
+                                <td colspan=\"2\"><input type=\"text\" name=\"RangedModRange\" size=\"10\" maxlength=\"40\" value=\"{$item['RangedModRange']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['armor_dmg_mod'],$lang_item_edit['armor_dmg_mod_desc'])."</td>
-                                <td colspan=\"2\"><input type=\"text\" name=\"ArmorDamageModifier\" size=\"10\" maxlength=\"40\" value=\"{$item['ArmorDamageModifier']}\" /></td>";
+                                <td colspan=\"2\"><input type=\"text\" name=\"ArmorDamageModifier\" size=\"10\" maxlength=\"40\" value=\"{$item['ArmorDamageModifier']}\" autocomplete=\"off\" /></td>";
 
         $ammo_type  = [0 => "", 2 => "", 3 => ""];
         $ammo_type [$item['ammo_type']] = " selected=\"selected\" ";
@@ -1901,7 +1901,7 @@ function edit() {
                                 </td>
 
                                 <td>".makeinfocell($lang_item_edit['dmg_min_max'],$lang_item_edit['dmg_min_max_desc'])."</td>
-                                <td colspan=\"4\"><input type=\"text\" name=\"dmg_min1\" size=\"8\" maxlength=\"45\" value=\"{$item['dmg_min1']}\" /> - <input type=\"text\" name=\"dmg_max1\" size=\"8\" maxlength=\"45\" value=\"{$item['dmg_max1']}\" /></td>
+                                <td colspan=\"4\"><input type=\"text\" name=\"dmg_min1\" size=\"8\" maxlength=\"45\" value=\"{$item['dmg_min1']}\" autocomplete=\"off\" /> - <input type=\"text\" name=\"dmg_max1\" size=\"8\" maxlength=\"45\" value=\"{$item['dmg_max1']}\" autocomplete=\"off\" /></td>
                             </tr>
                             <tr>
                                 <td>".makeinfocell($lang_item_edit['damage_type']." 2",$lang_item_edit['damage_type_desc'])."</td>
@@ -1912,7 +1912,7 @@ function edit() {
                                     </select>
                                 </td>
                                 <td>".makeinfocell($lang_item_edit['dmg_min_max'],$lang_item_edit['dmg_min_max_desc'])."</td>
-                                <td colspan=\"4\"><input type=\"text\" name=\"dmg_min2\" size=\"8\" maxlength=\"45\" value=\"{$item['dmg_min2']}\" /> - <input type=\"text\" name=\"dmg_max2\" size=\"8\" maxlength=\"45\" value=\"{$item['dmg_max2']}\" /></td>
+                                <td colspan=\"4\"><input type=\"text\" name=\"dmg_min2\" size=\"8\" maxlength=\"45\" value=\"{$item['dmg_min2']}\" autocomplete=\"off\" /> - <input type=\"text\" name=\"dmg_max2\" size=\"8\" maxlength=\"45\" value=\"{$item['dmg_max2']}\" autocomplete=\"off\" /></td>
                             </tr>
                         </table>
                         <br /><br />
@@ -1925,7 +1925,7 @@ function edit() {
                         <tr>
                             <td colspan=\"2\">{$lang_item_edit['item_spell']} 1</td>
                             <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellid_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_1']}\" /></td>";
+                            <td><input type=\"text\" name=\"spellid_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_1']}\" autocomplete=\"off\" /></td>";
 
         $spelltrigger_1  = [0 => "", 1 => "", 2 => "", 4 => ""];
         $spelltrigger_1 [$item['spelltrigger_1']] = " selected=\"selected\" ";
@@ -1941,26 +1941,26 @@ function edit() {
                                 </select>
                             </td>
                             <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcharges_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_1']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcharges_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_1']}\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcooldown_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_1']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcooldown_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_1']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategory_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_1']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategory_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_1']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategorycooldown_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_1']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategorycooldown_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_1']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellppmRate_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_1']}\" /></td>
+                            <td><input type=\"text\" name=\"spellppmRate_1\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_1']}\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr><td colspan=\"6\" class=\"hidden\"></td></tr>
                         <tr>
                             <td colspan=\"2\">{$lang_item_edit['item_spell']} 2</td>
                             <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellid_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_2']}\" /></td>";
+                            <td><input type=\"text\" name=\"spellid_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_2']}\" autocomplete=\"off\" /></td>";
         unset($spelltrigger_1);
 
         $spelltrigger_2  = [0 => "", 1 => "", 2 => "", 4 => ""];
@@ -1977,26 +1977,26 @@ function edit() {
                                 </select>
                             </td>
                             <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcharges_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_2']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcharges_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_2']}\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcooldown_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_2']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcooldown_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_2']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategory_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_2']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategory_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_2']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategorycooldown_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_2']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategorycooldown_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_2']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellppmRate_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_2']}\" /></td>
+                            <td><input type=\"text\" name=\"spellppmRate_2\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_2']}\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr><td colspan=\"6\" class=\"hidden\"></td></tr>
                         <tr>
                             <td colspan=\"2\">{$lang_item_edit['item_spell']} 3</td>
                             <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellid_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_3']}\" /></td>";
+                            <td><input type=\"text\" name=\"spellid_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_3']}\" autocomplete=\"off\" /></td>";
         unset($spelltrigger_2);
 
         $spelltrigger_3  = [0 => "", 1 => "", 2 => "", 4 => ""];
@@ -2013,26 +2013,26 @@ function edit() {
                                 </select>
                             </td>
                             <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcharges_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_3']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcharges_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_3']}\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcooldown_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_3']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcooldown_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_3']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategory_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_3']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategory_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_3']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategorycooldown_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_3']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategorycooldown_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_3']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellppmRate_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_3']}\" /></td>
+                            <td><input type=\"text\" name=\"spellppmRate_3\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_3']}\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr><td colspan=\"6\" class=\"hidden\"></td></tr>
                         <tr>
                             <td colspan=\"2\">{$lang_item_edit['item_spell']} 4</td>
                             <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellid_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_4']}\" /></td>";
+                            <td><input type=\"text\" name=\"spellid_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_4']}\" autocomplete=\"off\" /></td>";
         unset($spelltrigger_3);
 
         $spelltrigger_4  = [0 => "", 1 => "", 2 => "", 4 => ""];
@@ -2049,26 +2049,26 @@ function edit() {
                                 </select>
                             </td>
                             <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcharges_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_4']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcharges_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_4']}\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcooldown_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_4']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcooldown_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_4']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategory_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_4']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategory_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_4']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategorycooldown_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_4']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategorycooldown_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_4']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellppmRate_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_4']}\" /></td>
+                            <td><input type=\"text\" name=\"spellppmRate_4\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_4']}\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr><td colspan=\"6\" class=\"hidden\"></td></tr>
                         <tr>
                             <td colspan=\"2\">{$lang_item_edit['item_spell']} 5</td>
                             <td>".makeinfocell($lang_item_edit['spell_id'],$lang_item_edit['spell_id_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellid_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_5']}\" /></td>";
+                            <td><input type=\"text\" name=\"spellid_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellid_5']}\" autocomplete=\"off\" /></td>";
         unset($spelltrigger_4);
 
         $spelltrigger_5  = [0 => "", 1 => "", 2 => "", 4 => ""];
@@ -2085,20 +2085,20 @@ function edit() {
                                 </select>
                             </td>
                             <td>".makeinfocell($lang_item_edit['spell_charges'],$lang_item_edit['spell_charges_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcharges_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_5']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcharges_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcharges_5']}\" autocomplete=\"off\" /></td>
                         </tr>
                         <tr>
                             <td>".makeinfocell($lang_item_edit['spell_cooldown'],$lang_item_edit['spell_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcooldown_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_5']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcooldown_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcooldown_5']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category'],$lang_item_edit['spell_category_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategory_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_5']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategory_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategory_5']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['spell_category_cooldown'],$lang_item_edit['spell_category_cooldown_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellcategorycooldown_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_5']}\" /></td>
+                            <td><input type=\"text\" name=\"spellcategorycooldown_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellcategorycooldown_5']}\" autocomplete=\"off\" /></td>
 
                             <td>".makeinfocell($lang_item_edit['ppm_rate'],$lang_item_edit['ppm_rate_desc'])."</td>
-                            <td><input type=\"text\" name=\"spellppmRate_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_5']}\" /></td>
+                            <td><input type=\"text\" name=\"spellppmRate_5\" size=\"6\" maxlength=\"30\" value=\"{$item['spellppmRate_5']}\" autocomplete=\"off\" /></td>
                         </tr>
 
                     </table>
@@ -2188,21 +2188,21 @@ function edit() {
                     </tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['req_skill'],$lang_item_edit['req_skill_desc'])."</td>
-                        <td><input type=\"text\" name=\"RequiredSkill\" size=\"15\" maxlength=\"30\" value=\"{$item['RequiredSkill']}\" /></td>
+                        <td><input type=\"text\" name=\"RequiredSkill\" size=\"15\" maxlength=\"30\" value=\"{$item['RequiredSkill']}\" autocomplete=\"off\" /></td>
 
                         <td>".makeinfocell($lang_item_edit['req_skill_rank'],$lang_item_edit['req_skill_rank_desc'])."</td>
-                        <td><input type=\"text\" name=\"RequiredSkillRank\" size=\"15\" maxlength=\"30\" value=\"{$item['RequiredSkillRank']}\" /></td>
+                        <td><input type=\"text\" name=\"RequiredSkillRank\" size=\"15\" maxlength=\"30\" value=\"{$item['RequiredSkillRank']}\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['req_spell'],$lang_item_edit['req_spell_desc'])."</td>
-                        <td><input type=\"text\" name=\"requiredspell\" size=\"15\" maxlength=\"30\" value=\"{$item['requiredspell']}\" /></td>
+                        <td><input type=\"text\" name=\"requiredspell\" size=\"15\" maxlength=\"30\" value=\"{$item['requiredspell']}\" autocomplete=\"off\" /></td>
 
                         <td>".makeinfocell($lang_item_edit['req_honor_rank'],$lang_item_edit['req_honor_rank_desc'])."</td>
-                        <td><input type=\"text\" name=\"requiredhonorrank\" size=\"15\" maxlength=\"30\" value=\"{$item['requiredhonorrank']}\" /></td>
+                        <td><input type=\"text\" name=\"requiredhonorrank\" size=\"15\" maxlength=\"30\" value=\"{$item['requiredhonorrank']}\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['req_rep_faction'],$lang_item_edit['req_rep_faction_desc'])."</td>
-                        <td><input type=\"text\" name=\"RequiredReputationFaction\" size=\"15\" maxlength=\"30\" value=\"{$item['RequiredReputationFaction']}\" /></td>";
+                        <td><input type=\"text\" name=\"RequiredReputationFaction\" size=\"15\" maxlength=\"30\" value=\"{$item['RequiredReputationFaction']}\" autocomplete=\"off\" /></td>";
         unset($AllowableRace);
 
         $RequiredReputationRank  = [0 => "", 1 => "", 2 => "", 3 => "", 4 => "", 5=> "", 6 => "", 7 => ""];
@@ -2225,7 +2225,7 @@ function edit() {
                     </tr>
                     <tr>
                         <td colspan=\"2\">".makeinfocell($lang_item_edit['req_city_rank'],$lang_item_edit['req_city_rank_desc'])."</td>
-                        <td colspan=\"2\"><input type=\"text\" name=\"RequiredCityRank\" size=\"15\" maxlength=\"30\" value=\"{$item['RequiredCityRank']}\" /></td>
+                        <td colspan=\"2\"><input type=\"text\" name=\"RequiredCityRank\" size=\"15\" maxlength=\"30\" value=\"{$item['RequiredCityRank']}\" autocomplete=\"off\" /></td>
                     </tr>
                 </table>
                 <br /><br />
@@ -2253,7 +2253,7 @@ function edit() {
                             </select>
                         </td>
                         <td>".makeinfocell($lang_item_edit['socket_content']." 1",$lang_item_edit['socket_content_desc'])."</td>
-                        <td><input type=\"text\" name=\"socketContent_1\" size=\"15\" maxlength=\"10\" value=\"{$item['socketContent_1']}\" /></td>
+                        <td><input type=\"text\" name=\"socketContent_1\" size=\"15\" maxlength=\"10\" value=\"{$item['socketContent_1']}\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>";
         unset($socketColor_1);
@@ -2273,7 +2273,7 @@ function edit() {
                             </select>
                         </td>
                         <td>".makeinfocell($lang_item_edit['socket_content']." 2",$lang_item_edit['socket_content_desc'])."</td>
-                        <td><input type=\"text\" name=\"socketContent_2\" size=\"15\" maxlength=\"10\" value=\"{$item['socketContent_2']}\" /></td>
+                        <td><input type=\"text\" name=\"socketContent_2\" size=\"15\" maxlength=\"10\" value=\"{$item['socketContent_2']}\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>";
         unset($socketColor_2);
@@ -2293,13 +2293,13 @@ function edit() {
                             </select>
                         </td>
                         <td>".makeinfocell($lang_item_edit['socket_content']." 3",$lang_item_edit['socket_content_desc'])."</td>
-                        <td><input type=\"text\" name=\"socketContent_3\" size=\"15\" maxlength=\"10\" value=\"{$item['socketContent_3']}\" /></td>
+                        <td><input type=\"text\" name=\"socketContent_3\" size=\"15\" maxlength=\"10\" value=\"{$item['socketContent_3']}\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['socket_bonus'],$lang_item_edit['socket_bonus_desc'])."</td>
-                        <td><input type=\"text\" name=\"socketBonus\" size=\"15\" maxlength=\"10\" value=\"{$item['socketBonus']}\" /></td>
+                        <td><input type=\"text\" name=\"socketBonus\" size=\"15\" maxlength=\"10\" value=\"{$item['socketBonus']}\" autocomplete=\"off\" /></td>
                         <td>".makeinfocell($lang_item_edit['gem_properties'],$lang_item_edit['gem_properties_desc'])."</td>
-                        <td><input type=\"text\" name=\"GemProperties\" size=\"15\" maxlength=\"10\" value=\"{$item['GemProperties']}\" /></td>
+                        <td><input type=\"text\" name=\"GemProperties\" size=\"15\" maxlength=\"10\" value=\"{$item['GemProperties']}\" autocomplete=\"off\" /></td>
                     </tr>
                 </table>
                 <br /><br />
@@ -2432,7 +2432,7 @@ function edit() {
                                 <td>";
                 $output .= maketooltip("<img src=\"".get_item_icon($item[0])."\" class=\"icon_border\" alt=\"\" />", "$item_datasite$item[0]", $tooltip, "item_tooltip");
                 $output .= "
-                                    <br /><input type=\"checkbox\" name=\"del_de_items[]\" value=\"$item[0]\" />
+                                    <br /><input type=\"checkbox\" name=\"del_de_items[]\" value=\"$item[0]\" autocomplete=\"off\" />
                                 </td>";
 
                 if ($cel_counter >= 16) {
@@ -2455,25 +2455,25 @@ function edit() {
                     <tr class=\"large_bold\"><td colspan=\"6\" class=\"hidden\" align=\"left\">{$lang_item_edit['add_items_to_templ']}:</td></tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['loot_item_id'],$lang_item_edit['loot_item_id_desc'])."</td>
-                        <td><input type=\"text\" name=\"de_item\" size=\"8\" maxlength=\"10\" value=\"\" /></td>
+                        <td><input type=\"text\" name=\"de_item\" size=\"8\" maxlength=\"10\" value=\"\" autocomplete=\"off\" /></td>
                         <td>".makeinfocell($lang_item_edit['loot_drop_chance'],$lang_item_edit['loot_drop_chance_desc'])."</td>
-                        <td><input type=\"text\" name=\"de_ChanceOrQuestChance\" size=\"8\" maxlength=\"11\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"de_ChanceOrQuestChance\" size=\"8\" maxlength=\"11\" value=\"0\" autocomplete=\"off\" /></td>
                         <td>".makeinfocell($lang_item_edit['loot_quest_drop_chance'],$lang_item_edit['loot_quest_drop_chance_desc'])."</td>
-                        <td><input type=\"text\" name=\"de_groupid\" size=\"8\" maxlength=\"10\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"de_groupid\" size=\"8\" maxlength=\"10\" value=\"0\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['min_count'],$lang_item_edit['min_count_desc'])."</td>
-                        <td><input type=\"text\" name=\"de_mincountOrRef\" size=\"8\" maxlength=\"3\" value=\"1\" /></td>
+                        <td><input type=\"text\" name=\"de_mincountOrRef\" size=\"8\" maxlength=\"3\" value=\"1\" autocomplete=\"off\" /></td>
                         <td>".makeinfocell($lang_item_edit['max_count'],$lang_item_edit['max_count_desc'])."</td>
-                        <td><input type=\"text\" name=\"de_maxcount\" size=\"8\" maxlength=\"3\" value=\"1\" /></td>
+                        <td><input type=\"text\" name=\"de_maxcount\" size=\"8\" maxlength=\"3\" value=\"1\" autocomplete=\"off\" /></td>
                     </tr>
                     <tr>
                         <td>".makeinfocell($lang_item_edit['lootcondition'],$lang_item_edit['lootcondition_desc'])."</td>
-                        <td><input type=\"text\" name=\"de_lootcondition\" size=\"8\" maxlength=\"3\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"de_lootcondition\" size=\"8\" maxlength=\"3\" value=\"0\" autocomplete=\"off\" /></td>
                         <td>".makeinfocell($lang_item_edit['condition_value1'],$lang_item_edit['condition_value1_desc'])."</td>
-                        <td><input type=\"text\" name=\"de_condition_value1\" size=\"8\" maxlength=\"3\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"de_condition_value1\" size=\"8\" maxlength=\"3\" value=\"0\" autocomplete=\"off\" /></td>
                         <td>".makeinfocell($lang_item_edit['condition_value2'],$lang_item_edit['condition_value2_desc'])."</td>
-                        <td><input type=\"text\" name=\"de_condition_value2\" size=\"8\" maxlength=\"3\" value=\"0\" /></td>
+                        <td><input type=\"text\" name=\"de_condition_value2\" size=\"8\" maxlength=\"3\" value=\"0\" autocomplete=\"off\" /></td>
                     </tr>
                 </table>
             </div>";
