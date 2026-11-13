@@ -82,7 +82,7 @@ function char_quest(&$sqlr, &$sqlc)
                 while ($quest = $sqlc->fetch_assoc($result))
                 {
                     $localeStr = get_localestr_by_lang_cookie();
-                    $query1 = $sqlc->query('SELECT QuestLevel, IFNULL(quest_template_locale.Title, quest_template.LogTitle) AS Title FROM ' . $world_db[$realmid]['name'] . '.quest_template LEFT JOIN ' . $world_db[$realmid]['name'] . '.quest_template_locale ON quest_template.ID = quest_template_locale.ID AND quest_template_locale.locale = \'' . $localeStr . '\' WHERE quest_template.ID = ' . $quest['quest'] . ';');
+                    $query1 = $sqlc->query('SELECT QuestLevel, IFNULL(quest_template_locale.LogTitle, quest_template.LogTitle) AS Title FROM ' . $world_db[$realmid]['name'] . '.quest_template LEFT JOIN ' . $world_db[$realmid]['name'] . '.quest_template_locale ON quest_template.ID = quest_template_locale.ID AND quest_template_locale.locale = \'' . $localeStr . '\' WHERE quest_template.ID = ' . $quest['quest'] . ';');
                     $quest_info = $sqlc->fetch_assoc($query1);
 
                     if ($quest['rewarded'] == 1 || $quest['status'] == 1)
