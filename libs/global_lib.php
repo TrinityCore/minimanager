@@ -40,7 +40,18 @@ function valid_login($restrict_lvl)
 
     // a missing threshold (page not found in $menu_array) must deny, not compare against null
     if (!is_numeric($restrict_lvl) || $user_lvl < $restrict_lvl)
-        redirect('login.php?error=5');
+    {
+        // a guest may still log in with a higher account, a logged in user just gets an error
+        if (empty($_SESSION['logged_in']))
+            redirect('login.php?error=5');
+
+        // error.php and footer.php run in this scope, give them the globals they read
+        global $output, $lang_global, $debug, $allow_anony, $github_repo, $time_start, $tot_queries,
+            $sql, $sqlr, $sqlc, $sqlm, $sqlw;
+        define('ERROR_MSG', $lang_global['err_no_permission']);
+        require 'error.php';
+        exit();
+    }
 }
 
 
