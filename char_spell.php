@@ -38,8 +38,21 @@ function char_spell(&$sqlr, &$sqlc)
 
         if (($user_lvl > $owner_gmlvl)||($owner_name === $user_name))
         {
-            $all_record = $sqlc->result($sqlc->query('SELECT count(spell) FROM character_spell WHERE guid = '.$id.' and active = 1'), 0);
-            $result = $sqlc->query('SELECT spell FROM character_spell WHERE guid = '.$id.' and active = 1 order by spell ASC LIMIT '.$start.', '.$itemperpage.'');
+            $sqlm = new SQL; $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
+            $sv = isset($_GET['spell_search']) ? trim($_GET['spell_search']) : '';
+            $su = ($sv !== '') ? '&amp;spell_search='.urlencode($sv) : '';
+            $sw = ' guid = '.$id.' AND active = 1';
+            if ($sv !== '') {
+                if (is_numeric($sv)) $sw .= ' AND spell = '.intval($sv);
+                else {
+                    $qp = $sqlm->query("SELECT id FROM dbc_spell WHERE field_136 LIKE '%".$sqlm->quote_smart($sv)."%'");
+                    $ids = array(0);
+                    while ($rw = $sqlm->fetch_row($qp)) { list($x) = $rw; $ids[] = intval($x); }
+                    $sw .= ' AND spell IN ('.implode(',', $ids).')';
+                }
+            }
+            $all_record = $sqlc->result($sqlc->query('SELECT count(spell) FROM character_spell WHERE'.$sw), 0);
+            $result = $sqlc->query('SELECT spell FROM character_spell WHERE'.$sw.' ORDER BY spell ASC LIMIT '.$start.', '.$itemperpage);
 
             $output .= '
                         <center>
@@ -48,6 +61,20 @@ function char_spell(&$sqlr, &$sqlc)
                                 <br />';
 
             require_once 'core/char/char_header.php';
+            $output .= '
+                        <br /><div style="text-align:center; margin: 6px auto 10px auto;">
+                        <form action="char_spell.php" method="get" name="form" style="margin-bottom: 6px;">
+                            <input type="hidden" name="id" value="'.$id.'" />
+                            <input type="hidden" name="realm" value="'.$realmid.'" />
+                            <input type="text" name="spell_search" size="28" maxlength="50" autocomplete="off" value="'.htmlspecialchars($sv).'" placeholder="Buscar hechizo (Nombre o ID)" />
+                        </form>
+                        <table class="hidden" style="margin: 0 auto;"><tr><td>';
+            makebutton($lang_global['search'], 'javascript:do_submit()', 80);
+            if ($sv !== '') {
+                $output .= '</td><td>';
+                makebutton($lang_global['back'], 'char_spell.php?id='.$id.'&amp;realm='.$realmid, 80);
+            }
+            $output .= '</td></tr></table></div>';
 
             $output .= '
                                 <br /><br />';
@@ -58,7 +85,7 @@ function char_spell(&$sqlr, &$sqlc)
                                 <table class="lined" style="width: 550px;">
                                     <tr align="right">
                                         <td colspan="4">';
-                $output .= generate_pagination('char_spell.php?id='.$id.'&amp;realm='.$realmid.'&amp;start='.$start.'', $all_record, $itemperpage, $start);
+                $output .= generate_pagination('char_spell.php?id='.$id.'&amp;realm='.$realmid.$su.'&amp;start='.$start.'', $all_record, $itemperpage, $start);
                 $output .= '
                                         </td>
                                     </tr>
@@ -93,7 +120,7 @@ function char_spell(&$sqlr, &$sqlc)
                 $output .= '
                                     <tr align="right">
                                         <td colspan="4">';
-                $output .= generate_pagination('char_spell.php?id='.$id.'&amp;realm='.$realmid.'&amp;start='.$start.'', $all_record, $itemperpage, $start);
+                $output .= generate_pagination('char_spell.php?id='.$id.'&amp;realm='.$realmid.$su.'&amp;start='.$start.'', $all_record, $itemperpage, $start);
                 $output .= '
                                         </td>
                                     </tr>
