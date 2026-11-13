@@ -2274,4 +2274,53 @@ function lang_forum()
 // Arrays de traducción extra (ver script completo para todas las claves)
 $lang_extra_char = array('avg_ilvl' => 'Nivel medio de objeto:', 'conectado' => 'conectado' /* ... */);
 $lang_extra_misc = array('character' => 'Character', 'guild' => 'Guild' /* ... */);
+
+
+$lang_global += array(
+  'register_link' => 'Registrarse', 'login_link' => 'Iniciar sesión', 'by_country' => 'por País',
+  'recruiter_user_id' => 'Reclutador (Usuario/ID)', 'remove_filter' => 'Quitar filtro',
+  'add_and_condition' => 'Añadir otra condición AND',
+  'only_accounts_with_chars' => 'Mostrar solo cuentas con al menos 1 personaje',
+  'with_chars' => 'Con personajes', 'check_all' => 'Seleccionar todo', 'recruiter' => 'Reclutador',
+  'recruiter_placeholder' => 'Usuario o ID (0 = ninguno)', 'rename' => 'Renombrar',
+  'change_faction' => 'Cambiar facción', 'change_race' => 'Cambiar raza',
+  'character_customize' => 'Personalizar personaje', 'gender' => 'Género', 'account' => 'Cuenta',
+  'last_ip' => 'Última IP', 'major_glyphs' => 'Glifos sublimes', 'minor_glyphs' => 'Glifos menores',
+  'kills' => 'Muertes', 'avg_item_level' => 'Nivel medio de objeto', 'real_item' => 'Objeto real',
+  'race' => 'Raza', 'class' => 'Clase', 'personal_rating' => 'Índice personal',
+  'last_login_days' => 'Último acceso (Días)', 'online' => 'Conectado', 'prev' => 'Anterior', 'next' => 'Siguiente',
+  'quote_label' => 'Cita', 'character' => 'Personaje', 'guild' => 'Hermandad', 'icon' => 'Icono',
+  'achievement' => 'Logro', 'pts' => 'Pts', 'date' => 'Fecha',
+  'ticket_del_notice' => 'Tras recargar la tabla, si el ticket eliminado estaba abierto y el remitente conectado, seguirá viéndolo pendiente hasta que vuelva a iniciar sesión.',
+  'no_recent_achieves' => 'No se encontraron logros recientes.', 'group_send' => 'Envío grupal',
+  'group_operator' => 'Operador grupal', 'group_parameter' => 'Parámetro grupal', 'mutual' => 'Mutuo',
+  'quest_chains' => 'Cadenas de misiones', 'chains_detected' => 'cadenas detectadas', 'root_id' => 'ID Raíz',
+  'quest_chain_hint' => 'Cadena de misiones (clic para desplegar árbol)', 'progress' => 'Progreso',
+  'current_status' => 'Estado actual', 'chain_hash' => 'Cadena #', 'completed' => 'Completada',
+  'step' => 'Paso', 'in_progress' => 'En progreso', 'quest_rewarded' => 'Recompensada',
+  'quest_ready' => 'Lista para entregar', 'quest_current_step' => 'En curso - Paso actual',
+  'quest_pending' => 'Pendiente', 'active_single_quests' => 'Misiones individuales activas',
+  'completed_single_quests' => 'Misiones individuales completadas', 'exp' => 'Exp',
+  'pet_abilities' => 'Habilidades de mascota', 'cleanup_operator' => 'Operador de limpieza',
+  'cleanup_parameter' => 'Parámetro de limpieza', 'search_placeholder' => 'Buscar...',
+  'type' => 'Tipo', 'item_type' => 'Tipo de objeto', 'quality' => 'Calidad',
+  'gem' => 'Gema', 'projectile' => 'Proyectil', 'key' => 'Llave', 'glyph' => 'Glifo',
+  'req_level_short' => 'Nvl Uso:', 'clear' => 'Limpiar', 'group_bags' => 'Agrupar mochilas',
+  'show_all' => 'Mostrar todas', 'clear_completed' => 'Limpiar completadas',
+  'total_tracked_quests' => 'Total misiones rastreadas',
+  'search_quest_placeholder' => 'Buscar por ID o título de misión...',
+  'quest_id' => 'ID Misión', 'quest_title' => 'Título de misión', 'accepted' => 'Aceptadas',
+  'abandoned' => 'Abandonadas', 'by_gm' => 'Por GM', 'unknown_quest' => 'Misión desconocida',
+  'guild_logs' => 'Registros de hermandad', 'bank_logs' => 'Registros del banco', 'email' => 'Correo electrónico',
+  'action' => 'Acción', 'joined_guild' => 'Se unió a la hermandad', 'left_guild' => 'Abandonó la hermandad',
+  'no_guild_logs' => 'No hay registros de entradas o salidas.', 'tab' => 'Pestaña', 'item_gold' => 'Objeto / Oro',
+  'deposited_item' => 'Depositó objeto', 'withdrew_item' => 'Retiró objeto', 'moved_item' => 'Movió objeto',
+  'deposited_gold' => 'Depositó oro', 'withdrew_gold' => 'Retiró oro', 'repair' => 'Reparación',
+  'bought_tab' => 'Compró pestaña', 'no_bank_logs' => 'No hay registros del banco de la hermandad.',
+  'err_empty_fields' => 'No se permiten campos vacíos.',
+  'reg_mail_body_1' => 'Gracias por registrarte en nuestro sistema de gestión de cuentas. Por seguridad, todas las cuentas nuevas deben verificar su correo electrónico. ¡Haz clic en el enlace de abajo para verificar tu cuenta ahora!',
+  'reg_mail_body_2' => 'Si no puedes ver el enlace de arriba, copia y pega la siguiente URL en la barra de direcciones de tu navegador.',
+  'reg_mail_thanks' => 'Gracias,', 'sender' => 'Remitente', 'receiver' => 'Destinatario',
+  'number_of_realms' => 'Número de reinos'
+);
 ?>

@@ -190,7 +190,7 @@ function browse_auctions(&$sqlr, &$sqlc)
                                     </td>
                                     <td valign=\"top\" style=\"white-space:nowrap;\">
                                         <select name=\"search_class\" title=\"{$lang_global['item_type']}\">
-                                            <option".($search_class == -1 ? " selected=\"selected\"" : "")." value=\"-1\">Tipo: {$lang_auctionhouse['all']}</option>
+                                            <option".($search_class == -1 ? " selected=\"selected\"" : "")." value=\"-1\">{$lang_global['type']}: {$lang_auctionhouse['all']}</option>
                                             <option".($search_class == 0 ? " selected=\"selected\"" : "")." value=\"0\">{$lang_item['consumable']}</option>
                                             <option".($search_class == 1 ? " selected=\"selected\"" : "")." value=\"1\">{$lang_item['bag']}</option>
                                             <option".($search_class == 2 ? " selected=\"selected\"" : "")." value=\"2\">{$lang_item['weapon']}</option>
