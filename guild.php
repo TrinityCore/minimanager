@@ -49,13 +49,17 @@ function browse_guilds(&$sqlr, &$sqlc)
     //==========================$_GET and SECURE end=============================
     //==========================MyGuild==========================================
 
-    $query_myGuild = $sqlc->query("SELECT g.guildid as gid, BINARY g.name, g.leaderguid AS lguid,
-                                    (SELECT BINARY name from characters where guid = lguid), (SELECT race in (2,5,6,8,10) from characters where guid = lguid) as faction,
-                                    (select count(*) from characters where guid in (select guid from guild_member where guildid = lguid) and online = 1) as gonline,
-                                    (select count(*) from guild_member where guildid = gid), SUBSTRING_INDEX(g.MOTD,' ',6), g.createdate,
-                                    (select account from characters where guid = lguid) FROM guild as g
-                                    left outer join guild_member as gm on gm.guildid = g.guildid left outer join characters as c on c.guid = gm.guid
-                                    where c.account = $user_id group by g.guildid order by gid");
+    $query_myGuild = $sqlc->query("SELECT g.guildid AS gid, BINARY g.name, g.leaderguid AS lguid,
+                                    (SELECT BINARY name FROM characters WHERE guid = g.leaderguid),
+                                    (SELECT race IN (2,5,6,8,10) FROM characters WHERE guid = g.leaderguid) AS faction,
+                                    (SELECT COUNT(*) FROM guild_member gm2 INNER JOIN characters c2 ON c2.guid = gm2.guid WHERE gm2.guildid = g.guildid AND c2.online = 1) AS gonline,
+                                    (SELECT COUNT(*) FROM guild_member WHERE guildid = g.guildid),
+                                    SUBSTRING_INDEX(g.MOTD,' ',6), g.createdate,
+                                    (SELECT account FROM characters WHERE guid = g.leaderguid),
+                                    (SELECT GROUP_CONCAT(BINARY c3.name ORDER BY c3.name SEPARATOR ', ') FROM guild_member gm3 INNER JOIN characters c3 ON c3.guid = gm3.guid WHERE gm3.guildid = g.guildid AND c3.account = $user_id) AS my_chars
+                                    FROM guild AS g
+                                    WHERE g.guildid IN (SELECT DISTINCT gm.guildid FROM guild_member gm INNER JOIN characters c ON c.guid = gm.guid WHERE c.account = $user_id)
+                                    ORDER BY g.guildid");
 
     if ($query_myGuild)
     {
@@ -68,12 +72,13 @@ function browse_guilds(&$sqlr, &$sqlc)
                                 <th width="1%">'.$lang_guild['id'].'</th>
                                 <th width="20%">'.$lang_guild['guild_name'].'</th>
                                 <th width="10%">'.$lang_guild['guild_leader'].'</th>
+                                <th width="15%">'.($lang_global['character'] ?? 'Personaje').'</th>
                                 <th width="1%">'.$lang_guild['guild_faction'].'</th>
                                 <th width="10%">'.$lang_guild['tot_m_online'].'</th>
                                 <th width="20%">'.$lang_guild['guild_motd'].'</th>
                                 <th width="20%">'.$lang_guild['create_date'].'</th>
                             </tr>';
-        while ($data = $sqlr->fetch_row($query_myGuild))
+        while ($data = $sqlc->fetch_row($query_myGuild))
         {
             $result = $sqlr->query("SELECT SecurityLevel FROM account_access WHERE AccountID ='$data[9]'");
             $owner_gmlvl = $sqlr->result($result, 0, 'SecurityLevel');
@@ -83,6 +88,7 @@ function browse_guilds(&$sqlr, &$sqlc)
                                 <td><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$data[0]\">$data[1]</a></td>";
             $output .= ($user_lvl < $owner_gmlvl ) ? "<td>".htmlentities($data[3])."</td>" : "<td><a href=\"char.php?id=$data[2]&amp;realm=$realmid\">".htmlentities($data[3])."</a></td>";
             $output .= "
+                                <td>".htmlentities($data[10])."</td>
                                 <td><img src=\"img/".($data[4]==0 ? "alliance" : "horde")."_small.gif\" alt=\"\" /></td>
                                 <td>$data[5]/$data[6]</td>
                                 <td>".htmlentities($data[7])." ...</td>
@@ -222,6 +228,7 @@ function browse_guilds(&$sqlr, &$sqlc)
         $output .= ($user_lvl >= $action_permission['update']) ? "<td><a href=\"guild.php?action=view_guild&amp;realm=$realmid&amp;error=3&amp;id=$data[0]\">".htmlentities($data[1])."</a></td>" : "<td>".htmlentities($data[1])."</td>";
         $output .= ($user_lvl < $owner_gmlvl ) ? "<td>".htmlentities($data[3])."</td>" : "<td><a href=\"char.php?id=$data[2]&amp;realm=$realmid\">".htmlentities($data[3])."</a></td>";
         $output .= "
+                                <td>".htmlentities($data[10])."</td>
                                 <td><img src=\"img/".($data[4]==0 ? "alliance" : "horde")."_small.gif\" alt=\"\" /></td>
                                 <td>$data[5]</td>
                                 <td class=\"small\">".date('o-m-d', $data[6])."</td>
