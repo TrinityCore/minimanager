@@ -74,10 +74,13 @@ function get_check_state($id)
     if ($id == 0)
         return "Not Read";
     
+    $parts = array();
     foreach (bitMask($id) as $k => $v)
-        $result .= $check_state[$v].", ";
-
-    return $result;
+    {
+        if (isset($check_state[$v]) && $check_state[$v] !== "")
+            $parts[] = $check_state[$v];
+    }
+    return !empty($parts) ? implode(", ", $parts) : "Flag " . intval($id);
 }
 
 ?>
