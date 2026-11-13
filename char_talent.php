@@ -285,27 +285,74 @@ $active_spec = isset($char['activeTalentGroup']) ? intval($char['activeTalentGro
                 unset($talent_points_used);
                 unset($talent_points_left);
 
-                $result = $sqlc->query('SELECT * FROM character_glyphs WHERE guid = '.$id.' AND talentGroup = '.$view_spec.'');
-                if ($sqlc->num_rows($result))
+                $result = $sqlc->query('SELECT * FROM character_glyphs WHERE guid = '.$id.' AND talentGroup = '.$view_spec);
+            $major_glyphs = array();
+            $minor_glyphs = array();
+            if ($sqlc->num_rows($result))
+            {
+                $glyphs_row = $sqlc->fetch_assoc($result);
+                $slots = array(
+                    'glyph1' => 0,
+                    'glyph4' => 0,
+                    'glyph6' => 0,
+                    'glyph2' => 1,
+                    'glyph3' => 1,
+                    'glyph5' => 1
+                );
+                foreach ($slots as $col => $gtype)
                 {
-                    $glyphs = $sqlc->fetch_assoc($result);
-                    $glyphs = [$glyphs['glyph1'], $glyphs['glyph2'], $glyphs['glyph3'], $glyphs['glyph4'], $glyphs['glyph5'], $glyphs['glyph6']]; // didnt want to recode the block down there
+                    $gid = isset($glyphs_row[$col]) ? intval($glyphs_row[$col]) : 0;
+                    if ($gid > 0)
+                    {
+                        $g_spell = intval($sqlm->result($sqlm->query('SELECT IFNULL(field_1, 0) FROM dbc_glyphproperties WHERE id = '.$gid.' LIMIT 1'), 0));
+                        if ($g_spell > 0)
+                        {
+                            $g_name = 'Glyph #'.$gid;
+                            $sq = $sqlm->query('SELECT field_136 FROM dbc_spell WHERE id = '.$g_spell.' LIMIT 1');
+                            if ($sq && $sqlm->num_rows($sq))
+                            {
+                                $sn = $sqlm->result($sq, 0, 'field_136');
+                                if (!empty($sn)) $g_name = $sn;
+                            }
+                            if ($gtype === 1)
+                                $minor_glyphs[] = array($g_spell, $g_name);
+                            else
+                                $major_glyphs[] = array($g_spell, $g_name);
+                        }
+                    }
                 }
-                else
-                    $glyphs = [0,0,0,0,0,0,0];
+            }
+            $cls_slug = strtolower(str_replace(' ', '', (string)char_get_class_name($char['class'])));
+            $maj_ico  = file_exists('img/icons/inv_glyph_major'.$cls_slug.'.jpg') ? 'img/icons/inv_glyph_major'.$cls_slug.'.jpg' : 'img/icons/inv_inscription_majorglyph01.jpg';
+            $min_ico  = file_exists('img/icons/inv_glyph_minor'.$cls_slug.'.jpg') ? 'img/icons/inv_glyph_minor'.$cls_slug.'.jpg' : 'img/icons/inv_inscription_minorglyph01.jpg';
 
-                for($i=0;$i<6;++$i)
+            $output .= '<div style="text-align:left;"><b>Major Glyphs:</b><br />';
+            if (!empty($major_glyphs))
+            {
+                foreach ($major_glyphs as $mg)
                 {
-                  if ($glyphs[$i] && $glyphs[$i] > 0)
-                  {
-                    $glyph = $sqlm->result($sqlm->query('select IFNULL(field_1,0) from dbc_glyphproperties where id = '.$glyphs[$i].''), 0);
-                    $output .='
-                                            <a href="'.$spell_datasite.$glyph.'" target="_blank">
-                                                <img src="'.spell_get_icon($glyph, $sqlm).'" width="36" height="36" class="icon_border_0" alt="" />
-                                            </a>';
-                  }
+                    list($gs, $gn) = $mg;
+                    $gn_safe = htmlspecialchars($gn, ENT_QUOTES, 'UTF-8');
+                    $output .= '<a href="'.$spell_datasite.$gs.'" target="_blank" title="'.$gn_safe.'"><img src="'.$maj_ico.'" width="36" height="36" class="icon_border_0" alt="'.$gn_safe.'" style="margin-right:4px;" /></a>';
                 }
-                unset($glyphs);
+            }
+            else
+                $output .= '-';
+
+            $output .= '<br /><br /><b>Minor Glyphs:</b><br />';
+            if (!empty($minor_glyphs))
+            {
+                foreach ($minor_glyphs as $ng)
+                {
+                    list($gs, $gn) = $ng;
+                    $gn_safe = htmlspecialchars($gn, ENT_QUOTES, 'UTF-8');
+                    $output .= '<a href="'.$spell_datasite.$gs.'" target="_blank" title="'.$gn_safe.'"><img src="'.$min_ico.'" width="28" height="28" class="icon_border_0" alt="'.$gn_safe.'" style="margin-right:4px;" /></a>';
+                }
+            }
+            else
+                $output .= '-';
+            $output .= '</div>';
+            unset($glyphs);
                 $output .='
                                         </td>';
             }
