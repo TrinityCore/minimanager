@@ -126,7 +126,7 @@ class tickets
 					</form>
 				</center>
 				<ul>
-				<li>'Delete Checked Ticket(s)' option needs .reload gm_ticket to apply changes ingame.</li>
+				<li>{$lang_global['reload_ticket_del']}</li>
 				<li>{$lang_global['ticket_del_notice']}</li>
 				</ul>";
 	}
@@ -238,7 +238,7 @@ function edit_ticket()
                     <br />
                 </center>
 				<ul>
-					<li>'Update Ticket' option needs .reload gm_ticket to apply changes ingame.</li>
+					<li>{$lang_global['reload_ticket_upd']}</li>
 				</ul>";
     }
     else

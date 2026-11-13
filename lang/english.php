@@ -2499,4 +2499,9 @@ $lang_global += array(
   'reg_mail_thanks' => 'Thank you,', 'sender' => 'Sender', 'receiver' => 'Receiver',
   'number_of_realms' => 'Number of Realms'
 );
+
+$lang_global += array(
+  'reload_ticket_del' => "'Delete Checked Ticket(s)' option needs .reload gm_ticket to apply changes ingame.",
+  'reload_ticket_upd' => "'Update Ticket' option needs .reload gm_ticket to apply changes ingame."
+);
 ?>
