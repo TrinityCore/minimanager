@@ -11,7 +11,7 @@ valid_login($action_permission['read']);
 //########################################################################################################################
 function char_spell(&$sqlr, &$sqlc)
 {
-    global $output, $lang_global, $lang_char,
+    global $output, $lang_global, $lang_char, $lang_extra_char,
             $realm_id, $characters_db, $mmfpm_db,
             $action_permission, $user_lvl, $user_name,
             $spell_datasite, $itemperpage;

@@ -2271,4 +2271,7 @@ function lang_forum()
 }
 
 
+// Arrays de traducción extra (ver script completo para todas las claves)
+$lang_extra_char = array('avg_ilvl' => 'Avg Item Level:', 'online' => 'online' /* ... */);
+$lang_extra_misc = array('character' => 'Character', 'guild' => 'Guild' /* ... */);
 ?>

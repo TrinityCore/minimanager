@@ -25,7 +25,7 @@ if ($sql->num_rows($query) > 0)
     
     $sql2 = new SQL;
     $sql2->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
-    $sql2->query("INSERT INTO account (id,username,salt,verifier,email, joindate,last_ip,locked,expansion) VALUES ('',UPPER('$username'),UNHEX('".bin2hex($salt)".'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip','$locked','$expansion')");
+    $sql2->query("INSERT INTO account (id,username,salt,verifier,email, joindate,last_ip,locked,expansion) VALUES ('',UPPER('$username'),UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip','$locked','$expansion')");
     $sql->query("DELETE FROM mm_account WHERE id=".$id);
 }
 else
