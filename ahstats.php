@@ -189,7 +189,7 @@ function browse_auctions(&$sqlr, &$sqlc)
                                         <button type=\"button\" onclick=\"addAhFilter()\" style=\"cursor:pointer;\" title=\"{$lang_global['add_and_condition']}\">+</button>
                                     </td>
                                     <td valign=\"top\" style=\"white-space:nowrap;\">
-                                        <select name=\"search_class\" title=\"Tipo de objeto\">
+                                        <select name=\"search_class\" title=\"{$lang_global['item_type']}\">
                                             <option".($search_class == -1 ? " selected=\"selected\"" : "")." value=\"-1\">Tipo: {$lang_auctionhouse['all']}</option>
                                             <option".($search_class == 0 ? " selected=\"selected\"" : "")." value=\"0\">{$lang_item['consumable']}</option>
                                             <option".($search_class == 1 ? " selected=\"selected\"" : "")." value=\"1\">{$lang_item['bag']}</option>
@@ -206,8 +206,8 @@ function browse_auctions(&$sqlr, &$sqlc)
                                             <option".($search_class == 15 ? " selected=\"selected\"" : "")." value=\"15\">{$lang_item['misc_short']}</option>
                                             <option".($search_class == 16 ? " selected=\"selected\"" : "")." value=\"16\">{$lang_global['glyph']}</option>
                                         </select>
-                                        <select name=\"search_quality\" title=\"Calidad\">
-                                            <option".($search_quality == -1 ? " selected=\"selected\"" : "")." value=\"-1\">Calidad: {$lang_auctionhouse['all']}</option>
+                                        <select name=\"search_quality\" title=\"{$lang_global['quality']}\">
+                                            <option".($search_quality == -1 ? " selected=\"selected\"" : "")." value=\"-1\">{$lang_global['quality']}: {$lang_auctionhouse['all']}</option>
                                             <option".($search_quality == 0 ? " selected=\"selected\"" : "")." value=\"0\">{$lang_item['poor']}</option>
                                             <option".($search_quality == 1 ? " selected=\"selected\"" : "")." value=\"1\">{$lang_item['common']}</option>
                                             <option".($search_quality == 2 ? " selected=\"selected\"" : "")." value=\"2\">{$lang_item['uncommon']}</option>
