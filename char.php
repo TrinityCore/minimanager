@@ -16,7 +16,7 @@ function char_main(&$sqlr, &$sqlc)
     global $output, $lang_global, $lang_char, $lang_item,
             $realm_id, $realm_db, $characters_db, $world_db, $server, $mmfpm_db,
             $action_permission, $user_lvl, $user_name, $user_id,
-            $item_datasite, $spell_datasite , $showcountryflag;
+            $item_datasite, $spell_datasite , $showcountryflag, $xmorg_compatibility;
 
     // this page uses wowhead tooltops
     wowhead_tt();
@@ -184,12 +184,12 @@ function char_main(&$sqlr, &$sqlc)
             // Fetch real items behind transmog and calculate average real Item Level
             $real_ilvl_entries = [];
             $real_items = [];
-            $q_real = $sqlc->query("SELECT ci.slot, ii.itemEntry, ii.transmog FROM character_inventory ci INNER JOIN item_instance ii ON ci.item = ii.guid WHERE ci.guid = $id AND ci.bag = 0 AND ci.slot BETWEEN 0 AND 18");
+            $q_real = $sqlc->query("SELECT ci.slot, ii.itemEntry" . (!empty($xmorg_compatibility) ? ", ii.transmog" : "") . " FROM character_inventory ci INNER JOIN item_instance ii ON ci.item = ii.guid WHERE ci.guid = $id AND ci.bag = 0 AND ci.slot BETWEEN 0 AND 18");
             while ($r_row = $sqlc->fetch_assoc($q_real))
             {
                 $slot_1based = intval($r_row['slot']) + 1;
                 $real_entry = intval($r_row['itemEntry']);
-                $xmog_entry = intval($r_row['transmog']);
+                $xmog_entry = !empty($xmorg_compatibility) ? intval($r_row['transmog']) : 0;
                 if ($real_entry > 0 && $slot_1based !== 4 && $slot_1based !== 19)
                     $real_ilvl_entries[] = $real_entry;
                 if ($real_entry > 0 && ($xmog_entry > 0 && $xmog_entry !== $real_entry))

@@ -371,6 +371,8 @@ $menu_array =
   ],                                                   // INSERT, UPDATE and DELETE should have no effect, but best to keep it at 5.
     ];
 
+// Enable Rochet2 Transmogrification compatibility (requires custom `transmog` column in `item_instance`)
+$xmorg_compatibility = false;
 
 $debug = 0; // 0 - no debug, only fatal errors.
             // 1 - show total queries, mem usage, and only fatal errors.
