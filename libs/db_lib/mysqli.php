@@ -46,7 +46,7 @@ class SQL //MySQLi
 
     function result($query_id = 0, $row = NULL, $field = NULL){
         if ($query_id){
-            if (!is_null($row)) @mysqli_data_seek($query_id, $row);
+            if (!is_null($row)) @mysqli_data_seek($query_id, (int)$row);
             if ($field !== NULL) return (@mysqli_fetch_assoc($query_id))[$field] ?? false;
             $cur_row = @mysqli_fetch_row($query_id);
             return $cur_row[0] ?? false;
@@ -54,7 +54,7 @@ class SQL //MySQLi
     }
 	
 	function data_seek($query_id = 0, $row = 0){
-		return ($query_id) ? @mysqli_data_seek($query_id, $row) : false;
+		return ($query_id) ? @mysqli_data_seek($query_id, (int)$row) : false;
 	}
 
     function fetch_row($query_id = 0){
