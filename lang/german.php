@@ -1061,6 +1061,7 @@ function lang_user()
   'nonidentical_passes' => 'Du hast zwei unterschiedliche Passw&ouml;rter eingegeben.',
   'user_already_exist' => 'Benutzername existiert bereits.',
   'username_pass_too_long' => 'Benutzername/Passwort muss zwischen 4 und 15 Zeichen lang sein!',
+  'rename_needs_pass' => 'Zum Ändern des Benutzernamens ist ein neues Passwort nötig.',
   'use_only_eng_charset' => 'Benutzername darf nur [A-Z][a-z][0-9] beinhalten!',
   'no_value_passed' => 'Kein Wert &uuml;bergeben',
   'edit_acc' => 'Account bearbeiten',

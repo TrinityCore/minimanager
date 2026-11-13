@@ -1323,7 +1323,8 @@ function doedit_user()
     $user_pass_change = '';
     if ($_POST['pass'] !== '')
     {
-        list($salt, $verifier) = GetSRP6RegistrationData($username, $_POST['pass']);
+        // the verifier is built from the raw name, as login.php checks it
+        list($salt, $verifier) = GetSRP6RegistrationData($_POST['username'], $_POST['pass']);
         $user_pass_change = ('username=\'' . $username . '\', salt=UNHEX(\'' . bin2hex($salt) . '\'), verifier=UNHEX(\'' . bin2hex($verifier) . '\'), ');
     }
 
@@ -1351,18 +1352,27 @@ function doedit_user()
             $recruiter_id = 0;
     }
 
-    //make sure username/pass at least 4 chars long and less than max
-    if ((strlen($username) < 4) || (strlen($username) > 15))
-        redirect("user.php?action=edit_user&id=$id&error=8");
+    $result = $sqlr->query("SELECT account.username, IFNULL(account_access.SecurityLevel,0) as SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
+    $old_username = $sqlr->result($result, 0, 'username');
+
+    // only a new username is validated, so existing names like "10#1" stay editable
+    if ($_POST['username'] !== $old_username)
+    {
+        //make sure username/pass at least 4 chars long and less than max
+        if ((strlen($_POST['username']) < 4) || (strlen($_POST['username']) > 15))
+            redirect("user.php?action=edit_user&id=$id&error=8");
+        if (!valid_alphabetic($_POST['username']))
+            redirect("user.php?action=edit_user&error=9&id=$id");
+        // the SRP6 verifier includes the username, so a rename needs a new password
+        if ($_POST['pass'] === '')
+            redirect("user.php?action=edit_user&error=17&id=$id");
+    }
 
     if ($SecurityLevel >= $user_lvl)
         redirect("user.php?action=edit_user&&id={$_POST['id']}&error=16");
-    if (!valid_alphabetic($username))
-        redirect("user.php?action=edit_user&error=9&id=$id");
     //restricting accsess to lower gmlvl
-    $result = $sqlr->query("SELECT account.username, IFNULL(account_access.SecurityLevel,0) as SecurityLevel FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
     $accgmlevel = $sqlr->result($result, 0, 'SecurityLevel');
-    if (($user_lvl <= $accgmlevel) && ($user_name != $sqlr->result($result, 0, 'username')))
+    if (($user_lvl <= $accgmlevel) && ($user_name != $old_username))
         redirect("user.php?error=14");
 
 
@@ -1570,6 +1580,10 @@ switch ($err)
     case 16:
         $output .= "
             <h1><font class=\"error\">{$lang_user['you_have_no_permission_to_set_gmlvl']}</font></h1>";
+        break;
+    case 17:
+        $output .= "
+            <h1><font class=\"error\">{$lang_user['rename_needs_pass']}</font></h1>";
         break;
     default: //no error
         $output .= "

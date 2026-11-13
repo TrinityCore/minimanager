@@ -1073,6 +1073,7 @@ function lang_user()
     'nonidentical_passes' => 'You have Entered two nonidentical Passwords.',
     'user_already_exist' => 'Username Already Exist.',
     'username_pass_too_long' => 'Username/Password size must be 4-to-15 characters long!',
+    'rename_needs_pass' => 'A new password is required to change the username.',
     'use_only_eng_charset' => 'Username must contain [A-Z][a-z][0-9] only!',
     'no_value_passed' => 'No Value Passed',
     'edit_acc' => 'Edit Account',
