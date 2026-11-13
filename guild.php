@@ -425,6 +425,8 @@ function view_guild()
                             <ul>
                                 <li id=\"selected\"><a href=\"guild.php?action=view_guild&amp;realm=$realmid&amp;error=3&amp;id=$guild_data[0]\">".$lang_guild['members']."</a></li>
                                 <li><a href=\"guildbank.php?id=$guild_id&amp;realm=$realmid\">".$lang_guild['guildbank']."</a></li>
+                                <li><a href=\"guild.php?action=guild_logs&amp;realm=$realmid&amp;error=3&amp;id=$guild_id\">Guild Logs</a></li>
+                                <li><a href=\"guild.php?action=bank_logs&amp;realm=$realmid&amp;error=3&amp;id=$guild_id\">Bank Logs</a></li>
                             </ul>
                         </div>
                         <script type=\"text/javascript\">
@@ -625,6 +627,330 @@ function view_guild()
 
 
 //#############################################################################
+// GUILD LOGS
+//#############################################################################
+function guild_logs()
+{
+    global $lang_guild, $lang_global, $output, $realm_db, $characters_db, $realm_id, $itemperpage,
+            $action_permission, $user_lvl, $user_id;
+
+    $sqlr = new SQL;
+    $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
+
+    if (empty($_GET['realm']))
+        $realmid = $realm_id;
+    else
+    {
+        $realmid = $sqlr->quote_smart($_GET['realm']);
+        if (!is_numeric($realmid))
+            $realmid = $realm_id;
+    }
+
+    if(!isset($_GET['id']))
+        redirect("guild.php?error=1&amp;realm=$realmid");
+
+    $sqlc = new SQL;
+    $sqlc->connect($characters_db[$realmid]['addr'], $characters_db[$realmid]['user'], $characters_db[$realmid]['pass'], $characters_db[$realmid]['name']);
+
+    $guild_id = $sqlc->quote_smart($_GET['id']);
+    if (!is_numeric($guild_id))
+        redirect("guild.php?error=6&amp;realm=$realmid");
+
+    $q_inguild = $sqlc->query("select 1 from guild_member where guildid = '$guild_id' and guid in (select guid from characters where account = '$user_id')");
+    $inguild = $sqlc->result($q_inguild, 0, '1');
+    if ( $user_lvl < $action_permission['update'] && !$inguild )
+        redirect("guild.php?error=6&amp;realm=$realmid");
+
+    $start = (isset($_GET['start'])) ? $sqlc->quote_smart($_GET['start']) : 0;
+    if (!is_numeric($start))
+        $start = 0;
+
+    $q_count = $sqlc->query("SELECT 1 FROM guild_eventlog WHERE guildid = '$guild_id' AND EventType IN (2, 5, 6)");
+    $total_logs = $sqlc->num_rows($q_count);
+
+    $query = $sqlc->query("SELECT guildid, BINARY name AS name, BINARY info, BINARY MOTD, createdate,
+                          (select count(*) from guild_member where guildid = '$guild_id') as mtotal,
+                          (select count(*) from guild_member where guildid = '$guild_id' and guid in
+                          (select guid from characters where online = 1)) as monline
+                          FROM guild WHERE guildid = '$guild_id'");
+    list($g_id, $g_name, $g_info, $g_motd, $g_createdate, $g_mtotal, $g_monline) = $sqlc->fetch_row($query);
+
+    $output .= "
+                <center>
+                    <div id=\"tab_content\">
+                        <div id=\"tab\">
+                            <ul>
+                                <li><a href=\"guild.php?action=view_guild&amp;realm=$realmid&amp;error=3&amp;id=$g_id\">".$lang_guild['members']."</a></li>
+                                <li><a href=\"guildbank.php?id=$guild_id&amp;realm=$realmid\">".$lang_guild['guildbank']."</a></li>
+                                <li id=\"selected\"><a href=\"guild.php?action=guild_logs&amp;realm=$realmid&amp;error=3&amp;id=$g_id\">Guild Logs</a></li>
+                                <li><a href=\"guild.php?action=bank_logs&amp;realm=$realmid&amp;error=3&amp;id=$g_id\">Bank Logs</a></li>
+                            </ul>
+                        </div>
+                        <div id=\"tab_content2\">
+                            <table class=\"hidden\" style=\"width: 100%;\">
+                                <tr>
+                                    <td>
+                                        <table class=\"lined\" style=\"width: 100%;\">
+                                            <tr>
+                                                <td width=\"25%\"><b>{$lang_guild['create_date']}:</b><br />".date('o-m-d', $g_createdate)."</td>
+                                                <td width=\"50%\" class=\"bold\">$g_name</td>
+                                                <td width=\"25%\"><b>{$lang_guild['tot_m_online']}:</b><br />$g_monline / $g_mtotal</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=\"right\">".generate_pagination("guild.php?action=guild_logs&amp;error=3&amp;realm=$realmid&amp;id=$guild_id", $total_logs, $itemperpage, $start)."</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table class=\"lined\" style=\"width: 100%;\">
+                                            <tr>
+                                                <th width=\"25%\">Fecha</th>
+                                                <th width=\"35%\">Personaje</th>
+                                                <th width=\"40%\">Acción</th>
+                                            </tr>";
+
+    $q_logs = $sqlc->query("SELECT g.EventType, g.TimeStamp, g.PlayerGuid1, g.PlayerGuid2,
+                            BINARY c1.name AS name1, c1.account AS acc1,
+                            BINARY c2.name AS name2, c2.account AS acc2
+                            FROM guild_eventlog g
+                            LEFT JOIN characters c1 ON g.PlayerGuid1 = c1.guid
+                            LEFT JOIN characters c2 ON g.PlayerGuid2 = c2.guid
+                            WHERE g.guildid = '$guild_id' AND g.EventType IN (2, 5, 6)
+                            ORDER BY g.TimeStamp DESC LIMIT $start, $itemperpage");
+
+    if ($sqlc->num_rows($q_logs) > 0)
+    {
+        while ($row = $sqlr->fetch_row($q_logs))
+        {
+            list($ev_type, $ev_ts, $guid1, $guid2, $name1, $acc1, $name2, $acc2) = $row;
+            $ev_date     = date('Y-m-d H:i:s', $ev_ts);
+            $target_guid = ($ev_type == 5) ? $guid2 : $guid1;
+            $target_name = ($ev_type == 5) ? $name2 : $name1;
+            $target_acc  = ($ev_type == 5) ? $acc2  : $acc1;
+
+            if (!empty($target_name))
+            {
+                $res_gm = $sqlr->query("SELECT SecurityLevel FROM account_access WHERE AccountID ='$target_acc'");
+                $target_gmlvl = $sqlr->result($res_gm, 0, 'SecurityLevel');
+                $char_link = ($user_lvl < $target_gmlvl)
+                    ? htmlentities($target_name)
+                    : "<a href=\"char.php?id=$target_guid&amp;realm=$realmid\">".htmlentities($target_name)."</a>";
+            }
+            else
+                $char_link = "<i>Personaje borrado (GUID: $target_guid)</i>";
+
+            if ($ev_type == 2)
+                $action_txt = "<span style=\"color: #00AA00; font-weight: bold;\">Se unió a la hermandad</span>";
+            elseif ($ev_type == 6)
+                $action_txt = "<span style=\"color: #CC0000; font-weight: bold;\">Abandonó la hermandad</span>";
+            else
+            {
+                $kicker = !empty($name1) ? htmlentities($name1) : "GUID: $guid1";
+                $action_txt = "<span style=\"color: #FF8800; font-weight: bold;\">Expulsado por $kicker</span>";
+            }
+
+            $output .= "
+                                            <tr>
+                                                <td>$ev_date</td>
+                                                <td>$char_link</td>
+                                                <td>$action_txt</td>
+                                            </tr>";
+        }
+    }
+    else
+        $output .= "
+                                            <tr>
+                                                <td colspan=\"3\">No hay registros de entradas o salidas.</td>
+                                            </tr>";
+
+    $output .= "
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=\"right\">".generate_pagination("guild.php?action=guild_logs&amp;error=3&amp;realm=$realmid&amp;id=$guild_id", $total_logs, $itemperpage, $start)."</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <table class=\"hidden\">
+                        <tr>
+                            <td>";
+    makebutton($lang_guild['show_guilds'], "guild.php?realm=$realmid\" type=\"def", 130);
+    $output .= "
+                            </td>
+                        </tr>
+                    </table>
+                </center>";
+}
+
+//#############################################################################
+// GUILD BANK LOGS
+//#############################################################################
+function bank_logs()
+{
+    global $lang_guild, $lang_global, $output, $realm_db, $characters_db, $world_db, $realm_id, $itemperpage,
+            $action_permission, $user_lvl, $user_id;
+
+    require_once 'libs/item_lib.php';
+
+    $sqlr = new SQL;
+    $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
+
+    $realmid = (!empty($_GET['realm']) && is_numeric($_GET['realm'])) ? $sqlr->quote_smart($_GET['realm']) : $realm_id;
+    if (!isset($_GET['id']))
+        redirect("guild.php?error=1&amp;realm=$realmid");
+
+    $sqlc = new SQL;
+    $sqlc->connect($characters_db[$realmid]['addr'], $characters_db[$realmid]['user'], $characters_db[$realmid]['pass'], $characters_db[$realmid]['name']);
+
+    $sqlw = new SQL;
+    $sqlw->connect($world_db[$realmid]['addr'], $world_db[$realmid]['user'], $world_db[$realmid]['pass'], $world_db[$realmid]['name']);
+
+    $guild_id = $sqlc->quote_smart($_GET['id']);
+    if (!is_numeric($guild_id))
+        redirect("guild.php?error=6&amp;realm=$realmid");
+
+    $q_inguild = $sqlc->query("select 1 from guild_member where guildid = '$guild_id' and guid in (select guid from characters where account = '$user_id')");
+    $inguild = $sqlc->result($q_inguild, 0, '1');
+    if ($user_lvl < $action_permission['update'] && !$inguild)
+        redirect("guild.php?error=6&amp;realm=$realmid");
+
+    $start = (isset($_GET['start']) && is_numeric($_GET['start'])) ? $sqlc->quote_smart($_GET['start']) : 0;
+    $total_logs = $sqlc->num_rows($sqlc->query("SELECT 1 FROM guild_bank_eventlog WHERE guildid = '$guild_id'"));
+
+    $query = $sqlc->query("SELECT guildid, BINARY name AS name, BINARY info, BINARY MOTD, createdate,
+                          (select count(*) from guild_member where guildid = '$guild_id') as mtotal,
+                          (select count(*) from guild_member where guildid = '$guild_id' and guid in
+                          (select guid from characters where online = 1)) as monline
+                          FROM guild WHERE guildid = '$guild_id'");
+    list($g_id, $g_name, $g_info, $g_motd, $g_createdate, $g_mtotal, $g_monline) = $sqlc->fetch_row($query);
+
+    $tabs_names = array();
+    $q_tabs = $sqlc->query("SELECT TabId, BINARY TabName FROM guild_bank_tab WHERE guildid = '$guild_id'");
+    while ($t_row = $sqlr->fetch_row($q_tabs))
+    {
+        list($tid, $tname) = $t_row;
+        $tabs_names[$tid] = !empty($tname) ? htmlentities($tname) : "Pestaña " . ($tid + 1);
+    }
+
+    $output .= "
+                <center>
+                    <div id=\"tab_content\">
+                        <div id=\"tab\">
+                            <ul>
+                                <li><a href=\"guild.php?action=view_guild&amp;realm=$realmid&amp;error=3&amp;id=$g_id\">".$lang_guild['members']."</a></li>
+                                <li><a href=\"guildbank.php?id=$guild_id&amp;realm=$realmid\">".$lang_guild['guildbank']."</a></li>
+                                <li><a href=\"guild.php?action=guild_logs&amp;realm=$realmid&amp;error=3&amp;id=$g_id\">Guild Logs</a></li>
+                                <li id=\"selected\"><a href=\"guild.php?action=bank_logs&amp;realm=$realmid&amp;error=3&amp;id=$g_id\">Bank Logs</a></li>
+                            </ul>
+                        </div>
+                        <div id=\"tab_content2\">
+                            <table class=\"hidden\" style=\"width: 100%;\">
+                                <tr>
+                                    <td>
+                                        <table class=\"lined\" style=\"width: 100%;\">
+                                            <tr>
+                                                <td width=\"25%\"><b>{$lang_guild['create_date']}:</b><br />".date('o-m-d', $g_createdate)."</td>
+                                                <td width=\"50%\" class=\"bold\">$g_name</td>
+                                                <td width=\"25%\"><b>{$lang_guild['tot_m_online']}:</b><br />$g_monline / $g_mtotal</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=\"right\">".generate_pagination("guild.php?action=bank_logs&amp;error=3&amp;realm=$realmid&amp;id=$guild_id", $total_logs, $itemperpage, $start)."</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table class=\"lined\" style=\"width: 100%;\">
+                                            <tr>
+                                                <th width=\"18%\">Fecha</th>
+                                                <th width=\"17%\">Personaje</th>
+                                                <th width=\"15%\">Pestaña</th>
+                                                <th width=\"18%\">Acción</th>
+                                                <th width=\"32%\">Objeto / Oro</th>
+                                            </tr>";
+    $q_logs = $sqlc->query("SELECT b.TabId, b.EventType, b.PlayerGuid, b.ItemOrMoney, b.ItemStackCount, b.DestTabId, b.TimeStamp,
+                            BINARY c.name AS cname, c.account AS cacc
+                            FROM guild_bank_eventlog b
+                            LEFT JOIN characters c ON b.PlayerGuid = c.guid
+                            WHERE b.guildid = '$guild_id'
+                            ORDER BY b.TimeStamp DESC LIMIT $start, $itemperpage");
+
+    if ($sqlc->num_rows($q_logs) > 0)
+    {
+        while ($row = $sqlr->fetch_row($q_logs))
+        {
+            list($tab_id, $ev_type, $p_guid, $item_or_money, $stack, $dest_tab, $ev_ts, $cname, $cacc) = $row;
+            $ev_date = date('Y-m-d H:i:s', $ev_ts);
+            $tab_label = isset($tabs_names[$tab_id]) ? $tabs_names[$tab_id] : "Pestaña " . ($tab_id + 1);
+
+            if (!empty($cname))
+            {
+                $res_gm = $sqlr->query("SELECT SecurityLevel FROM account_access WHERE AccountID ='$cacc'");
+                $target_gmlvl = $sqlr->result($res_gm, 0, 'SecurityLevel');
+                $char_link = ($user_lvl < $target_gmlvl) ? htmlentities($cname) : "<a href=\"char.php?id=$p_guid&amp;realm=$realmid\">".htmlentities($cname)."</a>";
+            }
+            else
+                $char_link = "<i>Borrado (GUID: $p_guid)</i>";
+
+            $copper = intval($item_or_money);
+            $gold_str = floor($copper / 10000)."g ".floor(($copper % 10000) / 100)."s ".($copper % 100)."c";
+
+            $item_entry = intval($item_or_money);
+            $item_name = get_item_name($item_entry, $sqlw);
+            $item_label = !empty($item_name) ? htmlentities($item_name) : "Item #$item_entry";
+            $qty = ($stack > 1) ? " x$stack" : "";
+            $wh_url = "https://wowhead.com" . $item_entry;
+            $item_str = "<a href=\"$wh_url\" target=\"_blank\">$item_label</a>$qty";
+
+            if ($ev_type == 1)      { $action_txt = "<span style=\"color:#00AA00;font-weight:bold;\">Depositó objeto</span>"; $detail_txt = $item_str; }
+            elseif ($ev_type == 2)  { $action_txt = "<span style=\"color:#CC0000;font-weight:bold;\">Retiró objeto</span>";   $detail_txt = $item_str; }
+            elseif ($ev_type == 3 || $ev_type == 7) {
+                $dest_label = isset($tabs_names[$dest_tab]) ? $tabs_names[$dest_tab] : "Pestaña " . ($dest_tab + 1);
+                $action_txt = "<span style=\"color:#3399FF;font-weight:bold;\">Movió objeto</span>";
+                $detail_txt = "$item_str &rarr; $dest_label";
+            }
+            elseif ($ev_type == 4)  { $action_txt = "<span style=\"color:#00AA00;font-weight:bold;\">Depositó oro</span>";   $detail_txt = $gold_str; }
+            elseif ($ev_type == 5)  { $action_txt = "<span style=\"color:#CC0000;font-weight:bold;\">Retiró oro</span>";     $detail_txt = $gold_str; }
+            elseif ($ev_type == 6)  { $action_txt = "<span style=\"color:#FF8800;font-weight:bold;\">Reparación</span>";     $detail_txt = $gold_str; }
+            elseif ($ev_type == 8 || $ev_type == 9) { $action_txt = "<span style=\"color:#AA66CC;font-weight:bold;\">Compró pestaña</span>"; $detail_txt = $gold_str; }
+            else                    { $action_txt = "Evento ($ev_type)"; $detail_txt = "$item_or_money"; }
+
+            $output .= "
+                                            <tr>
+                                                <td>$ev_date</td>
+                                                <td>$char_link</td>
+                                                <td>$tab_label</td>
+                                                <td>$action_txt</td>
+                                                <td>$detail_txt</td>
+                                            </tr>";
+        }
+    }
+    else
+        $output .= "<tr><td colspan=\"5\">No hay registros del banco de la hermandad.</td></tr>";
+
+    $output .= "
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=\"right\">".generate_pagination("guild.php?action=bank_logs&amp;error=3&amp;realm=$realmid&amp;id=$guild_id", $total_logs, $itemperpage, $start)."</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <table class=\"hidden\"><tr><td>";
+    makebutton($lang_guild['show_guilds'], "guild.php?realm=$realmid\" type=\"def", 130);
+    $output .= "</td></tr></table>
+                </center>";
+}
+//#############################################################################
 // ARE YOU SURE  YOU WOULD LIKE TO OPEN YOUR AIRBAG?
 //#############################################################################
 function del_guild()
@@ -798,6 +1124,10 @@ $action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
 
 if ('view_guild' == $action)
     view_guild();
+elseif ('guild_logs' == $action)
+    guild_logs();
+elseif ('bank_logs' == $action)
+    bank_logs();
 elseif ('del_guild' == $action)
     del_guild();
 elseif ('rem_char_from_guild' == $action)
