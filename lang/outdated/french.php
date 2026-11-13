@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /*
  * Project Name: MiniManager for Project Trinity
  * License: GNU General Public License v2(GPL)
