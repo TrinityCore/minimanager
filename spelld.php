@@ -129,8 +129,34 @@ function browse_spells()
                         </tr>
                         <tr>';
 
+    $disable_flag_names = array(
+        1   => 'SPELL_DISABLE_PLAYER (Players)',
+        2   => 'SPELL_DISABLE_CREATURE (Creatures)',
+        4   => 'SPELL_DISABLE_PET (Pets)',
+        8   => 'SPELL_DISABLE_DEPRECATED_SPELL (Deprecated)',
+        16  => 'SPELL_DISABLE_MAP (MapId)',
+        32  => 'SPELL_DISABLE_AREA (AreaId)',
+        64  => 'SPELL_DISABLE_LOS (Line of Sight)',
+        128 => 'SPELL_DISABLE_GAMEOBJECT (GameObjects)',
+        256 => 'SPELL_DISABLE_ARENAS (Arenas)',
+        512 => 'SPELL_DISABLE_BATTLEGROUNDS (Battlegrounds)'
+    );
+
     while($spelld = $sqlw->fetch_assoc($result))
     {
+        $f_val = intval($spelld['flags']);
+        if ($f_val === 0)
+            $f_tip = 'Spell enabled (0)';
+        else
+        {
+            $active_names = array();
+            foreach ($disable_flag_names as $bit => $label)
+            {
+                if (($f_val & $bit) !== 0)
+                    $active_names[] = $label;
+            }
+            $f_tip = !empty($active_names) ? implode('<br />', $active_names) : ('Unknown flag (' . $f_val . ')');
+        }
         if($user_lvl >= $action_permission['delete'])
             $output .= '
                             <td><input type="checkbox" name="check[]" value="'.$spelld['entry'].'" onclick="CheckCheckAll(document.form1);" /></td>';
@@ -139,7 +165,7 @@ function browse_spells()
                             <td></td>';
         $output .= '
                             <td>'.$spelld['entry'].'</td>
-                            <td>'.$spelld['flags'].'</td>
+                            <td style="cursor:help; text-decoration:underline dotted;" onmousemove="toolTip(\''.addslashes($f_tip).'\', \'item_tooltip\')" onmouseout="toolTip()">'.$spelld['flags'].'</td>
                             <td>'.$spelld['comment'].'</td>
                         </tr>
                         <tr>';
