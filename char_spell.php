@@ -51,7 +51,90 @@ function char_spell(&$sqlr, &$sqlc)
     );
     if ($ft !== 'all') $su .= '&amp;spell_type='.urlencode($ft);
     if ($fp > 0) $su .= '&amp;spell_prof='.$fp;
+    $ft = isset($_GET['spell_type']) ? trim($_GET['spell_type']) : 'all';
+    $fp = isset($_GET['spell_prof']) ? intval($_GET['spell_prof']) : 0;
+    $profs = array(
+      171 => 'Alquimia', 164 => 'Herrería', 333 => 'Encantamiento', 202 => 'Ingeniería',
+      182 => 'Herboristería', 773 => 'Inscripción', 755 => 'Joyería', 165 => 'Peletería',
+      186 => 'Minería', 393 => 'Desuello', 197 => 'Sastrería', 185 => 'Cocina',
+      129 => 'Primeros Auxilios', 356 => 'Pesca', 762 => 'Equitación'
+    );
+    if ($ft !== 'all') $su .= '&amp;spell_type='.urlencode($ft);
+    if ($fp > 0) $su .= '&amp;spell_prof='.$fp;
     $sw = ' guid = '.$id.' AND active = 1';
+    $pids = implode(',', array_keys($profs));
+
+    // Obtener todos los hechizos activos del personaje para calcular contadores
+    $char_spells = array();
+    $qc = $sqlc->query('SELECT spell FROM character_spell WHERE guid = '.$id.' AND active = 1');
+    while ($rw = $sqlc->fetch_row($qc)) { list($sp) = $rw; $char_spells[intval($sp)] = true; }
+    $total_all = count($char_spells);
+
+    // Identificar hechizos de talentos desde dbc_talent (rangos 1 a 5: field_4..field_8)
+    $talent_map = array();
+    $qt = $sqlm->query("SELECT field_4, field_5, field_6, field_7, field_8 FROM dbc_talent");
+    while ($rw = $sqlm->fetch_row($qt)) {
+      foreach ($rw as $tsp) {
+        $tsp = intval($tsp);
+        if ($tsp > 0) $talent_map[$tsp] = true;
+      }
+    }
+
+    // Clasificar los hechizos del personaje usando dbc_skilllineability + dbc_skillline
+    $class_map = array();
+    $prof_map = array();
+    $prof_counts = array_fill_keys(array_keys($profs), 0);
+    $mount_map = array();
+    $pet_map = array();
+
+    if ($total_all > 0) {
+      $sp_list = implode(',', array_keys($char_spells));
+      $qa = $sqlm->query("SELECT a.field_2, a.field_1, l.field_1 FROM dbc_skilllineability a LEFT JOIN dbc_skillline l ON a.field_1 = l.id WHERE a.field_2 IN ($sp_list)");
+      while ($rw = $sqlm->fetch_row($qa)) {
+        list($sp, $sk, $cat) = $rw;
+        $sp = intval($sp); $sk = intval($sk); $cat = intval($cat);
+        if ($sk === 777) $mount_map[$sp] = true;
+        elseif ($sk === 778) $pet_map[$sp] = true;
+        elseif (isset($profs[$sk])) {
+          if (!isset($prof_map[$sp])) {
+            $prof_map[$sp] = true;
+            $prof_counts[$sk]++;
+          }
+        } elseif ($cat === 7 && !isset($talent_map[$sp])) {
+          $class_map[$sp] = true;
+        }
+      }
+    }
+
+    $cnt_talent = count(array_intersect_key($char_spells, $talent_map));
+    $cnt_class  = count($class_map);
+    $cnt_prof   = count($prof_map);
+    $cnt_mount  = count($mount_map);
+    $cnt_pet    = count($pet_map);
+
+    // Resto de hechizos que no caen en ninguno de los grupos anteriores
+    $known_grouped = $talent_map + $class_map + $prof_map + $mount_map + $pet_map;
+    $other_spells = array_diff_key($char_spells, $known_grouped);
+    $cnt_other = count($other_spells);
+
+    if ($ft !== 'all') {
+      $fids = array(0);
+      if ($ft === 'class') $fids = array_merge($fids, array_keys($class_map));
+      elseif ($ft === 'talent') $fids = array_merge($fids, array_keys(array_intersect_key($char_spells, $talent_map)));
+      elseif ($ft === 'prof') {
+        if ($fp > 0) {
+          $qf = $sqlm->query("SELECT field_2 FROM dbc_skilllineability WHERE field_1 = $fp");
+          while ($rw = $sqlm->fetch_row($qf)) { list($x) = $rw; $fids[] = intval($x); }
+        } else {
+          $fids = array_merge($fids, array_keys($prof_map));
+        }
+      }
+      elseif ($ft === 'mount') $fids = array_merge($fids, array_keys($mount_map));
+      elseif ($ft === 'pet') $fids = array_merge($fids, array_keys($pet_map));
+      elseif ($ft === 'other') $fids = array_merge($fids, array_keys($other_spells));
+
+      $sw .= ' AND spell IN ('.implode(',', $fids).')';
+    }
     $pids = implode(',', array_keys($profs));
     if ($ft !== 'all') {
       $fq = '';
@@ -92,17 +175,18 @@ function char_spell(&$sqlr, &$sqlc)
                             <input type="hidden" name="id" value="'.$id.'" />
                             <input type="hidden" name="realm" value="'.$realmid.'" />
                             <select name="spell_type" onchange="var s=document.getElementById(this.dataset.t);s.style.display=(this.value==this.dataset.p)?this.dataset.b:this.dataset.n;" data-t="spell_prof" data-p="prof" data-b="inline-block" data-n="none">
-      <option value="all"'.($ft==='all'?' selected="selected"':'').'>Todos los hechizos</option>
-      <option value="class"'.($ft==='class'?' selected="selected"':'').'>Hechizos de clase</option>
-      <option value="prof"'.($ft==='prof'?' selected="selected"':'').'>Hechizos de profesiones</option>
-      <option value="mount"'.($ft==='mount'?' selected="selected"':'').'>Hechizos de monturas</option>
-      <option value="pet"'.($ft==='pet'?' selected="selected"':'').'>Hechizos de mascotas</option>
-      <option value="other"'.($ft==='other'?' selected="selected"':'').'>Otros hechizos</option>
+      <option value="all"'.($ft==='all'?' selected="selected"':'').'>Todos los hechizos ('.$total_all.')</option>
+      <option value="class"'.($ft==='class'?' selected="selected"':'').'>Hechizos de clase ('.$cnt_class.')</option>
+      <option value="talent"'.($ft==='talent'?' selected="selected"':'').'>Talentos ('.$cnt_talent.')</option>
+      <option value="prof"'.($ft==='prof'?' selected="selected"':'').'>Hechizos de profesiones ('.$cnt_prof.')</option>
+      <option value="mount"'.($ft==='mount'?' selected="selected"':'').'>Hechizos de monturas ('.$cnt_mount.')</option>
+      <option value="pet"'.($ft==='pet'?' selected="selected"':'').'>Hechizos de mascotas ('.$cnt_pet.')</option>
+      <option value="other"'.($ft==='other'?' selected="selected"':'').'>Otros hechizos ('.$cnt_other.')</option>
     </select>
     <select name="spell_prof" id="spell_prof" style="display:'.($ft==='prof'?'inline-block':'none').';">
-      <option value="0">Todas las profesiones</option>';
+      <option value="0">Todas las profesiones ('.$cnt_prof.')</option>';
     foreach ($profs as $pid => $pname) {
-      $output .= '<option value="'.$pid.'"'.($fp==$pid?' selected="selected"':'').'>'.$pname.'</option>';
+      $output .= '<option value="'.$pid.'"'.($fp==$pid?' selected="selected"':'').'>'.$pname.' ('.$prof_counts[$pid].')</option>';
     }
     $output .= '</select>
     <input type="text" name="spell_search" size="28" maxlength="50" autocomplete="off" value="'.htmlspecialchars($sv).'" placeholder="Buscar hechizo (Nombre o ID)" />
