@@ -2294,7 +2294,7 @@ function lang_forum()
 
 
 // Arrays de traducción extra (ver script completo para todas las claves)
-$lang_extra_char = array('avg_ilvl' => 'Nivel medio de objeto:', 'conectado' => 'conectado' /* ... */);
+$lang_extra_char = array('avg_ilvl' => 'Nivel medio de objeto:', 'online' => 'conectado' /* ... */);
 $lang_extra_misc = array('character' => 'Personaje', 'guild' => 'Hermandad' /* ... */);
 
 
@@ -2352,4 +2352,61 @@ $lang_global += array(
 );
 
 $lang_global += array('unchanged' => '(sin cambios)');
+
+$lang_global += array(
+  'personal_rating' => 'Índice personal', 'last_login_days' => 'Días sin conectar',
+  'last_ip' => 'Última IP', 'avg_item_level' => 'Nivel medio de objeto',
+  'real_item' => 'Objeto real', 'pet_abilities' => 'Habilidades de mascota',
+  'major_glyphs' => 'Glifos sublimes', 'minor_glyphs' => 'Glifos menores',
+  'cleanup_operator' => 'Operador', 'cleanup_parameter' => 'Parámetro',
+  'group_send' => 'Envío grupal', 'group_operator' => 'Operador', 'group_parameter' => 'Parámetro',
+  'sender' => 'Remitente', 'receiver' => 'Destinatario', 'search_by' => 'Buscar...',
+  'ticket_del_notice' => 'Nota: Eliminar tickets requiere .reload gm_ticket en el juego.',
+  'number_of_realms' => 'Número de reinos', 'recruiter' => 'Reclutador',
+  'recruiter_user_id' => 'ID de reclutador', 'recruiter_placeholder' => 'Nombre o ID del reclutador',
+  'change_faction' => 'Cambio de facción', 'change_race' => 'Cambio de raza',
+  'character_customize' => 'Personalización de personaje',
+  'reg_mail_body_1' => 'Hola, gracias por registrarte en nuestro servidor.',
+  'reg_mail_body_2' => 'Tus datos de acceso son:', 'reg_mail_thanks' => '¡Nos vemos en Azeroth!',
+  'register_link' => 'Registrarse', 'login_link' => 'Iniciar sesión',
+  'race' => 'Raza', 'class' => 'Clase', 'online' => 'Conectado', 'account' => 'Cuenta',
+  'kills' => 'Muertes', 'exp' => 'Exp', 'map' => 'Mapa', 'edit' => 'Editar',
+  'prev' => 'Anterior', 'next' => 'Siguiente', 'quote_label' => 'Cita',
+  'rename' => 'Renombrar', 'country' => 'País', 'gender' => 'Género',
+  'with_chars' => 'Con personajes', 'remove_filter' => 'Quitar filtro',
+  'add_and_condition' => 'Añadir condición Y', 'only_accounts_with_chars' => 'Solo cuentas con personajes',
+  'character' => 'Personaje', 'guild' => 'Hermandad', 'achieve_name_id' => 'Nombre o ID de logro',
+  'icon' => 'Icono', 'achievement' => 'Logro', 'pts' => 'Pts', 'date' => 'Fecha',
+  'no_recent_achieves' => 'Sin logros recientes', 'item_type' => 'Tipo de objeto',
+  'quality' => 'Calidad', 'gem' => 'Gema', 'projectile' => 'Proyectil',
+  'key' => 'Llave', 'glyph' => 'Glifo', 'req_level_short' => 'Niv. req.',
+  'clear' => 'Limpiar', 'mutual' => 'Mutuo', 'mutual_friends' => 'Amigos mutuos',
+  'root_id' => 'ID raíz', 'quest_chain_hint' => 'Cadena de misiones detectada',
+  'progress' => 'Progreso', 'current_status' => 'Estado actual',
+  'completed' => 'Completada', 'in_progress' => 'En progreso',
+  'group_bags' => 'Agrupar bolsas', 'total_tracked_quests' => 'Total de misiones rastreadas',
+  'quest_id' => 'ID misión', 'quest_title' => 'Título de misión',
+  'accepted' => 'Aceptada', 'abandoned' => 'Abandonada', 'by_gm' => 'Por GM',
+  'show_all' => 'Mostrar todo', 'clear_completed' => 'Limpiar completadas',
+  'guild_logs' => 'Registros de hermandad', 'bank_logs' => 'Registros del banco',
+  'email' => 'Correo', 'action' => 'Acción', 'joined_guild' => 'Se unió a la hermandad',
+  'left_guild' => 'Dejó la hermandad', 'no_guild_logs' => 'Sin registros de hermandad',
+  'tab' => 'Pestaña', 'item_gold' => 'Objeto / Oro', 'deposited_item' => 'Depositó objeto',
+  'withdrew_item' => 'Retiró objeto', 'moved_item' => 'Movió objeto',
+  'deposited_gold' => 'Depositó oro', 'withdrew_gold' => 'Retiró oro',
+  'repair' => 'Reparación', 'bought_tab' => 'Compró pestaña',
+  'no_bank_logs' => 'Sin registros de banco', 'quest_chains' => 'Cadenas de misiones',
+  'step' => 'Paso', 'quest_rewarded' => 'Recompensada', 'quest_ready' => 'Lista para entregar',
+  'quest_current_step' => 'Paso actual', 'quest_pending' => 'Pendiente',
+  'chains_detected' => 'Cadenas detectadas', 'chain_hash' => 'Hash de cadena',
+  'active_single_quests' => 'Misiones sueltas activas',
+  'completed_single_quests' => 'Misiones sueltas completadas',
+  'search_placeholder' => 'Buscar...', 'by_country' => 'por País',
+  'search_quest_placeholder' => 'Buscar por ID o título de misión...',
+  'unknown_quest' => 'Misión desconocida'
+);
+$lang_id_tab += array(
+  'Player' => 'Jugador', 'Moderator' => 'Moderador', 'BugTracker' => 'Rastreador de errores',
+  'Administrator' => 'Administrador', 'Alliance' => 'Alianza', 'Horde' => 'Horda'
+);
 ?>
