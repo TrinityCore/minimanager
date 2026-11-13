@@ -199,13 +199,15 @@ function char_inv(&$sqlr, &$sqlc)
             {
                 $output .= '
                                     <th>';
-                if($equiped_bag_id[$i])
+                if(is_array($equiped_bag_id[$i]))
+                {
                     $output .='
                                         <a style="padding:2px;" href="'.$item_datasite.$equiped_bag_id[$i][0].'" target="_blank">
                                             <img class="bag_icon" src="'.get_item_icon($equiped_bag_id[$i][0], $sqlm, $sqlw).'" alt="" />
                                         </a>
                                         '.$lang_item['bag'].' '.$i.'<br />
                                         <font class="small">'.$equiped_bag_id[$i][1].' '.$lang_item['slots'].'</font>';
+                }
                 $output .= '
                                     </th>';
             }
@@ -217,16 +219,19 @@ function char_inv(&$sqlr, &$sqlc)
             for($t = 1; $t < 5; ++$t)
             {
                 $output .= '
-                                    <td class="bag" valign="bottom" align="center">
-                                        <div style="width:'.(4*43).'px;height:'.(ceil($equiped_bag_id[$t][1]/4)*41).'px;">';
-                $dsp = $equiped_bag_id[$t][1]%4;
-                if ($dsp)
-                    $output .= '
-                                            <div class="no_slot"></div>';
-                foreach ($bag[$t] as $pos => $item)
+                                    <td class="bag" valign="bottom" align="center">';
+                if (is_array($equiped_bag_id[$t]))
                 {
-                    $item[2] = $item[2] == 1 ? '' : $item[2];
                     $output .= '
+                                        <div style="width:'.(4*43).'px;height:'.(ceil($equiped_bag_id[$t][1]/4)*41).'px;">';
+                    $dsp = $equiped_bag_id[$t][1]%4;
+                    if ($dsp)
+                        $output .= '
+                                            <div class="no_slot"></div>';
+                    foreach ($bag[$t] as $pos => $item)
+                    {
+                        $item[2] = $item[2] == 1 ? '' : $item[2];
+                        $output .= '
                                             <div style="left:'.(($pos+$dsp)%4*42).'px;top:'.(floor(($pos+$dsp)/4)*41).'px;">
                                                 <a style="padding:2px;" href="'.$item_datasite.$item[0].'" target="_blank">
                                                     <img src="'.get_item_icon($item[0], $sqlm, $sqlw).'" alt="" />
@@ -234,9 +239,11 @@ function char_inv(&$sqlr, &$sqlc)
                                                 <div style="width:25px;margin:-20px 0px 0px 18px;color: black; font-size:14px">'.$item[2].'</div>
                                                 <div style="width:25px;margin:-21px 0px 0px 17px;font-size:14px">'.$item[2].'</div>
                                             </div>';
+                    }
+                    $output .= '
+                                        </div>';
                 }
                 $output .= '
-                                        </div>
                                     </td>';
             }
             unset($equiped_bag_id);
@@ -306,7 +313,7 @@ function char_inv(&$sqlr, &$sqlc)
             {
                 $output .= '
                                     <th>';
-                if($equip_bnk_bag_id[$i])
+                if(is_array($equip_bnk_bag_id[$i]))
                 {
                     $output .= '
                                         <a style="padding:2px;" href="'.$item_datasite.$equip_bnk_bag_id[$i][0].'" target="_blank">
@@ -335,7 +342,7 @@ function char_inv(&$sqlr, &$sqlc)
                     {
                         $output .= '
                                         <th>';
-                        if($equip_bnk_bag_id[$i])
+                        if(is_array($equip_bnk_bag_id[$i]))
                         {
                             $output .= '
                                             <a style="padding:2px;" href="'.$item_datasite.$equip_bnk_bag_id[$i][0].'" target="_blank">
@@ -354,17 +361,20 @@ function char_inv(&$sqlr, &$sqlc)
                                     <tr>';
                 }
                 $output .= '
-                                        <td class="bank" align="center">
-                                            <div style="width:'.(4*43).'px;height:'.(ceil($equip_bnk_bag_id[$t][1]/4)*41).'px;">';
-                $dsp=$equip_bnk_bag_id[$t][1]%4;
-
-                if ($dsp)
-                    $output .= '
-                                                <div class="no_slot"></div>';
-                foreach ($bank[$t] as $pos => $item)
+                                        <td class="bank" align="center">';
+                if (is_array($equip_bnk_bag_id[$t]))
                 {
-                    $item[2] = $item[2] == 1 ? '' : $item[2];
                     $output .= '
+                                            <div style="width:'.(4*43).'px;height:'.(ceil($equip_bnk_bag_id[$t][1]/4)*41).'px;">';
+                    $dsp=$equip_bnk_bag_id[$t][1]%4;
+
+                    if ($dsp)
+                        $output .= '
+                                                <div class="no_slot"></div>';
+                    foreach ($bank[$t] as $pos => $item)
+                    {
+                        $item[2] = $item[2] == 1 ? '' : $item[2];
+                        $output .= '
                                                     <div style="left:'.(($pos+$dsp)%4*43).'px;top:'.(floor(($pos+$dsp)/4)*41).'px;">
                                                         <a style="padding:2px;" href="'.$item_datasite.$item[0].'" target="_blank">
                                                             <img src="'.get_item_icon($item[0], $sqlm, $sqlw).'" alt="" />
@@ -372,10 +382,12 @@ function char_inv(&$sqlr, &$sqlc)
                                                     <div style="width:25px;margin:-20px 0px 0px 18px;color: black; font-size:14px">'.$item[2].'</div>
                                                     <div style="width:25px;margin:-21px 0px 0px 17px;font-size:14px">'.$item[2].'</div>
                                                 </div>';
-                }
+                    }
 
+                    $output .= '
+                                            </div>';
+                }
                 $output .= '
-                                            </div>
                                         </td>';
             }
             unset($equip_bnk_bag_id);
