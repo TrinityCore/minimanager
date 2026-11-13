@@ -24,7 +24,8 @@ Optional: the PHP `soap` extension, if you set `$enable_soap` in the configurati
 
 ## Quick start with Docker
 
-The Docker setup runs Apache, PHP 8.3, and MySQL 8.4. The MySQL container holds only the `mmfpm` database.
+The Docker setup runs Apache, PHP 8.3, and MySQL 8.4. To use nginx or Caddy instead of Apache, see
+[Using nginx or Caddy](#using-nginx-or-caddy). The MySQL container holds only the `mmfpm` database.
 Your TrinityCore databases stay where they are.
 
 1. Copy the configuration file:
@@ -79,8 +80,45 @@ MySQL listens on `127.0.0.1:3306` and stores its data in `.docker/mysql/data/`.
 
 4. Make the `backup/` directory writable by the web server if you plan to use the backup page.
 
-5. Block web access to `SQL/`, `backup/`, `doc/`, and `.git/`. The Docker Apache configuration in
-   `.docker/apache/minimanager.apache.conf` shows one way to do this.
+5. Block web access to `SQL/`, `backup/`, `doc/`, and `.git/`. See [Using nginx or Caddy](#using-nginx-or-caddy)
+   for example configs that do this.
+
+## Using nginx or Caddy
+
+The Docker stack runs Apache. The repository has an equivalent config for each supported web server:
+
+| Server | Config |
+| --- | --- |
+| Apache | `.docker/apache/minimanager.apache.conf` |
+| nginx | `.docker/nginx/minimanager.nginx.conf` |
+| Caddy | `.docker/caddy/Caddyfile` |
+
+Each config sends `.php` requests to PHP-FPM. Each config also blocks `SQL/`, `backup/`, `doc/`, repository metadata,
+and `.sql`, `.md`, and `.yml` files.
+
+nginx and Caddy ignore `.htaccess` files. Keep the deny rules when you adapt a config. Without them, anyone can
+download the files in `backup/`.
+
+For a manual installation, change the document root (`/var/www/html`) and the PHP-FPM address (`php:9000`) to match
+your server.
+
+To use nginx in the Docker stack, create `.docker/docker-compose.override.yml`:
+
+```yaml
+services:
+  apache:
+    build: !reset null
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx/minimanager.nginx.conf:/etc/nginx/conf.d/default.conf:ro
+```
+
+For Caddy, use `image: caddy:2-alpine` and mount `./caddy/Caddyfile:/etc/caddy/Caddyfile:ro` instead. Then start the
+stack with both files:
+
+```shell
+docker compose -f .docker/docker-compose.yml -f .docker/docker-compose.override.yml up -d
+```
 
 ## Configuration
 
