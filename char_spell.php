@@ -41,8 +41,33 @@ function char_spell(&$sqlr, &$sqlc)
             $sqlm = new SQL; $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
             $sv = isset($_GET['spell_search']) ? trim($_GET['spell_search']) : '';
             $su = ($sv !== '') ? '&amp;spell_search='.urlencode($sv) : '';
-            $sw = ' guid = '.$id.' AND active = 1';
-            if ($sv !== '') {
+            $ft = isset($_GET['spell_type']) ? trim($_GET['spell_type']) : 'all';
+    $fp = isset($_GET['spell_prof']) ? intval($_GET['spell_prof']) : 0;
+    $profs = array(
+      171 => 'Alquimia', 164 => 'Herrería', 333 => 'Encantamiento', 202 => 'Ingeniería',
+      182 => 'Herboristería', 773 => 'Inscripción', 755 => 'Joyería', 165 => 'Peletería',
+      186 => 'Minería', 393 => 'Desuello', 197 => 'Sastrería', 185 => 'Cocina',
+      129 => 'Primeros Auxilios', 356 => 'Pesca', 762 => 'Equitación'
+    );
+    if ($ft !== 'all') $su .= '&amp;spell_type='.urlencode($ft);
+    if ($fp > 0) $su .= '&amp;spell_prof='.$fp;
+    $sw = ' guid = '.$id.' AND active = 1';
+    $pids = implode(',', array_keys($profs));
+    if ($ft !== 'all') {
+      $fq = '';
+      if ($ft === 'class') $fq = "SELECT a.field_2 FROM dbc_skilllineability a JOIN dbc_skillline l ON a.field_1 = l.id WHERE l.field_1 = 7";
+      elseif ($ft === 'prof') $fq = ($fp > 0) ? "SELECT field_2 FROM dbc_skilllineability WHERE field_1 = $fp" : "SELECT field_2 FROM dbc_skilllineability WHERE field_1 IN ($pids)";
+      elseif ($ft === 'mount') $fq = "SELECT field_2 FROM dbc_skilllineability WHERE field_1 = 777";
+      elseif ($ft === 'pet') $fq = "SELECT field_2 FROM dbc_skilllineability WHERE field_1 = 778";
+      elseif ($ft === 'other') $fq = "SELECT a.field_2 FROM dbc_skilllineability a JOIN dbc_skillline l ON a.field_1 = l.id WHERE l.field_1 = 7 OR a.field_1 IN ($pids, 777, 778)";
+      if ($fq !== '') {
+        $qf = $sqlm->query($fq);
+        $fids = array(0);
+        while ($rw = $sqlm->fetch_row($qf)) { list($x) = $rw; $fids[] = intval($x); }
+        $sw .= ($ft === 'other' ? ' AND spell NOT IN (' : ' AND spell IN (').implode(',', $fids).')';
+      }
+    }
+            if ($sv !== '' || $ft !== 'all' || $fp > 0) {
                 if (is_numeric($sv)) $sw .= ' AND spell = '.intval($sv);
                 else {
                     $qp = $sqlm->query("SELECT id FROM dbc_spell WHERE field_136 LIKE '%".$sqlm->quote_smart($sv)."%'");
@@ -66,11 +91,25 @@ function char_spell(&$sqlr, &$sqlc)
                         <form action="char_spell.php" method="get" name="form" style="margin-bottom: 6px;">
                             <input type="hidden" name="id" value="'.$id.'" />
                             <input type="hidden" name="realm" value="'.$realmid.'" />
-                            <input type="text" name="spell_search" size="28" maxlength="50" autocomplete="off" value="'.htmlspecialchars($sv).'" placeholder="Buscar hechizo (Nombre o ID)" />
+                            <select name="spell_type" onchange="var s=document.getElementById(this.dataset.t);s.style.display=(this.value==this.dataset.p)?this.dataset.b:this.dataset.n;" data-t="spell_prof" data-p="prof" data-b="inline-block" data-n="none">
+      <option value="all"'.($ft==='all'?' selected="selected"':'').'>Todos los hechizos</option>
+      <option value="class"'.($ft==='class'?' selected="selected"':'').'>Hechizos de clase</option>
+      <option value="prof"'.($ft==='prof'?' selected="selected"':'').'>Hechizos de profesiones</option>
+      <option value="mount"'.($ft==='mount'?' selected="selected"':'').'>Hechizos de monturas</option>
+      <option value="pet"'.($ft==='pet'?' selected="selected"':'').'>Hechizos de mascotas</option>
+      <option value="other"'.($ft==='other'?' selected="selected"':'').'>Otros hechizos</option>
+    </select>
+    <select name="spell_prof" id="spell_prof" style="display:'.($ft==='prof'?'inline-block':'none').';">
+      <option value="0">Todas las profesiones</option>';
+    foreach ($profs as $pid => $pname) {
+      $output .= '<option value="'.$pid.'"'.($fp==$pid?' selected="selected"':'').'>'.$pname.'</option>';
+    }
+    $output .= '</select>
+    <input type="text" name="spell_search" size="28" maxlength="50" autocomplete="off" value="'.htmlspecialchars($sv).'" placeholder="Buscar hechizo (Nombre o ID)" />
                         </form>
                         <table class="hidden" style="margin: 0 auto;"><tr><td>';
             makebutton($lang_global['search'], 'javascript:do_submit()', 80);
-            if ($sv !== '') {
+            if ($sv !== '' || $ft !== 'all' || $fp > 0) {
                 $output .= '</td><td>';
                 makebutton($lang_global['back'], 'char_spell.php?id='.$id.'&amp;realm='.$realmid, 80);
             }

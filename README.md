@@ -128,6 +128,34 @@ Docker users who move from the old MySQL 5.6 image to MySQL 8.4 cannot reuse `.d
 upgrade 5.6 data directly to 8.4. Dump the `mmfpm` database first, remove the data directory, start the new stack,
 and import the dump.
 
+### Spell Category Filter (`char_spell.php`)
+
+To enable the spell category filter (Class, Professions, Mounts, Pets, and Other) in `char_spell.php`, import `SkillLineAbility.dbc` into your `minimanager` database by running the following script from the MiniManager root directory (adjust `$dbc_path` to your server's DBC folder):
+
+```bash
+php << 'IMPORT'
+<?php
+\$dbc_path = "/path/to/SkillLineAbility.dbc";
+
+require "scripts/config.php";
+\$m = new mysqli(\(mmfpm_db["addr"], \)mmfpm_db["user"], \(mmfpm_db["pass"], \)mmfpm_db["name"]);
+fh = fopen(dbc_path, "rb");
+\$hdr = unpack("a4magic/Vrows/Vcols/Vrowsize/Vstrsize", fread(\(fh, 20));\)m->query("DROP TABLE IF EXISTS dbc_skilllineability");
+\$m->query("CREATE TABLE dbc_skilllineability (field_0 INT UNSIGNED PRIMARY KEY, field_1 INT UNSIGNED, field_2 INT UNSIGNED, KEY idx_skill (field_1), KEY idx_spell (field_2)) ENGINE=MyISAM");
+\$vals = array();
+for (\$i = 0; i < hdr["rows"]; \(i++) {\)r = unpack("Va/Vb/Vc", fread(fh, hdr["rowsize"]));
+  \(vals[] = "(".\)r["a"].",".\(r["b"].",".\)r["c"].")";
+  if (count(\(vals) >= 1000) {\)m->query("INSERT INTO dbc_skilllineability VALUES ".implode(",", \(vals));\)vals = array();
+  }
+}
+if (!empty(vals)) m->query("INSERT INTO dbc_skilllineability VALUES ".implode(",", \$vals));
+fclose(\$fh);
+echo "Imported ".\$hdr["rows"]." rows into dbc_skilllineability\n";
+?>
+IMPORT
+```
+
 ## License
 
 MiniManager is released under the GNU General Public License v2. See [doc/GPLv2](doc/GPLv2).
+
