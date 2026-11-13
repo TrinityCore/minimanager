@@ -167,8 +167,75 @@ function char_inv(&$sqlr, &$sqlc)
 
             require_once 'core/char/char_header.php';
 
+            $inv_entries = array();
+            foreach ($bag as $b_list) foreach ($b_list as $it) if (!empty($it[0])) $inv_entries[intval($it[0])] = true;
+            foreach ($bank as $b_list) foreach ($b_list as $it) if (!empty($it[0])) $inv_entries[intval($it[0])] = true;
+            foreach ($equiped_bag_id as $eb) if (is_array($eb) && !empty($eb[0])) $inv_entries[intval($eb[0])] = true;
+            foreach ($equip_bnk_bag_id as $eb) if (is_array($eb) && !empty($eb[0])) $inv_entries[intval($eb[0])] = true;
+
+            $sqlw_names = new SQL;
+            $sqlw_names->connect($world_db[$realmid]['addr'], $world_db[$realmid]['user'], $world_db[$realmid]['pass'], $world_db[$realmid]['name']);
+            $inv_names_map = array();
+            if (!empty($inv_entries)) {
+                $ids_in = implode(',', array_keys($inv_entries));
+                $q_n = $sqlw_names->query("SELECT entry, name FROM item_template WHERE entry IN ($ids_in)");
+                while ($rn = $sqlw_names->fetch_assoc($q_n)) {
+                    $inv_names_map[intval($rn['entry'])] = mb_strtolower($rn['name'], 'UTF-8');
+                }
+                $q_loc = @$sqlw_names->query("SELECT ID, Name FROM item_template_locale WHERE locale IN ('esES','esMX') AND ID IN ($ids_in)");
+                if ($q_loc) {
+                    while ($rl = $sqlw_names->fetch_assoc($q_loc)) {
+                        if (!empty($rl['Name'])) {
+                            $inv_names_map[intval($rl['ID'])] .= ' ' . mb_strtolower($rl['Name'], 'UTF-8');
+                        }
+                    }
+                }
+            }
+            $inv_json = json_encode($inv_names_map, JSON_UNESCAPED_UNICODE);
+            $ph_txt = htmlspecialchars($lang_global['search_placeholder'] ?? 'Buscar...');
+
             $output .= '
-                            <br /><br />
+                            <br />
+                            <div style="margin: 8px 0 6px 0;">
+                                <input type="text" id="inv_live_search" placeholder="'.$ph_txt.'" autocomplete="off" style="width:260px;padding:4px 8px;" oninput="filterCharInv(this.value)" />
+                                <button type="button" id="inv_live_clear" onclick="document.getElementById(\'inv_live_search\').value=\'\';filterCharInv(\'\');" style="display:none;cursor:pointer;padding:3px 7px;">X</button>
+                            </div>
+                            <script type="text/javascript">
+                            var invItemNames = '.$inv_json.';
+                            function filterCharInv(q) {
+                                q = (q || "").toLowerCase().trim();
+                                var clr = document.getElementById("inv_live_clear");
+                                if (clr) clr.style.display = q.length ? "inline-block" : "none";
+                                var box = document.getElementById("tab_content2");
+                                if (!box) return;
+                                var links = box.getElementsByTagName("a");
+                                for (var i = 0; i < links.length; i++) {
+                                    var a = links[i];
+                                    var href = a.getAttribute("href") || "";
+                                    var m = href.match(/(?:item=|\/item\/)(\d+)/);
+                                    if (!m) continue;
+                                    var id = m[1];
+                                    var target = (a.parentNode && a.parentNode.tagName === "DIV" && a.parentNode.parentNode && a.parentNode.parentNode.style && a.parentNode.parentNode.style.width) ? a.parentNode : a;
+                                    target.style.transition = "opacity 0.15s ease, filter 0.15s ease";
+                                    if (!q) {
+                                        target.style.opacity = "1";
+                                        target.style.filter = "none";
+                                        a.style.outline = "none";
+                                        continue;
+                                    }
+                                    var name = invItemNames[id] || "";
+                                    if (name.indexOf(q) !== -1 || id === q) {
+                                        target.style.opacity = "1";
+                                        target.style.filter = "none";
+                                        a.style.outline = "1px solid #ffd100";
+                                    } else {
+                                        target.style.opacity = "0.18";
+                                        target.style.filter = "grayscale(85%)";
+                                        a.style.outline = "none";
+                                    }
+                                }
+                            }
+                            </script>
                             <table class="lined" style="width: 700px;">
                                 <tr>';
 
