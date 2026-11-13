@@ -1,6 +1,23 @@
 <?php
-
-
+function talent_tab_es($name)
+{
+    $is_es = ((isset($_COOKIE["lang"]) && $_COOKIE["lang"] === "spanish") || (isset($GLOBALS["language"]) && $GLOBALS["language"] === "spanish"));
+    if (!$is_es) return $name;
+    $map = array(
+        "Arms" => "Armas", "Fury" => "Furia", "Protection" => "Protección",
+        "Holy" => "Sagrado", "Retribution" => "Reprensión",
+        "Beast Mastery" => "Bestias", "Marksmanship" => "Puntería", "Survival" => "Supervivencia",
+        "Assassination" => "Asesinato", "Combat" => "Combate", "Subtlety" => "Sutileza",
+        "Discipline" => "Disciplina", "Shadow" => "Sombra",
+        "Blood" => "Sangre", "Frost" => "Escarcha", "Unholy" => "Profano",
+        "Elemental" => "Elemental", "Enhancement" => "Mejora", "Restoration" => "Restauración",
+        "Arcane" => "Arcano", "Fire" => "Fuego",
+        "Affliction" => "Aflicción", "Demonology" => "Demonología", "Destruction" => "Destrucción",
+        "Balance" => "Equilibrio", "Feral Combat" => "Combate feral",
+        "Ferocity" => "Ferocidad", "Tenacity" => "Tenacidad", "Cunning" => "Astucia"
+    );
+    return isset($map[$name]) ? $map[$name] : $name;
+}
 // page header, and any additional required libraries
 require_once 'header.php';
 require_once 'libs/char_lib.php';
@@ -61,8 +78,11 @@ $active_spec = isset($char['activeTalentGroup']) ? intval($char['activeTalentGro
             require_once 'core/char/char_header.php';
 
             if ($spec_count > 1 || $view_spec === 1) {
-                $s1_lbl = ($view_spec === 0 ? "[Spec 1]" : "Spec 1") . ($active_spec === 0 ? " (Active)" : "");
-                $s2_lbl = ($view_spec === 1 ? "[Spec 2]" : "Spec 2") . ($active_spec === 1 ? " (Active)" : "");
+                $is_es = ((isset($_COOKIE["lang"]) && $_COOKIE["lang"] === "spanish") || (isset($GLOBALS["language"]) && $GLOBALS["language"] === "spanish"));
+                $sp_w = $is_es ? "Especialización" : "Spec";
+                $ac_w = $is_es ? " (Activa)" : " (Active)";
+                $s1_lbl = ($view_spec === 0 ? "[$sp_w 1]" : "$sp_w 1") . ($active_spec === 0 ? $ac_w : "");
+                $s2_lbl = ($view_spec === 1 ? "[$sp_w 2]" : "$sp_w 2") . ($active_spec === 1 ? $ac_w : "");
                 $output .= '
                         <br /><table class="hidden" style="margin: 0 auto;"><tr><td>';
                 makebutton($s1_lbl, 'char_talent.php?id='.$id.'&amp;realm='.$realmid.'&amp;spec=0', 130);
@@ -247,7 +267,7 @@ $active_spec = isset($char['activeTalentGroup']) ? intval($char['activeTalentGro
                                                 </tr>
                                                 <tr>
                                                     <td colspan="6" valign="bottom" align="left">
-                                                    '.$sqlm->result($sqlm->query('SELECT field_1 FROM dbc_talenttab WHERE id = '.$k.''), 0, 'field_1').': '.$points.'
+                                                    '.talent_tab_es($sqlm->result($sqlm->query('SELECT field_1 FROM dbc_talenttab WHERE id = '.$k.''), 0, 'field_1')).': '.$points.'
                                                     </td>
                                                 </tr>
                                             </table>
