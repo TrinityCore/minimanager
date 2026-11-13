@@ -162,9 +162,9 @@ function browse_chars(&$sqlr, &$sqlc)
 
     $where_sql = $has_search ? implode(' AND ', $where_clauses) . ' AND ' : '';
     if ($has_item_search)
-        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname, SUM(item_instance.count) as amount FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid LEFT JOIN item_instance on characters.guid = item_instance.owner_guid WHERE $where_sql itemEntry = $item_search_val AND name != '' GROUP BY guid ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname, BINARY guild.name AS guild_name, SUM(item_instance.count) as amount FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid LEFT JOIN guild ON guild_member.guildid = guild.guildid LEFT JOIN item_instance on characters.guid = item_instance.owner_guid WHERE $where_sql itemEntry = $item_search_val AND characters.name != '' GROUP BY guid ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
     else
-        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid WHERE $where_sql name != '' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname, BINARY guild.name AS guild_name FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid LEFT JOIN guild ON guild_member.guildid = guild.guildid WHERE $where_sql characters.name != '' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
 
     $query_1 = $sqlc->query("SELECT count(*) FROM `characters` WHERE $where_sql name != ''");
     $query = $sqlc->query($sql_query);
@@ -299,27 +299,23 @@ function browse_chars(&$sqlr, &$sqlc)
     $output .='
                             </tr>';
 
-    $looping = ($this_page < $itemperpage) ? $this_page : $itemperpage;
+    $chars = [];
+    while ($char = $sqlc->fetch_row($query))
+        $chars[] = $char;
 
-    for ($i=1; $i<=$looping; $i++)
+    // owner accounts for the whole page in one query, to disalow lower lvl gm to view accounts of other gms
+    $accounts = [];
+    $account_ids = implode(',', array_map('intval', array_unique(array_column($chars, 2))));
+    $result = $sqlr->query('SELECT account.id, account.username, MAX(account_access.SecurityLevel) AS gmlevel FROM account LEFT JOIN account_access ON account.id = account_access.AccountID AND (account_access.RealmID = '.(int)$realm_id.' OR account_access.RealmID = -1) WHERE account.id IN ('.$account_ids.') GROUP BY account.id, account.username');
+    while ($acc = $sqlr->fetch_assoc($result))
+        $accounts[$acc['id']] = $acc;
+
+    foreach ($chars as $char)
     {
-        $char = $sqlr->fetch_row($query) or die(error($lang_global['err_no_user']));
-        // to disalow lower lvl gm to  view accounts of other gms
-        $result = $sqlr->query("SELECT `account_access`.`SecurityLevel`, `account`.`username` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id ='$char[2]'");
-        $acc = $sqlr->fetch_assoc($result);
-        $owner_gmlvl = $acc['SecurityLevel'];
-
-        if ($owner_gmlvl == null)
-            $owner_gmlvl = 0;
-
-        $owner_acc_name = $acc['username'];
+        $acc = $accounts[$char[2]] ?? null;
+        $owner_gmlvl = (int)($acc['gmlevel'] ?? 0);
+        $owner_acc_name = $acc['username'] ?? '';
         $lastseen = date('Y-m-d G:i:s', $char[10]);
-
-        $guild_name = $sqlc->fetch_row(
-            $sqlc->query(sprintf(
-                'SELECT BINARY name AS name FROM guild WHERE guildid = %d',
-                $char[11]
-            )));
 
         if (($user_lvl >= $owner_gmlvl)||($owner_acc_name == $user_name))
         {
@@ -338,7 +334,7 @@ function browse_chars(&$sqlr, &$sqlc)
             if ($has_item_search)
             {
                 $output .= "
-                                <td>$char[12]</td>";
+                                <td>$char[13]</td>";
             }
             $output .= "
                                 <td><img src='img/c_icons/{$char[3]}-{$char[9]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /></td>
@@ -346,7 +342,7 @@ function browse_chars(&$sqlr, &$sqlc)
                                 <td>".char_get_level_color($char[8])."</td>
                                 <td class=\"small\"><span onmousemove='toolTip(\"MapID:".$char[6]."\",\"item_tooltip\")' onmouseout='toolTip()'>".get_map_name($char[6], $sqlm)."</span></td>
                                 <td class=\"small\"><span onmousemove='toolTip(\"ZoneID:".$char[5]."\",\"item_tooltip\")' onmouseout='toolTip()'>".get_zone_name($char[5], $sqlm)."</span></td>
-                                <td class=\"small\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$char[11]\">".htmlentities($guild_name ? $guild_name[0] : "")."</a></td>
+                                <td class=\"small\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$char[11]\">".htmlentities($char[12] ?? '')."</a></td>
                                 <td class=\"small\">$lastseen</td>
                                 <td>".(($char[7]) ? "<img src=\"img/up.gif\" alt=\"\" />" : "-")."</td>";
             if ($showcountryflag)
