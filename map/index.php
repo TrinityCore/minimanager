@@ -886,7 +886,7 @@ function display()
   }
   if (ms<=0)
   {
-    reset();
+    initMapControls(); reset();
   }
   if (time!=0)
   {
@@ -894,9 +894,57 @@ function display()
   }
 }
 
+// Zoom & Drag-Pan Controller
+var mapZoom = 1, panX = 0, panY = 0, isDragging = false, startX = 0, startY = 0, movedDist = 0;
+function updateTransform() {
+    var c = document.getElementById('mapCanvas');
+    if (!c) return;
+    var minX = 966 - 966 * mapZoom, minY = 732 - 732 * mapZoom;
+    if (panX > 0) panX = 0; if (panX < minX) panX = minX;
+    if (panY > 0) panY = 0; if (panY < minY) panY = minY;
+    c.style.transform = 'translate(' + panX + 'px, ' + panY + 'px) scale(' + mapZoom + ')';
+}
+function zoomMap(factor, cx, cy) {
+    var newZ = mapZoom * factor;
+    if (newZ < 1) newZ = 1; if (newZ > 10) newZ = 10;
+    panX = cx - (cx - panX) * (newZ / mapZoom);
+    panY = cy - (cy - panY) * (newZ / mapZoom);
+    mapZoom = newZ;
+    updateTransform();
+}
+function resetView() { mapZoom = 1; panX = 0; panY = 0; updateTransform(); }
+function initMapControls() {
+    var v = document.getElementById('mapViewport');
+    if (!v) return;
+    v.onwheel = function(e) {
+        e.preventDefault();
+        var r = v.getBoundingClientRect();
+        zoomMap(e.deltaY < 0 ? 1.3 : 0.77, e.clientX - r.left, e.clientY - r.top);
+    };
+    v.ondblclick = function(e) {
+        var r = v.getBoundingClientRect();
+        zoomMap(1.6, e.clientX - r.left, e.clientY - r.top);
+    };
+    v.onmousedown = function(e) {
+        if (e.button !== 0) return;
+        isDragging = true; movedDist = 0;
+        startX = e.clientX - panX; startY = e.clientY - panY ;
+        v.style.cursor = 'grabbing';
+        e.preventDefault();
+    };
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        var nx = e.clientX - startX, ny = e.clientY - startY;
+        movedDist += Math.abs(nx - panX) + Math.abs(ny - panY);
+        panX = nx; panY = ny;
+        updateTransform();
+    });
+    document.addEventListener('mouseup', function() { if (isDragging) { isDragging = false; v.style.cursor = 'grab'; } });
+    v.addEventListener('click', function(e) { if (movedDist > 5) { e.stopPropagation(); e.preventDefault(); } }, true);
+}
 function start()
 {
-  reset();
+  initMapControls(); reset();
   display();
 
   if(navigator.appName=="Netscape")
@@ -918,12 +966,12 @@ function start()
     </table>
 </div>
 <div id="tip"></div>
-<div ID="pointsOldworld"></div>
+<div id="mapViewport" style="position:absolute;width:966px;height:732px;left:50%;margin-left:-483px;overflow:hidden;cursor:grab;"><div id="mapCanvas" style="position:absolute;top:0;left:0;width:966px;height:732px;transform-origin:0 0;"><div ID="pointsOldworld"></div>
 <div ID="pointsOutland"></div>
 <div ID="pointsNorthrend"></div>
 <div ID="world"></div>
 <div ID="outland"></div>
-<div ID="northrend"></div>
+<div ID="northrend"></div></div><div id="zoomCtrls" style="position:absolute;top:10px;right:10px;z-index:120;display:flex;flex-direction:column;gap:4px;"><button type="button" onclick="zoomMap(1.25,483,366)" style="width:28px;height:28px;font-weight:bold;cursor:pointer;">+</button><button type="button" onclick="zoomMap(0.8,483,366)" style="width:28px;height:28px;font-weight:bold;cursor:pointer;">-</button><button type="button" onclick="resetView()" style="width:28px;height:24px;font-size:10px;cursor:pointer;">1:1</button></div></div>
 <div ID="wow">
     <img src="<?php echo $img_base ?>realm_on.gif" id="statusIMG" style="position: absolute; border: 0px; left: 382; top: 0;" onClick="window.location='<?php echo $_SERVER['PHP_SELF'] ?>'">
 </div>
