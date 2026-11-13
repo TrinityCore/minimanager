@@ -396,6 +396,7 @@ function del_team()
 //##########################################################################################
 function rem_char_from_team()
 {
+    global $lang_global;
     global $characters_db, $realm_id, $user_lvl;
 
     if(isset($_GET['id']))

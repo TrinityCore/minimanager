@@ -422,6 +422,7 @@ function get_icon_type()
 
 function get_timezone_type()
 {
+    global $lang_global;
     global $lang_realm;
     return
         [

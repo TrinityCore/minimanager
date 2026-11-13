@@ -231,6 +231,7 @@ function add_entry()
 //########################################################################################################################
 function do_add_entry()
 {
+    global $lang_global;
     global $realm_db, $user_name, $output, $action_permission, $user_lvl;
     valid_login($action_permission['insert']);
 

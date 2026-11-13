@@ -251,6 +251,7 @@ function edit_ticket()
 //########################################################################################################################
 function do_edit_ticket()
 {
+    global $lang_global;
     global $characters_db, $realm_id, $action_permission;
     valid_login($action_permission['update']);
 

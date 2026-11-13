@@ -379,6 +379,7 @@ function lang_set()
 //###############################################################################################################
 function theme_set()
 {
+    global $lang_global;
     if (empty($_GET['theme']))
         redirect('edit.php?error=1');
     else

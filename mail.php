@@ -8,6 +8,7 @@ valid_login($action_permission['update']);
 // print mail form
 function print_mail_form()
 {
+    global $lang_global;
     global $lang_mail, $output;
 
     $to = (isset($_GET['to'])) ? $_GET['to'] : NULL;

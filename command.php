@@ -212,6 +212,7 @@ function update_commands()
 //#############################################################################
 function doupdate_commands()
 {
+    global $lang_global;
     global $sqlr, $action_permission;
     valid_login($action_permission['update']);
 

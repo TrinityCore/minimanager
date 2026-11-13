@@ -2475,6 +2475,7 @@ function do_delete()
 //########################################################################################################################
 function delete_spwn()
 {
+    global $lang_global;
     global $world_db, $realm_id, $user_lvl, $action_permission;
 
     if ($user_lvl < $action_permission['delete'] )

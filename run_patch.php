@@ -101,6 +101,7 @@ function print_upload()
 //#####################################################################################################
 function do_run_patch()
 {
+    global $lang_global;
     global $output, $lang_run_patch, $world_db, $realm_db, $characters_db, $mmfpm_db;
 
     if (empty($_POST['query']) || empty($_POST['use_db']))

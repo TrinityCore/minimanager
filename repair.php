@@ -150,6 +150,7 @@ function repair_form()
 //##############################################################################################
 function do_repair()
 {
+    global $lang_global;
     global $output, $realm_db, $mmfpm_db, $world_db, $characters_db, $action_permission;
     valid_login($action_permission['update']);
 

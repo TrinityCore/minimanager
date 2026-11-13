@@ -7,6 +7,7 @@ valid_login($action_permission['read']);
 
 function top100($realmid, &$sqlr, &$sqlc)
 {
+    global $lang_global;
     global $output, $lang_top, $realm_db, $characters_db, $server, $itemperpage, $developer_test_mode, $multi_realm_mode;
 
     $realm_id = $realmid;

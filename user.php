@@ -1452,6 +1452,7 @@ function doupdate_referral($referredby, $user_id)
 
 function soap_command()
 {
+    global $lang_global;
 global $soapaddr, $soap_port, $soap_user, $soap_pass, $cmd, $char, $docmd, $enable_soap, $action_permission;
 
 require_once 'scripts/config.php';

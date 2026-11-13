@@ -6,6 +6,7 @@ require_once 'libs/srp6_lib.php';
 // DO EMAIL VERIFICATION
 //#####################################################################################################
 function do_verify_email() {
+    global $lang_global;
     global $user_name, $authkey, $mail, $from_mail, $title, $mailer_type, $smtp_cfg;
 
     require_once("libs/mailer/class.phpmailer.php");

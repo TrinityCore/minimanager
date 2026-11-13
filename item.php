@@ -3118,6 +3118,7 @@ function delete()
 //########################################################################################################################
 function do_delete()
 {
+    global $lang_global;
     global $world_db, $realm_id, $action_permission, $user_lvl;
     valid_login($action_permission['delete']);
 

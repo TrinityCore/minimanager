@@ -1211,6 +1211,7 @@ function do_delete() {
 //   DELETE ALL GO SPAWNS
 //########################################################################################################################
 function delete_spwn() {
+    global $lang_global;
     global $world_db, $realm_id;
 
     if(isset($_GET['entry']))

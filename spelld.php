@@ -342,6 +342,7 @@ function doadd_new()
 //#####################################################################################################
 function del_spell()
 {
+    global $lang_global;
     global $world_db, $realm_id, $action_permission;
     valid_login($action_permission['delete']);
 

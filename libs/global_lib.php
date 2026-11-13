@@ -177,6 +177,7 @@ function maketooltip($text, $link, $tip, $class, $target = 'target="_self"')
 // Original from PHPBB with some modifications to make them more simple
 function generate_pagination($base_url, $num_items, $per_page, $start_item, $start_tag = 'start', $add_prevnext_text = TRUE)
 {
+    global $lang_global;
     if ($num_items);
     else 
         return '';

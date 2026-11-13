@@ -1019,6 +1019,7 @@ function del_guild()
 //#############################################################################
 function rem_char_from_guild(&$sqlr, &$sqlc)
 {
+    global $lang_global;
     global $characters_db, $realm_id, $user_lvl, $user_id, $action_permission;
 
     // this is multi realm support, as of writing still under development

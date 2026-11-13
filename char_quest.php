@@ -39,6 +39,7 @@ function get_full_quest_chain($qid, &$addon_map)
 
 function render_quest_chains_tree(&$chains_list, &$meta_map, &$char_states, $quest_datasite)
 {
+    global $lang_global;
     if (empty($chains_list))
         return '';
 
@@ -81,7 +82,7 @@ function render_quest_chains_tree(&$chains_list, &$meta_map, &$char_states, $que
         if ($is_complete)
             $status_badge = '<span style="color:#00AA00; font-weight:bold;">'.$lang_global['completed'].'</span>';
         elseif ($has_active)
-            $status_badge = '<span style="color:#FF9900; font-weight:bold;">Paso '.$active_step_idx.'/'.$total.'</span>';
+$status_badge = '<span style="color:#FF9900; font-weight:bold;">'.$lang_global['step'].' '.$active_step_idx.'/'.$total.'</span>';
         else
             $status_badge = '<span style="color:#888888;">'.$lang_global['in_progress'].'</span>';
 
@@ -105,13 +106,13 @@ function render_quest_chains_tree(&$chains_list, &$meta_map, &$char_states, $que
             $st_lvl = isset($meta_map[$sqid]['lvl']) ? $meta_map[$sqid]['lvl'] : '?';
 
             if ($st == 2)
-                $icon = '<img src="img/aff_tick.png" width="12" height="12" alt="" /> <span style="color:#00AA00;">[Recompensada]</span>';
+                $icon = '<img src="img/aff_tick.png" width="12" height="12" alt="" /> <span style="color:#00AA00;">['.$lang_global['quest_rewarded'].']</span>';
             elseif ($st == 1)
-                $icon = '<img src="img/aff_qst.png" width="12" height="12" alt="" /> <span style="color:#3399FF; font-weight:bold;">[Lista para entregar]</span>';
+                $icon = '<img src="img/aff_qst.png" width="12" height="12" alt="" /> <span style="color:#3399FF; font-weight:bold;">['.$lang_global['quest_ready'].']</span>';
             elseif ($st == 3)
-                $icon = '<img src="img/aff_qst.png" width="12" height="12" alt="" /> <span style="color:#FF9900; font-weight:bold;">[En curso - Paso actual]</span>';
+                $icon = '<img src="img/aff_qst.png" width="12" height="12" alt="" /> <span style="color:#FF9900; font-weight:bold;">['.$lang_global['quest_current_step'].']</span>';
             else
-                $icon = '<span style="color:#777777;">&#9675; [Pendiente]</span>';
+                $icon = '<span style="color:#777777;">&#9675; ['.$lang_global['quest_pending'].']</span>';
 
             $row_bg = ($st == 1 || $st == 3) ? ' background: rgba(255, 153, 0, 0.12); font-weight:bold;' : '';
 

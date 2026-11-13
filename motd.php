@@ -158,6 +158,7 @@ function do_edit_motd(&$sqlm)
 //#####################################################################################################
 function delete_motd(&$sqlm)
 {
+    global $lang_global;
     global $action_permission, $mmfpm_db;
     valid_login($action_permission['delete']);
 

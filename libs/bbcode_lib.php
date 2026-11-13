@@ -134,6 +134,7 @@ function bbcode_add_editor()
 
 function bbcode_bbc2html($text)
 {
+    global $lang_global;
   $bbcode_emoticons = bbcode_emoticons();
   // By BlackWizard, https://www.phpcs.com/codes/BBCODE-SIMPLEMENT_17638.aspx
   $text = preg_replace("#\[img\]((ht|f)tp://)([^\r\n\t<\"]*?)\[/img\]#si", "'<img src=\\1' . str_replace(' ', '%20', '\\3') . ' />'", $text);
