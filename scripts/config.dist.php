@@ -342,6 +342,7 @@ $menu_array =
       ['realm.php',      'realm', 1,5,5,5],
       ['motd.php',   'add_motd', 1,5,5,5],
       ['spelld.php',     'spelld', 1,5,5,5],
+      ['achievements.php', 'Achievements', 0,3,3,3],
       ['message.php',    'message', 1,5,5,5],
       ['ssh.php',   'ssh_line', 1,5,5,5],
       ],
