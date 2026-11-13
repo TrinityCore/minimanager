@@ -1,7 +1,3 @@
-FROM php:8.0-fpm-alpine
-RUN apk update \
-    apk upgrade;
-RUN apk add --upgrade php8-gmp gmp-dev;
-
-RUN docker-php-ext-install mysqli gmp;
-
+FROM php:8.3-fpm-alpine
+RUN apk add --no-cache gmp-dev \
+    && docker-php-ext-install mysqli gmp
