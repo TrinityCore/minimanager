@@ -2009,10 +2009,10 @@ function lang_events()
   $lang_events =
       [
     'total' => 'Total',
-    'descr' => 'Event name',
-    'start' => 'First Starting Time',
-    'occur' => 'Occurance<br /><small>days/hours</small>',
-    'length' => 'Length<br /><small>days/hours</small>',
+    'descr' => 'Nombre del evento',
+    'start' => 'Primera hora de inicio',
+    'occur' => 'Frecuencia<br /><small>días/horas</small>',
+    'length' => 'Duración<br /><small>días/horas</small>',
     'events' => 'Eventos',
       ];
   return $lang_events;
@@ -2027,12 +2027,12 @@ function lang_instances()
     'instances' => 'Instancias',
     'total' => 'Total',
     'map' => 'Mapa',
-	'mapid' => 'Map ID',
-	'item_level' => 'Item lvl',
-	'quest_a' => 'Quest A',
-	'quest_h' => 'Quest H',
-    'level_min' => 'Minimum level',
-    'level_max' => 'Maximum level',
+	'mapid' => 'ID de mapa',
+	'item_level' => 'Nivel de objeto',
+	'quest_a' => 'Misión Alianza',
+	'quest_h' => 'Misión Horda',
+    'level_min' => 'Nivel mínimo',
+    'level_max' => 'Nivel máximo',
       ];
   return $lang_instances;
 }
