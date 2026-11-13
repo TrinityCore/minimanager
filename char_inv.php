@@ -11,6 +11,26 @@ valid_login($action_permission['read']);
 //#############################################################################
 // SHOW INV. AND BANK ITEMS
 //#############################################################################
+function draw_merged_bag(&$items, $cap, $cols, $cw, $site, &$sqlm, &$sqlw) {
+    $rows = max(1, ceil($cap / $cols));
+    $w = $cols * $cw;
+    $h = $rows * 41;
+    $out = '<div style="position:relative;width:'.$w.'px;height:'.$h.'px;">';
+    for ($i = 0; $i < $cap; $i++) {
+        $l = ($i % $cols) * $cw;
+        $t = floor($i / $cols) * 41;
+        if (isset($items[$i])) {
+            list($entry, $cnt) = $items[$i];
+            $qty = ($cnt > 1) ? $cnt : '';
+            $ico = get_item_icon($entry, $sqlm, $sqlw);
+            $out .= '<div style="position:absolute;left:'.$l.'px;top:'.$t.'px;">'
+                  . '<a style="padding:2px;" href="'.$site.$entry.'" target="_blank"><img src="'.$ico.'" alt="" /></a>'
+                  . '<div style="width:25px;margin:-20px 0 0 18px;color:#000;font-size:14px;">'.$qty.'</div>'
+                  . '<div style="width:25px;margin:-21px 0 0 17px;font-size:14px;">'.$qty.'</div></div>';
+        }
+    }
+    return $out . '</div>';
+}
 function char_inv(&$sqlr, &$sqlc)
 {
     global $output, $lang_global, $lang_char, $lang_item,
@@ -156,7 +176,25 @@ function char_inv(&$sqlr, &$sqlc)
             $sqlm = new SQL;
             $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
 
-            // equipped bags
+            if (!empty($_GET['group_bags'])) {
+    $inv_all = array(); $inv_cap = 16;
+    foreach ($bag as $b_idx => $b_items) {
+        if ($b_idx > 0 && !empty($equiped_bag_id[$b_idx])) $inv_cap += intval($equiped_bag_id[$b_idx][1]);
+        foreach ($b_items as $it) $inv_all[] = array($it[0], $it[2]);
+    }
+    $bnk_all = array(); $bnk_cap = 28;
+    foreach ($bank as $b_idx => $b_items) {
+        if ($b_idx > 0 && !empty($equip_bnk_bag_id[$b_idx])) $bnk_cap += intval($equip_bnk_bag_id[$b_idx][1]);
+        foreach ($b_items as $it) $bnk_all[] = array($it[0], $it[2]);
+    }
+    $gold = substr($char['money'],0,-4).'<img src="img/gold.gif" alt="" /> '.substr($char['money'],-4,-2).'<img src="img/silver.gif" alt="" /> '.substr($char['money'],-2).'<img src="img/copper.gif" alt="" />';
+    $output .= '<tr><th colspan="4">'.$lang_char['backpack'].' ('.count($inv_all).' / '.$inv_cap.')</th></tr>'
+             . '<tr><td colspan="4" class="bag" align="center">'.draw_merged_bag($inv_all, $inv_cap, 14, 42, $item_datasite, $sqlm, $sqlw)
+             . '<div style="text-align:right;background:#393936;padding:3px;"><b>'.$gold.'</b></div></td></tr>'
+             . '<tr><th colspan="4">'.$lang_char['bank_items'].' ('.count($bnk_all).' / '.$bnk_cap.')</th></tr>'
+             . '<tr><td colspan="4" class="bank" align="center">'.draw_merged_bag($bnk_all, $bnk_cap, 14, 43, $item_datasite, $sqlm, $sqlw).'</td></tr>';
+} else {
+// equipped bags
             for($i=1; $i < 5; ++$i)
             {
                 $output .= '
@@ -345,7 +383,9 @@ function char_inv(&$sqlr, &$sqlc)
             $output .= '
                                         <td class="bank"></td>';
 
-            //---------------Page Specific Data Ends here----------------------------
+            
+}
+//---------------Page Specific Data Ends here----------------------------
             //---------------Character Tabs Footer-----------------------------------
             $output .= '
                                     </tr>
