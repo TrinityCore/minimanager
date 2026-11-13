@@ -50,7 +50,7 @@ function print_mail_form()
                             </tr>
                             <tr>
                                 <td colspan=\"3\">{$lang_mail['group_send']}:
-                                    <select name=\"group_send\" title='Group send'>
+                                    <select name=\"group_send\" title='{$lang_global['group_send']}'>
                                         <optgroup label=\"{$lang_mail['both']}\">
                                             <option value=\"gm_level\">{$lang_mail['gm_level']}</option>
                                         </optgroup>
@@ -63,13 +63,13 @@ function print_mail_form()
                                             <option value=\"online\">{$lang_mail['online']}</option>
                                         </optgroup>
                                     </select>
-                                    <select name=\"group_sign\" title='Group operator'>
+                                    <select name=\"group_sign\" title='{$lang_global['group_operator']}'>
                                         <option value=\"=\">=</option>
                                         <option value=\"&lt;\">&lt;</option>
                                         <option value=\">\">&gt;</option>
                                         <option value=\"!=\">!=</option>
                                     </select>
-                                    <input type=\"text\" name=\"group_value\" size=\"20\" maxlength=\"40\" title='Group parameter' />
+                                    <input type=\"text\" name=\"group_value\" size=\"20\" maxlength=\"40\" title='{$lang_global['group_parameter']}' />
                                 </td>
                             </tr>
                             <tr>

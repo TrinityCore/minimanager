@@ -246,7 +246,7 @@ function browse_chars(&$sqlr, &$sqlc)
                                                                 <option value=\"guild\"".($f_by == 'guild' ? " selected=\"selected\"" : "").">{$lang_char_list['by_guild']}</option>
                                                                 <option value=\"race\"".($f_by == 'race' ? " selected=\"selected\"" : "").">{$lang_char_list['by_race_id']}</option>
                                                                 <option value=\"class\"".($f_by == 'class' ? " selected=\"selected\"" : "").">{$lang_char_list['by_class_id']}</option>
-                                                                <option value=\"gender\"".($f_by == 'gender' ? " selected=\"selected\"" : "").">Género</option>
+                                                                <option value=\"gender\"".($f_by == 'gender' ? " selected=\"selected\"" : "").">{$lang_global['gender']}</option>
                                                                 <option value=\"logout_time\"".($f_by == 'logout_time' ? " selected=\"selected\"" : "").">Last Online (&lt; = &gt; YYYY-MM-DD)</option>
                                                                 <option value=\"map\"".($f_by == 'map' ? " selected=\"selected\"" : "").">{$lang_char_list['by_map_id']}</option>
                                                                 <option value=\"online\"".($f_by == 'online' ? " selected=\"selected\"" : "").">{$lang_char_list['by_online']}</option>

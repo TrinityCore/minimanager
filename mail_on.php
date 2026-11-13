@@ -61,8 +61,8 @@ function do_search(&$sqlc)
                                     <input type=\"hidden\" name=\"error\" value=\"4\" />
                                     <input type=\"text\" size=\"45\" name=\"search_value\" />
                                     <select name=\"search_by\">
-                                        <option value=\"sender\">Sender</option>
-                                        <option value=\"receiver\">Receiver</option>
+                                        <option value=\"sender\">{$lang_global['sender']}</option>
+                                        <option value=\"receiver\">{$lang_global['receiver']}</option>
                                     </select>
                                 </form>
                             </td>
@@ -193,8 +193,8 @@ function search() {
                                             <input type=\"hidden\" name=\"error\" value=\"4\" />
                                             <input type=\"text\" size=\"45\" name=\"search_value\" />
                                             <select name=\"search_by\">
-                                                <option value=\"sender\">Sender</option>
-                                                <option value=\"receiver\">Receiver</option>
+                                                <option value=\"sender\">{$lang_global['sender']}</option>
+                                                <option value=\"receiver\">{$lang_global['receiver']}</option>
                                             </select>
                                         </form>
                                     </td>

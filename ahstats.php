@@ -172,21 +172,21 @@ function browse_auctions(&$sqlr, &$sqlc)
         $show_rem = ($f_idx > 0) ? 'inline-block' : 'none';
         $output .= "
                                             <div class=\"ah_filter_row\" style=\"margin-bottom:3px; white-space:nowrap;\">
-                                                <input type=\"text\" size=\"20\" name=\"search_value[]\" value=\"$f_val\" placeholder=\"Buscar...\" />
+                                                <input type=\"text\" size=\"20\" name=\"search_value[]\" value=\"$f_val\" placeholder=\"{$lang_global['search_placeholder']}\" />
                                                 <select name=\"search_by[]\">
                                                     <option".($f_by == 'item_name' ? " selected=\"selected\"" : "")." value=\"item_name\">{$lang_auctionhouse['item_name']}</option>
                                                     <option".($f_by == 'item_id' ? " selected=\"selected\"" : "")." value=\"item_id\">{$lang_auctionhouse['item_id']}</option>
                                                     <option".($f_by == 'seller_name' ? " selected=\"selected\"" : "")." value=\"seller_name\">{$lang_auctionhouse['seller_name']}</option>
                                                     <option".($f_by == 'buyer_name' ? " selected=\"selected\"" : "")." value=\"buyer_name\">{$lang_auctionhouse['buyer_name']}</option>
                                                 </select>
-                                                <button type=\"button\" class=\"rem_ah_filter_btn\" onclick=\"removeAhFilter(this)\" style=\"display:$show_rem; cursor:pointer;\" title=\"Quitar filtro\">-</button>
+                                                <button type=\"button\" class=\"rem_ah_filter_btn\" onclick=\"removeAhFilter(this)\" style=\"display:$show_rem; cursor:pointer;\" title=\"{$lang_global['remove_filter']}\">-</button>
                                             </div>";
     }
     $output .= "
                                         </div>
                                     </td>
                                     <td valign=\"top\">
-                                        <button type=\"button\" onclick=\"addAhFilter()\" style=\"cursor:pointer;\" title=\"Añadir otra condición AND\">+</button>
+                                        <button type=\"button\" onclick=\"addAhFilter()\" style=\"cursor:pointer;\" title=\"{$lang_global['add_and_condition']}\">+</button>
                                     </td>
                                     <td valign=\"top\" style=\"white-space:nowrap;\">
                                         <select name=\"search_class\" title=\"Tipo de objeto\">
@@ -194,17 +194,17 @@ function browse_auctions(&$sqlr, &$sqlc)
                                             <option".($search_class == 0 ? " selected=\"selected\"" : "")." value=\"0\">{$lang_item['consumable']}</option>
                                             <option".($search_class == 1 ? " selected=\"selected\"" : "")." value=\"1\">{$lang_item['bag']}</option>
                                             <option".($search_class == 2 ? " selected=\"selected\"" : "")." value=\"2\">{$lang_item['weapon']}</option>
-                                            <option".($search_class == 3 ? " selected=\"selected\"" : "")." value=\"3\">Gema</option>
+                                            <option".($search_class == 3 ? " selected=\"selected\"" : "")." value=\"3\">{$lang_global['gem']}</option>
                                             <option".($search_class == 4 ? " selected=\"selected\"" : "")." value=\"4\">{$lang_item['armor']}</option>
                                             <option".($search_class == 5 ? " selected=\"selected\"" : "")." value=\"5\">{$lang_item['reagent']}</option>
-                                            <option".($search_class == 6 ? " selected=\"selected\"" : "")." value=\"6\">Proyectil</option>
+                                            <option".($search_class == 6 ? " selected=\"selected\"" : "")." value=\"6\">{$lang_global['projectile']}</option>
                                             <option".($search_class == 7 ? " selected=\"selected\"" : "")." value=\"7\">{$lang_item['trade_goods']}</option>
                                             <option".($search_class == 9 ? " selected=\"selected\"" : "")." value=\"9\">{$lang_item['recipe']}</option>
                                             <option".($search_class == 11 ? " selected=\"selected\"" : "")." value=\"11\">{$lang_item['quiver']}</option>
-                                            <option".($search_class == 13 ? " selected=\"selected\"" : "")." value=\"13\">Llave</option>
+                                            <option".($search_class == 13 ? " selected=\"selected\"" : "")." value=\"13\">{$lang_global['key']}</option>
                                             <option".($search_class == 14 ? " selected=\"selected\"" : "")." value=\"14\">{$lang_item['permanent']}</option>
                                             <option".($search_class == 15 ? " selected=\"selected\"" : "")." value=\"15\">{$lang_item['misc_short']}</option>
-                                            <option".($search_class == 16 ? " selected=\"selected\"" : "")." value=\"16\">Glifo</option>
+                                            <option".($search_class == 16 ? " selected=\"selected\"" : "")." value=\"16\">{$lang_global['glyph']}</option>
                                         </select>
                                         <select name=\"search_quality\" title=\"Calidad\">
                                             <option".($search_quality == -1 ? " selected=\"selected\"" : "")." value=\"-1\">Calidad: {$lang_auctionhouse['all']}</option>
@@ -218,7 +218,7 @@ function browse_auctions(&$sqlr, &$sqlc)
                                         </select>
                                         <br />
                                         <div style=\"margin-top:4px;\">
-                                            Nvl Uso: <input type=\"text\" size=\"3\" maxlength=\"3\" name=\"min_req\" value=\"$min_req\" placeholder=\"Min\" /> - <input type=\"text\" size=\"3\" maxlength=\"3\" name=\"max_req\" value=\"$max_req\" placeholder=\"Max\" />
+                                            {$lang_global['req_level_short']} <input type=\"text\" size=\"3\" maxlength=\"3\" name=\"min_req\" value=\"$min_req\" placeholder=\"Min\" /> - <input type=\"text\" size=\"3\" maxlength=\"3\" name=\"max_req\" value=\"$max_req\" placeholder=\"Max\" />
                                             &nbsp;|&nbsp;
                                             iLvl: <input type=\"text\" size=\"4\" maxlength=\"4\" name=\"min_ilvl\" value=\"$min_ilvl\" placeholder=\"Min\" /> - <input type=\"text\" size=\"4\" maxlength=\"4\" name=\"max_ilvl\" value=\"$max_ilvl\" placeholder=\"Max\" />
                                         </div>
@@ -231,7 +231,7 @@ function browse_auctions(&$sqlr, &$sqlc)
                                     </td>
                                     <td valign=\"top\">";
 
-    ($has_search) ? makebutton("Limpiar", "ahstats.php",80) : $output .= "";
+    ($has_search) ? makebutton($lang_global['clear'], "ahstats.php",80) : $output .= "";
 
     $output .= "
                                     </td>

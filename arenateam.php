@@ -244,11 +244,11 @@ function view_team()
                     <tr>
                         <th width=\"1%\">{$lang_arenateam['remove']}</th>
                         <th width=\"1%\">{$lang_arenateam['name']}</th>
-                        <th width=\"1%\">Race</th>
-                        <th width=\"1%\">Class</th>
-                        <th width=\"1%\">Personal Rating</th>
-                        <th width=\"1%\">Last Login (Days)</th>
-                        <th width=\"1%\">Online</th>
+                        <th width=\"1%\">{$lang_global['race']}</th>
+                        <th width=\"1%\">{$lang_global['class']}</th>
+                        <th width=\"1%\">{$lang_global['personal_rating']}</th>
+                        <th width=\"1%\">{$lang_global['last_login_days']}</th>
+                        <th width=\"1%\">{$lang_global['online']}</th>
                         <th width=\"1%\">{$lang_arenateam['played_week']}</th>
                         <th width=\"1%\">{$lang_arenateam['wons_week']}</th>
                         <th width=\"1%\">Win %</th>

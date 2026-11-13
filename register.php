@@ -26,9 +26,9 @@ function do_verify_email() {
         }
     }
 
-    $body = "Hello, {$user_name}!<br /><br />Thank you for registering on our account management system. Unfortunately, all new accounts are required to verify their email addresses for security. Please follow the link below to verify your account now!<br /><br />
+    $body = "Hello, {$user_name}!<br /><br />{$lang_global['reg_mail_body_1']}<br /><br />
             <a href=\"{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}?username={$user_name}&amp;authkey={$authkey}\">{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}?username={$user_name}&amp;authkey={$authkey}</a>
-            If you are unable to see the link above, please copy and paste the following URL into your browsers address bar.<br />{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}?username={$user_name}&amp;authkey={$authkey}<br /><br />Thank you, <br />{$title} Manager";
+            {$lang_global['reg_mail_body_2']}<br />{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}?username={$user_name}&amp;authkey={$authkey}<br /><br />{$lang_global['reg_mail_thanks']} <br />{$title} Manager";
 
     $mail2->WordWrap = 50;
     $mail2->From = $from_mail;

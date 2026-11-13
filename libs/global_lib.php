@@ -238,10 +238,10 @@ function generate_pagination($base_url, $num_items, $per_page, $start_item, $sta
     if ($add_prevnext_text)
     {
         if (1 < $on_page)
-            $page_string = '<a href="'.$base_url.'&amp;'.$start_tag.'='.(($on_page-2)*$per_page).'">Prev</a>&nbsp;&nbsp;'.$page_string;
+            $page_string = '<a href="'.$base_url.'&amp;'.$start_tag.'='.(($on_page-2)*$per_page).'">'.$lang_global['prev'].'</a>&nbsp;&nbsp;'.$page_string;
             
         if ($on_page < $total_pages)
-            $page_string .= '&nbsp;&nbsp;<a href="'.$base_url.'&amp;'.$start_tag.'='.($on_page*$per_page).'">Next</a>';
+            $page_string .= '&nbsp;&nbsp;<a href="'.$base_url.'&amp;'.$start_tag.'='.($on_page*$per_page).'">'.$lang_global['next'].'</a>';
     }
     
     $page_string = 'Page: '.$page_string;

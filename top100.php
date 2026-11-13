@@ -101,7 +101,7 @@ function top100($realmid, &$sqlr, &$sqlc)
 
             $output .= '
                                     <form action="top100.php?type='.$type.'" method="post" name="form'.$realm_id.'">
-                                        Number of Realms :
+                                        '.$lang_global['number_of_realms'].' :
                                         <input type="hidden" name="action" value="realms" />
                                         <select name="n_realms">';
             for($i=1;$i<=$tot_realms;++$i)

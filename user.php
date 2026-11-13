@@ -248,7 +248,7 @@ function browse_users(&$sqlr, &$sqlc)
         $output .= '
                                                     <div class="user_filter_row" style="margin-bottom:3px;">
                                                         <input type="text" size="24" maxlength="50" name="search_value[]" value="'.$f_val.'" placeholder="' . $lang_global['search_by'] . '" />
-                                                        <select name="search_by[]" title="Search by">
+                                                        <select name="search_by[]" title="'.$lang_global['search_by'].'">
                                                             <option value="username"'.($f_by === 'username' ? ' selected="selected"' : '').'>'.$lang_user['by_name'].'</option>
                                                             <option value="id"'.($f_by === 'id' ? ' selected="selected"' : '').'>'.$lang_user['by_id'].'</option>
                                                             <option value="SecurityLevel"'.($f_by === 'SecurityLevel' ? ' selected="selected"' : '').'>'.$lang_user['by_gm_level'].'</option>
@@ -256,7 +256,7 @@ function browse_users(&$sqlr, &$sqlc)
                                                             <option value="expansion"'.($f_by === 'expansion' ? ' selected="selected"' : '').'>'.$lang_user['by_expansion'].'</option>
                                                             <option value="email"'.($f_by === 'email' ? ' selected="selected"' : '').'>'.$lang_user['by_email'].'</option>
                                                             <option value="joindate"'.($f_by === 'joindate' ? ' selected="selected"' : '').'>'.$lang_user['by_join_date'].'</option>
-                                                            <option value="country"'.($f_by === 'country' ? ' selected="selected"' : '').'>por País</option>
+                                                            <option value="country"'.($f_by === 'country' ? ' selected="selected"' : '').'>'.$lang_global['by_country'].'</option>
                                                             <option value="last_ip"'.($f_by === 'last_ip' ? ' selected="selected"' : '').'>'.$lang_user['by_ip'].'</option>
                                                             <option value="failed_logins"'.($f_by === 'failed_logins' ? ' selected="selected"' : '').'>'.$lang_user['by_failed_loggins'].'</option>
                                                             <option value="greater_failed_logins"'.($f_by === 'greater_failed_logins' ? ' selected="selected"' : '').'>'.$lang_user['by_greater_failed_loggins'].'</option>
@@ -265,16 +265,16 @@ function browse_users(&$sqlr, &$sqlc)
                                                             <option value="online"'.($f_by === 'online' ? ' selected="selected"' : '').'>'.$lang_user['by_online'].'</option>
                                                             <option value="locked"'.($f_by === 'locked' ? ' selected="selected"' : '').'>'.$lang_user['by_locked'].'</option>
                                                             <option value="banned"'.($f_by === 'banned' ? ' selected="selected"' : '').'>'.$lang_user['by_banned'].'</option>
-                                                            <option value="recruiter"'.($f_by === 'recruiter' ? ' selected="selected"' : '').'>Recruiter (User/ID)</option>
+                                                            <option value="recruiter"'.($f_by === 'recruiter' ? ' selected="selected"' : '').'>'.$lang_global['recruiter_user_id'].'</option>
                                                         </select>
-                                                        <button type="button" class="rem_user_filter_btn" onclick="removeUserFilter(this)" style="display:'.$show_rem.'; cursor:pointer;" title="Quitar filtro">-</button>
+                                                        <button type="button" class="rem_user_filter_btn" onclick="removeUserFilter(this)" style="display:'.$show_rem.'; cursor:pointer;" title="'.$lang_global['remove_filter'].'">-</button>
                                                     </div>';
     }
     $output .= '
                                                 </div>
                                                 <div style="display:inline-block; vertical-align:top;">
-                                                    <button type="button" onclick="addUserFilter()" style="cursor:pointer;" title="Añadir otra condición AND">+</button>
-                                                    <label style="margin-left:6px; cursor:pointer;" title="Mostrar solo cuentas con al menos 1 personaje"><input type="checkbox" name="has_chars" value="1"'.($has_chars ? ' checked="checked"' : '').' /> Con personajes</label>
+                                                    <button type="button" onclick="addUserFilter()" style="cursor:pointer;" title="'.$lang_global['add_and_condition'].'">+</button>
+                                                    <label style="margin-left:6px; cursor:pointer;" title="'.$lang_global['only_accounts_with_chars'].'"><input type="checkbox" name="has_chars" value="1"'.($has_chars ? ' checked="checked"' : '').' /> '.$lang_global['with_chars'].'</label>
                                                 </div>
                                             </form>
                                         </td>
@@ -317,13 +317,13 @@ function browse_users(&$sqlr, &$sqlc)
                                 <th width="1%"><a href="user.php?order_by=email&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='email' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['email'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=joindate&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='joindate' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['join_date'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=last_ip&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='last_ip' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['ip'].'</a></th>';
-    if ($showcountryflag) $output .= '<th width="1%"><a href="user.php?order_by=country&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($is_country_sort ? ' class="'.$order_dir.'"' : '').'>País</a></th>';
+    if ($showcountryflag) $output .= '<th width="1%"><a href="user.php?order_by=country&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($is_country_sort ? ' class="'.$order_dir.'"' : '').'>'.$lang_global['country'].'</a></th>';
     $output .= '
                                 <th width="1%"><a href="user.php?order_by=failed_logins&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='failed_logins' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['failed_logins'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=locked&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='locked' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['locked'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=last_login&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='last_login' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['last_login'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=online&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='online' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['online'].'</a></th>
-                                <th width="1%"><a href="user.php?order_by=recruiter&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='recruiter' ? ' class="'.$order_dir.'"' : '').'>Recruiter</a></th>';
+                                <th width="1%"><a href="user.php?order_by=recruiter&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='recruiter' ? ' class="'.$order_dir.'"' : '').'>'.$lang_global['recruiter'].'</a></th>';
 
     //---------------Page Specific Data Starts Here--------------------------
     $rows_data = [];
@@ -999,7 +999,7 @@ function edit_user()
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Recruiter (User / ID):</td>
+                                        <td>{$lang_global['recruiter_user_id']}:</td>
                                         <td>";
         $rec_id_val = isset($data['recruiter']) ? intval($data['recruiter']) : 0;
         $rec_display = '';
@@ -1016,7 +1016,7 @@ function edit_user()
             $rec_link_html = "";
 
         if ($user_lvl >= $action_permission['update'])
-            $output .= "<input type=\"text\" name=\"recruiter\" size=\"25\" maxlength=\"32\" value=\"".htmlspecialchars($rec_display)."\" placeholder=\"Username o ID (0 = ninguno)\" />$rec_link_html";
+            $output .= "<input type=\"text\" name=\"recruiter\" size=\"25\" maxlength=\"32\" value=\"".htmlspecialchars($rec_display)."\" placeholder=\"{$lang_global['recruiter_placeholder']}\" />$rec_link_html";
         else
             $output .= ($rec_id_val > 0) ? $rec_link_html : "-";
         $output .= "
@@ -1226,10 +1226,10 @@ function edit_user()
                     if ($enable_soap == 1)
                     {
                         $output .= "            <br /> <br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=rename&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Rename</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changefaction&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Change Faction</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changerace&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Change Race</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=customize&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Character Customize</a><br />";
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=rename&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">{$lang_global['rename']}</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changefaction&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">{$lang_global['change_faction']}</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changerace&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">{$lang_global['change_race']}</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=customize&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">{$lang_global['character_customize']}</a><br />";
                     }
                         $output .= "        </td>
                                         </tr>";
@@ -1260,10 +1260,10 @@ function edit_user()
                     if ($enable_soap == 1)
                     {
                         $output .= "            <br /> <br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=rename&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Rename</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changefaction&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Change Faction</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changerace&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Change Race</a><br />
-                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=customize&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">Character Customize</a><br />";
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=rename&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">{$lang_global['rename']}</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changefaction&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">{$lang_global['change_faction']}</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=changerace&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">{$lang_global['change_race']}</a><br />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;---><a href=\"user.php?action=soap_command&cmd=customize&char=$char[1]&id=$id&amp;csrf=".csrf_token()."\">{$lang_global['character_customize']}</a><br />";
                     }
                         $output .= "        </td>
                                         </tr>";

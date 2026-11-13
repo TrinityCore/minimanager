@@ -107,8 +107,8 @@ function browse_achievements(&$sqlr, &$sqlc)
                                     <input type="hidden" name="realm" value="'.$realmid.'" />
                                     <input type="text" size="24" maxlength="50" name="search_value" value="'.htmlspecialchars($search_value).'" placeholder="'.$lang_global['search_by'].'" />
                                     <select name="search_by" id="ach_search_by">
-                                        <option value="char"'.($search_by === 'char' ? ' selected="selected"' : '').'>Personaje</option>
-                                        <option value="guild"'.($search_by === 'guild' ? ' selected="selected"' : '').'>Hermandad</option>
+                                        <option value="char"'.($search_by === 'char' ? ' selected="selected"' : '').'>'.$lang_global['character'].'</option>
+                                        <option value="guild"'.($search_by === 'guild' ? ' selected="selected"' : '').'>'.$lang_global['guild'].'</option>
                                         <option value="achieve"'.($search_by === 'achieve' ? ' selected="selected"' : '').'>Logro (Nombre/ID)</option>
                                     </select>
                                 </form>
@@ -127,12 +127,12 @@ function browse_achievements(&$sqlr, &$sqlc)
                     </table>
                     <table class="lined" style="width: 90%;">
                         <tr>
-                            <th width="4%">Icono</th>
-                            <th width="36%" align="left">Logro</th>
-                            <th width="4%">Pts</th>
-                            <th width="22%">Personaje</th>
-                            <th width="20%">Hermandad</th>
-                            <th width="14%">Fecha</th>
+                            <th width="4%">'.$lang_global['icon'].'</th>
+                            <th width="36%" align="left">'.$lang_global['achievement'].'</th>
+                            <th width="4%">'.$lang_global['pts'].'</th>
+                            <th width="22%">'.$lang_global['character'].'</th>
+                            <th width="20%">'.$lang_global['guild'].'</th>
+                            <th width="14%">'.$lang_global['date'].'</th>
                         </tr>';
 
     if ($q_list && $sqlc->num_rows($q_list) > 0)
@@ -180,7 +180,7 @@ function browse_achievements(&$sqlr, &$sqlc)
     {
         $output .= '
                         <tr>
-                            <td colspan="6">No se encontraron logros recientes.</td>
+                            <td colspan="6">'.$lang_global['no_recent_achieves'].'</td>
                         </tr>';
     }
 

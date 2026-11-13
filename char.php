@@ -278,7 +278,7 @@ function char_main(&$sqlr, &$sqlc)
                                         </font>
                                         <br />'.get_map_name($char['map'], $sqlm).' - '.get_zone_name($char['zone'], $sqlm).'
                                         <br />'.$lang_char['honor_points'].': '.$char['totalHonorPoints'].' / '.$char['arenaPoints'].' - '.$lang_char['honor_kills'].': '.$char['totalKills'].'
-                                        <br />'.$lang_char['guild'].': '.$guild_name.' | '.$lang_char['rank'].': '.htmlentities($guild_rank).'<br />Avg Item Level: <b>'.$avg_ilvl.'</b>
+                                        <br />'.$lang_char['guild'].': '.$guild_name.' | '.$lang_char['rank'].': '.htmlentities($guild_rank).'<br />'.$lang_global['avg_item_level'].': <b>'.$avg_ilvl.'</b>
                                         <br />'.(($char['online']) ? '<img src="img/up.gif" onmousemove="toolTip(\'Online\', \'item_tooltip\')" onmouseout="toolTip()" alt="online" />' : '<img src="img/down.gif" onmousemove="toolTip(\'Offline\', \'item_tooltip\')" onmouseout="toolTip()" alt="offline" />');
             if ($showcountryflag)
             {
@@ -294,7 +294,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="1%" style="text-align:right; white-space:nowrap;">';
             if (($equiped_items[1][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;">'.(isset($real_items[1]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[1]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[1]['icon'].'" class="'.$real_items[1]['border'].'" alt="Real Head" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_HEAD.'" target="_blank">
+                                        <div style="white-space:nowrap;">'.(isset($real_items[1]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[1]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[1]['icon'].'" class="'.$real_items[1]['border'].'" alt="Real Head" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_HEAD.'" target="_blank">
                                             <img src="'.$equiped_items[1][1].'" class="'.$equiped_items[1][2].'" alt="Head" />
                                         </a></div>';
             else
@@ -348,7 +348,7 @@ function char_main(&$sqlr, &$sqlc)
                 $output .= '
                                         <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_GLOVES.'" target="_blank">
                                             <img src="'.$equiped_items[10][1].'" class="'.$equiped_items[10][2].'" alt="Gloves" />
-                                        </a>'.(isset($real_items[10]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[10]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[10]['icon'].'" class="'.$real_items[10]['border'].'" alt="Real Gloves" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        </a>'.(isset($real_items[10]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[10]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[10]['icon'].'" class="'.$real_items[10]['border'].'" alt="Real Gloves" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_gloves.png" class="icon_border" alt="empty" />';
@@ -359,7 +359,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="1%" style="white-space:nowrap;">';
             if (($equiped_items[2][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;">'.(isset($real_items[2]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[2]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[2]['icon'].'" class="'.$real_items[2]['border'].'" alt="Real Neck" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_NECK.'" target="_blank">
+                                        <div style="white-space:nowrap;">'.(isset($real_items[2]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[2]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[2]['icon'].'" class="'.$real_items[2]['border'].'" alt="Real Neck" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_NECK.'" target="_blank">
                                             <img src="'.$equiped_items[2][1].'" class="'.$equiped_items[2][2].'" alt="Neck" />
                                         </a></div>';
             else
@@ -408,7 +408,7 @@ function char_main(&$sqlr, &$sqlc)
                 $output .= '
                                         <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_BELT.'" target="_blank">
                                             <img src="'.$equiped_items[6][1].'" class="'.$equiped_items[6][2].'" alt="Belt" />
-                                        </a>'.(isset($real_items[6]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[6]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[6]['icon'].'" class="'.$real_items[6]['border'].'" alt="Real Belt" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        </a>'.(isset($real_items[6]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[6]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[6]['icon'].'" class="'.$real_items[6]['border'].'" alt="Real Belt" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_waist.png" class="icon_border" alt="empty" />';
@@ -419,7 +419,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="1%" style="white-space:nowrap;">';
             if (($equiped_items[3][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;">'.(isset($real_items[3]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[3]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[3]['icon'].'" class="'.$real_items[3]['border'].'" alt="Real Shoulder" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_SHOULDER.'" target="_blank">
+                                        <div style="white-space:nowrap;">'.(isset($real_items[3]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[3]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[3]['icon'].'" class="'.$real_items[3]['border'].'" alt="Real Shoulder" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_SHOULDER.'" target="_blank">
                                             <img src="'.$equiped_items[3][1].'" class="'.$equiped_items[3][2].'" alt="Shoulder" />
                                         </a></div>';
             else
@@ -432,7 +432,7 @@ function char_main(&$sqlr, &$sqlc)
                 $output .= '
                                         <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_LEGS.'" target="_blank">
                                             <img src="'.$equiped_items[7][1].'" class="'.$equiped_items[7][2].'" alt="Legs" />
-                                        </a>'.(isset($real_items[7]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[7]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[7]['icon'].'" class="'.$real_items[7]['border'].'" alt="Real Legs" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        </a>'.(isset($real_items[7]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[7]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[7]['icon'].'" class="'.$real_items[7]['border'].'" alt="Real Legs" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_legs.png" class="icon_border" alt="empty" />';
@@ -443,7 +443,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="1%" style="white-space:nowrap;">';
             if (($equiped_items[15][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;">'.(isset($real_items[15]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[15]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[15]['icon'].'" class="'.$real_items[15]['border'].'" alt="Real Back" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_BACK.'" target="_blank">
+                                        <div style="white-space:nowrap;">'.(isset($real_items[15]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[15]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[15]['icon'].'" class="'.$real_items[15]['border'].'" alt="Real Back" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_BACK.'" target="_blank">
                                             <img src="'.$equiped_items[15][1].'" class="'.$equiped_items[15][2].'" alt="Back" />
                                         </a></div>';
             else
@@ -456,7 +456,7 @@ function char_main(&$sqlr, &$sqlc)
                 $output .= '
                                         <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_FEET.'" target="_blank">
                                             <img src="'.$equiped_items[8][1].'" class="'.$equiped_items[8][2].'" alt="Feet" />
-                                        </a>'.(isset($real_items[8]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[8]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[8]['icon'].'" class="'.$real_items[8]['border'].'" alt="Real Feet" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        </a>'.(isset($real_items[8]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[8]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[8]['icon'].'" class="'.$real_items[8]['border'].'" alt="Real Feet" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_feet.png" class="icon_border" alt="empty" />';
@@ -467,7 +467,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="1%" style="white-space:nowrap;">';
             if (($equiped_items[5][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;">'.(isset($real_items[5]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[5]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[5]['icon'].'" class="'.$real_items[5]['border'].'" alt="Real Chest" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_CHEST.'" target="_blank">
+                                        <div style="white-space:nowrap;">'.(isset($real_items[5]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[5]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[5]['icon'].'" class="'.$real_items[5]['border'].'" alt="Real Chest" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_CHEST.'" target="_blank">
                                             <img src="'.$equiped_items[5][1].'" class="'.$equiped_items[5][2].'" alt="Chest" />
                                         </a></div>';
             else
@@ -512,7 +512,7 @@ function char_main(&$sqlr, &$sqlc)
                 $output .= '
                                         <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_FINGER1.'" target="_blank">
                                             <img src="'.$equiped_items[11][1].'" class="'.$equiped_items[11][2].'" alt="Finger1" />
-                                        </a>'.(isset($real_items[11]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[11]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[11]['icon'].'" class="'.$real_items[11]['border'].'" alt="Real Finger1" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        </a>'.(isset($real_items[11]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[11]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[11]['icon'].'" class="'.$real_items[11]['border'].'" alt="Real Finger1" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_finger.png" class="icon_border" alt="empty" />';
@@ -523,7 +523,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="1%" style="white-space:nowrap;">';
             if (($equiped_items[4][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;">'.(isset($real_items[4]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[4]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[4]['icon'].'" class="'.$real_items[4]['border'].'" alt="Real Shirt" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_SHIRT.'" target="_blank">
+                                        <div style="white-space:nowrap;">'.(isset($real_items[4]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[4]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[4]['icon'].'" class="'.$real_items[4]['border'].'" alt="Real Shirt" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_SHIRT.'" target="_blank">
                                             <img src="'.$equiped_items[4][1].'" class="'.$equiped_items[4][2].'" alt="Shirt" />
                                         </a></div>';
             else
@@ -536,7 +536,7 @@ function char_main(&$sqlr, &$sqlc)
                 $output .= '
                                         <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_FINGER2.'" target="_blank">
                                             <img src="'.$equiped_items[12][1].'" class="'.$equiped_items[12][2].'" alt="Finger2" />
-                                        </a>'.(isset($real_items[12]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[12]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[12]['icon'].'" class="'.$real_items[12]['border'].'" alt="Real Finger2" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        </a>'.(isset($real_items[12]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[12]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[12]['icon'].'" class="'.$real_items[12]['border'].'" alt="Real Finger2" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_finger.png" class="icon_border" alt="empty" />';
@@ -547,7 +547,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="1%" style="white-space:nowrap;">';
             if (($equiped_items[19][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;">'.(isset($real_items[19]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[19]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[19]['icon'].'" class="'.$real_items[19]['border'].'" alt="Real Tabard" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_TABARD.'" target="_blank">
+                                        <div style="white-space:nowrap;">'.(isset($real_items[19]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[19]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[19]['icon'].'" class="'.$real_items[19]['border'].'" alt="Real Tabard" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_TABARD.'" target="_blank">
                                             <img src="'.$equiped_items[19][1].'" class="'.$equiped_items[19][2].'" alt="Tabard" />
                                         </a></div>';
             else
@@ -588,7 +588,7 @@ function char_main(&$sqlr, &$sqlc)
                 $output .= '
                                         <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_TRINKET1.'" target="_blank">
                                             <img src="'.$equiped_items[13][1].'" class="'.$equiped_items[13][2].'" alt="Trinket1" />
-                                        </a>'.(isset($real_items[13]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[13]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[13]['icon'].'" class="'.$real_items[13]['border'].'" alt="Real Trinket1" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        </a>'.(isset($real_items[13]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[13]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[13]['icon'].'" class="'.$real_items[13]['border'].'" alt="Real Trinket1" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_trinket.png" class="icon_border" alt="empty" />';
@@ -599,7 +599,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="1%" style="white-space:nowrap;">';
             if (($equiped_items[9][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;">'.(isset($real_items[9]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[9]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[9]['icon'].'" class="'.$real_items[9]['border'].'" alt="Real Wrist" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_WRIST.'" target="_blank">
+                                        <div style="white-space:nowrap;">'.(isset($real_items[9]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[9]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[9]['icon'].'" class="'.$real_items[9]['border'].'" alt="Real Wrist" style="opacity:0.92;" /></a>' : '').'<a style="padding:2px;" href="'.$item_datasite.$EQU_WRIST.'" target="_blank">
                                             <img src="'.$equiped_items[9][1].'" class="'.$equiped_items[9][2].'" alt="Wrist" />
                                         </a></div>';
             else
@@ -612,7 +612,7 @@ function char_main(&$sqlr, &$sqlc)
                 $output .= '
                                         <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_TRINKET2.'" target="_blank">
                                             <img src="'.$equiped_items[14][1].'" class="'.$equiped_items[14][2].'" alt="Trinket2" />
-                                        </a>'.(isset($real_items[14]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[14]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[14]['icon'].'" class="'.$real_items[14]['border'].'" alt="Real Trinket2" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        </a>'.(isset($real_items[14]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[14]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[14]['icon'].'" class="'.$real_items[14]['border'].'" alt="Real Trinket2" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_trinket.png" class="icon_border" alt="empty" />';
@@ -624,7 +624,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="15%">';
             if (($equiped_items[16][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_MAIN_HAND.'" target="_blank"><img src="'.$equiped_items[16][1].'" class="'.$equiped_items[16][2].'" alt="MainHand" /></a>'.(isset($real_items[16]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[16]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[16]['icon'].'" class="'.$real_items[16]['border'].'" alt="Real MainHand" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_MAIN_HAND.'" target="_blank"><img src="'.$equiped_items[16][1].'" class="'.$equiped_items[16][2].'" alt="MainHand" /></a>'.(isset($real_items[16]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[16]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[16]['icon'].'" class="'.$real_items[16]['border'].'" alt="Real MainHand" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_main_hand.png" class="icon_border" alt="empty" />';
@@ -633,7 +633,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="15%">';
             if (($equiped_items[17][1]))
                 $output .= '
-                                        <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_OFF_HAND.'" target="_blank"><img src="'.$equiped_items[17][1].'" class="'.$equiped_items[17][2].'" alt="OffHand" /></a>'.(isset($real_items[17]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[17]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[17]['icon'].'" class="'.$real_items[17]['border'].'" alt="Real OffHand" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_OFF_HAND.'" target="_blank"><img src="'.$equiped_items[17][1].'" class="'.$equiped_items[17][2].'" alt="OffHand" /></a>'.(isset($real_items[17]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[17]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[17]['icon'].'" class="'.$real_items[17]['border'].'" alt="Real OffHand" style="opacity:0.92;" /></a>' : '').'</div>';
             else
                 $output .= '
                                         <img src="img/INV/INV_empty_off_hand.png" class="icon_border" alt="empty" />';
@@ -642,7 +642,7 @@ function char_main(&$sqlr, &$sqlc)
                                     <td width="15%">';
         if (($equiped_items[18][1]))
             $output .= '
-                                        <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_RANGED.'" target="_blank"><img src="'.$equiped_items[18][1].'" class="'.$equiped_items[18][2].'" alt="Ranged" /></a>'.(isset($real_items[18]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[18]['entry'].'" target="_blank" title="Real Item"><img src="'.$real_items[18]['icon'].'" class="'.$real_items[18]['border'].'" alt="Real Ranged" style="opacity:0.92;" /></a>' : '').'</div>';
+                                        <div style="white-space:nowrap;"><a style="padding:2px;" href="'.$item_datasite.$EQU_RANGED.'" target="_blank"><img src="'.$equiped_items[18][1].'" class="'.$equiped_items[18][2].'" alt="Ranged" /></a>'.(isset($real_items[18]) ? '<a style="padding:2px;" href="'.$item_datasite.$real_items[18]['entry'].'" target="_blank" title="'.$lang_global['real_item'].'"><img src="'.$real_items[18]['icon'].'" class="'.$real_items[18]['border'].'" alt="Real Ranged" style="opacity:0.92;" /></a>' : '').'</div>';
         else
             $output .= '
                                         <img src="img/INV/INV_empty_ranged.png" class="icon_border" alt="empty" />';

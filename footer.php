@@ -48,8 +48,8 @@
                         <table>
                             <tr>
                                 <td>
-                                    <a class="button" style="width:130px;" href="register.php">Register</a>
-                                    <a class="button" style="width:130px;" href="login.php">Login</a>
+                                    <a class="button" style="width:130px;" href="register.php">'.$lang_global['register_link'].'</a>
+                                    <a class="button" style="width:130px;" href="login.php">'.$lang_global['login_link'].'</a>
                                 </td>
                             </tr>
                         </table>

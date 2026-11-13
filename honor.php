@@ -41,7 +41,7 @@ $output .= "
                                 <th width=\"7%\">{$lang_honor['level']}</th>
                                 <th width=\"5%\"><a href=\"honor.php?order_by=honor\"".($order_by=='honor' ? " class=DESC" : "").">{$lang_honor['honor']}</a></th>
                                 <th width=\"5%\"><a href=\"honor.php?order_by=honor\"".($order_by=='honor' ? " class=DESC" : "").">{$lang_honor['honor points']}</a></th>
-                                <th width=\"5%\"><a href=\"honor.php?order_by=kills\"".($order_by=='kills' ? " class=DESC" : "").">Kills</a></th>
+                                <th width=\"5%\"><a href=\"honor.php?order_by=kills\"".($order_by=='kills' ? " class=DESC" : "").">{$lang_global['kills']}</a></th>
                                 <th width=\"5%\"><a href=\"honor.php?order_by=arena\"".($order_by=='arena' ? " class=DESC" : "").">AP</a></th>
                                 <th width=\"30%\">{$lang_honor['guild']}</th>
                             </tr>";
@@ -98,7 +98,7 @@ $output .= "
                                 <th width=\"7%\">{$lang_honor['level']}</th>
                                 <th width=\"5%\"><a href=\"honor.php?order_by=honor\"".($order_by=='honor' ? " class=DESC" : "").">{$lang_honor['honor']}</a></th>
                                 <th width=\"5%\"><a href=\"honor.php?order_by=honor\"".($order_by=='honor' ? " class=DESC" : "").">{$lang_honor['honor points']}</a></th>
-                                <th width=\"5%\"><a href=\"honor.php?order_by=kills\"".($order_by=='kills' ? " class=DESC" : "").">Kills</a></th>
+                                <th width=\"5%\"><a href=\"honor.php?order_by=kills\"".($order_by=='kills' ? " class=DESC" : "").">{$lang_global['kills']}</a></th>
                                 <th width=\"5%\"><a href=\"honor.php?order_by=arena\"".($order_by=='arena' ? " class=DESC" : "").">AP</a></th>
                                 <th width=\"30%\">{$lang_honor['guild']}</th>
                             </tr>";

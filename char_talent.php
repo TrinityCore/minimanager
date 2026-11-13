@@ -326,7 +326,7 @@ $active_spec = isset($char['activeTalentGroup']) ? intval($char['activeTalentGro
             $maj_ico  = file_exists('img/icons/inv_glyph_major'.$cls_slug.'.jpg') ? 'img/icons/inv_glyph_major'.$cls_slug.'.jpg' : 'img/icons/inv_inscription_majorglyph01.jpg';
             $min_ico  = file_exists('img/icons/inv_glyph_minor'.$cls_slug.'.jpg') ? 'img/icons/inv_glyph_minor'.$cls_slug.'.jpg' : 'img/icons/inv_inscription_minorglyph01.jpg';
 
-            $output .= '<div style="text-align:left;"><b>Major Glyphs:</b><br />';
+            $output .= '<div style="text-align:left;"><b>'.$lang_global['major_glyphs'].':</b><br />';
             if (!empty($major_glyphs))
             {
                 foreach ($major_glyphs as $mg)
@@ -339,7 +339,7 @@ $active_spec = isset($char['activeTalentGroup']) ? intval($char['activeTalentGro
             else
                 $output .= '-';
 
-            $output .= '<br /><br /><b>Minor Glyphs:</b><br />';
+            $output .= '<br /><br /><b>'.$lang_global['minor_glyphs'].':</b><br />';
             if (!empty($minor_glyphs))
             {
                 foreach ($minor_glyphs as $ng)

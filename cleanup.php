@@ -39,7 +39,7 @@ function cleanup() {
                                                         <option value=\"num_of_char_in_guild\">{$lang_cleanup['chars_in_guild']}</option>
                                                     </optgroup>
                                                 </select>
-                                                <select name=\"cleanup_sign\" title='Cleanup operator'>
+                                                <select name=\"cleanup_sign\" title='{$lang_global['cleanup_operator']}'>
                                                     <option value=\"=\">=</option>
                                                     <option value=\"<\"><</option>
                                                     <option value=\"<=\"><=</option>
@@ -47,7 +47,7 @@ function cleanup() {
                                                     <option value=\">=\">>=</option>
                                                     <option value=\"!=\">!=</option>
                                                 </select>
-                                                <input type=\"text\" size=\"25\" maxlength=\"40\" name=\"cleanup_value\" title='Cleanup parameter' />
+                                                <input type=\"text\" size=\"25\" maxlength=\"40\" name=\"cleanup_value\" title='{$lang_global['cleanup_parameter']}' />
                                         </td>
                                         <td>";
 

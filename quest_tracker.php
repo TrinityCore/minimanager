@@ -72,22 +72,22 @@ function show_quest_tracker()
                 <tr>
                     <td>";
     if ($search_val !== '')
-        makebutton("Mostrar Todas", "quest_tracker.php", 130);
+        makebutton($lang_global['show_all'], "quest_tracker.php", 130);
     if ($user_lvl >= $action_permission['delete'])
-        makebutton("Limpiar Completadas", "quest_tracker.php?action=purge_completed\" type=\"wrn", 160);
+        makebutton($lang_global['clear_completed'], "quest_tracker.php?action=purge_completed\" type=\"wrn", 160);
     makebutton($lang_global['back'], "javascript:window.history.back()\" type=\"def", 130);
 
     $output .= "
                     </td>
                     <td align=\"right\" rowspan=\"2\">
-                        Total Misiones Rastreadas : <b>$all_record</b><br /><br />
+                        {$lang_global['total_tracked_quests']} : <b>$all_record</b><br /><br />
                         " . generate_pagination("quest_tracker.php?order_by=$order_by&amp;dir=$dir$search_url", $all_record, $itemperpage, $start) . "
                     </td>
                 </tr>
                 <tr align=\"left\">
                     <td>
                         <form action=\"quest_tracker.php\" method=\"get\" name=\"qt_search\" style=\"display:inline;\">
-                            <input type=\"text\" size=\"28\" maxlength=\"60\" name=\"search_value\" value=\"" . htmlspecialchars($search_val) . "\" placeholder=\"Buscar por ID o Título de misión...\" />
+                            <input type=\"text\" size=\"28\" maxlength=\"60\" name=\"search_value\" value=\"" . htmlspecialchars($search_val) . "\" placeholder=\"{$lang_global['search_quest_placeholder']}\" />
                             <input type=\"submit\" value=\"{$lang_global['search']}\" class=\"button\" />
                         </form>
                     </td>
@@ -101,12 +101,12 @@ function show_quest_tracker()
             <table class=\"lined\">
                 <tr>
                     <th width=\"5%\">{$lang_global['delete_short']}</th>
-                    <th width=\"8%\"><a href=\"quest_tracker.php?order_by=id&amp;dir=$next_dir$search_url\"" . ($order_by == 'id' ? " class=\"$order_dir\"" : "") . ">Quest ID</a></th>
-                    <th width=\"33%\">Título de Misión</th>
-                    <th width=\"10%\"><a href=\"quest_tracker.php?order_by=total_accepted&amp;dir=$next_dir$search_url\"" . ($order_by == 'total_accepted' ? " class=\"$order_dir\"" : "") . ">Aceptadas</a></th>
-                    <th width=\"10%\"><a href=\"quest_tracker.php?order_by=abandoned&amp;dir=$next_dir$search_url\"" . ($order_by == 'abandoned' ? " class=\"$order_dir\"" : "") . ">Abandonadas</a></th>
-                    <th width=\"10%\"><a href=\"quest_tracker.php?order_by=completed&amp;dir=$next_dir$search_url\"" . ($order_by == 'completed' ? " class=\"$order_dir\"" : "") . ">Completadas</a></th>
-                    <th width=\"9%\"><a href=\"quest_tracker.php?order_by=gm_completed&amp;dir=$next_dir$search_url\"" . ($order_by == 'gm_completed' ? " class=\"$order_dir\"" : "") . ">Por GM</a></th>
+                    <th width=\"8%\"><a href=\"quest_tracker.php?order_by=id&amp;dir=$next_dir$search_url\"" . ($order_by == 'id' ? " class=\"$order_dir\"" : "") . ">{$lang_global['quest_id']}</a></th>
+                    <th width=\"33%\">{$lang_global['quest_title']}</th>
+                    <th width=\"10%\"><a href=\"quest_tracker.php?order_by=total_accepted&amp;dir=$next_dir$search_url\"" . ($order_by == 'total_accepted' ? " class=\"$order_dir\"" : "") . ">{$lang_global['accepted']}</a></th>
+                    <th width=\"10%\"><a href=\"quest_tracker.php?order_by=abandoned&amp;dir=$next_dir$search_url\"" . ($order_by == 'abandoned' ? " class=\"$order_dir\"" : "") . ">{$lang_global['abandoned']}</a></th>
+                    <th width=\"10%\"><a href=\"quest_tracker.php?order_by=completed&amp;dir=$next_dir$search_url\"" . ($order_by == 'completed' ? " class=\"$order_dir\"" : "") . ">{$lang_global['completed']}</a></th>
+                    <th width=\"9%\"><a href=\"quest_tracker.php?order_by=gm_completed&amp;dir=$next_dir$search_url\"" . ($order_by == 'gm_completed' ? " class=\"$order_dir\"" : "") . ">{$lang_global['by_gm']}</a></th>
                     <th width=\"15%\"><a href=\"quest_tracker.php?order_by=abandon_rate&amp;dir=$next_dir$search_url\"" . ($order_by == 'abandon_rate' ? " class=\"$order_dir\"" : "") . ">% Abandono</a></th>
                 </tr>";
 
@@ -122,7 +122,7 @@ function show_quest_tracker()
                 $q_title = htmlspecialchars($q_data['Title']) . " <small>(Lvl {$q_data['QuestLevel']})</small>";
             }
             else
-                $q_title = "<i>Misión desconocida (#$qid)</i>";
+                $q_title = "<i>{$lang_global['unknown_quest']} (#$qid)</i>";
 
             $rate = floatval($row['abandon_rate']);
             $rate_color = ($rate >= 50) ? '#ff5555' : (($rate >= 25) ? '#ffaa00' : '#55ff55');
@@ -155,7 +155,7 @@ function show_quest_tracker()
 
     $output .= "
                 <tr>
-                    <td colspan=\"8\" align=\"right\" class=\"hidden\">Total Misiones Rastreadas : $all_record</td>
+                    <td colspan=\"8\" align=\"right\" class=\"hidden\">{$lang_global['total_tracked_quests']} : $all_record</td>
                 </tr>
             </table>
             <br />

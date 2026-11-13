@@ -145,7 +145,7 @@ function bbcode_bbc2html($text)
   $text = preg_replace("#\[h1\](.+?)\[\/h1\]#si", "'<h1>\\1</h1>'", $text);
   $text = preg_replace("#\[h2\](.+?)\[\/h2\]#si", "'<h2>\\1</h2>'", $text);
   $text = preg_replace("#\[code\](.+?)\[\/code\]#si", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#344;font-size:16px;\">#:</th></tr><tr><td align=left style=\"background-color:#333;\"><code>\\1</code></td></tr></table>'", $text);
-  $text = preg_replace("#\[quote\](.+?)\[\/quote\]#si", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#443;font-size:16px;\">Cita :</th></tr><tr><td align=left style=\"background-color:#333;\">\\1</td></tr></table>'", $text);
+  $text = preg_replace("#\[quote\](.+?)\[\/quote\]#si", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#443;font-size:16px;\">{$lang_global['quote_label']} :</th></tr><tr><td align=left style=\"background-color:#333;\">\\1</td></tr></table>'", $text);
   $text = preg_replace("#\[quote=(.+?)\](.+?)\[\/quote\]#si", "'<br /><table class=\"flat\" width=90%><tr><th align=left style=\"background-color:#443;font-size:16px;\">\\1 :</th></tr><tr><td align=left style=\"background-color:#333;>\\2</td></tr></table>'", $text);
   $text = preg_replace("#\[color=(.+?)\](.+?)\[\/color\]#si", "'<font color=\\1>\\2</font>'", $text);
   $text = preg_replace("#\[size=(.+?)\](.+?)\[\/size\]#si", "'<font size=\\1>\\2</font>'", $text);

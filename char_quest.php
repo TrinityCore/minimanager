@@ -45,13 +45,13 @@ function render_quest_chains_tree(&$chains_list, &$meta_map, &$char_states, $que
     $html = '
                             <table class="lined" style="width: 730px; margin-bottom: 12px;">
                                 <tr>
-                                    <th colspan="4" align="left">&nbsp;Cadenas de Misiones ('.count($chains_list).' cadenas detectadas)</th>
+                                    <th colspan="4" align="left">&nbsp;'.$lang_global['quest_chains'].' ('.count($chains_list).' '.$lang_global['chains_detected'].')</th>
                                 </tr>
                                 <tr>
-                                    <th width="10%">Raíz ID</th>
-                                    <th width="55%">Cadena de Misiones (clic para desplegar árbol)</th>
-                                    <th width="20%">Progreso</th>
-                                    <th width="15%">Estado Actual</th>
+                                    <th width="10%">'.$lang_global['root_id'].'</th>
+                                    <th width="55%">'.$lang_global['quest_chain_hint'].'</th>
+                                    <th width="20%">'.$lang_global['progress'].'</th>
+                                    <th width="15%">'.$lang_global['current_status'].'</th>
                                 </tr>';
 
     foreach ($chains_list as $root_id => $steps)
@@ -74,16 +74,16 @@ function render_quest_chains_tree(&$chains_list, &$meta_map, &$char_states, $que
             }
         }
 
-        $root_title = isset($meta_map[$root_id]['title']) ? htmlspecialchars($meta_map[$root_id]['title']) : ('Cadena #'.$root_id);
+        $root_title = isset($meta_map[$root_id]['title']) ? htmlspecialchars($meta_map[$root_id]['title']) : ($lang_global['chain_hash'].$root_id);
         $is_complete = ($done_cnt >= $total);
         $open_attr = $has_active ? ' open="open"' : '';
 
         if ($is_complete)
-            $status_badge = '<span style="color:#00AA00; font-weight:bold;">Completada</span>';
+            $status_badge = '<span style="color:#00AA00; font-weight:bold;">'.$lang_global['completed'].'</span>';
         elseif ($has_active)
             $status_badge = '<span style="color:#FF9900; font-weight:bold;">Paso '.$active_step_idx.'/'.$total.'</span>';
         else
-            $status_badge = '<span style="color:#888888;">En progreso</span>';
+            $status_badge = '<span style="color:#888888;">'.$lang_global['in_progress'].'</span>';
 
         $html .= '
                                 <tr>
@@ -307,7 +307,7 @@ function char_quest(&$sqlr, &$sqlc)
                             </table>' . render_quest_chains_tree($chains_list, $meta_map, $char_states, $quest_datasite) . '
                             <table class="lined" style="width: 730px;">
                                 <tr>
-                                    <th colspan="4" align="left">&nbsp;Misiones Individuales Activas ('.count($quests_3).')</th>
+                                    <th colspan="4" align="left">&nbsp;'.$lang_global['active_single_quests'].' ('.count($quests_3).')</th>
                                 </tr>
                                 <tr>
                                     <th width="10%">'.$lang_char['quest_id'].'</th>
@@ -343,7 +343,7 @@ function char_quest(&$sqlr, &$sqlc)
                             </table>
                             <table class="lined" style="width: 730px;">
                                 <tr>
-                                    <th colspan="5" align="left">&nbsp;Misiones Individuales Completadas ('.$all_record.')</th>
+                                    <th colspan="5" align="left">&nbsp;'.$lang_global['completed_single_quests'].' ('.$all_record.')</th>
                                 </tr>
                                 <tr>
                                     <th width="10%"><a href="char_quest.php?id='.$id.'&amp;realm='.$realmid.'&amp;start='.$start.'&amp;order_by=0&amp;dir='.$dir.'"'.($order_by == 0 ? ' class="'.$order_dir.'"' : '').'>'.$lang_char['quest_id'].'</a></th>

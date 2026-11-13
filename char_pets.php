@@ -71,13 +71,13 @@ function char_pets(&$sqlr, &$sqlc)
                         </font>
                         <table class="lined" style="width: 550px;">
                             <tr>
-                                <td align="right">Exp:</td>
+                                <td align="right">'.$lang_global['exp'].':</td>
                                 <td valign="top" class="bar skill_bar" style="background-position: '.(round(385*$pet['exp']/$pet_next_lvl_xp)-385).'px;">
                                     <span>'.$pet['exp'].'/'.$pet_next_lvl_xp.'</span>
                                 </td>
                             </tr>
                             <tr>
-                                <td align="right">Pet Abilities:</td>
+                                <td align="right">'.$lang_global['pet_abilities'].':</td>
                                 <td align="left">';
                     $ability_results = $sqlc->query('SELECT spell FROM pet_spell WHERE guid = '.$pet['id'].' and active > 1'); // active = 0 is unused and active = 1 probably some passive auras, i dont know diference between values 129 and 193, need to check mangos source
                     if ($sqlc->num_rows($ability_results))
