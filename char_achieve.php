@@ -323,6 +323,35 @@ function char_achievements(&$sqlr, &$sqlc)
             $main_cats = achieve_get_main_category($sqlm);
             $sub_cats  = achieve_get_sub_category($sqlm);
 
+            if (isset($_COOKIE["lang"]) && $_COOKIE["lang"] === "spanish" || (isset($GLOBALS["language"]) && $GLOBALS["language"] === "spanish"))
+            {
+                $cat_es = array(
+                    "General" => "General", "Quests" => "Misiones", "Exploration" => "Exploración",
+                    "Player vs. Player" => "Jugador contra Jugador", "Dungeons & Raids" => "Mazmorras y bandas",
+                    "Professions" => "Profesiones", "Reputation" => "Reputación",
+                    "World Events" => "Eventos del mundo", "Feats of Strength" => "Proezas de fuerza",
+                    "Eastern Kingdoms" => "Reinos del Este", "Kalimdor" => "Kalimdor",
+                    "Outland" => "Terrallende", "Northrend" => "Rasganorte",
+                    "Arena" => "Arena", "Alterac Valley" => "Valle de Alterac",
+                    "Arathi Basin" => "Cuenca de Arathi", "Eye of the Storm" => "Ojo de la Tormenta",
+                    "Warsong Gulch" => "Garganta Grito de Guerra", "Strand of the Ancients" => "Playa de los Ancestros",
+                    "Isle of Conquest" => "Isla de la Conquista", "Wintergrasp" => "Conquista del Invierno",
+                    "Classic" => "Clásico", "The Burning Crusade" => "The Burning Crusade",
+                    "Lich King Dungeon" => "Mazmorra de Lich King", "Lich King Heroic" => "Heroica de Lich King",
+                    "Lich King Raid" => "Banda de Lich King", "Lich King 10-Player Raid" => "Banda de 10j de Lich King",
+                    "Lich King 25-Player Raid" => "Banda de 25j de Lich King", "Ulduar" => "Ulduar",
+                    "Call of the Crusade" => "Llamada de la Cruzada", "Fall of the Lich King" => "Caída del Rey Exánime",
+                    "Cooking" => "Cocina", "Fishing" => "Pesca", "First Aid" => "Primeros auxilios",
+                    "Lunar Festival" => "Festival Lunar", "Love is in the Air" => "Amor en el aire",
+                    "Noblegarden" => "Jardín Noble", "Children's Week" => "Semana de los Niños",
+                    "Midsummer" => "Solsticio de Verano", "Brewfest" => "Fiesta de la Cerveza",
+                    "Hallow's End" => "Halloween", "Pilgrim's Bounty" => "Generosidad del Peregrino",
+                    "Winter Veil" => "Festival de Invierno", "Argent Tournament" => "Torneo Argenta"
+                );
+                foreach ($main_cats as $k => $v) if (isset($v["name01"]) && isset($cat_es[$v["name01"]])) $main_cats[$k]["name01"] = $cat_es[$v["name01"]];
+                foreach ($sub_cats as $k => $v) if (isset($v["name01"]) && isset($cat_es[$v["name01"]])) $sub_cats[$k]["name01"] = $cat_es[$v["name01"]];
+            }
+
             $output_achieve_main_cat = [];
             $output_u_achieve_main_cat = [];
             $output_achieve_sub_cat = [];

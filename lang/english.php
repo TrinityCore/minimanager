@@ -2504,4 +2504,6 @@ $lang_global += array(
   'reload_ticket_del' => "'Delete Checked Ticket(s)' option needs .reload gm_ticket to apply changes ingame.",
   'reload_ticket_upd' => "'Update Ticket' option needs .reload gm_ticket to apply changes ingame."
 );
+
+$lang_global += array('unchanged' => '(unchanged)');
 ?>
