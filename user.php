@@ -63,7 +63,7 @@ function browse_users(&$sqlr, &$sqlc)
     // Multi-condition search support (AND)
     $search_values = isset($_GET['search_value']) ? (array)$_GET['search_value'] : [''];
     $search_bys = isset($_GET['search_by']) ? (array)$_GET['search_by'] : ['username'];
-    $search_menu = ['username', 'id', 'SecurityLevel', 'greater_gmlevel', 'email', 'joindate', 'last_ip', 'country', 'failed_logins', 'greater_failed_logins', 'lesser_failed_logins', 'last_login', 'online', 'banned', 'locked', 'expansion'];
+    $search_menu = ['username', 'id', 'SecurityLevel', 'greater_gmlevel', 'email', 'joindate', 'last_ip', 'country', 'failed_logins', 'greater_failed_logins', 'lesser_failed_logins', 'last_login', 'online', 'banned', 'locked', 'expansion', 'recruiter'];
 
     $where_clauses = [];
     $search_url = '';
@@ -117,6 +117,22 @@ function browse_users(&$sqlr, &$sqlc)
             }
             $where_clauses[] = !empty($matched_ips) ? 'account.last_ip IN (' . implode(',', $matched_ips) . ')' : '1=0';
         }
+        elseif ($field === 'recruiter')
+        {
+            if (is_numeric($val_raw))
+                $where_clauses[] = 'account.recruiter = ' . intval($val_raw);
+            else
+            {
+                $rec_q = $sqlr->query("SELECT id FROM account WHERE username LIKE '%" . $val . "%'");
+                $rec_ids = array(0);
+                while ($rr = $sqlr->fetch_row($rec_q))
+                {
+                    list($rid) = $rr;
+                    array_push($rec_ids, intval($rid));
+                }
+                $where_clauses[] = 'account.recruiter IN (' . implode(',', $rec_ids) . ')';
+            }
+        }
         elseif ($field === 'last_login')
         {
             if (preg_match('/^([<>=])?\s*(\d{4}-\d{2}-\d{2})$/', $val_raw, $dm))
@@ -155,7 +171,7 @@ function browse_users(&$sqlr, &$sqlc)
 
     $where_sql = $has_search ? ' WHERE ' . implode(' AND ', $where_clauses) : '';
     $query_1 = $sqlr->query('SELECT count(*) FROM account LEFT JOIN account_access ON account.id=account_access.AccountID' . $where_sql);
-    $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID' . $where_sql . ' ORDER BY ' . $order_by . ' ' . $order_dir . ' LIMIT ' . $start . ', ' . $itemperpage;
+    $sql_query = 'SELECT `account_access`.`SecurityLevel`, `account`.`username`, `account`.`id`, `account`.`expansion`, `account`.`email`, `account`.`joindate`, `account`.`failed_logins`, `account`.`locked`, `account`.`last_login`, `account`.`online`, `account`.`last_ip`, `account`.`recruiter`, `rec`.`username` AS `recruiter_name` FROM account LEFT JOIN account_access ON account.id=account_access.AccountID LEFT JOIN account AS rec ON account.recruiter=rec.id' . $where_sql . ' ORDER BY ' . $order_by . ' ' . $order_dir . ' LIMIT ' . $start . ', ' . $itemperpage;
     $query = $sqlr->query($sql_query);
 
     // this is for multipage support
@@ -249,6 +265,7 @@ function browse_users(&$sqlr, &$sqlc)
                                                             <option value="online"'.($f_by === 'online' ? ' selected="selected"' : '').'>'.$lang_user['by_online'].'</option>
                                                             <option value="locked"'.($f_by === 'locked' ? ' selected="selected"' : '').'>'.$lang_user['by_locked'].'</option>
                                                             <option value="banned"'.($f_by === 'banned' ? ' selected="selected"' : '').'>'.$lang_user['by_banned'].'</option>
+                                                            <option value="recruiter"'.($f_by === 'recruiter' ? ' selected="selected"' : '').'>Recruiter (User/ID)</option>
                                                         </select>
                                                         <button type="button" class="rem_user_filter_btn" onclick="removeUserFilter(this)" style="display:'.$show_rem.'; cursor:pointer;" title="Quitar filtro">-</button>
                                                     </div>';
@@ -305,7 +322,8 @@ function browse_users(&$sqlr, &$sqlc)
                                 <th width="1%"><a href="user.php?order_by=failed_logins&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='failed_logins' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['failed_logins'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=locked&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='locked' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['locked'].'</a></th>
                                 <th width="1%"><a href="user.php?order_by=last_login&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='last_login' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['last_login'].'</a></th>
-                                <th width="1%"><a href="user.php?order_by=online&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='online' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['online'].'</a></th>';
+                                <th width="1%"><a href="user.php?order_by=online&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='online' ? ' class="'.$order_dir.'"' : '').'>'.$lang_user['online'].'</a></th>
+                                <th width="1%"><a href="user.php?order_by=recruiter&amp;start='.$start.$search_url.'&amp;dir='.$dir.'"'.($order_by==='recruiter' ? ' class="'.$order_dir.'"' : '').'>Recruiter</a></th>';
 
     //---------------Page Specific Data Starts Here--------------------------
     $rows_data = [];
@@ -348,7 +366,7 @@ function browse_users(&$sqlr, &$sqlc)
             }
             if ($user_lvl >= $action_permission['update']||($user_name === $data['username']))
                 $output .= '
-                                <td><a href="mailto:'.$data['email'].'">'.substr($data['email'],0,15).'</a></td>';
+                                <td><a href="mailto:'.$data['email'].'" title="'.htmlspecialchars($data['email']).'">'.(strlen($data['email']) > 8 ? substr($data['email'],0,8).'..' : $data['email']).'</a></td>';
             else
                 $output .= '
                                 <td>***@***.***</td>';
@@ -383,6 +401,13 @@ function browse_users(&$sqlr, &$sqlc)
             else
                 $output .= '-';
             $output .= '</td>';
+            if (!empty($data['recruiter']) && intval($data['recruiter']) > 0)
+            {
+                $rec_label = !empty($data['recruiter_name']) ? htmlspecialchars($data['recruiter_name']) : '#'.$data['recruiter'];
+                $output .= '<td><a href="user.php?action=edit_user&amp;error=11&amp;id='.intval($data['recruiter']).'">'.$rec_label.'</a></td>';
+            }
+            else
+                $output .= '<td>-</td>';
 
             $output .= '
                             </tr>';
@@ -395,6 +420,7 @@ function browse_users(&$sqlr, &$sqlc)
                                 <td class=\"small\">Permission</td><td>to</td><td>View</td><td>this</td><td>Data</td><td>***</td>';
             if ($expansion_select) $output .= '<td>*</td>';
             if ($showcountryflag) $output .= '<td>*</td>';
+            $output .= '<td>*</td>';
             $output .= '
                             </tr>';
         }
@@ -405,12 +431,12 @@ function browse_users(&$sqlr, &$sqlc)
     if ($expansion_select)
     {
         if ($expansion_select)
-            $output .= '14';
+            $output .= '15';
         else
-        $output .= '13';
+        $output .= '14';
     }
     else
-        $output .= '12';
+        $output .= '13';
 
     $output .= '" class="hidden" align="right" width="25%">';
     $output .= generate_pagination('user.php?order_by='.$order_by.'&amp;dir='.(($dir) ? 0 : 1).$search_url.'', $all_record, $itemperpage, $start);
@@ -973,6 +999,30 @@ function edit_user()
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td>Recruiter (User / ID):</td>
+                                        <td>";
+        $rec_id_val = isset($data['recruiter']) ? intval($data['recruiter']) : 0;
+        $rec_display = '';
+        if ($rec_id_val > 0)
+        {
+            $rec_uq = $sqlr->query("SELECT username FROM account WHERE id = '$rec_id_val'");
+            $rec_uname = ($sqlr->num_rows($rec_uq)) ? $sqlr->result($rec_uq, 0, 'username') : '';
+            $rec_display = !empty($rec_uname) ? $rec_uname : (string)$rec_id_val;
+            $rec_link_html = !empty($rec_uname)
+                ? " (<a href=\"user.php?action=edit_user&amp;error=11&amp;id=$rec_id_val\">".htmlspecialchars($rec_uname)." #$rec_id_val</a>)"
+                : " (#$rec_id_val)";
+        }
+        else
+            $rec_link_html = "";
+
+        if ($user_lvl >= $action_permission['update'])
+            $output .= "<input type=\"text\" name=\"recruiter\" size=\"25\" maxlength=\"32\" value=\"".htmlspecialchars($rec_display)."\" placeholder=\"Username o ID (0 = ninguno)\" />$rec_link_html";
+        else
+            $output .= ($rec_id_val > 0) ? $rec_link_html : "-";
+        $output .= "
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td>{$lang_user['gm_level_long']}</td>";
         if($user_lvl >= $action_permission['update'])
         {
@@ -1283,7 +1333,23 @@ function doedit_user()
     $expansion = (isset($_POST['expansion'])) ? $sqlr->quote_smart($_POST['expansion']) : 1;
     $banned = (isset($_POST['banned'])) ? $sqlr->quote_smart($_POST['banned']) : 0;
     $locked = (isset($_POST['locked'])) ? $sqlr->quote_smart($_POST['locked']) : 0;
-    $referredby = $sqlr->quote_smart(trim($_POST['referredby']));
+    $referredby = isset($_POST['referredby']) ? $sqlr->quote_smart(trim($_POST['referredby'])) : '';
+    $recruiter_raw = isset($_POST['recruiter']) ? trim($_POST['recruiter']) : '';
+    $recruiter_id = 0;
+    if ($recruiter_raw !== '' && $recruiter_raw !== '0')
+    {
+        if (is_numeric($recruiter_raw))
+            $recruiter_id = intval($recruiter_raw);
+        else
+        {
+            $rec_safe = $sqlr->quote_smart($recruiter_raw);
+            $rec_lookup = $sqlr->query("SELECT id FROM account WHERE username = '$rec_safe' LIMIT 1");
+            if ($sqlr->num_rows($rec_lookup))
+                $recruiter_id = intval($sqlr->result($rec_lookup, 0, 'id'));
+        }
+        if ($recruiter_id == intval($id))
+            $recruiter_id = 0;
+    }
 
     //make sure username/pass at least 4 chars long and less than max
     if ((strlen($username) < 4) || (strlen($username) > 15))
@@ -1311,7 +1377,7 @@ function doedit_user()
     }
     $error = false;
 
-    $sqlr->query("UPDATE account SET email='$mail', $user_pass_change failed_logins='$failed',locked='$locked',expansion='$expansion' WHERE id='$id'");
+    $sqlr->query("UPDATE account SET email='$mail', $user_pass_change failed_logins='$failed',locked='$locked',expansion='$expansion',recruiter='$recruiter_id' WHERE id='$id'");
     if (!$sqlr->affected_rows())
         $error = true;
 
