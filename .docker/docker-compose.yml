@@ -1,4 +1,3 @@
-version: "3.2"
 services:
   php:
     build: './php/'
@@ -19,7 +18,7 @@ services:
     volumes:
       - ../:/var/www/html/
   mysql:
-    image: mysql:5.6.40
+    image: mysql:8.4
     command: --init-file /mysql/init.sql
     ports:
       - "127.0.0.1:3306:3306"

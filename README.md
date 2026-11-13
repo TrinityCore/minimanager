@@ -1,41 +1,133 @@
-# minimanager
-TrinityCore Web management tool
+# MiniManager
 
-## Installation
+A web management tool for [TrinityCore](https://github.com/TrinityCore/TrinityCore) 3.3.5a servers.
 
-Ensure you have `ext-gmp` and `ext-mysqli` extensions included and enabled on your installation of PHP.
+MiniManager reads the TrinityCore `auth`, `world`, and `characters` databases and keeps its own data in a
+separate `mmfpm` database. Features include:
 
-The minimum required version of PHP is currently PHP 8.1.33.
+- Account and character management (inventory, spells, talents, quests, reputation, mail, pets)
+- Guilds, arena teams, honor, and top-100 rankings
+- Item, creature, and game object lookups, and a quest tracker
+- Tickets, bans, in-game mail, message of the day, and a small forum
+- Multi-realm support, a player map, and server console access over SSH, Telnet, or SOAP
 
-A docker compose configuration has been provided for convenience. Note that you do not need to apply the `mmfpm.sql` 
-when using the docker configuration - an init script does this during build.
+## Requirements
+
+| Component | Version |
+| --- | --- |
+| PHP | 8.1 or newer, with the `gmp` and `mysqli` extensions |
+| MySQL | 8.0 or newer |
+| Web server | Any server that runs PHP (Apache, nginx with PHP-FPM, ...) |
+| TrinityCore | 3.3.5a, with access to its `auth`, `world`, and `characters` databases |
+
+Optional: the PHP `soap` extension, if you set `$enable_soap` in the configuration.
+
+## Quick start with Docker
+
+The Docker setup runs Apache, PHP 8.3, and MySQL 8.4. The MySQL container holds only the `mmfpm` database.
+Your TrinityCore databases stay where they are.
+
+1. Copy the configuration file:
+
+   ```shell
+   cp scripts/config.dist.php scripts/config.php
+   ```
+
+2. Edit `scripts/config.php`:
+   - Set `$mmfpm_db['addr']` to `mysql:3306`, `user` to `root`, and `pass` to the MySQL root password you set
+     in step 3 (default `rootpassword`).
+   - Set `$realm_db`, `$world_db`, and `$characters_db` to your TrinityCore databases. Use an address the PHP
+     container can reach. `127.0.0.1` points at the container itself, not at your host.
+
+3. Start the stack. Set `MYSQL_ROOT_PASSWORD` to change the default root password.
+
+   ```shell
+   export MYSQL_ROOT_PASSWORD=change-me
+   docker compose -f .docker/docker-compose.yml up -d
+   ```
+
+   On first start, MySQL creates the `mmfpm` database and its tables.
+
+4. Import the DBC data:
+
+   ```shell
+   unzip -p SQL/333a_dbc.zip | docker compose -f .docker/docker-compose.yml exec -T mysql \
+     mysql -uroot -p"$MYSQL_ROOT_PASSWORD" mmfpm
+   ```
+
+5. Open <http://localhost:8080> and log in with a TrinityCore account.
+
+MySQL listens on `127.0.0.1:3306` and stores its data in `.docker/mysql/data/`.
+
+## Manual installation
+
+1. Copy the repository into your web server's document root.
+
+2. Create the `mmfpm` database and import the schema and DBC data:
+
+   ```shell
+   mysql -u root -p -e "CREATE DATABASE mmfpm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+   mysql -u root -p mmfpm < SQL/mmfpm.sql
+   unzip -p SQL/333a_dbc.zip | mysql -u root -p mmfpm
+   ```
+
+3. Copy the configuration file and edit it (see [Configuration](#configuration)):
+
+   ```shell
+   cp scripts/config.dist.php scripts/config.php
+   ```
+
+4. Make the `backup/` directory writable by the web server if you plan to use the backup page.
+
+5. Block web access to `SQL/`, `backup/`, `doc/`, and `.git/`. The Docker Apache configuration in
+   `.docker/apache/minimanager.apache.conf` shows one way to do this.
+
+## Configuration
+
+All settings live in `scripts/config.php`. The file has comments for each setting. The main sections are:
+
+- **SQL configuration**: connection details for `$mmfpm_db`, `$realm_db` (the TrinityCore `auth` database), and one
+  `$world_db` and `$characters_db` entry per realm. The array index must match the realm ID in `auth.realmlist`.
+- **Game server configuration**: one `$server` entry per realm, with game, console, and Telnet ports. SOAP settings
+  follow.
+- **Mail configuration**: SMTP settings for registration and password reset mail.
+- **Account levels**: names for each security level in `$gm_level_arr`.
+- **Module and security settings**: the minimum level each page needs for read, insert, update, and delete.
+
+Do not remove the `HEADER_LOADED` check at the bottom of the file. It stops direct requests to `config.php`.
+
+### Accounts and access
+
+MiniManager logs you in with your TrinityCore account. Your access level is the `SecurityLevel` value in
+`auth.account_access` for the current realm, or for `RealmID = -1` (all realms). Accounts without a row are players
+(level 0).
+
+```sql
+INSERT INTO auth.account_access (AccountID, SecurityLevel, RealmID) VALUES (<account id>, <level>, -1);
 ```
-docker-compose -f ./.docker/docker-compose.yml up -d
-```
 
-### Configuration
+TrinityCore uses levels 0 to 3. The default page permissions in `config.php` need level 5 (SysOp) to insert, update,
+or delete. Lower the levels in the module and security settings to match the levels your staff accounts have.
 
-- Ensure you have an `mmfpm` MySQL (utf8mb4) database created
-- Apply `mmfpm.sql` to your newly created database
-  - `mysql -u trinity -p mmfpm < SQL/mmfpm.sql`
-- Extract 333a_dbc.zip, and apply the SQL file to the `mmfpm` database
+## Upgrading
 
-- Make a copy of the configuration file, and make changes as necessary
-```shell
-cp scripts/config.dist.php scripts/config.php
-```
+1. Pull the latest code.
+2. Compare `scripts/config.dist.php` with your `scripts/config.php` and copy over any new settings.
+3. Make sure your `config.php` ends with this block:
 
-- Ensure you have an account created in your TrinityCore installation
-- Check to make sure you have the necessary SecurityLevel set in `auth.account_access`
+   ```php
+   if (!defined('HEADER_LOADED')) {
+     header('Location: /');
+   }
+   ```
 
-### Updates to existing minimanager installations
-For older installations, a change was made to improve the security of the application (though in its current state, 
-more work must be done). Ensure your `config.php` includes the following lines, preferably near the bottom:
+4. Installations from before August 2020 must apply `SQL/update/2020_08_11_mmfpm_changes.sql`. This script drops and
+   recreates the `mm_account` table, so pending (unverified) registrations are lost.
 
-```php
-if (!defined('HEADER_LOADED')) {
-  header('Location: /');
-}
-```
+Docker users who move from the old MySQL 5.6 image to MySQL 8.4 cannot reuse `.docker/mysql/data/`. MySQL does not
+upgrade 5.6 data directly to 8.4. Dump the `mmfpm` database first, remove the data directory, start the new stack,
+and import the dump.
 
-This is to ensure direct navigation to the configuration file is not permitted. 
+## License
+
+MiniManager is released under the GNU General Public License v2. See [doc/GPLv2](doc/GPLv2).

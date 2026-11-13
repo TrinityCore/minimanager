@@ -1,3 +1,4 @@
 config.php
 vendor/
 .idea/
+.docker/mysql/data/
