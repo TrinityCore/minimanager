@@ -2409,4 +2409,6 @@ $lang_id_tab += array(
   'Player' => 'Jugador', 'Moderator' => 'Moderador', 'BugTracker' => 'Rastreador de errores',
   'Administrator' => 'Administrador', 'Alliance' => 'Alianza', 'Horde' => 'Horda'
 );
+
+$lang_global += array('merge_tabs' => 'Fusionar pestañas', 'split_tabs' => 'Separar pestañas');
 ?>

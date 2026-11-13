@@ -2506,4 +2506,6 @@ $lang_global += array(
 );
 
 $lang_global += array('unchanged' => '(unchanged)');
+
+$lang_global += array('merge_tabs' => 'Merge Tabs', 'split_tabs' => 'Split Tabs');
 ?>
