@@ -186,8 +186,12 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
             foreach ($trunk[2] as $branch)
             {
                 if ($user_lvl >= $branch[2])
+                    {
+                    list($b_url, $b_lang) = $branch;
+                    $b_target = (strpos($b_url, 'map') !== false) ? ' target="_blank" rel="noopener noreferrer" onclick="window.open(this.href, \'wow_player_map\', \'width=1050,height=750,scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=no,status=no\'); return false;"' : '';
                     $output .= '
-                            <li><a href="'.$branch[0].'">'.(isset($lang_header[$branch[1]]) ? $lang_header[$branch[1]] : $branch[1]).'</a></li>';
+                            <li><a href="'.$b_url.'"'.$b_target.'>'.(isset($lang_header[$b_lang]) ? $lang_header[$b_lang] : $b_lang).'</a></li>';
+                }
             }
             if(isset($trunk[2][0]))
                 $output .= '
