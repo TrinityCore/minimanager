@@ -245,6 +245,19 @@ function char_achievements(&$sqlr, &$sqlc)
 
             $points = 0;
 
+            $char_side = char_get_side_id($char['race']); // 0 = Alliance, 1 = Horde
+            $opposite_faction_val = ($char_side == 0) ? 0 : 1; // 0 = Horde-only, 1 = Alliance-only
+            $hidden_opposite_achieves = array();
+            $q_opp = $sqlm->query("SELECT id FROM dbc_achievement WHERE faction = " . intval($opposite_faction_val));
+            if ($q_opp)
+            {
+                while ($opp_r = $sqlm->fetch_row($q_opp))
+                {
+                    list($opp_id) = $opp_r;
+                    $hidden_opposite_achieves[intval($opp_id)] = true;
+                }
+            }
+
             $main_cats = achieve_get_main_category($sqlm);
             $sub_cats  = achieve_get_sub_category($sqlm);
 
@@ -301,7 +314,7 @@ function char_achievements(&$sqlr, &$sqlc)
                                 }
                                 $points += $cid['rewpoints'];
                             }
-                            elseif ($show_type && isset($achieve_id))
+                            elseif ($show_type && isset($achieve_id) && !isset($hidden_opposite_achieves[intval($cid['id'])]))
                             {
                                 $cid['name01'] = str_replace('&', '&amp;', $cid['name01']);
                                 $cid['description01'] = str_replace('&', '&amp;', $cid['description01']);
@@ -383,7 +396,7 @@ function char_achievements(&$sqlr, &$sqlc)
                                             }
                                             $points += $cid['rewpoints'];
                                         }
-                                        elseif ($show_type && isset($achieve_id))
+                                        elseif ($show_type && isset($achieve_id) && !isset($hidden_opposite_achieves[intval($cid['id'])]))
                                         {
                                             $cid['name01'] = str_replace('&', '&amp;', $cid['name01']);
                                             $cid['description01'] = str_replace('&', '&amp;', $cid['description01']);
