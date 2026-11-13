@@ -52,6 +52,7 @@ function browse_chars(&$sqlr, &$sqlc)
     $search_url = '';
     $active_filters = [];
     $has_item_search = false;
+    $has_gold_search = false;
     $item_search_val = 0;
 
     for ($idx = 0; $idx < count($search_values); $idx++)
@@ -83,8 +84,17 @@ function browse_chars(&$sqlr, &$sqlc)
             $where_clauses[] = 'characters.level > ' . intval($val_raw);
         elseif ($field === 'lesser_level')
             $where_clauses[] = 'characters.level < ' . intval($val_raw);
-        elseif ($field === 'gold')
-            $where_clauses[] = 'characters.money > ' . intval($val_raw);
+        elseif ($field === 'gold') {
+            $has_gold_search = true;
+            if (preg_match('/^([<>=])?\s*(\d+)$/', $val_raw, $gm)) {
+                list(, $gop_raw, $gval_raw) = array_pad($gm, 3, '');
+                $gop = ($gop_raw !== '') ? $gop_raw : '>';
+                $gval = intval($gval_raw);
+                $where_clauses[] = "characters.money $gop $gval";
+            } else {
+                $where_clauses[] = '1=0';
+            }
+        }
         elseif ($field === 'greater_rank')
             $where_clauses[] = 'characters.totalKills > ' . intval($val_raw);
         elseif ($field === 'guild')
@@ -162,9 +172,9 @@ function browse_chars(&$sqlr, &$sqlc)
 
     $where_sql = $has_search ? implode(' AND ', $where_clauses) . ' AND ' : '';
     if ($has_item_search)
-        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname, BINARY guild.name AS guild_name, SUM(item_instance.count) as amount FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid LEFT JOIN guild ON guild_member.guildid = guild.guildid LEFT JOIN item_instance on characters.guid = item_instance.owner_guid WHERE $where_sql itemEntry = $item_search_val AND characters.name != '' GROUP BY guid ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname, BINARY guild.name AS guild_name, characters.money, SUM(item_instance.count) as amount FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid LEFT JOIN guild ON guild_member.guildid = guild.guildid LEFT JOIN item_instance on characters.guid = item_instance.owner_guid WHERE $where_sql itemEntry = $item_search_val AND characters.name != '' GROUP BY guid ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
     else
-        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname, BINARY guild.name AS guild_name FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid LEFT JOIN guild ON guild_member.guildid = guild.guildid WHERE $where_sql characters.name != '' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
+        $sql_query = "SELECT characters.guid, BINARY characters.name AS name, characters.account, characters.race, characters.class, characters.zone, characters.map, characters.online, characters.level, characters.gender, characters.logout_time, COALESCE(guild_member.guildid,0) AS gname, BINARY guild.name AS guild_name, characters.money FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid LEFT JOIN guild ON guild_member.guildid = guild.guildid WHERE $where_sql characters.name != '' ORDER BY $order_by $order_dir LIMIT $start, $itemperpage";
 
     $query_1 = $sqlc->query("SELECT count(*) FROM `characters` WHERE $where_sql name != ''");
     $query = $sqlc->query($sql_query);
@@ -240,7 +250,7 @@ function browse_chars(&$sqlr, &$sqlc)
                                                                 <option value=\"logout_time\"".($f_by == 'logout_time' ? " selected=\"selected\"" : "").">Last Online (&lt; = &gt; YYYY-MM-DD)</option>
                                                                 <option value=\"map\"".($f_by == 'map' ? " selected=\"selected\"" : "").">{$lang_char_list['by_map_id']}</option>
                                                                 <option value=\"online\"".($f_by == 'online' ? " selected=\"selected\"" : "").">{$lang_char_list['by_online']}</option>
-                                                                <option value=\"gold\"".($f_by == 'gold' ? " selected=\"selected\"" : "").">{$lang_char_list['chars_gold']}</option>
+                                                                <option value=\"gold\"".($f_by == 'gold' ? " selected=\"selected\"" : "").">{$lang_char_list['chars_gold']} (&lt; = &gt;)</option>
                                                                 <option value=\"item\"".($f_by == 'item' ? " selected=\"selected\"" : "").">{$lang_char_list['by_item']}</option>
                                                             </select>
                                                             <button type=\"button\" class=\"rem_char_filter_btn\" onclick=\"removeCharFilter(this)\" style=\"display:$show_rem; cursor:pointer;\" title=\"Quitar filtro\">-</button>
@@ -283,9 +293,16 @@ function browse_chars(&$sqlr, &$sqlc)
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=race&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='race' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['race']}</a></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=class&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='class' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['class']}</a></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=level&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='level' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['level']}</a></th>
-                                <th width=\"10%\"><a href=\"char_list.php?order_by=map&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='map '.$order_dir.', zone' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['map']}</a></th>
+                                ";
+    if ($has_gold_search) {
+        $output .= "<th width=\"10%\"><a href=\"char_list.php?order_by=money&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='money' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['chars_gold']}</a></th>
+            ";
+    } else {
+        $output .= "<th width=\"10%\"><a href=\"char_list.php?order_by=map&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='map '.$order_dir.', zone' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['map']}</a></th>
                                 <th width=\"10%\"><a href=\"char_list.php?order_by=zone&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='zone '.$order_dir.', map' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['zone']}</a></th>
-                                <th width=\"10%\"><a href=\"char_list.php?order_by=gname&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='gname' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['guild']}</a></th>
+                                ";
+    }
+    $output .= "<th width=\"10%\"><a href=\"char_list.php?order_by=gname&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='gname' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['guild']}</a></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=logout_time&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='logout_time' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['lastseen']}</a></th>
                                 <th width=\"1%\"><a href=\"char_list.php?order_by=online&amp;start=$start".$search_url."&amp;dir=$dir\">".($order_by=='online' ? "<img src=\"img/arr_".($dir ? "up" : "dw").".gif\" alt=\"\" /> " : "")."{$lang_char_list['online']}</a></th>";
 
@@ -340,9 +357,18 @@ function browse_chars(&$sqlr, &$sqlc)
                                 <td><img src='img/c_icons/{$char[3]}-{$char[9]}.gif' onmousemove='toolTip(\"".char_get_race_name($char[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /></td>
                                 <td><img src='img/c_icons/{$char[4]}.gif' onmousemove='toolTip(\"".char_get_class_name($char[4])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /></td>
                                 <td>".char_get_level_color($char[8])."</td>
-                                <td class=\"small\"><span onmousemove='toolTip(\"MapID:".$char[6]."\",\"item_tooltip\")' onmouseout='toolTip()'>".get_map_name($char[6], $sqlm)."</span></td>
+                                ";
+            if ($has_gold_search) {
+                $mv = intval(current(array_slice($char, 13, 1)));
+                $gg = floor($mv / 10000); $ss = floor(($mv % 10000) / 100); $cc = $mv % 100;
+                $output .= "<td class=\"small\" align=\"right\">{$gg}<img src=\"img/gold.gif\" alt=\"\" align=\"middle\" /> {$ss}<img src=\"img/silver.gif\" alt=\"\" align=\"middle\" /> {$cc}<img src=\"img/copper.gif\" alt=\"\" align=\"middle\" /></td>
+                ";
+            } else {
+                $output .= "<td class=\"small\"><span onmousemove='toolTip(\"MapID:".$char[6]."\",\"item_tooltip\")' onmouseout='toolTip()'>".get_map_name($char[6], $sqlm)."</span></td>
                                 <td class=\"small\"><span onmousemove='toolTip(\"ZoneID:".$char[5]."\",\"item_tooltip\")' onmouseout='toolTip()'>".get_zone_name($char[5], $sqlm)."</span></td>
-                                <td class=\"small\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$char[11]\">".htmlentities($char[12] ?? '')."</a></td>
+                                ";
+            }
+            $output .= "<td class=\"small\"><a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$char[11]\">".htmlentities($char[12] ?? '')."</a></td>
                                 <td class=\"small\">$lastseen</td>
                                 <td>".(($char[7]) ? "<img src=\"img/up.gif\" alt=\"\" />" : "-")."</td>";
             if ($showcountryflag)
