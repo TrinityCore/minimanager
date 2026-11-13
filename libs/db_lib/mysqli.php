@@ -47,9 +47,9 @@ class SQL //MySQLi
     function result($query_id = 0, $row = NULL, $field = NULL){
         if ($query_id){
             if (!is_null($row)) @mysqli_data_seek($query_id, $row);
-            if ($field !== NULL) return (@mysqli_fetch_assoc($query_id))[$field];
+            if ($field !== NULL) return (@mysqli_fetch_assoc($query_id))[$field] ?? false;
             $cur_row = @mysqli_fetch_row($query_id);
-            return $cur_row[0];
+            return $cur_row[0] ?? false;
         } else return false;
     }
 	
@@ -103,10 +103,10 @@ class SQL //MySQLi
 
     function quote_smart($value){
     if( is_array($value) ) {
-        return array_map( ['SQL','quote_smart'], $value);
+        return array_map( [$this, 'quote_smart'], $value);
     } else {
-        if( $value === '' ) $value = NULL;
-        return mysqli_real_escape_string($this->link_id, $value);
+        if( $value === NULL ) $value = '';
+        return mysqli_real_escape_string($this->link_id, (string)$value);
         }
     }
 
