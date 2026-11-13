@@ -21,7 +21,7 @@ function char_talent(&$sqlr, &$sqlc)
 
     require_once 'core/char/char_security.php';
 
-    $result = $sqlc->query('SELECT account, BINARY name AS name, race, class, level, gender, (SELECT count(spell) FROM character_talent WHERE guid = '.$id.' AND talentGroup = (SELECT activeTalentGroup FROM characters WHERE guid = '.$id.')) AS talent_points
+    $result = $sqlc->query('SELECT account, BINARY name AS name, race, class, level, gender, activeTalentGroup, talentGroupsCount, (SELECT count(spell) FROM character_talent WHERE guid = '.$id.' AND talentGroup = activeTalentGroup) AS talent_points
         FROM characters WHERE guid = '.$id.' LIMIT 1');
 
     if ($sqlc->num_rows($result))
@@ -35,9 +35,13 @@ function char_talent(&$sqlr, &$sqlc)
         if (empty($owner_gmlvl))
             $owner_gmlvl = 0;
 
+$active_spec = isset($char['activeTalentGroup']) ? intval($char['activeTalentGroup']) : 0;
+        $spec_count  = isset($char['talentGroupsCount']) ? intval($char['talentGroupsCount']) : 1;
+        $view_spec   = (isset($_GET['spec']) && in_array(intval($_GET['spec']), array(0, 1), true)) ? intval($_GET['spec']) : $active_spec;
+
         if (($user_lvl > $owner_gmlvl)||($owner_name === $user_name))
         {
-            $result = $sqlc->query('SELECT spell FROM character_spell WHERE guid = '.$id.' and active = 1 and disabled = 0 ORDER BY spell DESC');
+            $result = $sqlc->query('SELECT spell FROM character_talent WHERE guid = '.$id.' AND talentGroup = '.$view_spec.' ORDER BY spell DESC');
 
             $output .= '
                     <style type="text/css">
@@ -55,6 +59,17 @@ function char_talent(&$sqlr, &$sqlc)
                                 <br />';
 
             require_once 'core/char/char_header.php';
+
+            if ($spec_count > 1 || $view_spec === 1) {
+                $s1_lbl = ($view_spec === 0 ? "[Spec 1]" : "Spec 1") . ($active_spec === 0 ? " (Active)" : "");
+                $s2_lbl = ($view_spec === 1 ? "[Spec 2]" : "Spec 2") . ($active_spec === 1 ? " (Active)" : "");
+                $output .= '
+                        <br /><table class="hidden" style="margin: 0 auto;"><tr><td>';
+                makebutton($s1_lbl, 'char_talent.php?id='.$id.'&amp;realm='.$realmid.'&amp;spec=0', 130);
+                $output .= '</td><td>';
+                makebutton($s2_lbl, 'char_talent.php?id='.$id.'&amp;realm='.$realmid.'&amp;spec=1', 130);
+                $output .= '</td></tr></table>';
+            }
 
             $output .= '
                                 <br /><br />
@@ -168,7 +183,14 @@ function char_talent(&$sqlr, &$sqlc)
                     unset($result_all);
                 }
 
-                ksort($tabs_temp); 
+                $talent_points_used = 0;
+            foreach ($tabs_temp as $t_item) {
+                $talent_points_used += intval($t_item['rank']);
+            }
+            $l = $talent_points_used;
+            $talent_points_left = max(0, $talent_points - $talent_points_used);
+
+            ksort($tabs_temp); 
                 foreach ($tabs_temp as $key => $data) {
                     list($field_1, $field_2, $field_3) = explode('_', $key);
                     $tabs[(int)$field_1][(int)$field_2][(int)$field_3] = [$data['spell'], $data['rank'], $data['color']];
@@ -263,7 +285,7 @@ function char_talent(&$sqlr, &$sqlc)
                 unset($talent_points_used);
                 unset($talent_points_left);
 
-                $result = $sqlc->query('SELECT * FROM character_glyphs WHERE guid = '.$id.' AND talentGroup = (SELECT activeTalentGroup FROM characters WHERE guid = '.$id.')');
+                $result = $sqlc->query('SELECT * FROM character_glyphs WHERE guid = '.$id.' AND talentGroup = '.$view_spec.'');
                 if ($sqlc->num_rows($result))
                 {
                     $glyphs = $sqlc->fetch_assoc($result);
