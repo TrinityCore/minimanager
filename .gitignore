@@ -2,3 +2,4 @@ config.php
 vendor/
 .idea/
 .docker/mysql/data/
+.docker/docker-compose.override.yml

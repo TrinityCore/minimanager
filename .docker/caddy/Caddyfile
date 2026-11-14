@@ -1,0 +1,20 @@
+# Caddy counterpart of ../apache/minimanager.apache.conf.
+# Caddy ignores .htaccess files, so the blocked matcher below is the only thing
+# keeping backup/ and SQL dumps off the web. Keep it when adapting this file.
+# Replace :80 with your domain name to get automatic HTTPS.
+:80 {
+	root * /var/www/html
+
+	# Keep repo metadata, SQL dumps and backups out of reach.
+	@blocked path_regexp ^/(\.git|\.github|\.docker|SQL|backup|doc)(/|$)|\.(sql|md|yml|yaml)$
+
+	handle @blocked {
+		respond 403
+	}
+
+	handle {
+		# Send .php requests to port 9000 of the php-fpm container
+		php_fastcgi php:9000
+		file_server
+	}
+}
