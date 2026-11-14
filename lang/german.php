@@ -1128,6 +1128,10 @@ function lang_stat()
   'max_players' => 'Maximal Spieler online seit',
   'max_ever' => 'erster Start',
   'max_restart' => 'letzter restart',
+        'uptime_graph' => 'Spielerverlauf (Uptime)',
+        'group_day' => 'Tage',
+        'group_week' => 'Wochen',
+        'group_month' => 'Monate',
       ];
   return $lang_stat;
 }

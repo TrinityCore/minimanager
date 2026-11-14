@@ -1251,6 +1251,10 @@ function lang_stat()
     'max_players' => 'Max players online since',
     'max_ever' => 'First run',
     'max_restart' => 'Last restart',
+        'uptime_graph' => 'Players History (Uptime)',
+        'group_day' => 'Days',
+        'group_week' => 'Weeks',
+        'group_month' => 'Months',
       ];
   return $lang_stat;
 }

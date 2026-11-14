@@ -1153,6 +1153,10 @@ function lang_stat()
     'max_players' => 'Máximo de jugadores conectados desde',
     'max_ever' => 'Primer inicio',
     'max_restart' => 'Último reinicio',
+        'uptime_graph' => 'Historial de Jugadores (Uptime)',
+        'group_day' => 'Días',
+        'group_week' => 'Semanas',
+        'group_month' => 'Meses',
       ];
   return $lang_stat;
 }

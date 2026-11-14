@@ -407,6 +407,128 @@ function stats($action, &$sqlr, &$sqlc)
                         <td>';
         // LEVEL END
 
+            // UPTIME PLAYERS GRAPH
+            $u_group = (isset($_GET['u_group']) && in_array($_GET['u_group'], ['day', 'week', 'month'], true)) ? $_GET['u_group'] : 'day';
+
+            if ($u_group === 'month')
+            {
+              $sql_grp = "DATE_FORMAT(FROM_UNIXTIME(starttime), '%Y-%m')";
+            }
+            elseif ($u_group === 'week')
+            {
+              $sql_grp = "DATE_FORMAT(FROM_UNIXTIME(starttime), '%x-W%v')";
+            }
+            else
+            {
+              $sql_grp = "DATE(FROM_UNIXTIME(starttime))";
+            }
+
+            $uptime_rows = [];
+            $uptime_q = $sqlr->query('SELECT '.$sql_grp.' AS period_label, MIN(starttime) AS min_st, MAX(maxplayers) AS peak_players FROM uptime WHERE realmid = '.$realm_id.' GROUP BY period_label ORDER BY min_st ASC');
+            while ($u_row = $sqlr->fetch_assoc($uptime_q))
+            {
+              $uptime_rows[] = $u_row;
+            }
+            unset($uptime_q);
+
+            if (!empty($uptime_rows))
+            {
+              $peak_scale = 1;
+              foreach ($uptime_rows as $u_row)
+              {
+                if ((int)$u_row['peak_players'] > $peak_scale)
+                  $peak_scale = (int)$u_row['peak_players'];
+              }
+
+              // Conservar parametros GET actuales al cambiar de agrupacion
+              $base_params = $_GET;
+              $links_html = [];
+              $modes = [
+                'day'   => isset($lang_stat['group_day']) ? $lang_stat['group_day'] : 'Days',
+                'week'  => isset($lang_stat['group_week']) ? $lang_stat['group_week'] : 'Weeks',
+                'month' => isset($lang_stat['group_month']) ? $lang_stat['group_month'] : 'Months'
+              ];
+              foreach ($modes as $m_key => $m_label)
+              {
+                $base_params['u_group'] = $m_key;
+                $url = 'stat.php?'.htmlspecialchars(http_build_query($base_params), ENT_QUOTES, 'UTF-8');
+                if ($u_group === $m_key)
+                  $links_html[] = '<strong>['.$m_label.']</strong>';
+                else
+                  $links_html[] = '<a href="'.$url.'">'.$m_label.'</a>';
+              }
+
+              $graph_title = isset($lang_stat['uptime_graph']) ? $lang_stat['uptime_graph'] : 'Players History (Uptime)';
+              $output .= '
+                    </td>
+                  </tr>
+                  <tr align="left">
+                    <td>
+                      <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h1 style="margin:0;">'.$graph_title.'</h1>
+                        <div>'.implode(' | ', $links_html).'</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div id="uptime_scroll" style="width: 720px; max-width: 100%; overflow-x: auto; padding-bottom: 6px; margin: 0 auto;">
+                        <table class="bargraph" style="width: auto; margin: 0;">
+                          <tr>';
+
+              foreach ($uptime_rows as $u_row)
+              {
+                $players = (int)$u_row['peak_players'];
+                $height = (int)round(($players * 120) / $peak_scale);
+                $label = htmlspecialchars($u_row['period_label'], ENT_QUOTES, 'UTF-8');
+                $output .= '
+                            <td style="min-width: 48px;"><span class="graph_link" title="'.$label.'">'.$players.'<img src="themes/'.$theme.'/column.gif" width="36" height="'.$height.'" alt="'.$players.'" /></span></td>';
+              }
+
+              $output .= '
+                          </tr>
+                          <tr>';
+
+              foreach ($uptime_rows as $u_row)
+              {
+                $ts = (int)$u_row['min_st'];
+                if ($u_group === 'month')
+                {
+                  $top_lbl = date('Y', $ts);
+                  $bot_lbl = date('m', $ts);
+                }
+                elseif ($u_group === 'week')
+                {
+                  $top_lbl = date('Y', $ts);
+                  $bot_lbl = 'W'.date('W', $ts);
+                }
+                else
+                {
+                  $top_lbl = date('d/m', $ts);
+                  $bot_lbl = date('Y', $ts);
+                }
+                $output .= '
+                            <th style="min-width: 48px; white-space: nowrap;">'.$top_lbl.'<br />'.$bot_lbl.'</th>';
+              }
+
+              unset($uptime_rows, $peak_scale, $players, $height, $label, $top_lbl, $bot_lbl, $base_params, $links_html, $modes);
+              $output .= '
+                          </tr>
+                        </table>
+                      </div>
+                      <script type="text/javascript">
+                        (function() {
+                          var el = document.getElementById("uptime_scroll");
+                          if (el) { el.scrollLeft = el.scrollWidth; }
+                        })();
+                      </script>
+                      <br />
+                      <hr/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>';
+            }
         makebutton($lang_stat['reset'], 'stat.php', 720);
 
         $output .= '
