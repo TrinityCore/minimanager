@@ -1969,7 +1969,15 @@ $lang_id_tab = [
   'Lieutenant_General' => 'Lieutenant General',
   'General' => 'General',
   'Warlord' => 'Warlord',
-  'High_Warlord' => 'High Warlord'
+  'High_Warlord' => 'High Warlord',
+        'gm_level_-1' => 'Invitado',
+        'gm_level_0' => 'Jugador',
+        'gm_level_1' => 'Moderador',
+        'gm_level_2' => 'Maestro de Juego',
+        'gm_level_3' => 'Rastreador de errores',
+        'gm_level_4' => 'Administrador',
+        'gm_level_5' => 'SysOp',
+        'gm_level_6' => 'Desconocido',
 ];
 
 $lang_arenateam = [

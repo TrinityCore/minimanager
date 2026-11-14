@@ -2076,7 +2076,15 @@ $lang_id_tab = [
   'Lieutenant_General' => 'Lieutenant General',
   'General' => 'General',
   'Warlord' => 'Warlord',
-  'High_Warlord' => 'High Warlord'
+  'High_Warlord' => 'High Warlord',
+        'gm_level_-1' => 'Guest',
+        'gm_level_0' => 'Player',
+        'gm_level_1' => 'Moderator',
+        'gm_level_2' => 'Game Master',
+        'gm_level_3' => 'Bug Tracker',
+        'gm_level_4' => 'Administrator',
+        'gm_level_5' => 'SysOp',
+        'gm_level_6' => 'Unknown',
 ];
 
 $lang_arenateam = [

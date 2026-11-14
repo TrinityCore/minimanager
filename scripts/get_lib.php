@@ -90,7 +90,9 @@ function id_get_exp_lvl()
 function id_get_gm_level($id)
 {
     global $lang_id_tab, $gm_level_arr;
-    if(isset($gm_level_arr[$id]))
+    if (isset($lang_id_tab['gm_level_'.$id]))
+        return $lang_id_tab['gm_level_'.$id];
+    if (isset($gm_level_arr[$id]))
         return $gm_level_arr[$id][1];
     else
         return($lang_id_tab['unknown']);
