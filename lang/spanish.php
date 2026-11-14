@@ -279,7 +279,11 @@ function lang_header()
     'account' => '------Cuenta------',
     'edit_my_acc' => 'Editar mi cuenta',
     'logout' => 'Cerrar sesión',
-      ];
+    'unstuck' => 'Liberar',
+    'unstuck_online' => 'El personaje está conectado (Debes desconectarlo primero)',
+    'unstuck_tooltip' => 'Liberar personaje (Debe estar desconectado)',
+    'unstuck_confirm' => '¿Teletransportar a %s a su piedra de hogar?\n\nEl personaje debe estar desconectado.\n\nAviso: si estás muerto, tendrás que buscar un Ángel de la Resurrección para revivir.',
+];
   return $lang_header;
 }
 
