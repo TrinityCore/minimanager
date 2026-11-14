@@ -244,7 +244,7 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
     }
     else
     {
-        $result = $sqlc->query('SELECT guid, BINARY name AS name, race, class, level, gender
+        $result = $sqlc->query('SELECT guid, BINARY name AS name, race, class, level, gender, online
                             FROM characters
                             WHERE account = '.$user_id.'');
 
@@ -256,18 +256,23 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
             while ($char = $sqlc->fetch_assoc($result))
             {
               $char_name_safe = htmlspecialchars($char['name'], ENT_QUOTES, 'UTF-8');
+
+              if ((int)$char['online'] === 1)
+              {
+                $unstuck_html = '<span title="Character is online (Must log out first)" style="width:auto; padding-left:8px; padding-right:8px; color:#ff4444; cursor:not-allowed;">[Unstuck]</span>';
+              }
+              else
+              {
+                $unstuck_html = '<a href="unstuck.php?id='.$char['guid'].'" title="Unstuck Character (Must be offline)" onclick="return confirm(\'Teleport '.$char_name_safe.' to Hearthstone location? Character must be offline.\');" style="width:auto; padding-left:8px; padding-right:8px; color:#ffcc00;">[Unstuck]</a>';
+              }
+
               $output .= '
                 <li style="display:flex; justify-content:space-between; align-items:center; white-space:nowrap;">
-                  <a href="char.php?id='.$char['guid'].'" style="flex:1;">
+                  <a href="char.php?id='.$char['guid'].'" style="flex:1; width:auto;">
                     <img src="img/c_icons/'.$char['race'].'-'.$char['gender'].'.gif" alt="" /><img src="img/c_icons/'.$char['class'].'.gif" alt="" />'.
                     $char['name'].'
                   </a>
-                  <a href="unstuck.php?id='.$char['guid'].'"
-                     title="Unstuck Character (Must be offline)"
-                     onclick="return confirm(\'Teleport '.$char_name_safe.' to Hearthstone location? Character must be offline.\');"
-                     style="width:auto; padding-left:8px; color:#ffcc00;">
-                    [Unstuck]
-                  </a>
+                  '.$unstuck_html.'
                 </li>';
             }
             unset($char);
