@@ -205,9 +205,9 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
     unset($trunk);
     unset($menu_array);
 
-    $output .= '
-                            <li><a href="edit.php">'.$lang_header['my_acc'].'</a>
-                        <ul>';
+          $output .= '
+            <li><a href="edit.php">'.$lang_header['my_acc'].'</a>
+              <ul style="min-width: 230px;">';
 
     $result = $sqlr->query('SELECT id, name FROM `realmlist` LIMIT 10');
 
@@ -255,13 +255,20 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
                             <li><a href="#">'.$lang_header['my_characters'].'</a></li>';
             while ($char = $sqlc->fetch_assoc($result))
             {
-                $output .= '
-                            <li>
-                                <a href="char.php?id='.$char['guid'].'">
-                                <img src="img/c_icons/'.$char['race'].'-'.$char['gender'].'.gif" alt="" /><img src="img/c_icons/'.$char['class'].'.gif" alt="" />'.
-                                $char['name'].'
-                                </a>
-                            </li>';
+              $char_name_safe = htmlspecialchars($char['name'], ENT_QUOTES, 'UTF-8');
+              $output .= '
+                <li style="display:flex; justify-content:space-between; align-items:center; white-space:nowrap;">
+                  <a href="char.php?id='.$char['guid'].'" style="flex:1;">
+                    <img src="img/c_icons/'.$char['race'].'-'.$char['gender'].'.gif" alt="" /><img src="img/c_icons/'.$char['class'].'.gif" alt="" />'.
+                    $char['name'].'
+                  </a>
+                  <a href="unstuck.php?id='.$char['guid'].'"
+                     title="Unstuck Character (Must be offline)"
+                     onclick="return confirm(\'Teleport '.$char_name_safe.' to Hearthstone location? Character must be offline.\');"
+                     style="width:auto; padding-left:8px; color:#ffcc00;">
+                    [Unstuck]
+                  </a>
+                </li>';
             }
             unset($char);
         }
