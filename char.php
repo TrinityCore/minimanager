@@ -81,15 +81,15 @@ function char_main(&$sqlr, &$sqlc)
                 $guild_rank = $lang_global['none'];
             }
 
-            $block       = round($char['blockPct'],2);
-            $dodge       = round($char['dodgePct'],2);
-            $parry       = round($char['parryPct'],2);
-            $crit        = round($char['critPct'],2);
-            $ranged_crit = round($char['rangedCritPct'],2);
-            $spell_crit = round($char['spellCritPct'],2);
-            $spell_damage = $char['spellPower'];
-            $rage       = round($char['power2'] / 10);
-            $maxrage    = round($char['maxpower2'] / 10);
+            $block       = round($char['blockPct'] ?? 0, 2);
+            $dodge       = round($char['dodgePct'] ?? 0, 2);
+            $parry       = round($char['parryPct'] ?? 0, 2);
+            $crit        = round($char['critPct'] ?? 0, 2);
+            $ranged_crit = round($char['rangedCritPct'] ?? 0, 2);
+            $spell_crit  = round($char['spellCritPct'] ?? 0, 2);
+            $spell_damage = $char['spellPower'] ?? 0;
+            $rage        = round(($char['power2'] ?? 0) / 10);
+            $maxrage     = round(($char['maxpower2'] ?? 0) / 10);
 
             //preventing undefined variables, didnt want to remove all this stuff so just filling the missing variables with 0
             define('CHAR_DATA_OFFSET_MELEE_HIT',0);

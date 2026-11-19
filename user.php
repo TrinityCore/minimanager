@@ -920,11 +920,15 @@ function edit_user()
     $result = $sqlr->query("SELECT IFNULL(`account_access`.`SecurityLevel`,0) as `SecurityLevel`, `account`.* FROM account LEFT JOIN account_access ON account.id=account_access.AccountID WHERE account.id = '$id'");
     $data = $sqlr->fetch_assoc($result);
 
-    $refguid = $sqlm->fetch_assoc($sqlm->query('SELECT InvitedBy FROM mm_point_system_invites WHERE PlayersAccount = '.$data['id'].''));
-    $refguid = $refguid['InvitedBy'];
-    $referred_by = $sqlc->fetch_assoc($sqlc->query("SELECT BINARY name AS name FROM characters WHERE guid = '$refguid'"));
-    unset($refguid);
-    $referred_by = $referred_by['name'];
+    $ref_row = $sqlm->fetch_assoc($sqlm->query('SELECT InvitedBy FROM mm_point_system_invites WHERE PlayersAccount = '.intval($data['id'])));
+    $refguid = $ref_row['InvitedBy'] ?? null;
+    $referred_by = null;
+    if ($refguid)
+    {
+        $ref_char = $sqlc->fetch_assoc($sqlc->query("SELECT BINARY name AS name FROM characters WHERE guid = ".intval($refguid)));
+        $referred_by = $ref_char['name'] ?? null;
+    }
+    unset($ref_row, $refguid, $ref_char);
 
     if ($sqlr->num_rows($result))
     {
@@ -1418,26 +1422,27 @@ function doupdate_referral($referredby, $user_id)
     $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
     $sqlc = new SQL;
     $r_target = isset($characters_db[$realm_id]) ? $realm_id : array_key_first($characters_db);
-                $sqlc->connect($characters_db[$r_target]['addr'], $characters_db[$r_target]['user'], $characters_db[$r_target]['pass'], $characters_db[$r_target]['name']);
+    $sqlc->connect($characters_db[$r_target]['addr'], $characters_db[$r_target]['user'], $characters_db[$r_target]['pass'], $characters_db[$r_target]['name']);
     $sqlr = new SQL;
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $result = $sqlm->fetch_row($sqlm->query("SELECT InvitedBy FROM mm_point_system_invites WHERE PlayersAccount = '$user_id'"));
-    $result = $result[0];
+    $row = $sqlm->fetch_assoc($sqlm->query("SELECT InvitedBy FROM mm_point_system_invites WHERE PlayersAccount = " . intval($user_id)));
+    $result = $row['InvitedBy'] ?? null;
 
-    if ($result == NULL)
+    if ($result === null && !empty($referredby))
     {
-        $referred_by = $sqlc->fetch_row($sqlc->query("SELECT guid FROM characters WHERE BINARY name = '$referredby'"));
-        $referred_by = $referred_by[0];
+        $ref_row = $sqlc->fetch_assoc($sqlc->query("SELECT guid FROM characters WHERE BINARY name = '" . $sqlc->quote_smart($referredby) . "'"));
+        $referred_by = $ref_row['guid'] ?? null;
 
-        if ($referred_by != NULL)
+        if ($referred_by !== null)
         {
-            $char = $sqlc->fetch_row($sqlc->query("SELECT account FROM characters WHERE guid = '$referred_by'"));
-            $result = $sqlr->fetch_row($sqlr->query("SELECT id FROM account WHERE id = '$char'"));
-            $result = $result[0];
-            if ($result != $user_id)
+            $char_row = $sqlc->fetch_assoc($sqlc->query("SELECT account FROM characters WHERE guid = " . intval($referred_by)));
+            $char_acc = $char_row['account'] ?? 0;
+            $acc_row = $sqlr->fetch_assoc($sqlr->query("SELECT id FROM account WHERE id = " . intval($char_acc)));
+            $acc_id = $acc_row['id'] ?? null;
+            if ($acc_id && $acc_id != $user_id)
             {
-                $sqlm->query("INSERT INTO mm_point_system_invites (PlayersAccount, InvitedBy, InviterAccount) VALUES ('$user_id', '$referred_by', '$result')");
+                $sqlm->query("INSERT INTO mm_point_system_invites (PlayersAccount, InvitedBy, InviterAccount) VALUES (" . intval($user_id) . ", " . intval($referred_by) . ", " . intval($acc_id) . ")");
                 return true;
             }
             else
