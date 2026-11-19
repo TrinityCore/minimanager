@@ -222,7 +222,7 @@ function doupdate_commands()
     list($perm_by_cmd, , $role_roots) = rbac_get_command_map($sqlr);
     $default_group_ids = [0 => 195, 1 => 194, 2 => 193, 3 => 192];
 
-    foreach ($_GET['change'] as $cmd_name => $new_sec_raw)
+    foreach (($_GET['change'] ?? []) as $cmd_name => $new_sec_raw)
     {
         $new_sec = intval($new_sec_raw);
         $cmd_lower = strtolower(trim((string)$cmd_name));

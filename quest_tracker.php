@@ -173,7 +173,7 @@ function del_quest_logs()
 
     if (isset($_GET['qid']) && is_numeric($_GET['qid']))
     {
-        $qid = intval($_GET['qid']);
+        $qid = intval($_GET['qid'] ?? 0);
         $sqlc->query("DELETE FROM quest_tracker WHERE id = $qid");
     }
     redirect("quest_tracker.php");

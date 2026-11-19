@@ -312,7 +312,7 @@ if ('realms' === $action)
 {
     if (isset($_POST['n_realms']))
     {
-        $n_realms = $_POST['n_realms'];
+        $n_realms = $_POST['n_realms'] ?? 1;
 
         $realms = $sqlr->query('SELECT id, name FROM realmlist LIMIT 10');
 

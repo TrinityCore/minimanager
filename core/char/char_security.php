@@ -11,14 +11,14 @@
         $realmid = $realm_id;
     else
     {
-        $realmid = $sqlr->quote_smart($_GET['realm']);
+        $realmid = $sqlr->quote_smart(($_GET['realm'] ?? $realm_id));
         if (is_numeric($realmid))
             $sqlc->connect($characters_db[$realmid]['addr'], $characters_db[$realmid]['user'], $characters_db[$realmid]['pass'], $characters_db[$realmid]['name']);
         else
             $realmid = $realm_id;
     }
 
-    $id = $sqlc->quote_smart($_GET['id']);
+    $id = $sqlc->quote_smart(($_GET['id'] ?? 0));
     if (is_numeric($id));
     else
         error($lang_global['empty_fields']);

@@ -152,8 +152,8 @@ function search() {
     $sql = new SQL;
     $sql->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
 
-    $search_value = $sql->quote_smart($_GET['search_value']);
-    $search_by = $sql->quote_smart($_GET['search_by']);
+    $search_value = $sql->quote_smart(($_GET['search_value'] ?? ''));
+    $search_by = $sql->quote_smart(($_GET['search_by'] ?? ''));
     $search_menu = ['sender', 'receiver'];
     // if (!array_key_exists($search_by, $search_menu)) $search_by = 'sender';
 

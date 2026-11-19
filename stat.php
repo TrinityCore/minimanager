@@ -255,7 +255,7 @@ function stats($action, &$sqlr, &$sqlc)
 
         if(isset($_GET['level']))
         {
-            $lvl_min = $sqlc->quote_smart($_GET['level']);
+            $lvl_min = $sqlc->quote_smart(($_GET['level'] ?? ''));
             $lvl_max = $lvl_min + 4;
             $order_level = 'AND level >= '.$lvl_min.' AND level <= '.$lvl_max.'';
         }
@@ -264,9 +264,9 @@ function stats($action, &$sqlr, &$sqlc)
 
         if(isset($_GET['side']))
         {
-            if ('h' == $sqlc->quote_smart($_GET['side']))
+            if ('h' == $sqlc->quote_smart(($_GET['side'] ?? '')))
                 $order_side = 'AND race IN(2,5,6,8,10)';
-            elseif ('a' == $sqlc->quote_smart($_GET['side']))
+            elseif ('a' == $sqlc->quote_smart(($_GET['side'] ?? '')))
                 $order_side = 'AND race IN (1,3,4,7,11)';
         }
         else

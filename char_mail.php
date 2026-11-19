@@ -36,7 +36,7 @@ function build_mail_items_cell($items_list, $site, &$sqlm, &$sqlw) {
         $nm_safe = htmlspecialchars($nm, ENT_QUOTES, "UTF-8");
         $tot = $data["total"];
         $st  = ($tot > 1) ? " x" . $tot : "";
-        if (count($data["stacks"]) > 1) {
+        if (count($data["stacks"] ?? []) > 1) {
             $counts = array_count_values($data["stacks"]);
             $parts_str = array();
             foreach ($counts as $val => $times) {

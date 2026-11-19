@@ -89,7 +89,7 @@ function send(&$sqlc)
     else
         $type = 3;
 
-    $msg = $sqlc->quote_smart($_POST['msg']);
+    $msg = $sqlc->quote_smart(($_POST['msg'] ?? ''));
     if (4096 < strlen($msg))
         redirect('message.php?action=result&mess='.$lang_message['message_too_long'].'');
 
