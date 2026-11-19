@@ -366,7 +366,7 @@ function browse_users(&$sqlr, &$sqlc)
             }
             if ($user_lvl >= $action_permission['update']||($user_name === $data['username']))
                 $output .= '
-                                <td><a href="mailto:'.$data['email'].'" title="'.htmlspecialchars($data['email']).'">'.(strlen($data['email']) > 8 ? substr($data['email'],0,8).'..' : $data['email']).'</a></td>';
+                                <td>'.(!empty($data['email']) ? '<a href="mailto:'.htmlspecialchars($data['email']).'" title="'.htmlspecialchars($data['email']).'">'.(strlen($data['email']) > 8 ? htmlspecialchars(substr($data['email'],0,8)).'..' : htmlspecialchars($data['email'])).'</a>' : '-').'</td>';
             else
                 $output .= '
                                 <td>***@***.***</td>';
