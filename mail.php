@@ -131,7 +131,7 @@ function send_mail()
     $sqlc = new SQL;
     $sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
 
-    $body = explode("\n",$_POST['body']);
+    $body = explode("\n", $_POST['body'] ?? '');
     $subject = $sqlc->quote_smart($_POST['subject']);
 
     if(isset($_POST['to'])&&($_POST['to'] != ''))

@@ -64,7 +64,7 @@ function char_main(&$sqlr, &$sqlc)
                                     FROM characters LEFT JOIN character_stats ON characters.guid = character_stats.guid LEFT JOIN guild_member ON characters.guid = guild_member.guid WHERE characters.guid = '.$id);
 
             $char = $sqlc->fetch_assoc($result);
-            $eq_data = explode(' ',$char['equipmentCache']);
+            $eq_data = array_pad(explode(' ', $char['equipmentCache'] ?? ''), 38, 0);
 
             $online = ($char['online']) ? $lang_char['online'] : $lang_char['offline'];
 

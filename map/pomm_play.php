@@ -46,7 +46,7 @@ $gm_accounts = [];
 $query = $realm_db->query("SELECT GROUP_CONCAT(`AccountID` SEPARATOR ' ') FROM `account_access` WHERE `SecurityLevel`>'0'");
 if($query)
     if($result = $realm_db->fetch_row($query))
-        $gm_accounts = explode(' ', $result[0]);
+        $gm_accounts = explode(' ', $result ?? '');
 $groups = [];
 $characters_db = new DBLayer($host, $user, $password, $db);
 if(!$characters_db->isValid())

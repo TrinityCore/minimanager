@@ -47,7 +47,7 @@ function edit_char() { //form needs update, uneditable fields have been removed 
                                 COALESCE(guild_member.guildid,0) AS guildid, COALESCE(guild_member.rank,0) AS grank, characters.totalHonorpoints, characters.totalKills, characters.arenaPoints, characters.equipmentCache, characters.money
                                 FROM characters LEFT JOIN guild_member ON characters.guid = guild_member.guid WHERE characters.guid = '$id'");
             $char = $sql->fetch_assoc($result);
-            $eq_data = explode(' ',$char['equipmentCache']);
+            $eq_data = array_pad(explode(' ', $char['equipmentCache'] ?? ''), 38, 0);
 
             if($char['online'])
                 $online = "<font class=\"error\">{$lang_char['online']}</font>{$lang_char['edit_offline_only_char']}";
@@ -330,7 +330,7 @@ function do_edit_char() {
 
                 $result = $sql->query("SELECT equipmentCache FROM characters WHERE guid = '$id'");
                 $char = $sql->fetch_row($result);
-                $eq_data = explode(' ',$char[0]);
+                $eq_data = array_pad(explode(' ', $char ?? ''), 38, 0);
 
                 //some items need to be deleted
                 if($check)
