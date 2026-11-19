@@ -385,7 +385,7 @@ function do_search() {
                             <td><a href=\"creature.php?action=edit&amp;entry=$creature[0]&amp;error=4\">$creature[1]</a></td>";
         $output .= "
                             <td>$creature[2]</td>
-                            <td>".round(get_additional_data($creature[0], 1),0)."</td>
+                            <td>".round(get_additional_data($creature[0], 1) ?? 0, 0)."</td>
                             <td>{$creature_type[$creature[3]][1]}</td>
                             <td>".get_npcflag($creature[4])."</td>
                         </tr>";

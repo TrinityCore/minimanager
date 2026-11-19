@@ -647,8 +647,8 @@ function forum_do_delete_post(){
   {
     $mysql->query("DELETE FROM mm_forum_posts WHERE id = '$id'");
     $result = $mysql->query("SELECT id FROM mm_forum_posts WHERE topic = '{$topic[1]}' ORDER BY id DESC LIMIT 1;"); // get last post id
-    $lastpostid = $mysql->fetch_row($result);
-    $lastpostid = $lastpostid[0];
+    $lastpostid_row = $mysql->fetch_row($result);
+                $lastpostid = $lastpostid_row[0] ?? 0;
     $mysql->query("UPDATE mm_forum_posts SET lastpost = '$lastpostid' WHERE id = '{$topic[1]}'"); // update topic' s last post id
     redirect("forum.php?action=view_topic&id={$topic[1]}");
   }

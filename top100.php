@@ -234,9 +234,9 @@ function top100($realmid, &$sqlr, &$sqlc)
         }
         elseif ($type === 'defense')
         {
-            $block = round($char['block'],2);
-            $dodge = round($char['dodge'],2);
-            $parry = round($char['parry'],2);
+            $block = round($char['block'] ?? 0, 2);
+            $dodge = round($char['dodge'] ?? 0, 2);
+            $parry = round($char['parry'] ?? 0, 2);
 
             $output .= '
                                 <td>'.$char['armor'].'</td>
