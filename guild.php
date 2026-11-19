@@ -21,7 +21,7 @@ function browse_guilds(&$sqlr, &$sqlc)
         $realmid = $realm_id;
     else
     {
-        $realmid = $sqlr->quote_smart($_GET['realm']);
+        $realmid = $sqlr->quote_smart(($_GET['realm'] ?? $realm_id));
         if (is_numeric($realmid))
             $sqlc->connect($characters_db[$realmid]['addr'], $characters_db[$realmid]['user'], $characters_db[$realmid]['pass'], $characters_db[$realmid]['name']);
         else
@@ -29,17 +29,17 @@ function browse_guilds(&$sqlr, &$sqlc)
     }
 
     //==========================$_GET and SECURE=================================
-    $start = (isset($_GET['start'])) ? $sqlc->quote_smart($_GET['start']) : 0;
+    $start = (isset($_GET['start'])) ? $sqlc->quote_smart(($_GET['start'] ?? '')) : 0;
     if (is_numeric($start));
     else
         $start=0;
 
-    $order_by = (isset($_GET['order_by'])) ? $sqlc->quote_smart($_GET['order_by']) : 'gid';
+    $order_by = (isset($_GET['order_by'])) ? $sqlc->quote_smart(($_GET['order_by'] ?? '')) : 'gid';
     if (preg_match('/^[_[:lower:]]{1,10}$/', $order_by));
     else
         $order_by='gid';
 
-    $dir = (isset($_GET['dir'])) ? $sqlc->quote_smart($_GET['dir']) : 1;
+    $dir = (isset($_GET['dir'])) ? $sqlc->quote_smart(($_GET['dir'] ?? '')) : 1;
     if (preg_match('/^[01]{1}$/', $dir));
     else
         $dir=1;
@@ -109,8 +109,8 @@ function browse_guilds(&$sqlr, &$sqlc)
     $search_value = '';
     if(isset($_GET['search_value']) && isset($_GET['search_by']))
     {
-        $search_by = $sqlc->quote_smart($_GET['search_by']);
-        $search_value = $sqlc->quote_smart($_GET['search_value']);
+        $search_by = $sqlc->quote_smart(($_GET['search_by'] ?? ''));
+        $search_value = $sqlc->quote_smart(($_GET['search_value'] ?? ''));
 
         $search_menu = ['name', 'leadername', 'guildid'];
         if (in_array($search_by, $search_menu));
@@ -278,7 +278,7 @@ function view_guild()
         $realmid = $realm_id;
     else
     {
-        $realmid = $sqlr->quote_smart($_GET['realm']);
+        $realmid = $sqlr->quote_smart(($_GET['realm'] ?? $realm_id));
         if (!is_numeric($realmid))
             $realmid = $realm_id;
     }
@@ -286,7 +286,7 @@ function view_guild()
     $sqlc = new SQL;
     $sqlc->connect($characters_db[$realmid]['addr'], $characters_db[$realmid]['user'], $characters_db[$realmid]['pass'], $characters_db[$realmid]['name']);
 
-    $guild_id = $sqlc->quote_smart($_GET['id']);
+    $guild_id = $sqlc->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($guild_id));
     else
         redirect("guild.php?error=6&amp;realm=$realmid");
@@ -300,8 +300,8 @@ function view_guild()
     $q_amIguildleader = $sqlc->query("select 1 from guild where guildid = '$guild_id' and leaderguid in (select guid from characters where account = '$user_id')");
     $amIguildleader = $sqlc->result($q_amIguildleader, 0, '1');
 
-    $search_values = isset($_GET['search_value']) ? (array)$_GET['search_value'] : [''];
-    $search_bys = isset($_GET['search_by']) ? (array)$_GET['search_by'] : ['cname'];
+    $search_values = isset($_GET['search_value']) ? (array)($_GET['search_value'] ?? '') : [''];
+    $search_bys = isset($_GET['search_by']) ? (array)($_GET['search_by'] ?? '') : ['cname'];
     $allowed_search = ['cname', 'pnote', 'offnote', 'race', 'class', 'level', 'account', 'email', 'gender'];
 
     $conditions = [];
@@ -401,16 +401,16 @@ function view_guild()
     //====================SQL INGUILD and GUILDLEADER end========================
 
     //==========================$_GET and SECURE=================================
-    $start = (isset($_GET['start'])) ? $sqlc->quote_smart($_GET['start']) : 0;
+    $start = (isset($_GET['start'])) ? $sqlc->quote_smart(($_GET['start'] ?? '')) : 0;
     if (is_numeric($start));
     else
         $start=0;
 
-    $order_by = (isset($_GET['order_by'])) ? $sqlc->quote_smart($_GET['order_by']) : "mrank";
+    $order_by = (isset($_GET['order_by'])) ? $sqlc->quote_smart(($_GET['order_by'] ?? '')) : "mrank";
     if (!preg_match("/^[_[:lower:]]{1,10}$/", $order_by))
         $order_by="mrank";
 
-    $dir = (isset($_GET['dir'])) ? $sqlc->quote_smart($_GET['dir']) : 1;
+    $dir = (isset($_GET['dir'])) ? $sqlc->quote_smart(($_GET['dir'] ?? '')) : 1;
     if (!preg_match("/^[01]{1}$/", $dir))
         $dir=1;
 
@@ -648,7 +648,7 @@ function guild_logs()
         $realmid = $realm_id;
     else
     {
-        $realmid = $sqlr->quote_smart($_GET['realm']);
+        $realmid = $sqlr->quote_smart(($_GET['realm'] ?? $realm_id));
         if (!is_numeric($realmid))
             $realmid = $realm_id;
     }
@@ -659,7 +659,7 @@ function guild_logs()
     $sqlc = new SQL;
     $sqlc->connect($characters_db[$realmid]['addr'], $characters_db[$realmid]['user'], $characters_db[$realmid]['pass'], $characters_db[$realmid]['name']);
 
-    $guild_id = $sqlc->quote_smart($_GET['id']);
+    $guild_id = $sqlc->quote_smart(($_GET['id'] ?? ''));
     if (!is_numeric($guild_id))
         redirect("guild.php?error=6&amp;realm=$realmid");
 
@@ -668,7 +668,7 @@ function guild_logs()
     if ( $user_lvl < $action_permission['update'] && !$inguild )
         redirect("guild.php?error=6&amp;realm=$realmid");
 
-    $start = (isset($_GET['start'])) ? $sqlc->quote_smart($_GET['start']) : 0;
+    $start = (isset($_GET['start'])) ? $sqlc->quote_smart(($_GET['start'] ?? '')) : 0;
     if (!is_numeric($start))
         $start = 0;
 
@@ -807,7 +807,7 @@ function bank_logs()
     $sqlr = new SQL;
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $realmid = (!empty($_GET['realm']) && is_numeric($_GET['realm'])) ? $sqlr->quote_smart($_GET['realm']) : $realm_id;
+    $realmid = (!empty($_GET['realm']) && is_numeric(($_GET['realm'] ?? $realm_id))) ? $sqlr->quote_smart(($_GET['realm'] ?? $realm_id)) : $realm_id;
     if (!isset($_GET['id']))
         redirect("guild.php?error=1&amp;realm=$realmid");
 
@@ -817,7 +817,7 @@ function bank_logs()
     $sqlw = new SQL;
     $sqlw->connect($world_db[$realmid]['addr'], $world_db[$realmid]['user'], $world_db[$realmid]['pass'], $world_db[$realmid]['name']);
 
-    $guild_id = $sqlc->quote_smart($_GET['id']);
+    $guild_id = $sqlc->quote_smart(($_GET['id'] ?? ''));
     if (!is_numeric($guild_id))
         redirect("guild.php?error=6&amp;realm=$realmid");
 
@@ -826,7 +826,7 @@ function bank_logs()
     if ($user_lvl < $action_permission['update'] && !$inguild)
         redirect("guild.php?error=6&amp;realm=$realmid");
 
-    $start = (isset($_GET['start']) && is_numeric($_GET['start'])) ? $sqlc->quote_smart($_GET['start']) : 0;
+    $start = (isset($_GET['start']) && is_numeric(($_GET['start'] ?? ''))) ? $sqlc->quote_smart(($_GET['start'] ?? '')) : 0;
     $total_logs = $sqlc->num_rows($sqlc->query("SELECT 1 FROM guild_bank_eventlog WHERE guildid = '$guild_id'"));
 
     $query = $sqlc->query("SELECT guildid, BINARY name AS name, BINARY info, BINARY MOTD, createdate,
@@ -972,13 +972,13 @@ function del_guild()
         $realmid = $realm_id;
     else
     {
-        $realmid = $sqlr->quote_smart($_GET['realm']);
+        $realmid = $sqlr->quote_smart(($_GET['realm'] ?? $realm_id));
         if (!is_numeric($realmid))
             $realmid = $realm_id;
     }
 
     if(isset($_GET['id']))
-        $id = $_GET['id'];
+        $id = ($_GET['id'] ?? '');
     else
         redirect("guild.php?error=1&amp;realm=$realmid");
     if (is_numeric($id));
@@ -1035,7 +1035,7 @@ function rem_char_from_guild(&$sqlr, &$sqlc)
         $realmid = $realm_id;
     else
     {
-        $realmid = $sqlr->quote_smart($_GET['realm']);
+        $realmid = $sqlr->quote_smart(($_GET['realm'] ?? $realm_id));
         if (is_numeric($realmid))
             $sqlc->connect($characters_db[$realmid]['addr'], $characters_db[$realmid]['user'], $characters_db[$realmid]['pass'], $characters_db[$realmid]['name']);
         else
@@ -1043,7 +1043,7 @@ function rem_char_from_guild(&$sqlr, &$sqlc)
     }
 
     if(isset($_GET['id']))
-        $guid = $_GET['id'];
+        $guid = ($_GET['id'] ?? '');
     else
         redirect("guild.php?error=1&amp;realm=$realmid");
 
@@ -1052,7 +1052,7 @@ function rem_char_from_guild(&$sqlr, &$sqlc)
         redirect("guild.php?error=5&amp;realm=$realmid");
 
     if(isset($_GET['guld_id']))
-        $guld_id = $_GET['guld_id'];
+        $guld_id = ($_GET['guld_id'] ?? '');
     else
         redirect("guild.php?error=1&amp;realm=$realmid");
 
@@ -1076,7 +1076,7 @@ function rem_char_from_guild(&$sqlr, &$sqlc)
 //#############################################################################
 // MAIN
 //#############################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= '
         <div class="top">';
@@ -1128,7 +1128,7 @@ unset($err);
 $output .= '
         </div>';
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 if ('view_guild' == $action)
     view_guild();

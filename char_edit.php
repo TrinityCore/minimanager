@@ -24,7 +24,7 @@ function edit_char() { //form needs update, uneditable fields have been removed 
     $sqlm = new SQL;
     $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
 
-    $id = $sql->quote_smart($_GET['id']);
+    $id = $sql->quote_smart(($_GET['id'] ?? ''));
 
     $result = $sql->query("SELECT account FROM `characters` WHERE guid = '$id'");
 
@@ -254,7 +254,7 @@ function do_edit_char() {
     $sql = new SQL;
     $sql->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
 
-    $id = $sql->quote_smart($_GET['id']);
+    $id = $sql->quote_smart(($_GET['id'] ?? ''));
 
     $result = $sql->query("SELECT account, online FROM characters WHERE guid = '$id'");
 
@@ -268,7 +268,7 @@ function do_edit_char() {
             $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
             $query = $sql->query("SELECT SecurityLevel FROM account_access WHERE AccountID ='$owner_acc_id' and (`RealmID` = $realm_id or `RealmID` = -1)");
             $owner_gmlvl = $sql->result($query, 0, 'SecurityLevel');
-            $new_owner_name = $_GET['owner_name'];
+            $new_owner_name = ($_GET['owner_name'] ?? '');
             $query = $sql->query("SELECT id FROM account WHERE username ='$new_owner_name'");
             $new_owner_acc_id = $sql->result($query, 0, 'id');
 
@@ -286,45 +286,45 @@ function do_edit_char() {
             if ($user_lvl > $owner_gmlvl)
             {
                 if(isset($_GET['check']))
-                    $check = $sql->quote_smart($_GET['check']);
+                    $check = $sql->quote_smart(($_GET['check'] ?? ''));
                 else
                     $check = NULL;
 
-                $new_name = $sql->quote_smart($_GET['name']);
+                $new_name = $sql->quote_smart(($_GET['name'] ?? ''));
 
                 if (isset($_GET['tot_time']))
-                    $new_tot_time = $sql->quote_smart($_GET['tot_time']);
+                    $new_tot_time = $sql->quote_smart(($_GET['tot_time'] ?? ''));
                 else
                     $new_tot_time =  0;
 
                 if (isset($_GET['money']))
-                    $new_money = $sql->quote_smart($_GET['money']);
+                    $new_money = $sql->quote_smart(($_GET['money'] ?? ''));
                 else
                     $new_money =  0;
 
                 if (isset($_GET['arena_points']))
-                    $new_arena_points = $sql->quote_smart($_GET['arena_points']);
+                    $new_arena_points = $sql->quote_smart(($_GET['arena_points'] ?? ''));
                 else
                     $new_arena_points =  0;
 
                 if (isset($_GET['honor_points']))
-                    $new_honor_points = $sql->quote_smart($_GET['honor_points']);
+                    $new_honor_points = $sql->quote_smart(($_GET['honor_points'] ?? ''));
                 else
                     $new_honor_points =  0;
 
                 if (isset($_GET['total_kills']))
-                    $new_total_kills = $sql->quote_smart($_GET['total_kills']);
+                    $new_total_kills = $sql->quote_smart(($_GET['total_kills'] ?? ''));
                 else
                     $new_total_kills =  0;
 
                 if ((!is_numeric($new_tot_time))||(!is_numeric($new_money))||(!is_numeric($new_arena_points))||(!is_numeric($new_honor_points)))
                     error($lang_char['use_numeric']);
 
-                $x = (isset($_GET['x'])) ? $sql->quote_smart($_GET['x']) : 0;
-                $y = (isset($_GET['y'])) ? $sql->quote_smart($_GET['y']) : 0;
-                $z = (isset($_GET['z'])) ? $sql->quote_smart($_GET['z']) : 0;
-                $map = (isset($_GET['map'])) ? $sql->quote_smart($_GET['map']) : 0;
-                $tp_to = (isset($_GET['tp_to'])) ? $sql->quote_smart($_GET['tp_to']) : 0;
+                $x = (isset($_GET['x'])) ? $sql->quote_smart(($_GET['x'] ?? '')) : 0;
+                $y = (isset($_GET['y'])) ? $sql->quote_smart(($_GET['y'] ?? '')) : 0;
+                $z = (isset($_GET['z'])) ? $sql->quote_smart(($_GET['z'] ?? '')) : 0;
+                $map = (isset($_GET['map'])) ? $sql->quote_smart(($_GET['map'] ?? '')) : 0;
+                $tp_to = (isset($_GET['tp_to'])) ? $sql->quote_smart(($_GET['tp_to'] ?? '')) : 0;
 
                 $sql->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
 
@@ -427,7 +427,7 @@ function do_edit_char() {
 //########################################################################################################################
 // MAIN
 //########################################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $lang_char = lang_char();
 
@@ -471,7 +471,7 @@ switch ($err) {
 }
 $output .= "</div>";
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 switch ($action) {
     case "edit_char":

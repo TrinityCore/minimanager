@@ -154,12 +154,12 @@ function do_repair()
     global $output, $realm_db, $mmfpm_db, $world_db, $characters_db, $action_permission;
     valid_login($action_permission['update']);
 
-    if ((empty($_POST['repair_action']) && '' === $_POST['repair_action']) || (empty($_POST['check'])) )
+    if ((empty($_POST['repair_action']) && '' === ($_POST['repair_action'] ?? '')) || (empty($_POST['check'])) )
         redirect('repair.php?error=1');
     else
     {
-        $table_list = $_POST['check'];
-        $table_action = addslashes($_POST['repair_action']);
+        $table_list = ($_POST['check'] ?? '');
+        $table_action = addslashes(($_POST['repair_action'] ?? ''));
     }
 
     $sql = new SQL;
@@ -198,9 +198,9 @@ function do_repair()
 //########################################################################################################################
 // MAIN
 //########################################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
-$num = (isset($_GET['num'])) ? $_GET['num'] : NULL;
-$rep_err = (isset($_GET['rep_err'])) ? $_GET['rep_err'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
+$num = (isset($_GET['num'])) ? ($_GET['num'] ?? '') : NULL;
+$rep_err = (isset($_GET['rep_err'])) ? ($_GET['rep_err'] ?? '') : NULL;
 
 $output .= '
         <div class="top">';
@@ -238,7 +238,7 @@ unset($err);
 unset($num);
 unset($rep_err);
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 if ('repair_form' == $action)
     repair_form();

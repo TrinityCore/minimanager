@@ -56,7 +56,7 @@ function edit_motd(&$sqlm)
 
     if(empty($_GET['id']))
         redirect('motd.php?error=1');
-    $id = $sqlm->quote_smart($_GET['id']);
+    $id = $sqlm->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect('motd.php?error=1');
@@ -110,7 +110,7 @@ function do_add_motd(&$sqlm)
 
     if (empty($_POST['msg']))
         redirect('motd.php?error=1');
-    $msg = $sqlm->quote_smart($_POST['msg']);
+    $msg = $sqlm->quote_smart(($_POST['msg'] ?? ''));
     if (4096 < strlen($msg))
         redirect('motd.php?error=2');
 
@@ -134,12 +134,12 @@ function do_edit_motd(&$sqlm)
 
     if (empty($_POST['msg']) || empty($_POST['id']))
         redirect('motd.php?error=1');
-    $id = $sqlm->quote_smart($_POST['id']);
+    $id = $sqlm->quote_smart(($_POST['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect('motd.php?error=1');
 
-    $msg = $sqlm->quote_smart($_POST['msg']);
+    $msg = $sqlm->quote_smart(($_POST['msg'] ?? ''));
     if (4096 < strlen($msg))
         redirect('motd.php?error=2');
 
@@ -167,7 +167,7 @@ function delete_motd(&$sqlm)
 
     if (empty($_GET['id']))
         redirect('index.php');
-    $id = $sqlm->quote_smart($_GET['id']);
+    $id = $sqlm->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect('motd.php?error=1');
@@ -179,7 +179,7 @@ function delete_motd(&$sqlm)
 //########################################################################################################################
 // MAIN
 //########################################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $lang_motd = lang_motd();
 
@@ -207,7 +207,7 @@ unset($err);
 
 $output .= '</div>';
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 if ('delete_motd' == $action)
     delete_motd($sqlm);

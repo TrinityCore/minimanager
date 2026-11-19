@@ -4,7 +4,7 @@
 require_once("header.php");
 
 // override default security : guild.php (guild leader deletes guild)
-if(!isset($_POST['override']) || $_POST['override'] != '1')
+if(!isset($_POST['override']) || ($_POST['override'] ?? '') != '1')
     valid_login($action_permission['delete']);
 
 
@@ -76,9 +76,9 @@ function run_cleanup() {
     $sql = new SQL;
     $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $cleanup_by = $sql->quote_smart($_GET['cleanup_by']);
-    $cleanup_sign = $sql->quote_smart($_GET['cleanup_sign']);
-    $cleanup_value = $sql->quote_smart($_GET['cleanup_value']);
+    $cleanup_by = $sql->quote_smart(($_GET['cleanup_by'] ?? ''));
+    $cleanup_sign = $sql->quote_smart(($_GET['cleanup_sign'] ?? ''));
+    $cleanup_value = $sql->quote_smart(($_GET['cleanup_value'] ?? ''));
 
     switch ($cleanup_by)
     {
@@ -740,16 +740,16 @@ function docleanup(){
     global $lang_cleanup, $lang_global, $output, $realm_db, $characters_db, $realm_id, $user_lvl,
             $tab_del_user_characters, $tab_del_user_realmd;
 
-    if (!isset($_POST['type']) || $_POST['type'] === '')
+    if (!isset($_POST['type']) || ($_POST['type'] ?? '') === '')
         redirect("cleanup.php?error=1");
 
     $sql = new SQL;
     $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $type = $sql->quote_smart($_POST['type']);
-    if(isset($_POST['check']) && $_POST['check'] != '')
+    $type = $sql->quote_smart(($_POST['type'] ?? ''));
+    if(isset($_POST['check']) && ($_POST['check'] ?? '') != '')
     {
-        $check = $sql->quote_smart($_POST['check']);
+        $check = $sql->quote_smart(($_POST['check'] ?? ''));
         $check = explode('-',$check);
     }
     else
@@ -900,7 +900,7 @@ function docleanup(){
 //########################################################################################################################
 // MAIN
 //########################################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= "
         <div class=\"top\">";
@@ -918,7 +918,7 @@ switch ($err) {
 $output .= "
         </div>";
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 switch ($action) {
     case "run_cleanup":

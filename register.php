@@ -60,14 +60,14 @@ function doregister(){
         $code = $_SESSION['security_code'] ?? '';
         // one attempt per image, so a solved code cannot be replayed
         unset($_SESSION['security_code']);
-        if ($code === '' || empty($_POST['security_code']) || !hash_equals((string)$code, (string)$_POST['security_code']))
+        if ($code === '' || empty($_POST['security_code']) || !hash_equals((string)$code, (string)($_POST['security_code'] ?? '')))
             redirect("register.php?err=13");
     }
 
     if (empty($_POST['pass']) || empty($_POST['email']) || empty($_POST['username']))
         redirect("register.php?err=1");
 
-    if (($enable_server_code) == true && ($_POST['server_code']) != ($server_code))
+    if (($enable_server_code) == true && (($_POST['server_code'] ?? '')) != ($server_code))
         redirect("register.php?err=16");
 
     if ($disable_acc_creation)
@@ -118,7 +118,7 @@ function doregister(){
     $sql = new SQL;
     $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $user_name = $sql->quote_smart(trim($_POST['username']));
+    $user_name = $sql->quote_smart(trim(($_POST['username'] ?? '')));
 
     //make sure username/pass at least 4 chars long and less than max
     if ((strlen($user_name) < 4) || (strlen($user_name) > 15))
@@ -177,7 +177,7 @@ function doregister(){
     else
     {
         if ($expansion_select)
-            $expansion = (isset($_POST['expansion'])) ? max(0, (int)$_POST['expansion']) : 0;
+            $expansion = (isset($_POST['expansion'])) ? max(0, (int)($_POST['expansion'] ?? '')) : 0;
         else
             $expansion = $defaultoption;
 
@@ -193,7 +193,7 @@ function doregister(){
                 $client_ip = $_SERVER['REMOTE_ADDR'];
                 $authkey = bin2hex(random_bytes(8));
                 
-                list($salt,$verifier) = GetSRP6RegistrationData($_POST['username'], $_POST['pass']);
+                list($salt,$verifier) = GetSRP6RegistrationData(($_POST['username'] ?? ''), ($_POST['pass'] ?? ''));
                 $result = $sql2->query("INSERT INTO mm_account (username,salt,verifier,email,joindate,last_ip,locked,expansion,authkey)
                                         VALUES (UPPER('$user_name'),UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip','$create_acc_locked','$expansion','$authkey')");
                 do_verify_email();
@@ -203,7 +203,7 @@ function doregister(){
         }
         else
         {
-            list($salt,$verifier) = GetSRP6RegistrationData($_POST['username'], $_POST['pass']);
+            list($salt,$verifier) = GetSRP6RegistrationData(($_POST['username'] ?? ''), ($_POST['pass'] ?? ''));
             $result = $sql->query("INSERT INTO account (username,salt,verifier,email, joindate,last_ip,locked,expansion)
                                    VALUES (UPPER('$user_name'),UNHEX('".bin2hex($salt)."'),UNHEX('".bin2hex($verifier)."'),'$mail',now(),'$last_ip',$create_acc_locked,$expansion)");
             $query_result = $sql->fetch_assoc($sql->query("SELECT id FROM account WHERE username = '$user_name'"));
@@ -451,8 +451,8 @@ function do_pass_recovery(){
     $sql = new SQL;
     $sql->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $user_name = $sql->quote_smart(trim($_POST['username']));
-    $email_addr = $sql->quote_smart($_POST['email']);
+    $user_name = $sql->quote_smart(trim(($_POST['username'] ?? '')));
+    $email_addr = $sql->quote_smart(($_POST['email'] ?? ''));
 
     $result = $sql->query("SELECT id, salt FROM account WHERE username = '$user_name' AND email = '$email_addr'");
 
@@ -493,7 +493,7 @@ function do_pass_recovery(){
             $token = bin2hex(random_bytes(32));
         
         $password = bin2hex(random_bytes(6));
-        list($salt,$verifier) = GetSRP6RegistrationData(trim($_POST['username']), $password);
+        list($salt,$verifier) = GetSRP6RegistrationData(trim(($_POST['username'] ?? '')), $password);
         
         $sql2->query('INSERT INTO mm_password_resets (token, accountId, oldsalt, salt, verifier, time) VALUES (UNHEX(\''.$token.'\'), '.$data['id'].', UNHEX(\''.bin2hex($data['salt']).'\'), UNHEX(\''.bin2hex($salt).'\'), UNHEX(\''.bin2hex($verifier).'\'), '.time().')');
 
@@ -543,8 +543,8 @@ function do_pass_activate(){
     $sql2 = new SQL;
     $sql2->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
 
-    $id = +$_GET['a'];
-    $token = $sql2->quote_smart($_GET['t']);
+    $id = intval($_GET['a'] ?? 0);
+    $token = $sql2->quote_smart(($_GET['t'] ?? ''));
     
     $result = $sql2->query('SELECT oldsalt, salt, verifier, time FROM mm_password_resets WHERE token=UNHEX(\'' . $token . '\') AND accountId = '.$id);
     if ($sql2->num_rows($result) > 0)
@@ -568,10 +568,10 @@ function do_pass_activate(){
 //#####################################################################################################
 // MAIN
 //#####################################################################################################
-$err = (isset($_GET['err'])) ? $_GET['err'] : NULL;
+$err = (isset($_GET['err'])) ? ($_GET['err'] ?? '') : NULL;
 
 if (isset($_GET['usr']))
-    $usr = $_GET['usr'];
+    $usr = ($_GET['usr'] ?? '');
 else
     $usr = NULL;
 
@@ -690,7 +690,7 @@ unset($err);
 $output .= "
         </div>";
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 switch ($action){
     case "doregister":

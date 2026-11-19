@@ -21,14 +21,14 @@ function guild_bank(&$sqlr, &$sqlc)
         $realmid = $realm_id;
     else
     {
-        $realmid = $sqlr->quote_smart($_GET['realm']);
+        $realmid = $sqlr->quote_smart(($_GET['realm'] ?? $realm_id));
         if (is_numeric($realmid))
             $sqlc->connect($characters_db[$realmid]['addr'], $characters_db[$realmid]['user'], $characters_db[$realmid]['pass'], $characters_db[$realmid]['name']);
         else
             $realmid = $realm_id;
     }
 
-    $guild_id = $sqlc->quote_smart($_GET['id']);
+    $guild_id = $sqlc->quote_smart(($_GET['id'] ?? ''));
     if (is_numeric($guild_id));
     else
         $guild_id = 0;
@@ -36,7 +36,7 @@ function guild_bank(&$sqlr, &$sqlc)
     if (empty($_GET['tab']))
         $current_tab = 0;
     else
-        $current_tab = $sqlc->quote_smart($_GET['tab']);
+        $current_tab = $sqlc->quote_smart(($_GET['tab'] ?? ''));
 
     if (is_numeric($current_tab) || ($current_tab > 6));
     else
@@ -147,11 +147,11 @@ $output .= '</td></tr>
 //#############################################################################
 // MAIN
 //#############################################################################
-//$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+//$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 $lang_guildbank = lang_guildbank();
 
 //unset($err);
-//$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+//$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 guild_bank($sqlr, $sqlc);
 

@@ -15,19 +15,19 @@ function show_list()
     $sqlr = new SQL;
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $ban_type = (isset($_GET['ban_type'])) ? $sqlr->quote_smart($_GET['ban_type']) : "account_banned";
+    $ban_type = (isset($_GET['ban_type'])) ? $sqlr->quote_smart(($_GET['ban_type'] ?? '')) : "account_banned";
     $key_field = ($ban_type == 'account_banned') ? 'id' :'ip';
 
     //==========================$_GET and SECURE=================================
-    $start = (isset($_GET['start'])) ? $sqlr->quote_smart($_GET['start']) : 0;
+    $start = (isset($_GET['start'])) ? $sqlr->quote_smart(($_GET['start'] ?? '')) : 0;
     if (is_numeric($start));
     else $start=0;
 
-    $order_by = (isset($_GET['order_by'])) ? $sqlr->quote_smart($_GET['order_by']) : "$key_field";
+    $order_by = (isset($_GET['order_by'])) ? $sqlr->quote_smart(($_GET['order_by'] ?? '')) : "$key_field";
     if (!preg_match("/^[_[:lower:]]{1,12}$/", $order_by))
         $order_by="$key_field";
 
-    $dir = (isset($_GET['dir'])) ? $sqlr->quote_smart($_GET['dir']) : 1;
+    $dir = (isset($_GET['dir'])) ? $sqlr->quote_smart(($_GET['dir'] ?? '')) : 1;
     if (!preg_match("/^[01]{1}$/", $dir))
         $dir=1;
 
@@ -139,14 +139,14 @@ function do_delete_entry()
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
     if(isset($_GET['ban_type']))
-        $ban_type = $sqlr->quote_smart($_GET['ban_type']);
+        $ban_type = $sqlr->quote_smart(($_GET['ban_type'] ?? ''));
     else
         redirect("banned.php?error=1");
 
     $key_field = ($ban_type == "account_banned") ? "id" : "ip";
 
     if(isset($_GET[$key_field]))
-        $entry = $sqlr->quote_smart($_GET[$key_field]);
+        $entry = $sqlr->quote_smart(($_GET[$key_field] ?? ''));
     else
         redirect("banned.php?error=1");
 
@@ -241,9 +241,9 @@ function do_add_entry()
     $sqlr = new SQL;
     $sqlr->connect($realm_db['addr'], $realm_db['user'], $realm_db['pass'], $realm_db['name']);
 
-    $ban_type = $sqlr->quote_smart($_GET['ban_type']);
+    $ban_type = $sqlr->quote_smart(($_GET['ban_type'] ?? ''));
 
-    $entry = $sqlr->quote_smart($_GET['entry']);
+    $entry = $sqlr->quote_smart(($_GET['entry'] ?? ''));
     if ($ban_type == "account_banned")
     {
         $result1 = $sqlr->query("SELECT id FROM account WHERE username ='$entry'");
@@ -253,8 +253,8 @@ function do_add_entry()
             $entry = $sqlr->result($result1, 0, 'id');
     }
 
-    $bantime = time() + (3600 * $sqlr->quote_smart($_GET['bantime']));
-    $banreason = (isset($_GET['banreason']) && ($_GET['banreason'] != '')) ? $sqlr->quote_smart($_GET['banreason']) : "none";
+    $bantime = time() + (3600 * $sqlr->quote_smart(($_GET['bantime'] ?? '')));
+    $banreason = (isset($_GET['banreason']) && (($_GET['banreason'] ?? '') != '')) ? $sqlr->quote_smart(($_GET['banreason'] ?? '')) : "none";
 
     if ($ban_type === "account_banned")
     {
@@ -277,7 +277,7 @@ function do_add_entry()
 //########################################################################################################################
 // MAIN
 //########################################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= "
         <div class=\"top\">";
@@ -323,7 +323,7 @@ unset($err);
 $output .= "
         </div>";
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 switch ($action)
 {

@@ -289,16 +289,16 @@ function doedit_user(&$sqlr, &$sqlc)
     global $output, $user_name;
     csrf_check();
 
-    if ( (empty($_POST['pass'])||($_POST['pass'] === ''))
-        && (empty($_POST['mail'])||($_POST['mail'] === ''))
-        && (empty($_POST['expansion'])||($_POST['expansion'] === ''))
-        && (empty($_POST['referredby'])||($_POST['referredby'] === '')) )
+    if ( (empty($_POST['pass'])||(($_POST['pass'] ?? '') === ''))
+        && (empty($_POST['mail'])||(($_POST['mail'] ?? '') === ''))
+        && (empty($_POST['expansion'])||(($_POST['expansion'] ?? '') === ''))
+        && (empty($_POST['referredby'])||(($_POST['referredby'] ?? '') === '')) )
         redirect('edit.php?error=1');
 
     $new_pass = ''; // this is spliced into a sql query. yes, this is stupid. i am here to make it work, not to make it better.
-    if ($_POST['pass'] !== '')
+    if (($_POST['pass'] ?? '') !== '')
     {
-        list($salt, $verifier) = GetSRP6RegistrationData($user_name, $_POST['pass']);
+        list($salt, $verifier) = GetSRP6RegistrationData($user_name, ($_POST['pass'] ?? ''));
         $new_pass = ('salt=UNHEX(\'' . bin2hex($salt) . '\'), verifier=UNHEX(\'' . bin2hex($verifier) . '\'), ');
     }
     $new_mail = $sqlr->quote_smart(trim($_POST['mail'] ?? ''));
@@ -307,7 +307,7 @@ function doedit_user(&$sqlr, &$sqlc)
 
     // the current password is required to change the password or the email
     $cur = $sqlr->fetch_assoc($sqlr->query('SELECT email, salt, verifier FROM account WHERE username = \''.$user_name.'\''));
-    if (($_POST['pass'] !== '' || $new_mail !== $cur['email'])
+    if ((($_POST['pass'] ?? '') !== '' || $new_mail !== $cur['email'])
         && !VerifySRP6Login($user_name, $_POST['cur_pass'] ?? '', $cur['salt'], $cur['verifier']))
         redirect('edit.php?error=6');
     unset($cur);
@@ -362,7 +362,7 @@ function lang_set()
     if (empty($_GET['lang']))
         redirect('edit.php?error=1');
     else
-        $lang = addslashes($_GET['lang']);
+        $lang = addslashes(($_GET['lang'] ?? ''));
 
     if ($lang)
     {
@@ -383,7 +383,7 @@ function theme_set()
     if (empty($_GET['theme']))
         redirect('edit.php?error=1');
     else
-        $tmpl = addslashes($_GET['theme']);
+        $tmpl = addslashes(($_GET['theme'] ?? ''));
 
     if ($tmpl)
     {
@@ -398,7 +398,7 @@ function theme_set()
 //###############################################################################################################
 // MAIN
 //###############################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= '
         <div class="top">';
@@ -444,7 +444,7 @@ unset($err);
 $output .= '
         </div>';
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 if ('doedit_user' == $action)
     doedit_user($sqlr, $sqlc);

@@ -14,12 +14,12 @@ function show_realm(&$sqlr)
     valid_login($action_permission['read']);
 
     //==========================$_GET and SECURE=================================
-    $order_by = (isset($_GET['order_by'])) ? $sqlr->quote_smart($_GET['order_by']) : 'rid';
+    $order_by = (isset($_GET['order_by'])) ? $sqlr->quote_smart(($_GET['order_by'] ?? '')) : 'rid';
     if (preg_match('/^[_[:lower:]]{1,8}$/', $order_by));
     else
         $order_by='rid';
 
-    $dir = (isset($_GET['dir'])) ? $sqlr->quote_smart($_GET['dir']) : 1;
+    $dir = (isset($_GET['dir'])) ? $sqlr->quote_smart(($_GET['dir'] ?? '')) : 1;
     if (preg_match('/^[01]{1}$/', $dir));
     else
         $dir=1;
@@ -138,7 +138,7 @@ function edit_realm(&$sqlr)
     if(empty($_GET['id']))
         redirect('realm.php?error=1');
 
-    $id = $sqlr->quote_smart($_GET['id']);
+    $id = $sqlr->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect('realm.php?error=1');
@@ -273,16 +273,16 @@ function doedit_realm(&$sqlr)
         )
         redirect('realm.php?error=1');
 
-    $id = $sqlr->quote_smart($_GET['id']);
+    $id = $sqlr->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect('realm.php?error=1');
-    $new_name     = $sqlr->quote_smart($_GET['new_name']);
-    $new_address  = $sqlr->quote_smart($_GET['new_address']);
-    $new_port     = $sqlr->quote_smart($_GET['new_port']);
-    $new_icon     = $sqlr->quote_smart($_GET['new_icon']);
-    $new_flag     = $sqlr->quote_smart($_GET['new_flag']);
-    $new_timezone = $sqlr->quote_smart($_GET['new_timezone']);
+    $new_name     = $sqlr->quote_smart(($_GET['new_name'] ?? ''));
+    $new_address  = $sqlr->quote_smart(($_GET['new_address'] ?? ''));
+    $new_port     = $sqlr->quote_smart(($_GET['new_port'] ?? ''));
+    $new_icon     = $sqlr->quote_smart(($_GET['new_icon'] ?? ''));
+    $new_flag     = $sqlr->quote_smart(($_GET['new_flag'] ?? ''));
+    $new_timezone = $sqlr->quote_smart(($_GET['new_timezone'] ?? ''));
 
     $query = $sqlr->query('UPDATE realmlist SET name=\''.$new_name.'\', address =\''.$new_address.'\' , port =\''.$new_port.'\', icon =\''.$new_icon.'\', flag =\''.$new_flag.'\', timezone =\''.$new_timezone.'\' WHERE id = '.$id.'');
 
@@ -310,7 +310,7 @@ function del_realm(&$sqlr)
 
     if(empty($_GET['id']))
         redirect('realm.php?error=1');
-    $id = $sqlr->quote_smart($_GET['id']);
+    $id = $sqlr->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect('realm.php?error=1');
@@ -348,7 +348,7 @@ function dodel_realm(&$sqlr)
 
     if(empty($_GET['id']))
         redirect('realm.php?error=1');
-    $id = $sqlr->quote_smart($_GET['id']);
+    $id = $sqlr->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect('realm.php?error=1');
@@ -388,7 +388,7 @@ function set_def_realm(&$sqlr)
     global $action_permission;
     valid_login($action_permission['read']);
 
-    $id = (isset($_GET['id'])) ? $sqlr->quote_smart($_GET['id']) : 1;
+    $id = (isset($_GET['id'])) ? $sqlr->quote_smart(($_GET['id'] ?? '')) : 1;
     if(is_numeric($id));
     else
         $id = 1;
@@ -398,7 +398,7 @@ function set_def_realm(&$sqlr)
     unset($id);
 
     // only plain same-site paths (the header passes the script path here), never another host
-    $url = (isset($_GET['url'])) ? $_GET['url'] : 'index.php';
+    $url = (isset($_GET['url'])) ? ($_GET['url'] ?? '') : 'index.php';
     if (!preg_match('#^/?[\w./-]+$#', $url) || '//' === substr($url, 0, 2))
         $url = 'index.php';
     redirect($url);
@@ -448,7 +448,7 @@ function get_timezone_type()
 //####################################################################################################
 // MAIN
 //####################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= '
         <div class="top">';
@@ -484,7 +484,7 @@ unset($err);
 $output .= '
         </div>';
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 if ('edit_realm' === $action)
     edit_realm($sqlr);

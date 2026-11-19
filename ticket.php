@@ -14,13 +14,13 @@ class tickets
 		global $output, $lang_global, $lang_ticket, $action_permission, $user_lvl, $itemperpage, $sqlr, $showcountryflag, $sqlm;
 
 		//==========================$_GET and SECURE=================================
-		$start = (isset($_GET['start'])) ? $sqlc->quote_smart($_GET['start']) : 0;
+		$start = (isset($_GET['start'])) ? $sqlc->quote_smart(($_GET['start'] ?? '')) : 0;
 		$start = (is_numeric($start)) ? $start : 0;
 	
-        $order_by = (isset($_GET['order_by'])) ? $sqlc->quote_smart($_GET['order_by']) : 'id';
+        $order_by = (isset($_GET['order_by'])) ? $sqlc->quote_smart(($_GET['order_by'] ?? '')) : 'id';
         $order_by = (preg_match('/^[_[:lower:]]{1,10}$/', $order_by)) ? $order_by : 'id';
 			
-        $dir = (isset($_GET['dir'])) ? $sqlc->quote_smart($_GET['dir']) : 1;
+        $dir = (isset($_GET['dir'])) ? $sqlc->quote_smart(($_GET['dir'] ?? '')) : 1;
 		$dir = (preg_match('/^[01]{1}$/', $dir)) ? $dir : 1;
 
 		$order_dir = ($dir) ? 'ASC' : 'DESC';
@@ -147,7 +147,7 @@ function delete_tickets()
     $sqlc = new SQL;
     $sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
 
-    $check = $sqlc->quote_smart($_GET['check']);
+    $check = $sqlc->quote_smart(($_GET['check'] ?? ''));
 
     $deleted_tickets = 0;
 	if (is_array($check) || is_object($check))
@@ -180,7 +180,7 @@ function edit_ticket()
     $sqlc = new SQL;
     $sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
 
-    $id = $sqlc->quote_smart($_GET['id']);
+    $id = $sqlc->quote_smart(($_GET['id'] ?? ''));
     if(!is_numeric($id))
         redirect("ticket.php?error=1");
 
@@ -261,10 +261,10 @@ function do_edit_ticket()
     $sqlc = new SQL;
     $sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
 
-    $new_text = $sqlc->quote_smart($_POST['new_text']);
+    $new_text = $sqlc->quote_smart(($_POST['new_text'] ?? ''));
 	$new_text = str_replace('\\\\r\\', '', $new_text);
 	
-    $id = $sqlc->quote_smart($_POST['id']);
+    $id = $sqlc->quote_smart(($_POST['id'] ?? ''));
     if(is_numeric($id))
 		$query = $sqlc->query("UPDATE gm_ticket SET description='$new_text' WHERE id = '$id'");
     else
@@ -280,7 +280,7 @@ function do_edit_ticket()
 //########################################################################################################################
 // MAIN
 //########################################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= "
         <div class=\"top\">";
@@ -333,7 +333,7 @@ unset($err);
 $output .= "
         </div>";
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 $tickets = new tickets;
 

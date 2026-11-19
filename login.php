@@ -13,8 +13,8 @@ function dologin(&$sqlr)
     if (empty($_POST['user']) || empty($_POST['pass']))
         redirect('login.php?error=2');
 
-    $user_name  = $sqlr->quote_smart($_POST['user']);
-    $user_pass  = $sqlr->quote_smart($_POST['pass']);
+    $user_name  = $sqlr->quote_smart(($_POST['user'] ?? ''));
+    $user_pass  = $sqlr->quote_smart(($_POST['pass'] ?? ''));
 
     if (255 < strlen($user_name) || 255 < strlen($user_pass))
         redirect('login.php?error=1');
@@ -37,7 +37,7 @@ function dologin(&$sqlr)
     if (1 == $sqlr->num_rows($result))
     {
         $info = $sqlr->fetch_assoc($result);
-        if (!VerifySRP6Login($_POST['user'], $_POST['pass'], $info['salt'], $info['verifier']))
+        if (!VerifySRP6Login(($_POST['user'] ?? ''), ($_POST['pass'] ?? ''), $info['salt'], $info['verifier']))
             redirect('login.php?error=1');
         else
         {
@@ -48,11 +48,11 @@ function dologin(&$sqlr)
             {
                 $_SESSION['user_id'] = $id;
                 $_SESSION['uname'] = $info['username'];
-                $_SESSION['realm_id'] = $sqlr->quote_smart($_POST['realm']);
+                $_SESSION['realm_id'] = $sqlr->quote_smart(($_POST['realm'] ?? ''));
                 $_SESSION['user_lvl'] = get_user_lvl($sqlr, $id, $_SESSION['realm_id']);
                 $_SESSION['client_ip'] = (isset($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : getenv('REMOTE_ADDR');
                 $_SESSION['logged_in'] = true;
-                if (isset($_POST['remember']) && $_POST['remember'] != '')
+                if (isset($_POST['remember']) && ($_POST['remember'] ?? '') != '')
                     setcookie(session_name(), session_id(), ['expires' => time()+60*60*24*7, 'path' => ini_get('session.cookie_path'), 'httponly' => true, 'samesite' => 'Lax']);
                 redirect('index.php');
             }
@@ -167,7 +167,7 @@ function login(&$sqlr)
 //#################################################################################################
 // MAIN
 //#################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $lang_login = lang_login();
 
@@ -218,7 +218,7 @@ unset($err);
 $output .= '
         </div>';
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 if ('dologin' === $action)
 {
@@ -227,7 +227,7 @@ if ('dologin' === $action)
         $code = $_SESSION['security_code'] ?? '';
         // one attempt per image, so a code cannot be guessed or replayed
         unset($_SESSION['security_code']);
-        if ($code === '' || empty($_POST['security_code']) || !hash_equals((string)$code, (string)$_POST['security_code']))
+        if ($code === '' || empty($_POST['security_code']) || !hash_equals((string)$code, (string)($_POST['security_code'] ?? '')))
             redirect('login.php?error=8');
     }
     dologin($sqlr);
