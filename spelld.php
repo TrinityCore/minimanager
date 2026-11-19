@@ -19,17 +19,17 @@ function browse_spells()
     $sqlw->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
     //==========================$_GET and SECURE=================================
-    $start = (isset($_GET['start'])) ? $sqlw->quote_smart($_GET['start']) : 0;
+    $start = (isset($_GET['start'])) ? $sqlw->quote_smart(($_GET['start'] ?? '')) : 0;
     if (is_numeric($start));
     else
         $start=0;
 
-    $order_by = (isset($_GET['order_by'])) ? $sqlw->quote_smart($_GET['order_by']) : 'entry';
+    $order_by = (isset($_GET['order_by'])) ? $sqlw->quote_smart(($_GET['order_by'] ?? '')) : 'entry';
     if (preg_match('/^[_[:lower:]]{1,12}$/', $order_by));
     else
         $order_by = 'entry';
 
-    $dir = (isset($_GET['dir'])) ? $sqlw->quote_smart($_GET['dir']) : 1;
+    $dir = (isset($_GET['dir'])) ? $sqlw->quote_smart(($_GET['dir'] ?? '')) : 1;
     if (preg_match('/^[01]{1}$/', $dir));
     else
         $dir = 1;
@@ -43,8 +43,8 @@ function browse_spells()
     $search_value = '';
     if(isset($_GET['search_value']) && isset($_GET['search_by']))
     {
-        $search_value = $sqlw->quote_smart($_GET['search_value']);
-        $search_by = $sqlw->quote_smart($_GET['search_by']);
+        $search_value = $sqlw->quote_smart(($_GET['search_value'] ?? ''));
+        $search_by = $sqlw->quote_smart(($_GET['search_by'] ?? ''));
         $search_menu = ['entry', 'disable_mask', 'comment'];
         if (in_array($search_by, $search_menu));
         else
@@ -315,18 +315,18 @@ function doadd_new()
     $sqlw = new SQL;
     $sqlw->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
-    $entry = $sqlw->quote_smart($_GET['entry']);
+    $entry = $sqlw->quote_smart(($_GET['entry'] ?? ''));
     if (is_numeric($entry));
     else
         redirect('spelld.php?error=6');
 
-    $flags = $sqlw->quote_smart($_GET['flags']);
+    $flags = $sqlw->quote_smart(($_GET['flags'] ?? ''));
 
     if (is_numeric($flags));
     else
         redirect('spelld.php?error=6');
 
-    $comment = $sqlw->quote_smart($_GET['comment']);
+    $comment = $sqlw->quote_smart(($_GET['comment'] ?? ''));
 
     $sqlw->query('INSERT INTO spell_disabled (sourceType, entry, flags, comment) VALUES (0, \''.$entry.'\', \''.$flags.'\', \''.$comment.'\')');
 
@@ -353,7 +353,7 @@ function del_spell()
     $sqlw = new SQL;
     $sqlw->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
-    $check = $sqlw->quote_smart($_GET['check']);
+    $check = $sqlw->quote_smart(($_GET['check'] ?? ''));
 
     $n_check=count($check);
 
@@ -375,7 +375,7 @@ function del_spell()
 //#############################################################################
 // MAIN
 //#############################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= '
         <div class="top">';
@@ -429,7 +429,7 @@ unset($err);
 $output .= '
         </div>';
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 if ('add_new' === $action)
     add_new();

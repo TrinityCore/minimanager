@@ -11,8 +11,8 @@ function print_mail_form()
     global $lang_global;
     global $lang_mail, $output;
 
-    $to = (isset($_GET['to'])) ? $_GET['to'] : NULL;
-    $type = (isset($_GET['type'])) ? $_GET['type'] :"email";
+    $to = (isset($_GET['to'])) ? ($_GET['to'] ?? '') : NULL;
+    $type = (isset($_GET['type'])) ? ($_GET['type'] ?? '') :"email";
 
     $output .= "
                 <center>
@@ -132,29 +132,29 @@ function send_mail()
     $sqlc->connect($characters_db[$realm_id]['addr'], $characters_db[$realm_id]['user'], $characters_db[$realm_id]['pass'], $characters_db[$realm_id]['name']);
 
     $body = explode("\n", $_POST['body'] ?? '');
-    $subject = $sqlc->quote_smart($_POST['subject']);
+    $subject = $sqlc->quote_smart(($_POST['subject'] ?? ''));
 
-    if(isset($_POST['to'])&&($_POST['to'] != ''))
-        $to = $sqlc->quote_smart($_POST['to']);
+    if(isset($_POST['to'])&&(($_POST['to'] ?? '') != ''))
+        $to = $sqlc->quote_smart(($_POST['to'] ?? ''));
     else
     {
         $to = 0;
-        if(!isset($_POST['group_value'])||$_POST['group_value'] === '')
+        if(!isset($_POST['group_value'])||($_POST['group_value'] ?? '') === '')
         {
             redirect("mail.php?error=1");
         }
         else
         {
-            $group_value = $sqlc->quote_smart($_POST['group_value']);
-            $group_sign = $sqlc->quote_smart($_POST['group_sign']);
-            $group_send = $sqlc->quote_smart($_POST['group_send']);
+            $group_value = $sqlc->quote_smart(($_POST['group_value'] ?? ''));
+            $group_sign = $sqlc->quote_smart(($_POST['group_sign'] ?? ''));
+            $group_send = $sqlc->quote_smart(($_POST['group_send'] ?? ''));
         }
     }
 
-    $type = addslashes($_POST['type']);
-    $att_gold = $sqlc->quote_smart($_POST['money']);
-    $att_item = $sqlc->quote_smart($_POST['att_item']);
-    $att_stack = $sqlc->quote_smart($_POST['att_stack']);
+    $type = addslashes(($_POST['type'] ?? ''));
+    $att_gold = $sqlc->quote_smart(($_POST['money'] ?? ''));
+    $att_item = $sqlc->quote_smart(($_POST['att_item'] ?? ''));
+    $att_stack = $sqlc->quote_smart(($_POST['att_stack'] ?? ''));
 
     switch ($type)
     {
@@ -425,7 +425,7 @@ function send_ingame_mail($realm_id, $massmails)
 function result()
 {
     global $lang_global, $output;
-    $mess = (isset($_GET['mess'])) ? $_GET['mess'] : NULL;
+    $mess = (isset($_GET['mess'])) ? ($_GET['mess'] ?? '') : NULL;
     $output .= '
         <center>
             <br />
@@ -457,7 +457,7 @@ function result()
 //########################################################################################################################
 // MAIN
 //########################################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= "
         <div class=\"top\">";
@@ -480,7 +480,7 @@ switch ($err)
             </h1>";
         break;
     case 3:
-        $mail_err = (isset($_GET['mail_err'])) ? $_GET['mail_err'] : NULL;
+        $mail_err = (isset($_GET['mail_err'])) ? ($_GET['mail_err'] ?? '') : NULL;
         $output .= "
             <h1>
                 <font class=\"error\">{$lang_mail['mail_err']}: $mail_err</font>
@@ -515,7 +515,7 @@ unset($err);
 $output .= "
         </div>";
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 switch ($action)
 {

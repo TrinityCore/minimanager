@@ -140,9 +140,9 @@ function do_search() {
     require_once("./scripts/get_lib.php");
     $deplang = get_lang_id();
 
-    if((!isset($_POST['entry'])||$_POST['entry'] === '')&&(!isset($_POST['name'])||$_POST['name'] === '')&&(!isset($_POST['ScriptName'])||$_POST['ScriptName'] === '')&&(!isset($_POST['displayId'])||$_POST['displayId'] === '')
-        &&(!isset($_POST['faction'])||$_POST['faction'] === '')&&(!isset($_POST['flags'])||$_POST['flags'] === '')&&(!isset($_POST['custom_search'])||$_POST['custom_search'] === '')
-        &&($_POST['type'] == -1 ))
+    if((!isset($_POST['entry'])||($_POST['entry'] ?? '') === '')&&(!isset($_POST['name'])||($_POST['name'] ?? '') === '')&&(!isset($_POST['ScriptName'])||($_POST['ScriptName'] ?? '') === '')&&(!isset($_POST['displayId'])||($_POST['displayId'] ?? '') === '')
+        &&(!isset($_POST['faction'])||($_POST['faction'] ?? '') === '')&&(!isset($_POST['flags'])||($_POST['flags'] ?? '') === '')&&(!isset($_POST['custom_search'])||($_POST['custom_search'] ?? '') === '')
+        &&(($_POST['type'] ?? '') == -1 ))
     {
         redirect("game_object.php?error=1");
     }
@@ -150,22 +150,22 @@ function do_search() {
     $sql = new SQL;
     $sql->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
-    if ($_POST['entry'] != '')
-        $entry = $sql->quote_smart($_POST['entry']);
-    if ($_POST['name'] != '')
-        $name = $sql->quote_smart($_POST['name']);
-    if ($_POST['type'] != -1)
-        $type = $sql->quote_smart($_POST['type']);
-    if ($_POST['ScriptName'] != '')
-        $ScriptName = $sql->quote_smart($_POST['ScriptName']);
-    if ($_POST['displayId'] != '')
-        $displayId = $sql->quote_smart($_POST['displayId']);
-    if ($_POST['faction'] != '')
-        $faction = $sql->quote_smart($_POST['faction']);
-    if ($_POST['flags'] != '')
-        $flags = $sql->quote_smart($_POST['flags']);
-    if ($_POST['custom_search'] != '')
-        $custom_search = $sql->quote_smart($_POST['custom_search']);
+    if (($_POST['entry'] ?? '') != '')
+        $entry = $sql->quote_smart(($_POST['entry'] ?? ''));
+    if (($_POST['name'] ?? '') != '')
+        $name = $sql->quote_smart(($_POST['name'] ?? ''));
+    if (($_POST['type'] ?? '') != -1)
+        $type = $sql->quote_smart(($_POST['type'] ?? ''));
+    if (($_POST['ScriptName'] ?? '') != '')
+        $ScriptName = $sql->quote_smart(($_POST['ScriptName'] ?? ''));
+    if (($_POST['displayId'] ?? '') != '')
+        $displayId = $sql->quote_smart(($_POST['displayId'] ?? ''));
+    if (($_POST['faction'] ?? '') != '')
+        $faction = $sql->quote_smart(($_POST['faction'] ?? ''));
+    if (($_POST['flags'] ?? '') != '')
+        $flags = $sql->quote_smart(($_POST['flags'] ?? ''));
+    if (($_POST['custom_search'] ?? '') != '')
+        $custom_search = $sql->quote_smart(($_POST['custom_search'] ?? ''));
     else
         $custom_search = "";
 
@@ -434,7 +434,7 @@ function edit() {
     $sql = new SQL;
     $sql->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
-    $entry = $sql->quote_smart($_GET['entry']);
+    $entry = $sql->quote_smart(($_GET['entry'] ?? ''));
     require_once("./scripts/get_lib.php");
     $deplang = get_lang_id();
     $result = $sql->query("SELECT gameobject_template.`entry`,`type`,`displayId`,IFNULL(".($deplang<>0?"name_loc$deplang":"NULL").",`name`) as name,`faction`,`flags`,`size`,`data0`,`data1`,`data2`,`data3`,`data4`,`data5`,`data6`,`data7`,`data8`,`data9`,`data10`,`data11`,`data12`,`data13`,`data14`,`data15`,`data16`,`data17`,`data18`,`data19`,`data20`,`data21`,`data22`,`data23`,`ScriptName` FROM gameobject_template LEFT JOIN locales_gameobject ON gameobject_template.entry = locales_gameobject.entry WHERE gameobject_template.entry = '$entry'");
@@ -793,195 +793,195 @@ function edit() {
 function do_update() {
     global $world_db, $realm_id;
 
-    if (!isset($_POST['opp_type']) || $_POST['opp_type'] === '')
+    if (!isset($_POST['opp_type']) || ($_POST['opp_type'] ?? '') === '')
         redirect("game_object.php?error=1");
-    if (!isset($_POST['entry']) || $_POST['entry'] === '')
+    if (!isset($_POST['entry']) || ($_POST['entry'] ?? '') === '')
         redirect("game_object.php?error=1");
 
     $sql = new SQL;
     $sql->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
-    $entry = $sql->quote_smart($_POST['entry']);
-    if (isset($_POST['type']) && $_POST['type'] != '')
-        $type = $sql->quote_smart($_POST['type']);
+    $entry = $sql->quote_smart(($_POST['entry'] ?? ''));
+    if (isset($_POST['type']) && ($_POST['type'] ?? '') != '')
+        $type = $sql->quote_smart(($_POST['type'] ?? ''));
     else
         $type = 0;
-    if (isset($_POST['displayId']) && $_POST['displayId'] != '')
-        $displayId = $sql->quote_smart($_POST['displayId']);
+    if (isset($_POST['displayId']) && ($_POST['displayId'] ?? '') != '')
+        $displayId = $sql->quote_smart(($_POST['displayId'] ?? ''));
     else
         $displayId = 0;
-    if (isset($_POST['name']) && $_POST['name'] != '')
-        $name = $sql->quote_smart($_POST['name']);
+    if (isset($_POST['name']) && ($_POST['name'] ?? '') != '')
+        $name = $sql->quote_smart(($_POST['name'] ?? ''));
     else
         $name = "";
-    if (isset($_POST['faction']) && $_POST['faction'] != '')
-        $faction = $sql->quote_smart($_POST['faction']);
+    if (isset($_POST['faction']) && ($_POST['faction'] ?? '') != '')
+        $faction = $sql->quote_smart(($_POST['faction'] ?? ''));
     else
         $faction = 0;
-    if (isset($_POST['flags']) && $_POST['flags'] != '')
-        $flags = $sql->quote_smart($_POST['flags']);
+    if (isset($_POST['flags']) && ($_POST['flags'] ?? '') != '')
+        $flags = $sql->quote_smart(($_POST['flags'] ?? ''));
     else
         $flags = 0;
-    if (isset($_POST['size']) && $_POST['size'] != '')
-        $size = $sql->quote_smart($_POST['size']);
+    if (isset($_POST['size']) && ($_POST['size'] ?? '') != '')
+        $size = $sql->quote_smart(($_POST['size'] ?? ''));
     else
         $size = 0;
-    if (isset($_POST['ScriptName']) && $_POST['ScriptName'] != '')
-        $ScriptName = $sql->quote_smart($_POST['ScriptName']);
+    if (isset($_POST['ScriptName']) && ($_POST['ScriptName'] ?? '') != '')
+        $ScriptName = $sql->quote_smart(($_POST['ScriptName'] ?? ''));
     else
         $ScriptName = "";
-    if (isset($_POST['data0']) && $_POST['data0'] != '')
-        $data0 = $sql->quote_smart($_POST['data0']);
+    if (isset($_POST['data0']) && ($_POST['data0'] ?? '') != '')
+        $data0 = $sql->quote_smart(($_POST['data0'] ?? ''));
     else
         $data0 = 0;
-    if (isset($_POST['data1']) && $_POST['data1'] != '')
-        $data1 = $sql->quote_smart($_POST['data1']);
+    if (isset($_POST['data1']) && ($_POST['data1'] ?? '') != '')
+        $data1 = $sql->quote_smart(($_POST['data1'] ?? ''));
     else
         $data1 = 0;
-    if (isset($_POST['data2']) && $_POST['data2'] != '')
-        $data2 = $sql->quote_smart($_POST['data2']);
+    if (isset($_POST['data2']) && ($_POST['data2'] ?? '') != '')
+        $data2 = $sql->quote_smart(($_POST['data2'] ?? ''));
     else
         $data2 = 0;
-    if (isset($_POST['data3']) && $_POST['data3'] != '')
-        $data3 = $sql->quote_smart($_POST['data3']);
+    if (isset($_POST['data3']) && ($_POST['data3'] ?? '') != '')
+        $data3 = $sql->quote_smart(($_POST['data3'] ?? ''));
     else
         $data3 = 0;
-    if (isset($_POST['data4']) && $_POST['data4'] != '')
-        $data4 = $sql->quote_smart($_POST['data4']);
+    if (isset($_POST['data4']) && ($_POST['data4'] ?? '') != '')
+        $data4 = $sql->quote_smart(($_POST['data4'] ?? ''));
     else
         $data4 = 0;
-    if (isset($_POST['data5']) && $_POST['data5'] != '')
-        $data5 = $sql->quote_smart($_POST['data5']);
+    if (isset($_POST['data5']) && ($_POST['data5'] ?? '') != '')
+        $data5 = $sql->quote_smart(($_POST['data5'] ?? ''));
     else
         $data5 = 0;
-    if (isset($_POST['data6']) && $_POST['data6'] != '')
-        $data6 = $sql->quote_smart($_POST['data6']);
+    if (isset($_POST['data6']) && ($_POST['data6'] ?? '') != '')
+        $data6 = $sql->quote_smart(($_POST['data6'] ?? ''));
     else
         $data6 = 0;
-    if (isset($_POST['data7']) && $_POST['data7'] != '')
-        $data7 = $sql->quote_smart($_POST['data7']);
+    if (isset($_POST['data7']) && ($_POST['data7'] ?? '') != '')
+        $data7 = $sql->quote_smart(($_POST['data7'] ?? ''));
     else
         $data7 = 0;
-    if (isset($_POST['data8']) && $_POST['data8'] != '')
-        $data8 = $sql->quote_smart($_POST['data8']);
+    if (isset($_POST['data8']) && ($_POST['data8'] ?? '') != '')
+        $data8 = $sql->quote_smart(($_POST['data8'] ?? ''));
     else
         $data8 = 0;
-    if (isset($_POST['data9']) && $_POST['data9'] != '')
-        $data9 = $sql->quote_smart($_POST['data9']);
+    if (isset($_POST['data9']) && ($_POST['data9'] ?? '') != '')
+        $data9 = $sql->quote_smart(($_POST['data9'] ?? ''));
     else
         $data9 = 0;
-    if (isset($_POST['data10']) && $_POST['data10'] != '')
-        $data10 = $sql->quote_smart($_POST['data10']);
+    if (isset($_POST['data10']) && ($_POST['data10'] ?? '') != '')
+        $data10 = $sql->quote_smart(($_POST['data10'] ?? ''));
     else
         $data10 = 0;
-    if (isset($_POST['data11']) && $_POST['data11'] != '')
-        $data11 = $sql->quote_smart($_POST['data11']);
+    if (isset($_POST['data11']) && ($_POST['data11'] ?? '') != '')
+        $data11 = $sql->quote_smart(($_POST['data11'] ?? ''));
     else
         $data11 = 0;
-    if (isset($_POST['data12']) && $_POST['data12'] != '')
-        $data12 = $sql->quote_smart($_POST['data12']);
+    if (isset($_POST['data12']) && ($_POST['data12'] ?? '') != '')
+        $data12 = $sql->quote_smart(($_POST['data12'] ?? ''));
     else
         $data12 = 0;
-    if (isset($_POST['data13']) && $_POST['data13'] != '')
-        $data13 = $sql->quote_smart($_POST['data13']);
+    if (isset($_POST['data13']) && ($_POST['data13'] ?? '') != '')
+        $data13 = $sql->quote_smart(($_POST['data13'] ?? ''));
     else
         $data13 = 0;
-    if (isset($_POST['data14']) && $_POST['data14'] != '')
-        $data14 = $sql->quote_smart($_POST['data14']);
+    if (isset($_POST['data14']) && ($_POST['data14'] ?? '') != '')
+        $data14 = $sql->quote_smart(($_POST['data14'] ?? ''));
     else
         $data14 = 0;
-    if (isset($_POST['data15']) && $_POST['data15'] != '')
-        $data15 = $sql->quote_smart($_POST['data15']);
+    if (isset($_POST['data15']) && ($_POST['data15'] ?? '') != '')
+        $data15 = $sql->quote_smart(($_POST['data15'] ?? ''));
     else
         $data15 = 0;
-    if (isset($_POST['data16']) && $_POST['data16'] != '')
-        $data16 = $sql->quote_smart($_POST['data16']);
+    if (isset($_POST['data16']) && ($_POST['data16'] ?? '') != '')
+        $data16 = $sql->quote_smart(($_POST['data16'] ?? ''));
     else
         $data16 = 0;
-    if (isset($_POST['data17']) && $_POST['data17'] != '')
-        $data17 = $sql->quote_smart($_POST['data17']);
+    if (isset($_POST['data17']) && ($_POST['data17'] ?? '') != '')
+        $data17 = $sql->quote_smart(($_POST['data17'] ?? ''));
     else
         $data17 = 0;
-    if (isset($_POST['data18']) && $_POST['data18'] != '')
-        $data18 = $sql->quote_smart($_POST['data18']);
+    if (isset($_POST['data18']) && ($_POST['data18'] ?? '') != '')
+        $data18 = $sql->quote_smart(($_POST['data18'] ?? ''));
     else
         $data18 = 0;
-    if (isset($_POST['data19']) && $_POST['data19'] != '')
-        $data19 = $sql->quote_smart($_POST['data19']);
+    if (isset($_POST['data19']) && ($_POST['data19'] ?? '') != '')
+        $data19 = $sql->quote_smart(($_POST['data19'] ?? ''));
     else
         $data19 = 0;
-    if (isset($_POST['data20']) && $_POST['data20'] != '')
-        $data20 = $sql->quote_smart($_POST['data20']);
+    if (isset($_POST['data20']) && ($_POST['data20'] ?? '') != '')
+        $data20 = $sql->quote_smart(($_POST['data20'] ?? ''));
     else
         $data20 = 0;
-    if (isset($_POST['data21']) && $_POST['data21'] != '')
-        $data21 = $sql->quote_smart($_POST['data21']);
+    if (isset($_POST['data21']) && ($_POST['data21'] ?? '') != '')
+        $data21 = $sql->quote_smart(($_POST['data21'] ?? ''));
     else
         $data21 = 0;
-    if (isset($_POST['data22']) && $_POST['data22'] != '')
-        $data22 = $sql->quote_smart($_POST['data22']);
+    if (isset($_POST['data22']) && ($_POST['data22'] ?? '') != '')
+        $data22 = $sql->quote_smart(($_POST['data22'] ?? ''));
     else
         $data22 = 0;
-    if (isset($_POST['data23']) && $_POST['data23'] != '')
-        $data23 = $sql->quote_smart($_POST['data23']);
+    if (isset($_POST['data23']) && ($_POST['data23'] ?? '') != '')
+        $data23 = $sql->quote_smart(($_POST['data23'] ?? ''));
     else
         $data23 = 0;
 
-    if (isset($_POST['ChanceOrQuestChance']) && $_POST['ChanceOrQuestChance'] != '')
-        $ChanceOrQuestChance = $sql->quote_smart($_POST['ChanceOrQuestChance']);
+    if (isset($_POST['ChanceOrQuestChance']) && ($_POST['ChanceOrQuestChance'] ?? '') != '')
+        $ChanceOrQuestChance = $sql->quote_smart(($_POST['ChanceOrQuestChance'] ?? ''));
     else
         $ChanceOrQuestChance = 0;
-    if (isset($_POST['groupid']) && $_POST['groupid'] != '')
-        $groupid = $sql->quote_smart($_POST['groupid']);
+    if (isset($_POST['groupid']) && ($_POST['groupid'] ?? '') != '')
+        $groupid = $sql->quote_smart(($_POST['groupid'] ?? ''));
     else
         $groupid = 0;
-    if (isset($_POST['mincountOrRef']) && $_POST['mincountOrRef'] != '')
-        $mincountOrRef = $sql->quote_smart($_POST['mincountOrRef']);
+    if (isset($_POST['mincountOrRef']) && ($_POST['mincountOrRef'] ?? '') != '')
+        $mincountOrRef = $sql->quote_smart(($_POST['mincountOrRef'] ?? ''));
     else
         $mincountOrRef = 0;
-    if (isset($_POST['maxcount']) && $_POST['maxcount'] != '')
-        $maxcount = $sql->quote_smart($_POST['maxcount']);
+    if (isset($_POST['maxcount']) && ($_POST['maxcount'] ?? '') != '')
+        $maxcount = $sql->quote_smart(($_POST['maxcount'] ?? ''));
     else
         $maxcount = 0;
-    if (isset($_POST['lootcondition']) && $_POST['lootcondition'] != '')
-        $lootcondition = $sql->quote_smart($_POST['lootcondition']);
+    if (isset($_POST['lootcondition']) && ($_POST['lootcondition'] ?? '') != '')
+        $lootcondition = $sql->quote_smart(($_POST['lootcondition'] ?? ''));
     else
         $lootcondition = 0;
-    if (isset($_POST['condition_value1']) && $_POST['condition_value1'] != '')
-        $condition_value1 = $sql->quote_smart($_POST['condition_value1']);
+    if (isset($_POST['condition_value1']) && ($_POST['condition_value1'] ?? '') != '')
+        $condition_value1 = $sql->quote_smart(($_POST['condition_value1'] ?? ''));
     else
         $condition_value1 = 0;
-    if (isset($_POST['condition_value2']) && $_POST['condition_value2'] != '')
-        $condition_value2 = $sql->quote_smart($_POST['condition_value2']);
+    if (isset($_POST['condition_value2']) && ($_POST['condition_value2'] ?? '') != '')
+        $condition_value2 = $sql->quote_smart(($_POST['condition_value2'] ?? ''));
     else
         $condition_value2 = 0;
-    if (isset($_POST['item']) && $_POST['item'] != '')
-        $item = $sql->quote_smart($_POST['item']);
+    if (isset($_POST['item']) && ($_POST['item'] ?? '') != '')
+        $item = $sql->quote_smart(($_POST['item'] ?? ''));
     else
         $item = 0;
-    if (isset($_POST['del_loot_items']) && $_POST['del_loot_items'] != '')
-        $del_loot_items = $sql->quote_smart($_POST['del_loot_items']);
+    if (isset($_POST['del_loot_items']) && ($_POST['del_loot_items'] ?? '') != '')
+        $del_loot_items = $sql->quote_smart(($_POST['del_loot_items'] ?? ''));
     else
         $del_loot_items = NULL;
 
-    if (isset($_POST['involvedrelation']) && $_POST['involvedrelation'] != '')
-        $involvedrelation = $sql->quote_smart($_POST['involvedrelation']);
+    if (isset($_POST['involvedrelation']) && ($_POST['involvedrelation'] ?? '') != '')
+        $involvedrelation = $sql->quote_smart(($_POST['involvedrelation'] ?? ''));
     else
         $involvedrelation = 0;
-    if (isset($_POST['del_involvedrelation']) && $_POST['del_involvedrelation'] != '')
-        $del_involvedrelation = $sql->quote_smart($_POST['del_involvedrelation']);
+    if (isset($_POST['del_involvedrelation']) && ($_POST['del_involvedrelation'] ?? '') != '')
+        $del_involvedrelation = $sql->quote_smart(($_POST['del_involvedrelation'] ?? ''));
     else
         $del_involvedrelation = NULL;
-    if (isset($_POST['questrelation']) && $_POST['questrelation'] != '')
-        $questrelation = $sql->quote_smart($_POST['questrelation']);
+    if (isset($_POST['questrelation']) && ($_POST['questrelation'] ?? '') != '')
+        $questrelation = $sql->quote_smart(($_POST['questrelation'] ?? ''));
     else
         $questrelation = 0;
-    if (isset($_POST['del_questrelation']) && $_POST['del_questrelation'] != '')
-        $del_questrelation = $sql->quote_smart($_POST['del_questrelation']);
+    if (isset($_POST['del_questrelation']) && ($_POST['del_questrelation'] ?? '') != '')
+        $del_questrelation = $sql->quote_smart(($_POST['del_questrelation'] ?? ''));
     else
         $del_questrelation = NULL;
 
-    if ($_POST['opp_type'] == "add_new")
+    if (($_POST['opp_type'] ?? '') == "add_new")
     {
         $sql_query = "INSERT INTO gameobject_template ( entry, type, displayId, name, faction, flags, size, data0, data1,
                         data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12, data13,
@@ -992,7 +992,7 @@ function do_update() {
                         '$data21', '$data22', '$data23', '$ScriptName' )";
 
     }
-    elseif ($_POST['opp_type'] == "edit")
+    elseif (($_POST['opp_type'] ?? '') == "edit")
     {
         $sql_query = "UPDATE gameobject_template SET ";
 
@@ -1115,7 +1115,7 @@ function do_update() {
         redirect("game_object.php?error=5");
     }
 
-    if ( isset($_POST['backup_op']) && ($_POST['backup_op'] == 1) )
+    if ( isset($_POST['backup_op']) && (($_POST['backup_op'] ?? '') == 1) )
     {
         $sql->close();
         Header("Content-type: application/octet-stream");
@@ -1147,7 +1147,7 @@ function delete() {
     global $lang_global, $lang_game_object, $output;
 
     if(isset($_GET['entry']))
-        $entry = $_GET['entry'];
+        $entry = ($_GET['entry'] ?? '');
     else
         redirect("game_object.php?error=1");
 
@@ -1185,7 +1185,7 @@ function do_delete() {
     global $world_db, $realm_id;
 
     if(isset($_GET['entry']))
-        $entry = $_GET['entry'];
+        $entry = ($_GET['entry'] ?? '');
     else
         redirect("game_object.php?error=1");
 
@@ -1215,7 +1215,7 @@ function delete_spwn() {
     global $world_db, $realm_id;
 
     if(isset($_GET['entry']))
-        $entry = $_GET['entry'];
+        $entry = ($_GET['entry'] ?? '');
     else
         redirect("game_object.php?error=1");
 
@@ -1230,7 +1230,7 @@ function delete_spwn() {
 //########################################################################################################################
 // MAIN
 //########################################################################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= "
         <div class=\"top\">";
@@ -1278,7 +1278,7 @@ switch ($err)
 $output .= "
         </div>";
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 switch ($action)
 {

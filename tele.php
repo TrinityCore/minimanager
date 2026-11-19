@@ -17,16 +17,16 @@ function browse_tele()
     $sqlw->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
     //==========================$_GET and SECURE=================================
-    $start = (isset($_GET['start'])) ? $sqlw->quote_smart($_GET['start']) : 0;
+    $start = (isset($_GET['start'])) ? $sqlw->quote_smart(($_GET['start'] ?? '')) : 0;
     if (is_numeric($start));
     else
         $start=0;
 
-    $order_by = (isset($_GET['order_by'])) ? $sqlw->quote_smart($_GET['order_by']) : "id";
+    $order_by = (isset($_GET['order_by'])) ? $sqlw->quote_smart(($_GET['order_by'] ?? '')) : "id";
     if (!preg_match("/^[_[:lower:]]{1,12}$/", $order_by))
         $order_by = "id";
 
-    $dir = (isset($_GET['dir'])) ? $sqlw->quote_smart($_GET['dir']) : 1;
+    $dir = (isset($_GET['dir'])) ? $sqlw->quote_smart(($_GET['dir'] ?? '')) : 1;
     if (!preg_match("/^[01]{1}$/", $dir))
         $dir = 1;
 
@@ -39,8 +39,8 @@ function browse_tele()
     $search_value = '';
     if(isset($_GET['search_value']) && isset($_GET['search_by']))
     {
-        $search_value = $sqlw->quote_smart($_GET['search_value']);
-        $search_by = $sqlw->quote_smart($_GET['search_by']);
+        $search_value = $sqlw->quote_smart(($_GET['search_value'] ?? ''));
+        $search_by = $sqlw->quote_smart(($_GET['search_by'] ?? ''));
         $search_menu = ["name", "id", "map"];
 
         if (!in_array($search_by, $search_menu))
@@ -196,22 +196,22 @@ function del_tele()
     $sqlw = new SQL;
     $sqlw->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
-    $id = $sqlw->quote_smart($_GET['id']);
+    $id = $sqlw->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect("tele.php?error=1");
 
     //==========================$_GET and SECURE=================================
-    $start = (isset($_GET['start'])) ? $sqlw->quote_smart($_GET['start']) : 0;
+    $start = (isset($_GET['start'])) ? $sqlw->quote_smart(($_GET['start'] ?? '')) : 0;
     if (is_numeric($start));
     else
         $start=0;
 
-    $order_by = (isset($_GET['order_by'])) ? $sqlw->quote_smart($_GET['order_by']) : "id";
+    $order_by = (isset($_GET['order_by'])) ? $sqlw->quote_smart(($_GET['order_by'] ?? '')) : "id";
     if (!preg_match("/^[_[:lower:]]{1,10}$/", $order_by))
         $order_by="id";
 
-    $dir = (isset($_GET['dir'])) ? $sqlw->quote_smart($_GET['dir']) : 1;
+    $dir = (isset($_GET['dir'])) ? $sqlw->quote_smart(($_GET['dir'] ?? '')) : 1;
     if (!preg_match("/^[01]{1}$/", $dir))
         $dir=1;
 
@@ -243,7 +243,7 @@ function edit_tele()
     $sqlm = new SQL;
     $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
 
-    $id = $sqlw->quote_smart($_GET['id']);
+    $id = $sqlw->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect("tele.php?error=1");
@@ -350,17 +350,17 @@ function do_edit_tele()
     $sqlw = new SQL;
     $sqlw->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
-    $id = $sqlw->quote_smart($_GET['id']);
+    $id = $sqlw->quote_smart(($_GET['id'] ?? ''));
     if(is_numeric($id));
     else
         redirect("tele.php?error=1");
 
-    $new_name = $sqlw->quote_smart($_GET['new_name']);
-    $new_map = $sqlw->quote_smart($_GET['new_map']);
-    $new_x = $sqlw->quote_smart($_GET['new_x']);
-    $new_y = $sqlw->quote_smart($_GET['new_y']);
-    $new_z = $sqlw->quote_smart($_GET['new_z']);
-    $new_orientation = $sqlw->quote_smart($_GET['new_orientation']);
+    $new_name = $sqlw->quote_smart(($_GET['new_name'] ?? ''));
+    $new_map = $sqlw->quote_smart(($_GET['new_map'] ?? ''));
+    $new_x = $sqlw->quote_smart(($_GET['new_x'] ?? ''));
+    $new_y = $sqlw->quote_smart(($_GET['new_y'] ?? ''));
+    $new_z = $sqlw->quote_smart(($_GET['new_z'] ?? ''));
+    $new_orientation = $sqlw->quote_smart(($_GET['new_orientation'] ?? ''));
 
     $sqlw->query("UPDATE game_tele SET position_x='$new_x', position_y ='$new_y', position_z ='$new_z', orientation ='$new_orientation', map ='$new_map', name ='$new_name' WHERE id = '$id'");
 
@@ -459,12 +459,12 @@ function do_add_tele()
     $sqlw = new SQL;
     $sqlw->connect($world_db[$realm_id]['addr'], $world_db[$realm_id]['user'], $world_db[$realm_id]['pass'], $world_db[$realm_id]['name']);
 
-    $name = $sqlw->quote_smart($_GET['name']);
-    $map = $sqlw->quote_smart($_GET['map']);
-    $x = $sqlw->quote_smart($_GET['x']);
-    $y = $sqlw->quote_smart($_GET['y']);
-    $z = $sqlw->quote_smart($_GET['z']);
-    $orientation = $sqlw->quote_smart($_GET['orientation']);
+    $name = $sqlw->quote_smart(($_GET['name'] ?? ''));
+    $map = $sqlw->quote_smart(($_GET['map'] ?? ''));
+    $x = $sqlw->quote_smart(($_GET['x'] ?? ''));
+    $y = $sqlw->quote_smart(($_GET['y'] ?? ''));
+    $z = $sqlw->quote_smart(($_GET['z'] ?? ''));
+    $orientation = $sqlw->quote_smart(($_GET['orientation'] ?? ''));
 
     $sqlw->query("INSERT INTO game_tele VALUES (NULL,'$x','$y', '$z' ,'$orientation' ,'$map' ,'$name')");
 
@@ -478,7 +478,7 @@ function do_add_tele()
 //#############################################################################
 // MAIN
 //#############################################################################
-$err = (isset($_GET['error'])) ? $_GET['error'] : NULL;
+$err = (isset($_GET['error'])) ? ($_GET['error'] ?? '') : NULL;
 
 $output .= "
         <div class=\"top\">";
@@ -527,7 +527,7 @@ unset($err);
 $output .= "
         </div>";
 
-$action = (isset($_GET['action'])) ? $_GET['action'] : NULL;
+$action = (isset($_GET['action'])) ? ($_GET['action'] ?? '') : NULL;
 
 switch ($action)
 {
