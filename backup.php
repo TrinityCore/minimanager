@@ -251,10 +251,10 @@ function dobackup()
 
     if (("load" == $backup_action)&&("file" == $backup_from_to))
     {
-        if (!preg_match("/(\.(sql|qbquery))$/i",$_FILES["uploaded_file"]["name"]))
+        if (!preg_match("/(\.(sql|qbquery))$/i",($_FILES["uploaded_file"]["name"] ?? '')))
             error($lang_backup['upload_sql_file_only']);
 
-        $uploaded_filename=str_replace(" ","_",$_FILES["uploaded_file"]["name"]);
+        $uploaded_filename=str_replace(" ","_",($_FILES["uploaded_file"]["name"] ?? ''));
         $uploaded_filename=preg_replace("/[^_A-Za-z0-9-\.]/i",'',$uploaded_filename);
         $file_name_new = $uploaded_filename."_".date("m.d.y_H.i.s").".sql";
 
@@ -479,7 +479,7 @@ function dobackup()
                         for($j=0; $j<$num_fields; $j++)
                         {
                             $row[$j] = addslashes($row[$j]);
-                            $row[$j] = preg_replace("/\n/","\\n",$row[$j]);
+                            $row[$j] = preg_replace("/\n/","\\n",$row[$j] ?? '');
                             if (isset($row[$j]))
                             {
                                 if ($sql->field_type($j,$acc_query) == "int")
@@ -547,7 +547,7 @@ function dobackup()
                                 for($j=0; $j<$num_fields; $j++)
                                 {
                                     $row[$j] = addslashes($row[$j]);
-                                    $row[$j] = preg_replace("/\n/","\\n",$row[$j]);
+                                    $row[$j] = preg_replace("/\n/","\\n",$row[$j] ?? '');
 
                                     if (isset($row[$j]))
                                     {

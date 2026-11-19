@@ -254,7 +254,7 @@ function char_inv(&$sqlr, &$sqlc)
         if ($b_idx > 0 && !empty($equip_bnk_bag_id[$b_idx])) $bnk_cap += intval($equip_bnk_bag_id[$b_idx][1]);
         foreach ($b_items as $it) $bnk_all[] = array($it[0], $it[2]);
     }
-    $gold = substr($char['money'],0,-4).'<img src="img/gold.gif" alt="" /> '.substr($char['money'],-4,-2).'<img src="img/silver.gif" alt="" /> '.substr($char['money'],-2).'<img src="img/copper.gif" alt="" />';
+    $gold = substr(($char['money'] ?? '0'),0,-4).'<img src="img/gold.gif" alt="" /> '.substr(($char['money'] ?? '0'),-4,-2).'<img src="img/silver.gif" alt="" /> '.substr(($char['money'] ?? '0'),-2).'<img src="img/copper.gif" alt="" />';
     $output .= '<tr><th colspan="4">'.$lang_char['backpack'].' ('.count($inv_all).' / '.$inv_cap.')</th></tr>'
              . '<tr><td colspan="4" class="bag" align="center">'.draw_merged_bag($inv_all, $inv_cap, 14, 42, $item_datasite, $sqlm, $sqlw)
              . '<div style="text-align:right;background:#393936;padding:3px;"><b>'.$gold.'</b></div></td></tr>'
@@ -347,9 +347,9 @@ function char_inv(&$sqlr, &$sqlc)
                                         </div>
                                         <div style="text-align:right;width:168px;background-image:none;background-color:#393936;padding:2px;">
                                             <b>
-                                                '.substr($char['money'],  0, -4).'<img src="img/gold.gif" alt="" align="middle" />
-                                                '.substr($char['money'], -4, -2).'<img src="img/silver.gif" alt="" align="middle" />
-                                                '.substr($char['money'], -2).'<img src="img/copper.gif" alt="" align="middle" />
+                                                '.substr(($char['money'] ?? '0'),  0, -4).'<img src="img/gold.gif" alt="" align="middle" />
+                                                '.substr(($char['money'] ?? '0'), -4, -2).'<img src="img/silver.gif" alt="" align="middle" />
+                                                '.substr(($char['money'] ?? '0'), -2).'<img src="img/copper.gif" alt="" align="middle" />
                                             </b>
                                         </div>
                                     </td>

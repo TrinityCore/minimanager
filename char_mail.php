@@ -160,9 +160,9 @@ function char_mail(&$sqlr, &$sqlc)
                                     <td>'.build_mail_items_cell($mail['items_list'], $item_datasite, $sqlm, $sqlw).'</td>
                                     <td>'.htmlspecialchars($mail['body'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</td>
                                     <td>
-                                        '.substr($mail['money'],  0, -4).'<img src="img/gold.gif" alt="" align="middle" />
-                                        '.substr($mail['money'], -4,  2).'<img src="img/silver.gif" alt="" align="middle" />
-                                        '.substr($mail['money'], -2).'<img src="img/copper.gif" alt="" align="middle" />
+                                        '.substr(($mail['money'] ?? '0'),  0, -4).'<img src="img/gold.gif" alt="" align="middle" />
+                                        '.substr(($mail['money'] ?? '0'), -4,  2).'<img src="img/silver.gif" alt="" align="middle" />
+                                        '.substr(($mail['money'] ?? '0'), -2).'<img src="img/copper.gif" alt="" align="middle" />
                                     </td>
                                     <td>'.get_check_state($mail['checked']).'</td>
                                 </tr>';

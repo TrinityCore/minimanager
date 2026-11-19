@@ -118,7 +118,7 @@ function sql_table_dump ($dbhost, $dbuser, $dbpass, $database, $table, $construc
 		$row = $sql_0->fetch_row($query);
 		for($j=0; $j<$num_fields; $j++) {
 			$row[$j] = addslashes($row[$j]);
-			$row[$j] = preg_replace("\n","\\n",$row[$j]);
+			$row[$j] = preg_replace("/\n/","\\n",$row[$j] ?? '');
 			if (isset($row[$j])) {
 				if ($sql_0->field_type($j,$query) == "int") fwrite($fp, "$row[$j]")or die (error($lang_backup['file_write_err']));
 					else fwrite($fp, "'$row[$j]'")or die (error($lang_backup['file_write_err']));

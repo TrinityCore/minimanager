@@ -663,7 +663,7 @@ function backup_user()
                         for($j=0; $j<$num_fields; $j++)
                         {
                             $row[$j] = addslashes($row[$j]);
-                            $row[$j] = preg_replace("\n","\\n",$row[$j]);
+                            $row[$j] = preg_replace("/\n/","\\n",$row[$j] ?? '');
 
                             if (isset($row[$j]))
                             {
@@ -728,7 +728,7 @@ function backup_user()
                                 for($j=0; $j<$num_fields; $j++)
                                 {
                                     $row[$j] = addslashes($row[$j]);
-                                    $row[$j] = preg_replace("\n","\\n",$row[$j]);
+                                    $row[$j] = preg_replace("/\n/","\\n",$row[$j] ?? '');
 
                                     if (isset($row[$j]))
                                     {
