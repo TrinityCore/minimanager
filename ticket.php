@@ -82,12 +82,12 @@ class tickets
 			$output .="
 								<td>$ticket[0]</td>
 								<td>".($ticket[4] ? "<img src=\"img/up.gif\" alt=\"online\">" : "<img src=\"img/down.gif\" alt=\"offline\">")."</td>
-								<td><a href=\"char.php?id=$ticket[1]\">".htmlentities($ticket[3])."</a></td>
+								<td><a href=\"char.php?id=$ticket[1]\">".htmlentities($ticket[3] ?? '')."</a></td>
 								";
                         $acc_id = intval($ticket[5]);
                         $acc_q = $sqlr->query("SELECT username, last_ip FROM account WHERE id = $acc_id LIMIT 1");
                         $acc_r = $acc_q ? $sqlr->fetch_assoc($acc_q) : null;
-                        $acc_name = $acc_r ? htmlentities($acc_r['username']) : '-';
+                        $acc_name = $acc_r ? htmlentities($acc_r['username'] ?? '') : '-';
                         $acc_ip = $acc_r ? $acc_r['last_ip'] : '-';
                         $flag_html = '';
                         if ($showcountryflag && $acc_ip && $acc_ip !== '-')
@@ -101,7 +101,7 @@ class tickets
                         $output .= "
                                                                 <td><a href=\"user.php?action=edit_user&amp;error=11&amp;id=$acc_id\">$acc_name</a></td>
                                                                 <td style=\"white-space:nowrap;\">$flag_html$ip_link</td>
-                                                                <td>".htmlentities($ticket[2])."</td>
+                                                                <td>".htmlentities($ticket[2] ?? '')."</td>
 							</tr>";
 		}
 		unset($query);
@@ -204,11 +204,11 @@ function edit_ticket()
                                 </tr>
                                 <tr>
                                     <td>{$lang_ticket['submitted_by']}:</td>
-                                    <td><a href=\"char.php?id=$ticket[0]\">".htmlentities($ticket[2])."</a></td>
+                                    <td><a href=\"char.php?id=$ticket[0]\">".htmlentities($ticket[2] ?? '')."</a></td>
                                 </tr>
                                 <tr>
                                     <td valign=\"top\">{$lang_ticket['ticket_text']}</td>
-                                    <td><textarea name=\"new_text\" rows=\"5\" cols=\"40\" maxlength=\"500\">".htmlentities($ticket[1])."</textarea></td>
+                                    <td><textarea name=\"new_text\" rows=\"5\" cols=\"40\" maxlength=\"500\">".htmlentities($ticket[1] ?? '')."</textarea></td>
                                 </tr>
                                 <tr>
                                     <td>";

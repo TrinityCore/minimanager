@@ -379,7 +379,7 @@ function do_search() {
                             <td><a href=\"$creature_datasite$creature[0]\" target=\"_blank\">$creature[0]</a></td>";
         if ($loc_language)
             $output .= "
-                            <td><a href=\"creature.php?action=edit&amp;entry=$creature[0]&amp;error=4\">".htmlentities($creature[5])." ( {$creature[1]} )</a></td>";
+                            <td><a href=\"creature.php?action=edit&amp;entry=$creature[0]&amp;error=4\">".htmlentities($creature[5] ?? '')." ( {$creature[1]} )</a></td>";
         else
             $output .= "
                             <td><a href=\"creature.php?action=edit&amp;entry=$creature[0]&amp;error=4\">$creature[1]</a></td>";

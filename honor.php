@@ -48,7 +48,7 @@ $output .= "
 
 while ($char = $sql->fetch_row($query))
 {
-    $charname = ($char[1] != '') ? htmlentities($char[1]) :  htmlentities($char[10]) . " (Deleted)";
+    $charname = ($char[1] != '') ? htmlentities($char[1] ?? '') :  htmlentities($char[10] ?? '') . " (Deleted)";
 	
 	$guild_name = $sql->fetch_row($sql->query("SELECT `name` FROM `guild` WHERE `guildid`=".$char[8].";"));
 	
@@ -62,7 +62,7 @@ while ($char = $sql->fetch_row($query))
                                 <td>$char[4]</td>
                                 <td>$char[5]</td>
                                 <td>$char[7]</td>
-                                <td>".(!empty($guild_name[0]) ? "<a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$char[8]\">".htmlentities($guild_name[0])."</a>" : "-")."</td>
+                                <td>".(!empty($guild_name[0]) ? "<a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$char[8]\">".htmlentities($guild_name[0] ?? '')."</a>" : "-")."</td>
                             </tr>";
 }
 $output .= "
@@ -105,7 +105,7 @@ $output .= "
 
 while ($char = $sql->fetch_row($query))
 {
-    $charname = ($char[1] != '') ? htmlentities($char[1]) :  htmlentities($char[10]) . " (Deleted)";
+    $charname = ($char[1] != '') ? htmlentities($char[1] ?? '') :  htmlentities($char[10] ?? '') . " (Deleted)";
 	
     $guild_name = $sql->fetch_row($sql->query("SELECT `name` FROM `guild` WHERE `guildid`=".$char[8].";"));
     $output .= "
@@ -118,7 +118,7 @@ while ($char = $sql->fetch_row($query))
                                 <td>$char[4]</td>
                                 <td>$char[5]</td>
                                 <td>$char[7]</td>
-                                <td>".(!empty($guild_name[0]) ? "<a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$char[8]\">".htmlentities($guild_name[0])."</a>" : "-")."</td>
+                                <td>".(!empty($guild_name[0]) ? "<a href=\"guild.php?action=view_guild&amp;error=3&amp;id=$char[8]\">".htmlentities($guild_name[0] ?? '')."</a>" : "-")."</td>
                             </tr>";
 }
 $output .= "

@@ -224,7 +224,7 @@ function do_search() {
         $output .= "
                         <tr>
                             <td><a href=\"$go_datasite$go[0]\" target=\"_blank\">$go[0]</a></td>
-                            <td><a href=\"game_object.php?action=edit&amp;entry=$go[0]&amp;error=4\">".htmlentities($go[3])."</a></td>
+                            <td><a href=\"game_object.php?action=edit&amp;entry=$go[0]&amp;error=4\">".htmlentities($go[3] ?? '')."</a></td>
                             <td>".get_go_type($go[1])."</td>
                             <td>$go[2]</td>
                             <td>$go[4]</td>

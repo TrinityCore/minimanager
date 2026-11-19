@@ -86,12 +86,12 @@ function browse_guilds(&$sqlr, &$sqlc)
                             <tr>
                                 <td>$data[0]</td>
                                 <td><a href=\"guild.php?action=view_guild&amp;error=3&amp;realm=$realmid&amp;id=$data[0]\">$data[1]</a></td>";
-            $output .= ($user_lvl < $owner_gmlvl ) ? "<td>".htmlentities($data[3])."</td>" : "<td><a href=\"char.php?id=$data[2]&amp;realm=$realmid\">".htmlentities($data[3])."</a></td>";
+            $output .= ($user_lvl < $owner_gmlvl ) ? "<td>".htmlentities($data[3] ?? '')."</td>" : "<td><a href=\"char.php?id=$data[2]&amp;realm=$realmid\">".htmlentities($data[3] ?? '')."</a></td>";
             $output .= "
-                                <td>".htmlentities($data[10])."</td>
+                                <td>".htmlentities($data[10] ?? '')."</td>
                                 <td><img src=\"img/".($data[4]==0 ? "alliance" : "horde")."_small.gif\" alt=\"\" /></td>
                                 <td>$data[5]/$data[6]</td>
-                                <td>".htmlentities($data[7])." ...</td>
+                                <td>".htmlentities($data[7] ?? '')." ...</td>
                                 <td class=\"small\">".date('o-m-d', $data[8])."</td>
                             </tr>";
         }
@@ -225,10 +225,10 @@ function browse_guilds(&$sqlr, &$sqlc)
         $output .= "
                             <tr>
                                 <td>$data[0]</td>";
-        $output .= ($user_lvl >= $action_permission['update']) ? "<td><a href=\"guild.php?action=view_guild&amp;realm=$realmid&amp;error=3&amp;id=$data[0]\">".htmlentities($data[1])."</a></td>" : "<td>".htmlentities($data[1])."</td>";
-        $output .= ($user_lvl < $owner_gmlvl ) ? "<td>".htmlentities($data[3])."</td>" : "<td><a href=\"char.php?id=$data[2]&amp;realm=$realmid\">".htmlentities($data[3])."</a></td>";
+        $output .= ($user_lvl >= $action_permission['update']) ? "<td><a href=\"guild.php?action=view_guild&amp;realm=$realmid&amp;error=3&amp;id=$data[0]\">".htmlentities($data[1] ?? '')."</a></td>" : "<td>".htmlentities($data[1] ?? '')."</td>";
+        $output .= ($user_lvl < $owner_gmlvl ) ? "<td>".htmlentities($data[3] ?? '')."</td>" : "<td><a href=\"char.php?id=$data[2]&amp;realm=$realmid\">".htmlentities($data[3] ?? '')."</a></td>";
         $output .= "
-                                <td>".htmlentities($data[10])."</td>
+                                <td>".htmlentities($data[10] ?? '')."</td>
                                 <td><img src=\"img/".($data[4]==0 ? "alliance" : "horde")."_small.gif\" alt=\"\" /></td>
                                 <td>$data[5]</td>
                                 <td class=\"small\">".date('o-m-d', $data[6])."</td>
@@ -578,15 +578,15 @@ function view_guild()
                                                 <td>
                                                 </td>";
         $output .= ($user_lvl < $owner_gmlvl ) ? "
-                                                <td>".htmlentities($member[1])."</td>" : "
-                                                <td><a href=\"char.php?id=$member[0]&amp;realm=$realmid\">".htmlentities($member[1])."</a></td>";
+                                                <td>".htmlentities($member[1] ?? '')."</td>" : "
+                                                <td><a href=\"char.php?id=$member[0]&amp;realm=$realmid\">".htmlentities($member[1] ?? '')."</a></td>";
         $output .= "
                                                 <td><img src='img/c_icons/{$member[2]}-{$member[9]}.gif' onmousemove='toolTip(\"".char_get_race_name($member[2])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /></td>
                                                 <td><img src='img/c_icons/{$member[3]}.gif' onmousemove='toolTip(\"".char_get_class_name($member[3])."\",\"item_tooltip\")' onmouseout='toolTip()' alt=\"\" /></td>
                                                 <td>".char_get_level_color($member[4])."</td>
-                                                <td>".htmlentities($member[6])." (".$member[5].")</td>
-                                                <td>".htmlentities($member[7])."</td>
-                                                <td>".htmlentities($member[8])."</td>
+                                                <td>".htmlentities($member[6] ?? '')." (".$member[5].")</td>
+                                                <td>".htmlentities($member[7] ?? '')."</td>
+                                                <td>".htmlentities($member[8] ?? '')."</td>
                                                 <td>".get_days_with_color($member[12])."</td>
                                                 <td>".(($member[10]) ? "<img src=\"img/up.gif\" alt=\"\" />" : "-")."</td>";
 

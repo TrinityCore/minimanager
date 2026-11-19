@@ -356,7 +356,7 @@ function do_search()
                                 </a>
                             </td>
                             <td>
-                                <a href=\"item.php?action=edit&amp;entry=$item[0]&amp;error=4\">".htmlentities($item[2])."</a>
+                                <a href=\"item.php?action=edit&amp;entry=$item[0]&amp;error=4\">".htmlentities($item[2] ?? '')."</a>
                             </td>
                             <td>$item[3]</td>
                             <td>$item[4]</td>

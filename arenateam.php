@@ -144,8 +144,8 @@ function browse_teams()
         $output .= "
                 <tr>
                     <td>$data[0]</td>
-                    <td><a href=\"arenateam.php?action=view_team&amp;error=3&amp;id=$data[0]\">".htmlentities($data[1])."</a></td>
-                    <td><a href=\"char.php?id=$data[2]\">".htmlentities($data[4])."</a></td>
+                    <td><a href=\"arenateam.php?action=view_team&amp;error=3&amp;id=$data[0]\">".htmlentities($data[1] ?? '')."</a></td>
+                    <td><a href=\"char.php?id=$data[2]\">".htmlentities($data[4] ?? '')."</a></td>
                     <td>{$lang_arenateam[$data[3]]}</td>
                     <td>$data[5]</td>
                     <td>$arenateam_online</td>
@@ -219,7 +219,7 @@ function view_team()
                 <legend>{$lang_arenateam['arenateam']} ({$arenateam_data[2]}v{$arenateam_data[2]})</legend>
                 <table class=\"lined\" style=\"width: 100%;\">
                     <tr class=\"bold\">
-                        <td colspan=\"".($showcountryflag ? 14 : 13 )."\">".htmlentities($arenateam_data[1])."</td>
+                        <td colspan=\"".($showcountryflag ? 14 : 13 )."\">".htmlentities($arenateam_data[1] ?? '')."</td>
                     </tr>
                     <tr>
                         <td colspan=\"".($showcountryflag ? 14 : 13 )."\">{$lang_arenateam['tot_members']}: $total_members</td>
@@ -293,7 +293,7 @@ function view_team()
             $ws_pct = $member[6];
 
         $output .= "
-                        <td><a href=\"char.php?id=$member[0]\">".htmlentities($member[1])."</a></td>
+                        <td><a href=\"char.php?id=$member[0]\">".htmlentities($member[1] ?? '')."</a></td>
                         <td><img src='img/c_icons/{$member[8]}-{$member[13]}.gif' onmousemove='toolTip(\"".char_get_race_name($member[8])."\",\"item_tooltip\")' onmouseout='toolTip()' /></td>
                         <td><img src='img/c_icons/{$member[9]}.gif' onmousemove='toolTip(\"".char_get_class_name($member[9])."\",\"item_tooltip\")' onmouseout='toolTip()' /></td>
                         <td>$member[2]</td>
