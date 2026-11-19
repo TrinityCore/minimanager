@@ -135,7 +135,7 @@ function doregister(){
     }
 
     //make sure the mail is valid mail format
-    $mail = $sql->quote_smart(trim($_POST['email']));
+    $mail = $sql->quote_smart(trim($_POST['email'] ?? ''));
     if ((!filter_var($mail, FILTER_VALIDATE_EMAIL))||(strlen($mail) > 224))
     {
         $sql->close();

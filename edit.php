@@ -301,9 +301,9 @@ function doedit_user(&$sqlr, &$sqlc)
         list($salt, $verifier) = GetSRP6RegistrationData($user_name, $_POST['pass']);
         $new_pass = ('salt=UNHEX(\'' . bin2hex($salt) . '\'), verifier=UNHEX(\'' . bin2hex($verifier) . '\'), ');
     }
-    $new_mail = $sqlr->quote_smart(trim($_POST['mail']));
-    $new_expansion = $sqlr->quote_smart(trim($_POST['expansion']));
-    $referredby = $sqlr->quote_smart(trim($_POST['referredby']));
+    $new_mail = $sqlr->quote_smart(trim($_POST['mail'] ?? ''));
+    $new_expansion = $sqlr->quote_smart(trim($_POST['expansion'] ?? ''));
+    $referredby = $sqlr->quote_smart(trim($_POST['referredby'] ?? ''));
 
     // the current password is required to change the password or the email
     $cur = $sqlr->fetch_assoc($sqlr->query('SELECT email, salt, verifier FROM account WHERE username = \''.$user_name.'\''));

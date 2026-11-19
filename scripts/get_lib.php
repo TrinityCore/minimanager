@@ -194,7 +194,7 @@ function get_localestr_by_lang_cookie()
 {
     global $language;
     if (isset($_COOKIE['lang']))
-        $language = strtolower($_COOKIE['lang']);
+        $language = strtolower($_COOKIE['lang'] ?? '');
 
     switch ($language)
     {

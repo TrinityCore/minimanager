@@ -67,7 +67,7 @@ function guild_bank(&$sqlr, &$sqlc)
         for ($i = 0; $i < 6; ++$i) {
             if (isset($tabs[$i])) {
                 $output .= '<li' . ((!$is_merged && $current_tab == $i) ? ' id="selected"' : '') . '><a href="guildbank.php?id=' . $guild_id . '&amp;tab=' . $i . '&amp;realm=' . $realmid . '">';
-                $raw = trim(str_replace('\\', '/', $tabs[$i]['TabIcon']));
+                $raw = trim(str_replace('\\', '/', $tabs[$i]['TabIcon'] ?? ''));
 $name = strtolower(preg_replace('/\.(jpg|png|gif|blp|tga)$/i', '', basename($raw)));
 $ico = ($name !== '' && file_exists($item_icons . '/' . $name . '.jpg')) ? ($item_icons . '/' . $name . '.jpg') : 'img/INV/INV_blank_32.gif';
                 $tnm = ($tabs[$i]['TabName'] == '') ? ($lang_guildbank['Tab'] . ($i + 1)) : $tabs[$i]['TabName'];
