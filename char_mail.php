@@ -156,9 +156,9 @@ function char_mail(&$sqlr, &$sqlc)
                                 <tr valign=top>
                                     <td>'.get_mail_source($mail['messagetype']).'</td>
                                     <td><a href="char.php?id='.$mail['sender'].'">'.get_char_name($mail['sender']).'</a></td>
-                                    <td>'.htmlspecialchars($mail['subject'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</td>
+                                    <td>'.htmlspecialchars($mail['subject'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</td>
                                     <td>'.build_mail_items_cell($mail['items_list'], $item_datasite, $sqlm, $sqlw).'</td>
-                                    <td>'.htmlspecialchars($mail['body'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</td>
+                                    <td>'.htmlspecialchars($mail['body'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'</td>
                                     <td>
                                         '.substr($mail['money'],  0, -4).'<img src="img/gold.gif" alt="" align="middle" />
                                         '.substr($mail['money'], -4,  2).'<img src="img/silver.gif" alt="" align="middle" />

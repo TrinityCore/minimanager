@@ -73,7 +73,7 @@ function forum_index(){
                         <td>{$numtopics}</td>
                         <td>{$numreplies}</td>";
             if(isset($lasts[$id])){
-                $lasts[$id][2] = htmlspecialchars($lasts[$id][2]);
+                $lasts[$id][2] = htmlspecialchars($lasts[$id][2] ?? '');
                 $output .= "<td align=\"right\"><a href=\"forum.php?action=view_topic&amp;postid={$lasts[$id][1]}\">{$lasts[$id][2]}</a><br />by {$lasts[$id][0]} <br /> {$lasts[$id][3]} </td></tr>";
             }
             else{
@@ -164,7 +164,7 @@ function forum_view_forum(){
                     $output .= "[{$forum_lang["closed"]}] ";
                 }
               }
-              $topic[3] = htmlspecialchars($topic[3]);
+              $topic[3] = htmlspecialchars($topic[3] ?? '');
               $output .= "<a href=\"forum.php?action=view_topic&amp;id={$topic[0]}\">{$topic[3]}</a></td><td>{$topic[2]}</td>
               <td>{$lasts[$topic[0]][1]}</td>
               <td>{$forum_lang["last_post_by"]} {$lasts[$topic[0]][3]}, {$lasts[$topic[0]][4]}</td>
@@ -284,8 +284,8 @@ $query .= "0) GROUP BY account);";
       }
     }
 
-    $post[4] = htmlspecialchars($post[4]);
-    $post[5] = htmlspecialchars($post[5]);
+    $post[4] = htmlspecialchars($post[4] ?? '');
+    $post[5] = htmlspecialchars($post[5] ?? '');
     $post[5] = bbcode_parse($post[5]);
 
     $output .= "<div class=\"top\"><h1>{$forum_lang["forums"]}</h1>{$forum_lang["you_are_here"]} : <a href=\"forum.php\">{$forum_lang["forum_index"]}</a> -> <a href=\"forum.php?action=view_forum&amp;id={$fid}\">{$forum["name"]}</a> -> <a href=\"forum.php?action=view_topic&amp;id={$id}\">{$post[4]}</a></div>
@@ -356,7 +356,7 @@ $query .= "0) GROUP BY account);";
           $closed = $post[9];
 
     while($post = $mysql->fetch_row($posts)){
-          $post[5] = htmlspecialchars($post[5]);
+          $post[5] = htmlspecialchars($post[5] ?? '');
           $post[5] = bbcode_parse($post[5]);
 
             if(isset($avatars[$post[1]]))
@@ -821,9 +821,9 @@ if($minfloodtime > 0)
     }
   }
 
-//  $_POST['msg'] = htmlspecialchars($_POST['msg']);
+//  $_POST['msg'] = htmlspecialchars($_POST['msg'] ?? '');
   $msg = trim($mysql->quote_smart($_POST['msg']), " ");
-//  $_POST['name'] = htmlspecialchars($_POST['name']);
+//  $_POST['name'] = htmlspecialchars($_POST['name'] ?? '');
   $name = trim($mysql->quote_smart($_POST['name']), " ");
 
   if (strlen($name) > 49){
@@ -931,7 +931,7 @@ function forum_do_add_post(){
 	  return;
   }
 
-//  $_POST['msg'] = htmlspecialchars($_POST['msg']);
+//  $_POST['msg'] = htmlspecialchars($_POST['msg'] ?? '');
   $msg = trim($mysql->quote_smart($_POST['msg']), " ");
 
   $msg = str_replace('\n', '<br />', $msg);
@@ -1071,7 +1071,7 @@ function forum_do_edit_post(){
     $topic = 0;
   else{
     $topic = 1;
-//    htmlspecialchars($_POST['name']);
+//    htmlspecialchars($_POST['name'] ?? '');
     $name = $mysql->quote_smart($_POST['name']);
     if (strlen($name) > 49){
       $mysql->close();
@@ -1085,7 +1085,7 @@ function forum_do_edit_post(){
     }
   }
 
-//  $_POST['msg'] = htmlspecialchars($_POST['msg']);
+//  $_POST['msg'] = htmlspecialchars($_POST['msg'] ?? '');
   $msg = trim($mysql->quote_smart($_POST['msg']), " ");
 
   if (strlen($msg) < 5){

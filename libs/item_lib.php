@@ -182,7 +182,7 @@ function get_item_tooltip($item_id)
     {
       $tooltip = "";
 
-      $itemname = htmlspecialchars($item[32]);
+      $itemname = htmlspecialchars($item[32] ?? '');
       switch ($item[35])
       {
         case 0: //Grey Poor
