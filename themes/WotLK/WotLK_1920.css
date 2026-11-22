@@ -290,3 +290,174 @@ input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:ho
   background: transparent !important;
   background-image: none !important;
 }
+
+/* ================= Fix Ficha de Personaje (char.php) y Pestañas ================= */
+/* Pestañas superiores de Character Sheet (Character Sheet, Inventory, Skills, etc.) */
+#tab, #tab ul, #tablist, ul#tablist, .tab {
+  background: transparent !important;
+}
+
+#tab li a, #tablist li a, ul#tablist li a, .tab a {
+  background: linear-gradient(180deg, #1b4f82 0%, #0d2a47 100%) !important;
+  color: #ffd100 !important;
+  border: 1px solid #59addb !important;
+  text-shadow: 0 1px 2px #000000 !important;
+}
+
+#tab li a:hover, #tablist li a:hover, ul#tablist li a:hover,
+#tab li a.current, #tablist li a.current, ul#tablist li a.current, #tab li.selected a {
+  background: linear-gradient(180deg, #2b73b8 0%, #15406b 100%) !important;
+  color: #ffffff !important;
+  border-color: #9ee5ff !important;
+}
+
+/* Recuadros blancos de estadísticas, barras de Vida/Ira/Maná y paneles interiores de char.php */
+.half_line, td.half_line, .char_stat, td.char_stat,
+.bar_health, .bar_mana, .bar_rage, .bar_energy, .bar_runic,
+#tab_content, div#tab_content, .tab_content,
+table.lined table td, .bubble table table td {
+  background-color: #0b2238 !important;
+  background-image: linear-gradient(180deg, rgba(16, 48, 79, 0.95) 0%, rgba(9, 27, 46, 0.98) 100%) !important;
+  color: #e6f5ff !important;
+  border: 1px solid #3f87b5 !important;
+}
+
+/* Números y valores resaltados dentro de las estadísticas */
+.half_line b, td.half_line b, .char_stat b, td.char_stat b,
+.half_line font, td.half_line font {
+  color: #ffd100 !important;
+}
+
+/* Texto de nivel ("lvl 80") y subtítulos oscuros */
+font[color="black"], font[color="#000000"], font[color="#000"] {
+  color: #9ee5ff !important;
+}
+
+/* ================= Fix Cajas Blancas / Azul Pálido en Estadísticas (char.php) ================= */
+#tab_content td[bgcolor],
+#tab_content tr[bgcolor] td,
+#tab_content table td td,
+#tab_content td[style*="background"],
+.hp_bar, .mp_bar, .rage_bar, .energy_bar, .runic_bar,
+.stat_line, td.stat_line {
+  background: #0b2238 !important;
+  background-color: #0b2238 !important;
+  background-image: none !important;
+  color: #e6f5ff !important;
+  border-color: #3f87b5 !important;
+}
+
+/* Asegurar que los nombres de las estadísticas (izquierda) y sus valores (derecha) sean legibles */
+#tab_content table td td b,
+#tab_content table td td span {
+  color: #ffd100 !important;
+}
+
+/* ================= Fix Contenedor Gris (.jtab-container) y Ficha WotLK ================= */
+.jtab-container, div.jtab-container, .jtab-panes, div.jtab-panes {
+  background: linear-gradient(180deg, #163b5e 0%, #0b2036 100%) !important;
+  background-color: #102d4a !important;
+  border: 1px solid #4ea8d9 !important;
+  color: #e6f5ff !important;
+}
+
+/* Asegurar que cualquier celda dentro de .jtab-container tenga fondo azul saronita y texto legible */
+.jtab-container td, .jtab-panes td {
+  color: #e6f5ff !important;
+}
+
+.jtab-container table table td, .jtab-panes table table td {
+  background-color: #0b2238 !important;
+  background-image: none !important;
+  border-color: #2f6c99 !important;
+}
+
+/* Barras de vida/maná/ira (.tot_bar y .bargraph) */
+.tot_bar, .bargraph td {
+  background-color: #091b2e !important;
+  border: 1px solid #4ea8d9 !important;
+  color: #ffd100 !important;
+}
+
+/* ================= Fix Definitivo Estadísticas (.gradient_p / .gradient_pp) ================= */
+.jtab-container, div.jtab-container, .jtab-panes, div.jtab-panes {
+  background: linear-gradient(180deg, #163b5e 0%, #0b2036 100%) !important;
+  background-color: #102d4a !important;
+  border: 1px solid #4ea8d9 !important;
+  color: #e6f5ff !important;
+}
+
+td.half_line, .half_line {
+  background: #0b2238 !important;
+  background-color: #0b2238 !important;
+  border: 1px solid #3f87b5 !important;
+  color: #e6f5ff !important;
+}
+
+div.gradient_p, .gradient_p {
+  background: linear-gradient(90deg, #0d2842 0%, #13385c 100%) !important;
+  background-color: #0f2e4d !important;
+  color: #b8ecff !important;
+  font-weight: bold !important;
+  text-shadow: 0 1px 2px #000000 !important;
+}
+
+div.gradient_pp, .gradient_pp {
+  background: linear-gradient(90deg, #13385c 0%, #0d2842 100%) !important;
+  background-color: #0f2e4d !important;
+  color: #ffd100 !important;
+  font-weight: bold !important;
+  text-shadow: 0 1px 2px #000000 !important;
+}
+
+/* ================= Fix Marco Gris de Pestañas (jtabs) y Alineación Ranged ================= */
+html body .jtab-container,
+html body #body_main .jtab-container,
+html body div.jtab-container,
+html body .jtab-panes,
+html body #body_main .jtab-panes,
+html body .jtab-pane,
+html body .jtabs-container {
+  background: linear-gradient(180deg, #163b5e 0%, #0b2036 100%) !important;
+  background-color: #102d4a !important;
+  border: 1px solid #4ea8d9 !important;
+  box-shadow: inset 0 0 12px rgba(126, 232, 255, 0.15) !important;
+  color: #e6f5ff !important;
+}
+
+
+/* Mantener lado a lado .gradient_p y .gradient_pp sin que baje la columna de números */
+html body div.gradient_p,
+html body div.gradient_pp {
+  font-size: 11px !important;
+  white-space: nowrap !important;
+}
+
+/* ================= Fix Definitivo Marco Gris (#tab_content) en Todas las Pestañas ================= */
+html body div#tab_content,
+html body #body_main div#tab_content,
+html body #tab_content {
+  background: linear-gradient(180deg, #163b5e 0%, #0b2036 100%) !important;
+  background-color: #102d4a !important;
+  background-image: linear-gradient(180deg, #163b5e 0%, #0b2036 100%) !important;
+  border: 1px solid #4ea8d9 !important;
+  box-shadow: 0 4px 18px rgba(3, 12, 22, 0.75), inset 0 0 14px rgba(126, 232, 255, 0.16) !important;
+  color: #e6f5ff !important;
+}
+
+html body div#tab_content h1 {
+  color: #ffd100 !important;
+  text-shadow: 0 1px 3px #000000, 0 0 8px rgba(126, 232, 255, 0.45) !important;
+}
+
+/* ================= Fix Definitivo #tab_content2 (El recuadro gris #484848) ================= */
+html body div#tab_content2,
+html body #tab_content2 {
+  background: linear-gradient(180deg, #133352 0%, #091c30 100%) !important;
+  background-color: #0d2740 !important;
+  background-image: linear-gradient(180deg, #133352 0%, #091c30 100%) !important;
+  border: 1px solid #4ea8d9 !important;
+  box-shadow: inset 0 0 12px rgba(126, 232, 255, 0.14) !important;
+  color: #e6f5ff !important;
+}
+
