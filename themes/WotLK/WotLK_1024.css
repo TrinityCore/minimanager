@@ -1,0 +1,899 @@
+/*
+ * Project Name: MiniManager for Trinity Server
+ * Date: 17.10.2006 inital version (0.0.1a)
+ * Author: SixSixNine
+ * Copyright: SixSixNine
+ * Email: *****
+ * License: GNU General Public License (GPL)
+ */
+html{
+	overflow-x:auto;	/* fixes MSIE scrollbar bug DO NOT REMOVE,has no effect in Mozilla,or Opera */
+						/* https://www.blooberry.com/indexdot/css/properties/position/overflowx.htm */
+}
+html,body{
+	background-color:#0a1324;
+        background-image: url(background.jpg);
+	height:100%;
+	padding:0px; /* required for Opera to have 0 margin */
+	margin:0;
+	font:11pt Verdana,sans-serif;
+	cursor:default;
+}
+
+a:link, a:visited{ color: #2094f6; text-decoration: none }
+a:hover, a:focus{ color: #20b2f6; text-decoration: none }
+
+.table_top {
+	border-width: 0px;
+	border-spacing: 0px;
+	border-style: none;
+	border-collapse: collapse;
+	width: 845px;
+	height:120px;
+}
+.table_top_left {
+	background-image: url(logo_l.gif);
+	background-repeat: no-repeat;
+	width: 500px;
+}
+.table_top_middle {
+	background-image: url(logo_m.gif);
+	text-align: right;
+	width: 260px;
+}
+.table_top_right {
+	background-image: url(logo_r.gif);
+	background-repeat: no-repeat;
+	width: 47px;
+}
+
+/*********** MENU BAR***********/
+#menubar {
+	position:relative;
+	left:25px;
+	top:81px;
+	z-index:100;
+	width: 36em; /*total len*/
+	text-align: left;
+}
+#menuwrapper {
+	font:11pt Verdana,sans-serif;
+}
+#menubar, #menubar ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	line-height: 160%;
+}
+#menubar a {
+	display: block;
+	text-decoration: none;
+	padding: 5px 15px 5px 15px;
+	border-right: 1px solid #acebff;
+	font-size: .85em;
+	color: #000000; /*main menu text color*/
+}
+#menubar a.trigger {
+	padding: 5px 15px 5px 15px;
+}
+#menubar li {
+	float: left;
+	width: 9em;
+}
+#menubar li {position: relative;}
+/* hide from IE mac \*/
+#menubar li {position: static; width: auto;}
+/* end hiding from IE5 mac */
+#menubar li ul, #menubar ul li  {
+	width: 11em; /*submenu len*/
+}
+#menubar ul li a  {
+	color: #00c0ff;
+	border-right: 0;
+	padding: 3px 12px 3px 15px;
+}
+#menubar li ul {
+	position: absolute;
+	display: none;
+	background-color: #cefbff; /*submenu bg color*/
+	border-right: 1px solid #85a4b0;
+	border-bottom: 1px solid #85a4b0;
+	filter:alpha(opacity=85);
+	-moz-opacity:.85;
+	opacity:0.85;
+}
+#menubar li:hover a, #menubar a:focus,
+#menubar a:active, #menubar li.hvr a {
+	color: #000000; /*menu selected text color*/
+	background-color: #cefbff; /*menu selected bg color*/
+}
+#menubar li:hover ul, #menubar li.hvr ul {
+	display: block;
+}
+#menubar li:hover ul a, #menubar li.hvr ul a {
+	color: #000000; /*submenu text color*/
+	background-color: transparent;
+}
+#menubar ul a:hover {
+	background-color: #91e1ff !important; /*submenu selected bg color*/
+	color: #000000 !important; /*submenu selected text color*/
+}
+/*********** MENU BAR END***********/
+
+#username {
+	position:relative;
+	top:37px;
+	z-index:20;
+	color:#2094f6;
+	font:12pt Verdana,sans-serif;
+}
+#version {
+	position:absolute;
+	left:48%;
+	top:122px;
+	z-index:10;
+	color:#2094f6;
+	font:8pt Verdana,sans-serif;
+}
+h1{
+    margin:0px;
+    font:16pt Trebuchet MS,sans-serif;
+    font-weight:bold;
+    color:#e9e6e6;
+	line-height:1.2em;
+}
+
+form {
+   margin: 0px;
+}
+input, input.mouseover, a.button {
+	border: 1px solid #565656;
+	background:#2a2a2a;
+	font: 10pt Verdana,sans-serif;
+	font-weight: bold;
+	line-height:100%;
+}
+
+input {
+    background:#93b3bf;
+    color:#000000;
+    padding:2px 1px;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+input[type="text"],input[type="password"]{
+	background:#a2a2a;
+}
+input[type="text"]:hover, input[type="password"]:hover {
+    background:#ffffff;
+	border-color:#000;
+	cursor: default;
+}
+input[type="text"]:focus,input[type="password"]:focus {
+	background:#93b3bf;
+	border-color:#2094f6;
+}
+input[type="radio"],input[type="checkbox"]{
+	background:none;
+	border:0px;
+}
+select,textarea{
+	color:#000000;
+	border:1px solid #565656;
+	background-color: #93b3bf;
+	}
+img {
+	border: 0px;
+	padding: 0px;
+}
+a.button {
+	background:#93b3bf;
+	color: #000000;
+	padding:4px 2px;
+	text-decoration: none;
+	text-align: center;
+	float: left;
+	margin-right: 3px;
+	margin-left: 3px;
+}
+
+a.button:visited{   
+	background-color: #93b3bf; 
+	color: #000000;
+}
+a.button:hover{   
+	background-color: #ffffff; 
+	color: #000000;
+}
+a.button:active, a.button:focus {   
+	border-color: #76827B;
+}
+a[type="wrn"].button:hover{
+	background-color:#4a1a1a;
+	background-image:url(../../img/sml_warn.png);
+	background-repeat:no-repeat;
+	background-position: 99% 1px;
+}
+a[type="def"].button:hover{
+	background-color:#1a4a1a;
+	background-image:url(../../img/sml_tick.png);
+	background-repeat:no-repeat;
+	background-position: 99% 1px;
+}
+fieldset{
+	position: relative;
+	margin-top:20px;
+	padding-top:10px;
+	padding-bottom:10px;
+	top: 5px;
+	background-color: #afccd3;
+	border: 1px solid #ffffff;
+}
+fieldset.half_frame{
+	width: 550px;
+}
+fieldset.tquarter_frame{
+	width: 680px;
+}
+fieldset.full_frame{
+	width: 760px;
+}
+legend{
+	margin-top:-5px;
+	color: #ffffff;
+	background-color: #afccd3;
+	padding: 2px 6px;
+	position:absolute;
+	top: -5px;
+	left: 5px;
+}
+
+/*****TABLES******/
+table.flat {
+	border-width: 5px;
+	border-spacing: 5px;
+	border-style: none;
+	border-collapse: collapse;
+	background-color: #afccd3;
+	text-align: left;
+}
+table.flat td {
+	padding: 5px;
+}
+table.hidden {
+	border-width: 0px;
+	border-spacing: 0px;
+	border-style: none;
+	border-collapse: collapse;
+	text-align: center;
+}
+table.top_hidden {
+	width: 770px;
+	border: 0px none #d4ddd8;
+	border-spacing: 0px;
+	border-collapse: collapse;
+	text-align: left;
+}
+table.top_hidden td, table.hidden td {
+	padding: 4px 0px;
+}
+table.lined {
+	width: 770px;
+	border-collapse: collapse;
+	text-align: center;
+}
+
+table.lined, table.lined td, table.lined td.head, table.lined td.hidden{
+	border-bottom: 1px solid  #afccd3;
+	border-top: 1px solid  #afccd3;
+	padding: 5px;
+}
+table.lined, table.lined tr, table.lined tr.hidden{
+	border-left: 1px solid  #afccd3;
+	border-right: 1px solid  #afccd3;
+}
+table.lined tr th{
+	background-color: #ddf8ff;
+	font-weight: bold;
+	font-size: 11px;
+	color:#2094f6;
+	padding: 5px;
+}
+table.lined td.hidden {
+	background-color: transparent;
+}
+table.lined td{
+	background-color: #ffffff;
+}
+tr td div.gradient_p,div.gradient_pp{
+	float: left;
+	clear: right;
+	display: table-cell;
+	text-align: right;
+	padding: 1px 5px;
+}
+tr td div.gradient_p{
+	background-color:#ddf8ff;
+	width: 120px;
+}
+tr td div.gradient_pp{
+	background-color:#afccd3;
+	width: 70px;
+}
+img.bag_icon {
+	float: left;
+	width: 24px; 
+	height: 24px;
+	border: 1px solid #585858;
+	margin-left: 5px;
+}
+
+tr td.bag div,
+tr td.bank div {
+	position: relative;
+	border: 0px;
+	margin: 2px;
+	background-image: url(../../img/INV/Slot_Bag.gif);
+	background-repeat: repeat;
+	background-color: #242424;
+}
+tr td.bank div {
+	background-image: url(../../img/INV/Slot_Bank.gif);
+	background-color: #858585;
+}
+tr td.bag div div,
+tr td.bank div div{
+	position: absolute;
+	background: none;
+}
+tr td.bag div div img,
+tr td.bank div div img{
+	border: 0px;
+	padding: 1px;
+	width: 35px; 
+	height: 35px;
+}
+tr td.bag div.no_slot,
+tr td.bank div.no_slot{
+	position: absolute;
+	margin: 0px;
+	width: 86px;
+	height: 41px;
+	background-image: url(../../img/INV/Slot_Bag_Out.gif);
+}
+tr td.bank div.no_slot{
+	background-image: url(../../img/INV/Slot_Bank_Out.gif);
+}
+
+tr th a{
+	padding-right:10px;
+	background-repeat:no-repeat;
+}
+tr th a.ASC{
+	background-image: url(../../img/arr_up.gif);
+	background-position: 100% 2px;
+}
+tr th a.DESC{
+	background-image: url(../../img/arr_dw.gif);
+	background-position: 100% 6px;
+}
+/*****TABLES END******/
+
+#body_main {
+	position:absolute;
+    left: 50%; 
+    top: 150px;
+    width: 800px;
+    margin-left: -400px; /* half of the width */
+	line-height: 120%;
+	text-align: center;
+	font-size: 11px;
+	color:#000000;
+}
+
+.error {
+	color:#2094f6;
+}
+.bold {
+	font:13pt Trebuchet MS,sans-serif;
+	font-weight:bold;
+}
+.small {
+	font-size: 8px;
+}	
+.large_bold {
+	font-size: 13px;
+	font-weight:bold;
+}
+.large {
+	font-size: 13px;
+}
+.half_line {
+	font-size: 12px;
+	line-height:1.6em;
+}
+/*****BUBBLE******/
+div.bubble {
+	position:relative;
+    padding:7px 0px;
+    background-color:#afccd3;
+    margin-bottom:15px;
+	text-align: left;
+	border: 1px solid #565656;
+}
+div.bubble div.top {
+	text-align: center;
+	background-color:#c7e6ee;
+	padding:7px 15px;
+    margin:-7px -0px 12px -0px;
+}
+div.bubble div.top h1{
+	color: #1a1a1a;
+}
+i.tl, i.tr, i.bl, i.br {
+	position:absolute;
+    width:4px;
+    height:4px;
+    overflow:hidden;
+    z-index:30;
+}
+i.tl {
+    top:0px;
+    left:0px;
+}
+i.tr {
+    top:0px;
+    right:0px;
+}
+i.bl {
+    bottom:0px;
+    left:0px;
+}
+i.br {
+    bottom:0px;
+    right:0px;
+}
+/*****BUBBLE END******/
+
+#body_buttom {
+	font:8pt Verdana,sans-serif;
+	text-align: center;
+	color:#000000;
+}
+.table_buttom {
+	background: #c7e6ee;
+	border: 1px solid #565656;
+	width: 800px;
+	height:100px;
+}
+.table_buttom_left {
+	width: 6px;
+}
+.table_buttom_middle {
+	width: 784px;
+}
+.table_buttom_right {
+	width: 6px;
+}
+
+#body_buttom a:link, #body_buttom a:visited {
+    color:#006b92;
+    text-decoration:none;
+}
+#body_buttom a:hover, #body_buttom a:focus {
+    text-decoration:underline;
+} 
+.logo_border {
+	border: 1px solid #565656;
+	background-color: #afccd3;
+	padding: 6px;
+}
+
+.icon_border_0 {
+	border: 0px;
+	padding: 6px;
+	width: 32px;
+	height: 32px;
+	background: url(../../img/INV/icon_border_0.png)
+}
+
+.icon_border_1 {
+	border: 0px;
+	padding: 6px;
+	width: 32px;
+	height: 32px;
+	background: url(../../img/INV/icon_border_1.png)
+}
+
+.icon_border_2 {
+	border: 0px;
+	padding: 6px;
+	width: 32px;
+	height: 32px;
+	background: url(../../img/INV/icon_border_2.png)
+}
+
+.icon_border_3 {
+	border: 0px;
+	padding: 6px;
+	width: 32px;
+	height: 32px;
+	background: url(../../img/INV/icon_border_3.png)
+}
+
+.icon_border_4 {
+	border: 0px;
+	padding: 6px;
+	width: 32px;
+	height: 32px;
+	background: url(../../img/INV/icon_border_4.png)
+}
+
+.icon_border_5 {
+	border: 0px;
+	padding: 6px;
+	width: 32px;
+	height: 32px;
+	background: url(../../img/INV/icon_border_5.png)
+}
+
+.icon_border_6 {
+	border: 0px;
+	padding: 6px;
+	width: 32px;
+	height: 32px;
+	background: url(../../img/INV/icon_border_6.png)
+}
+
+/*** graphs and bars ***/
+.bargraph {
+	font:9pt Verdana,sans-serif;
+	border-collapse: collapse;
+	width: 720px;
+}
+.bargraph td {
+	padding:0;
+	margin:0;
+	vertical-align:bottom;
+	text-align:center;
+	background: url(gridline.gif) 15px bottom;
+}
+
+a.graph_link:link, a.graph_link:visited{ color: #2094f6; text-decoration: none }
+a.graph_link:hover, a.graph_link:focus{ color: #20b2f6; text-decoration: none }
+
+.bargraph img{
+	display:block;
+	border: 1px solid #000;
+}
+
+table.stat_hidden {
+	width: 720px;
+	border-spacing: 2px;
+	border-collapse: collapse;
+	text-align: left;
+}
+
+.tot_bar {
+	width: 730px;
+	border:1px solid #000000;
+	padding:10px;
+	border-collapse: collapse;
+	text-align: center;
+	font-weight: bold;
+}
+.tot_bar a:link, .tot_bar a:visited{ color: #000; text-decoration: none }
+.tot_bar a:hover, .tot_bar a:focus{ color: #2094f6; text-decoration: none }
+
+tr td.bar{
+	width: 385px;
+	background-repeat: no-repeat;
+	background-position: -385px;
+	padding: 1px;
+}
+tr td.bar span{
+	float: left;
+	width:55%;
+	text-align:right;
+	margin-top: 3px;
+	color: #fff !important;
+}
+tr td.skill_bar{
+	background-image: url(../../img/bar_skill.png);
+}
+
+.faction-bar{border:1px solid black;width:100%;text-align:left;height:16px;background:url('../../img/bar_empty.gif') repeat-x;position:relative}
+span.rep-data{position:absolute;width:100%;text-align:center;color:white;text-decoration:none !important;white-space:nowrap}
+.bar-color{width:100%;height:16px}
+.rep7 .bar-color{background:url('../../img/bar_exalted.gif') repeat-x}
+.rep6 .bar-color{background:url('../../img/bar_revered.gif') repeat-x}
+.rep5 .bar-color{background:url('../../img/bar_honored.gif') repeat-x}
+.rep4 .bar-color{background:url('../../img/bar_friendly.gif') repeat-x}
+.rep3 .bar-color{background:url('../../img/bar_neutral.gif') repeat-x}
+.rep2 .bar-color{background:url('../../img/bar_unfriendly.gif') repeat-x}
+.rep1 .bar-color{background:url('../../img/bar_hostile.gif') repeat-x}
+.rep0 .bar-color{background:url('../../img/bar_hated.gif') repeat-x}
+tr td.rep7 {color:cyan}
+tr td.rep6 {color:#00ffcc}
+tr td.rep5 {color:#00ff88}
+tr td.rep4 {color:lime}
+tr td.rep3 {color:yellow}
+tr td.rep2 {color:#ee6622}
+tr td.rep1 {color:red}
+tr td.rep0 {color:#cc2222}
+
+
+/*** link tabs ***/
+#tab ul {
+	padding: 0px 30px;
+	margin: 0px;
+	list-style: none;
+}
+#tab li {
+	float: left;
+	border: 1px solid #d4d4d4;
+	border-bottom-width: 0;
+}
+#tab a {
+	display: block;
+	background: #b4dbe9;
+	padding: 1em 2em;
+}
+#tab a:hover {
+	background: #ffffff;
+}	
+#tab  #selected {
+	border-color: #ffffff;
+}
+#tab #selected a {
+	position: relative;
+	top: 1px;
+	background: #c7e6ee;
+	font-weight: bold;
+	padding: 1em 1.5em;
+}
+#tab_content {
+	padding: 10px;
+	border: 1px solid #ffffff;
+	background: #93b3bf;
+	width: 740px;
+	clear: both;
+}
+
+#tab_content2 {
+	padding: 10px;
+	border: 1px solid #d4d4d4;
+	background: #484848;
+	width: 700px;
+	clear: both;
+}
+
+/*** Java layer tabs ***/
+.jtabs {
+	margin: 0;
+	padding: 0px 0px 0px 30px;
+	list-style: none;
+}
+.jtabs li {
+	float: left;
+}
+.jtabs a.jtab-disabled:hover, .jtabs a.jtab-active {
+	background: #484848;
+	border-bottom-color: #484848;
+}
+.jtabs a.jtab-disabled {
+	background: #383838;
+	border: 1px solid #565656;
+	border-bottom-width: 0;
+}
+.jtabs a  {
+	position: relative;
+	top: -25px;
+	background: #484848;
+	font-weight: bold;
+	padding: 1em 1.3em;
+	border: 1px solid #d4d4d4;
+	text-decoration:none;
+}
+.jtab-container {
+	border: 1px solid #d4d4d4;
+	background: #484848;
+	width: 760px;
+	clear: both;
+}
+.jtab-panes { margin: 3px }
+
+/*** item tooltips***/
+.item_tooltip  td{
+	float: none;
+	font-size: 11px;
+	color: #d4d4d4;
+	border:1px solid #70c7f0;
+	padding:10px;
+	width:auto;
+	background-color:#000;
+	text-align:left;
+	filter:alpha(opacity=80);
+	-moz-opacity:.80;
+	opacity:0.80;
+}
+.info_tooltip  td{
+	float: none;
+	font-size: 11px;
+	color: #d4d4d4;
+	border:0px solid #70c7f0;
+	padding:10px;
+	width:240px;
+	background-color:#000;
+	text-align:left;
+	filter:alpha(opacity=85);
+	-moz-opacity:.85;
+	opacity:0.85;
+}
+
+.answerbox {
+	font-size: 11px;
+	color: #d4d4d4;
+	border:1px solid #70c7f0;
+	padding:10px;
+	width:auto;
+	background-color:#000;
+	text-align:center;
+	filter:alpha(opacity=85);
+	-moz-opacity:.85;
+	opacity:0.85;
+}
+.answerbox th {
+	font:16pt Trebuchet MS,sans-serif;
+    font-weight:bold;
+	color:#000000;
+	line-height:1.2em;
+}
+.answerbox td a {
+	float:none;
+	display: block;
+}
+
+/* ================= WotLK Login Screen Palette (Icecrown Citadel) ================= */
+html, body {
+  background-color: #0b2236 !important;
+  background-image:
+    radial-gradient(ellipse at 35% 15%, rgba(145, 232, 255, 0.55) 0%, rgba(45, 165, 215, 0.35) 32%, rgba(15, 55, 85, 0.85) 68%, #071624 100%),
+    linear-gradient(180deg, #1b5c85 0%, #103957 45%, #091e30 100%) !important;
+  background-attachment: fixed !important;
+  color: #e6f5ff !important;
+}
+
+/* Top Header Bar — Saronite Slate & Ice Glow */
+.table_top, .table_top_left, .table_top_middle, .table_top_right {
+  background-color: #0c2236 !important;
+  background-image: linear-gradient(180deg, #183f61 0%, #0a1b2b 100%) !important;
+  border-color: #4ea8d9 !important;
+  color: #e6f5ff !important;
+}
+
+.table_top_left {
+  background-image: url("logo.svg"), linear-gradient(180deg, #183f61 0%, #0a1b2b 100%) !important;
+  background-repeat: no-repeat !important;
+  background-position: left top !important;
+}
+
+#username {
+  color: #ffd100 !important;
+  font-weight: bold !important;
+  text-shadow: 0 1px 3px #000000, 0 0 10px rgba(126, 232, 255, 0.6) !important;
+}
+
+/* Main Content Bubbles & Panels — Translucent Icecrown Citadel Frames */
+#body_main, #body_bottom, .bubble, .lined, .top_hidden, .hidden,
+table.lined, table.tot_width, table.top_hidden, fieldset, div.bubble {
+  background: linear-gradient(180deg, rgba(18, 52, 82, 0.88) 0%, rgba(10, 29, 46, 0.94) 100%) !important;
+  background-image: linear-gradient(180deg, rgba(18, 52, 82, 0.88) 0%, rgba(10, 29, 46, 0.94) 100%) !important;
+  border: 1px solid #499cc9 !important;
+  box-shadow:
+    0 4px 20px rgba(3, 12, 22, 0.75),
+    inset 0 0 14px rgba(126, 232, 255, 0.16) !important;
+  color: #e6f5ff !important;
+}
+
+/* Table Headers & Section Titles — Blizzard WotLK Gold & Cobalt */
+legend, th, .head, .table_head, td.head {
+  background: linear-gradient(180deg, #1c558c 0%, #0f3257 100%) !important;
+  color: #ffd100 !important;
+  text-shadow: 0 1px 2px #000000 !important;
+  border: 1px solid #6bbbe6 !important;
+}
+
+/* Inner Table Rows & Cells */
+table.lined td, table.tot_width td, .bubble td {
+  background-color: rgba(13, 38, 61, 0.82) !important;
+  color: #e6f5ff !important;
+  border-color: rgba(78, 168, 217, 0.35) !important;
+}
+
+table.lined tr:nth-child(even) td, .bubble tr:nth-child(even) td {
+  background-color: rgba(20, 56, 89, 0.82) !important;
+}
+
+table.lined tr:hover td, .bubble tr:hover td {
+  background-color: rgba(34, 92, 140, 0.9) !important;
+}
+
+/* Links — Luminous Frost Cyan & Hover Gold */
+a, a:link, a:visited {
+  color: #7ee8ff !important;
+}
+
+a:hover, a:active {
+  color: #ffd100 !important;
+  text-shadow: 0 0 8px rgba(126, 232, 255, 0.75) !important;
+}
+
+/* Top Navigation Bar — Dark Saronite Steel with Gold Text */
+#menubar, #menubar ul {
+  background: linear-gradient(180deg, #173d61 0%, #0a1d30 100%) !important;
+  border: 1px solid #59addb !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.65) !important;
+}
+
+#menubar a, #menubar ul a {
+  color: #ffd100 !important;
+  text-shadow: 0 1px 2px #000000 !important;
+}
+
+#menubar li:hover > a, #menubar ul li a:hover {
+  background: linear-gradient(180deg, #25639c 0%, #13385c 100%) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 0 8px rgba(126, 232, 255, 0.45) !important;
+}
+
+/* Inputs — Dark Saronite Box from the Login Screen */
+input, select, textarea {
+  background-color: #081521 !important;
+  color: #e6f5ff !important;
+  border: 1px solid #5a8bb5 !important;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  border-color: #7ee8ff !important;
+  box-shadow: 0 0 8px rgba(126, 232, 255, 0.65) !important;
+}
+
+/* Buttons — Classic WoW Cobalt Login Button with Gold Text & Silver Trim */
+input[type="submit"], input[type="button"], button, .button {
+  background: linear-gradient(180deg, #1d5ca3 0%, #103766 50%, #0b2647 100%) !important;
+  color: #ffd100 !important;
+  border: 1px solid #8eb8de !important;
+  text-shadow: 0 1px 2px #000000 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(190, 227, 255, 0.35) !important;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover {
+  background: linear-gradient(180deg, #2876cc 0%, #164985 50%, #0f325e 100%) !important;
+  color: #fff2a6 !important;
+  border-color: #bfe6ff !important;
+  box-shadow: 0 0 12px rgba(126, 232, 255, 0.65) !important;
+}
+
+
+/* ================= Cabecera WotLK + Logo SVG embebido con Hielo ================= */
+.table_top {
+  background: linear-gradient(180deg, #1b4970 0%, #0a1b2b 100%) !important;
+  background-image: linear-gradient(180deg, #1b4970 0%, #0a1b2b 100%) !important;
+  border: 1px solid #4ea8d9 !important;
+}
+
+.table_top_left {
+  background-color: transparent !important;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='76' viewBox='0 0 380 76'><defs><linearGradient id='ice' x1='0' y1='0' x2='0' y2='1'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='45%25' stop-color='%239be7ff'/><stop offset='85%25' stop-color='%232e96d4'/><stop offset='100%25' stop-color='%2312436e'/></linearGradient><linearGradient id='drip' x1='0' y1='0' x2='0' y2='1'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='55%25' stop-color='%238ce3ff'/><stop offset='100%25' stop-color='%2333bfff' stop-opacity='0.75'/></linearGradient><linearGradient id='gold' x1='0' y1='0' x2='0' y2='1'><stop offset='0%25' stop-color='%23fff2a6'/><stop offset='50%25' stop-color='%23ffd100'/><stop offset='100%25' stop-color='%23b58105'/></linearGradient></defs><text x='14' y='40' font-family='Trebuchet MS,Verdana,sans-serif' font-weight='900' font-size='33' letter-spacing='1' fill='url(%23ice)' stroke='%23061829' stroke-width='1.3'><tspan font-size='25' font-weight='700'>mini</tspan>MANAGER</text><path d='M16,22 Q24,18 32,22 L34,30 L36,22 Q46,19 56,22 L58,34 L61,22 Q66,20 71,22 M74,15 Q84,11 94,15 L96,29 L99,15 Q108,12 118,15 L120,36 L123,15 Q134,11 144,15 L146,27 L149,15 Q160,12 172,15 L175,38 L178,15 Q190,11 202,15 L204,31 L207,15 Q218,12 230,15 L233,35 L236,15 Q248,11 260,15 L262,28 L265,15 Q276,12 288,15 L291,37 L294,15 Q302,12 310,15' fill='none' stroke='url(%23drip)' stroke-width='2.4' stroke-linecap='round'/><polygon points='24,40 28,40 26,52' fill='url(%23drip)'/><polygon points='52,40 57,40 54.5,56' fill='url(%23drip)'/><polygon points='82,40 88,40 85,59' fill='url(%23drip)'/><polygon points='114,40 119,40 116.5,53' fill='url(%23drip)'/><polygon points='150,40 156,40 153,61' fill='url(%23drip)'/><polygon points='186,40 191,40 188.5,54' fill='url(%23drip)'/><polygon points='222,40 228,40 225,58' fill='url(%23drip)'/><polygon points='258,40 263,40 260.5,51' fill='url(%23drip)'/><polygon points='292,40 297,40 294.5,55' fill='url(%23drip)'/><text x='16' y='66' font-family='Trebuchet MS,Verdana,sans-serif' font-size='11.5' font-weight='bold' letter-spacing='1.8' fill='url(%23gold)' stroke='%2305111c' stroke-width='0.6'>for project TRINITYCORE</text></svg>") !important;
+  background-repeat: no-repeat !important;
+  background-position: 12px 4px !important;
+}
+
+.table_top_middle, .table_top_right {
+  background: transparent !important;
+  background-image: none !important;
+}

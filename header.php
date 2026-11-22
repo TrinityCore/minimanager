@@ -55,6 +55,28 @@ $sqlm->close();
 unset($sqlm);
 // End
 
+//---------------------Theme Selector Handler----------------------------------
+$available_themes = [];
+if (is_dir('themes'))
+    foreach (scandir('themes') as $t_dir)
+        if ($t_dir !== '.' && $t_dir !== '..' && is_file('themes/'.$t_dir.'/'.$t_dir.'_1024.css'))
+            $available_themes[] = $t_dir;
+
+if (isset($_GET['set_theme']))
+{
+    $picked_theme = basename($_GET['set_theme']);
+    if (in_array($picked_theme, $available_themes, true))
+    {
+        setcookie('theme', $picked_theme, time() + (86400 * 30), '/');
+        $_COOKIE['theme'] = $picked_theme;
+        $redirect_params = $_GET;
+        unset($redirect_params['set_theme']);
+        $qs = http_build_query($redirect_params);
+        header('Location: '.strtok($_SERVER['REQUEST_URI'], '?').($qs !== '' ? '?'.$qs : ''));
+        exit;
+    }
+}
+
 //---------------------Loading User Theme and Language Settings----------------
 if (isset($_COOKIE['theme']))
     if (is_dir('themes/'.$_COOKIE['theme']))
@@ -168,8 +190,97 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
     // for MiniManager security system, getting the users' account group name
     $user_lvl_name = id_get_gm_level($user_lvl);
 
+    $wotlk_logo_html = '';
+    if ($theme === 'WotLK')
+    {
+        $wotlk_logo_html = '
+                    <div style="position:relative; height:0; width:0; overflow:visible; z-index:90;">
+                        <a href="index.php" style="position:absolute; left:18px; top:4px; display:block; width:335px; height:76px; text-decoration:none;">
+                            <svg xmlns="http://w3.org" width="335" height="76" viewBox="0 0 335 76">
+    <defs>
+        <!-- Relleno metálico-helado del texto -->
+        <linearGradient id="iceFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="30%" stop-color="#d9f4ff"/>
+            <stop offset="60%" stop-color="#6cc7f5"/>
+            <stop offset="90%" stop-color="#1e6ba8"/>
+            <stop offset="100%" stop-color="#0f3d66"/>
+        </linearGradient>
+
+        <!-- Degradado de cristal de hielo translúcido para los carámbanos -->
+        <linearGradient id="crystalIcicle" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8f9ff" stop-opacity="0.96"/>
+            <stop offset="45%" stop-color="#7cd4ff" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="#2ea8e6" stop-opacity="0.28"/>
+        </linearGradient>
+
+        <!-- Dorado WotLK -->
+        <linearGradient id="wotlkGld" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fff4b8"/>
+            <stop offset="50%" stop-color="#ffd100"/>
+            <stop offset="100%" stop-color="#b88406"/>
+        </linearGradient>
+
+        <!-- Sombra y resplandor glacial limpio -->
+        <filter id="cleanFrost" x="-10%" y="-15%" width="120%" height="140%">
+            <feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#030d17" flood-opacity="0.95"/>
+            <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#66d9ff" flood-opacity="0.45"/>
+        </filter>
+    </defs>
+
+    <g filter="url(#cleanFrost)">
+        <!-- Texto principal nítido -->
+        <text x="8" y="40" font-family="Georgia, Times New Roman, serif" font-weight="bold" font-size="33" letter-spacing="0.8" fill="none" stroke="#bcecff" stroke-width="2" stroke-linejoin="round">
+            <tspan font-size="25">mini</tspan>MANAGER
+        </text>
+        <text x="8" y="40" font-family="Georgia, Times New Roman, serif" font-weight="bold" font-size="33" letter-spacing="0.8" fill="url(#iceFill)" stroke="#071d33" stroke-width="0.9">
+            <tspan font-size="25">mini</tspan>MANAGER
+        </text>
+
+        <!-- Carámbanos cortos/medios sobre "miniMANA" (para no tocar el subtítulo dorado) -->
+        <!-- "m" -->
+        <polygon points="11.5,40.5 14.5,40.5 13,48" fill="url(#crystalIcicle)"/>
+        <polygon points="27.5,40.5 30.5,40.5 29,46" fill="url(#crystalIcicle)"/>
+        <!-- "n" -->
+        <polygon points="44.5,40.5 47.5,40.5 46,48.5" fill="url(#crystalIcicle)"/>
+        <!-- "M" -->
+        <polygon points="81,40.5 84.5,40.5 82.7,51.5" fill="url(#crystalIcicle)"/>
+        <polygon points="109,40.5 112.5,40.5 110.7,47" fill="url(#crystalIcicle)"/>
+        <!-- "A" -->
+        <polygon points="122,40.5 125.5,40.5 123.7,49" fill="url(#crystalIcicle)"/>
+        <!-- "N" -->
+        <polygon points="148.5,40.5 152,40.5 150.2,51" fill="url(#crystalIcicle)"/>
+
+        <!-- Carámbanos GRANDES bajo "GER" (aprovechando el espacio libre a la derecha del subtítulo) -->
+        <!-- "G" (dos estalactitas largas desde la base curva) -->
+        <polygon points="203,40.5 208,40.5 205.5,66" fill="url(#crystalIcicle)"/>
+        <polygon points="212,41 215.5,41 213.7,56" fill="url(#crystalIcicle)"/>
+        <!-- "E" (estalactita larga y mediana en la base) -->
+        <polygon points="227,40.5 232.5,40.5 229.7,69" fill="url(#crystalIcicle)"/>
+        <polygon points="237.5,40.5 241,40.5 239.2,57" fill="url(#crystalIcicle)"/>
+        <!-- "R" (estalactita larga en la pata izquierda + mediana en la cola derecha, sin pasarse del borde) -->
+        <polygon points="250.5,40.5 255.5,40.5 253,67" fill="url(#crystalIcicle)"/>
+        <polygon points="263.5,40.5 267,40.5 265.2,55" fill="url(#crystalIcicle)"/>
+
+        <!-- Brillos blancos finos de cristal dentro de los carámbanos -->
+        <line x1="82.3" y1="41" x2="82.7" y2="49.5" stroke="#ffffff" stroke-width="0.7" opacity="0.85"/>
+        <line x1="149.8" y1="41" x2="150.2" y2="49" stroke="#ffffff" stroke-width="0.7" opacity="0.85"/>
+        <line x1="205" y1="41" x2="205.5" y2="63" stroke="#ffffff" stroke-width="0.85" opacity="0.9"/>
+        <line x1="229.2" y1="41" x2="229.7" y2="66" stroke="#ffffff" stroke-width="0.85" opacity="0.9"/>
+        <line x1="252.5" y1="41" x2="253" y2="64" stroke="#ffffff" stroke-width="0.85" opacity="0.9"/>
+    </g>
+
+    <!-- Subtítulo dorado WotLK -->
+    <text x="10" y="65" font-family="Trebuchet MS, Verdana, sans-serif" font-size="11.5" font-weight="bold" letter-spacing="1.7" fill="url(#wotlkGld)" stroke="#04101c" stroke-width="0.5">
+        for project TRINITYCORE
+    </text>
+</svg>
+                        </a>
+                    </div>';
+    }
+
     //---------------------Top Menu----------------------------------------------
-    $output .= '
+    $output .= $wotlk_logo_html.'
                     <div id="menuwrapper">
                         <ul id="menubar">';
     $lang_header = lang_header();
@@ -288,6 +399,22 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
     }
     unset($result);
 
+    $theme_box = '';
+    if (count($available_themes) > 1)
+    {
+        $theme_box .= '<div style="margin-bottom: 4px;"><form method="get" action="" style="display:inline;">';
+        foreach ($_GET as $gk => $gv)
+            if ($gk !== 'set_theme' && is_scalar($gv))
+                $theme_box .= '<input type="hidden" name="'.htmlspecialchars($gk, ENT_QUOTES, 'UTF-8').'" value="'.htmlspecialchars((string)$gv, ENT_QUOTES, 'UTF-8').'" />';
+        $theme_box .= '<select name="set_theme" onchange="this.form.submit()" aria-label="Theme">';
+        foreach ($available_themes as $t_name)
+        {
+            $sel = ($theme === $t_name) ? ' selected="selected"' : '';
+            $theme_box .= '<option value="'.htmlspecialchars($t_name, ENT_QUOTES, 'UTF-8').'"'.$sel.'>'.htmlspecialchars($t_name, ENT_QUOTES, 'UTF-8').'</option>';
+        }
+        $theme_box .= '</select></form></div>';
+    }
+
     $output .= '
                         </ul>
                     </li>
@@ -296,7 +423,7 @@ if (isset($_SESSION['user_lvl']) && isset($_SESSION['uname']) && isset($_SESSION
                     </div>
                     </td>
                     <td class="table_top_middle">
-                        <div id="username">'.$user_name.' .:'.$user_lvl_name.'\'s '.$lang_header['menu'].':.</div>
+                        '.$theme_box.'<div id="username">'.$user_name.' .:'.$user_lvl_name.'\'s '.$lang_header['menu'].':.</div>
                     </td>
                     <td class="table_top_right"></td>
                 </tr>

@@ -1,0 +1,275 @@
+/*
+ * Project Name: MiniManager for Trinity Server
+ * Date: 17.10.2006 inital version (0.0.1a)
+ * Author: SixSixNine
+ * Copyright: SixSixNine
+ * Email: *****
+ * License: GNU General Public License (GPL)
+ */
+
+.table_top {
+	width: 1045px;
+}
+
+.table_top_middle {
+	width: 460px;
+}
+#menubar a {
+	font-size: .90em;
+}
+
+/*********** MENU BAR END***********/
+
+#username {
+	font:13pt Verdana,sans-serif;
+}
+#version {
+	font:9pt Verdana,sans-serif;
+}
+
+form {
+   margin: 0px;
+}
+
+input, input.mouseover, a.button {
+   line-height:130%;
+}
+
+fieldset.half_frame{
+	width: 650px;
+}
+fieldset.tquarter_frame{
+	width: 780px;
+}
+fieldset.full_frame{
+	width: 860px;
+}
+
+
+/*****TABLES******/
+
+table.top_hidden {
+	width: 960px;
+}
+
+table.lined {
+	width: 960px;
+}
+
+table.lined tr th{	
+	font-size: 12px;
+}
+
+/*****TABLES END******/
+
+#body_main {
+    width: 1000px;
+    margin-left: -500px; /* half of the width */
+	font-size: 12px;
+}
+
+.bold {
+	font:14pt Trebuchet MS,sans-serif;
+}
+.small {
+	font-size: 9px;
+}	
+.large_bold {
+	font-size: 14px;
+	font-weight:bold;
+}
+.large {
+	font-size: 14px;
+}
+.half_line {
+	font-size: 13px;
+}
+
+.table_buttom {
+	width: 1000px;
+}
+
+table.stat_hidden {
+	width: 960px;
+}
+
+tr td.bar span.rank{
+	position: absolute;
+	width: auto;
+}
+
+/*** link tabs ***/
+
+#tab ul {
+	padding: 0px 50px;
+}
+
+#tab_content {
+	width: 900px;
+}
+
+#tab_content2 {
+	width: 860px;
+}
+
+/*** Java layer tabs ***/
+
+.jtabs a  {
+	top: -27px;
+}
+.jtab-container {
+	width: 900px;
+}
+
+/*** item tooltips***/
+.item_tooltip  td{
+	font-size: 12px;
+}
+.info_tooltip  td{
+	font-size: 12px;
+
+}
+
+/* ================= WotLK Login Screen Palette (Icecrown Citadel) ================= */
+html, body {
+  background-color: #0b2236 !important;
+  background-image:
+    radial-gradient(ellipse at 35% 15%, rgba(145, 232, 255, 0.55) 0%, rgba(45, 165, 215, 0.35) 32%, rgba(15, 55, 85, 0.85) 68%, #071624 100%),
+    linear-gradient(180deg, #1b5c85 0%, #103957 45%, #091e30 100%) !important;
+  background-attachment: fixed !important;
+  color: #e6f5ff !important;
+}
+
+/* Top Header Bar — Saronite Slate & Ice Glow */
+.table_top, .table_top_left, .table_top_middle, .table_top_right {
+  background-color: #0c2236 !important;
+  background-image: linear-gradient(180deg, #183f61 0%, #0a1b2b 100%) !important;
+  border-color: #4ea8d9 !important;
+  color: #e6f5ff !important;
+}
+
+.table_top_left {
+  background-image: url("logo.svg"), linear-gradient(180deg, #183f61 0%, #0a1b2b 100%) !important;
+  background-repeat: no-repeat !important;
+  background-position: left top !important;
+}
+
+#username {
+  color: #ffd100 !important;
+  font-weight: bold !important;
+  text-shadow: 0 1px 3px #000000, 0 0 10px rgba(126, 232, 255, 0.6) !important;
+}
+
+/* Main Content Bubbles & Panels — Translucent Icecrown Citadel Frames */
+#body_main, #body_bottom, .bubble, .lined, .top_hidden, .hidden,
+table.lined, table.tot_width, table.top_hidden, fieldset, div.bubble {
+  background: linear-gradient(180deg, rgba(18, 52, 82, 0.88) 0%, rgba(10, 29, 46, 0.94) 100%) !important;
+  background-image: linear-gradient(180deg, rgba(18, 52, 82, 0.88) 0%, rgba(10, 29, 46, 0.94) 100%) !important;
+  border: 1px solid #499cc9 !important;
+  box-shadow:
+    0 4px 20px rgba(3, 12, 22, 0.75),
+    inset 0 0 14px rgba(126, 232, 255, 0.16) !important;
+  color: #e6f5ff !important;
+}
+
+/* Table Headers & Section Titles — Blizzard WotLK Gold & Cobalt */
+legend, th, .head, .table_head, td.head {
+  background: linear-gradient(180deg, #1c558c 0%, #0f3257 100%) !important;
+  color: #ffd100 !important;
+  text-shadow: 0 1px 2px #000000 !important;
+  border: 1px solid #6bbbe6 !important;
+}
+
+/* Inner Table Rows & Cells */
+table.lined td, table.tot_width td, .bubble td {
+  background-color: rgba(13, 38, 61, 0.82) !important;
+  color: #e6f5ff !important;
+  border-color: rgba(78, 168, 217, 0.35) !important;
+}
+
+table.lined tr:nth-child(even) td, .bubble tr:nth-child(even) td {
+  background-color: rgba(20, 56, 89, 0.82) !important;
+}
+
+table.lined tr:hover td, .bubble tr:hover td {
+  background-color: rgba(34, 92, 140, 0.9) !important;
+}
+
+/* Links — Luminous Frost Cyan & Hover Gold */
+a, a:link, a:visited {
+  color: #7ee8ff !important;
+}
+
+a:hover, a:active {
+  color: #ffd100 !important;
+  text-shadow: 0 0 8px rgba(126, 232, 255, 0.75) !important;
+}
+
+/* Top Navigation Bar — Dark Saronite Steel with Gold Text */
+#menubar, #menubar ul {
+  background: linear-gradient(180deg, #173d61 0%, #0a1d30 100%) !important;
+  border: 1px solid #59addb !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.65) !important;
+}
+
+#menubar a, #menubar ul a {
+  color: #ffd100 !important;
+  text-shadow: 0 1px 2px #000000 !important;
+}
+
+#menubar li:hover > a, #menubar ul li a:hover {
+  background: linear-gradient(180deg, #25639c 0%, #13385c 100%) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 0 8px rgba(126, 232, 255, 0.45) !important;
+}
+
+/* Inputs — Dark Saronite Box from the Login Screen */
+input, select, textarea {
+  background-color: #081521 !important;
+  color: #e6f5ff !important;
+  border: 1px solid #5a8bb5 !important;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  border-color: #7ee8ff !important;
+  box-shadow: 0 0 8px rgba(126, 232, 255, 0.65) !important;
+}
+
+/* Buttons — Classic WoW Cobalt Login Button with Gold Text & Silver Trim */
+input[type="submit"], input[type="button"], button, .button {
+  background: linear-gradient(180deg, #1d5ca3 0%, #103766 50%, #0b2647 100%) !important;
+  color: #ffd100 !important;
+  border: 1px solid #8eb8de !important;
+  text-shadow: 0 1px 2px #000000 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(190, 227, 255, 0.35) !important;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover {
+  background: linear-gradient(180deg, #2876cc 0%, #164985 50%, #0f325e 100%) !important;
+  color: #fff2a6 !important;
+  border-color: #bfe6ff !important;
+  box-shadow: 0 0 12px rgba(126, 232, 255, 0.65) !important;
+}
+
+
+/* ================= Cabecera WotLK + Logo SVG embebido con Hielo ================= */
+.table_top {
+  background: linear-gradient(180deg, #1b4970 0%, #0a1b2b 100%) !important;
+  background-image: linear-gradient(180deg, #1b4970 0%, #0a1b2b 100%) !important;
+  border: 1px solid #4ea8d9 !important;
+}
+
+.table_top_left {
+  background-color: transparent !important;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='380' height='76' viewBox='0 0 380 76'><defs><linearGradient id='ice' x1='0' y1='0' x2='0' y2='1'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='45%25' stop-color='%239be7ff'/><stop offset='85%25' stop-color='%232e96d4'/><stop offset='100%25' stop-color='%2312436e'/></linearGradient><linearGradient id='drip' x1='0' y1='0' x2='0' y2='1'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='55%25' stop-color='%238ce3ff'/><stop offset='100%25' stop-color='%2333bfff' stop-opacity='0.75'/></linearGradient><linearGradient id='gold' x1='0' y1='0' x2='0' y2='1'><stop offset='0%25' stop-color='%23fff2a6'/><stop offset='50%25' stop-color='%23ffd100'/><stop offset='100%25' stop-color='%23b58105'/></linearGradient></defs><text x='14' y='40' font-family='Trebuchet MS,Verdana,sans-serif' font-weight='900' font-size='33' letter-spacing='1' fill='url(%23ice)' stroke='%23061829' stroke-width='1.3'><tspan font-size='25' font-weight='700'>mini</tspan>MANAGER</text><path d='M16,22 Q24,18 32,22 L34,30 L36,22 Q46,19 56,22 L58,34 L61,22 Q66,20 71,22 M74,15 Q84,11 94,15 L96,29 L99,15 Q108,12 118,15 L120,36 L123,15 Q134,11 144,15 L146,27 L149,15 Q160,12 172,15 L175,38 L178,15 Q190,11 202,15 L204,31 L207,15 Q218,12 230,15 L233,35 L236,15 Q248,11 260,15 L262,28 L265,15 Q276,12 288,15 L291,37 L294,15 Q302,12 310,15' fill='none' stroke='url(%23drip)' stroke-width='2.4' stroke-linecap='round'/><polygon points='24,40 28,40 26,52' fill='url(%23drip)'/><polygon points='52,40 57,40 54.5,56' fill='url(%23drip)'/><polygon points='82,40 88,40 85,59' fill='url(%23drip)'/><polygon points='114,40 119,40 116.5,53' fill='url(%23drip)'/><polygon points='150,40 156,40 153,61' fill='url(%23drip)'/><polygon points='186,40 191,40 188.5,54' fill='url(%23drip)'/><polygon points='222,40 228,40 225,58' fill='url(%23drip)'/><polygon points='258,40 263,40 260.5,51' fill='url(%23drip)'/><polygon points='292,40 297,40 294.5,55' fill='url(%23drip)'/><text x='16' y='66' font-family='Trebuchet MS,Verdana,sans-serif' font-size='11.5' font-weight='bold' letter-spacing='1.8' fill='url(%23gold)' stroke='%2305111c' stroke-width='0.6'>for project TRINITYCORE</text></svg>") !important;
+  background-repeat: no-repeat !important;
+  background-position: 12px 4px !important;
+}
+
+.table_top_middle, .table_top_right {
+  background: transparent !important;
+  background-image: none !important;
+}
