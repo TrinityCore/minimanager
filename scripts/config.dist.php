@@ -354,6 +354,7 @@ $menu_array =
       ['char_inv.php', 'character', 0,5,5,5],
       ['char_quest.php', 'character', 0,5,5,5],
       ['char_achieve.php', 'character', 0,5,5,5],
+      ['char_progress.php', 'character', 0,5,5,5],
       ['char_skill.php', 'character', 0,5,5,5],
       ['char_talent.php', 'character', 0,5,5,5],
       ['char_rep.php', 'character', 0,5,5,5],

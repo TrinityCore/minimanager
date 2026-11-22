@@ -515,6 +515,7 @@ function lang_char()
     'summary' => 'Summary',
     'recent' => 'Recent',
     'achievements' => 'Achievements',
+    'progress' => 'Progress',
     'achievement_title' => 'Achievement Title',
     'achievement_points' => 'Points',
     'achievement_date' => 'Date',

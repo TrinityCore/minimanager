@@ -528,6 +528,7 @@ function lang_char()
     'summary' => 'Resumen',
     'recent' => 'Recientes',
     'achievements' => 'Logros',
+    'progress' => 'Progreso',
     'achievement_title' => 'Título del logro',
     'achievement_points' => 'Puntos',
     'achievement_date' => 'Date',
