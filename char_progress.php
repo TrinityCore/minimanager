@@ -181,176 +181,80 @@ function char_achievements(&$sqlr, &$sqlc)
 
             require_once 'core/char/char_header.php';
 
-        // 20 Mazmorras de WoW Clásico (ID Logro, Nombre)
-        $classic_dungeons = array(
-            array(628, "Sima Ígnea"),
-            array(629, "Cuevas de los Lamentos"),
-            array(630, "Las Minas de la Muerte"),
-            array(631, "Castillo de Colmillo Oscuro"),
-            array(632, "Cavernas de Brazanegra"),
-            array(633, "Mazmorras de Ventormenta"),
-            array(634, "Gnomeregan"),
-            array(635, "Horado Rajacieno"),
-            array(636, "Zahúrda Rajacieno"),
-            array(637, "Monasterio Escarlata"),
-            array(638, "Uldaman"),
-            array(639, "Zul'Farrak"),
-            array(640, "Maraudon"),
-            array(641, "Templo Sumergido"),
-            array(642, "Profundidades de Roca Negra"),
-            array(643, "Cumbre de Roca Negra Inferior"),
-            array(1307, "Cumbre de Roca Negra Superior"),
-            array(644, "La Masacre"),
-            array(645, "Scholomance"),
-            array(646, "Stratholme")
-        );
+        $lang_eng = lang_char(); // Fallback garantizado en inglés
+        $t = function($k) use ($lang_char, $lang_eng) {
+            return isset($lang_char[$k]) ? $lang_char[$k] : (isset($lang_eng[$k]) ? $lang_eng[$k] : $k);
+        };
 
-        // 6 Bandas de WoW Clásico (ID Logro, Nombre)
-        $classic_raids = array(
-            array(688, "Zul'Gurub"),
-            array(689, "Ruinas de Ahn'Qiraj"),
-            array(686, "Núcleo de Magma"),
-            array(685, "Guarida de Alanegra"),
-            array(687, "Templo de Ahn'Qiraj"),
-            array(684, "Guarida de Onyxia (Nv. 60)")
-        );
+        $is_horde = in_array((int)$char['race'], array(2, 5, 6, 8, 10));
 
-        // 16 Mazmorras de Terrallende (Normal, Heroico, Nombre)
+        // IDs de logros oficiales (en mazmorras Heroic/Normal se toma el nombre oficial de DBC)
+        $classic_dungeons = array(628, 629, 630, 631, 632, 633, 634, 635, 636, 637, 638, 639, 640, 641, 642, 643, 1307, 644, 645, 646);
+        $classic_raids    = array(688, 689, 686, 685, 687, 684);
+
         $tbc_dungeons = array(
-            array(647, 667, "Murallas del Fuego Infernal"),
-            array(648, 668, "El Horno de Sangre"),
-            array(651, 678, "Las Salas Arrasadas"),
-            array(649, 669, "Recinto de los Esclavos"),
-            array(650, 670, "La Sotiénaga"),
-            array(652, 671, "La Cámara de Vapor"),
-            array(653, 672, "Tumbas de Maná"),
-            array(654, 673, "Criptas Auchenai"),
-            array(656, 674, "Salas Sethekk"),
-            array(657, 675, "Laberinto de las Sombras"),
-            array(655, 676, "Antiguas Laderas de Trabalomas"),
-            array(658, 677, "La Apertura del Portal Oscuro"),
-            array(659, 679, "El Mechanar"),
-            array(660, 680, "El Invernáculo"),
-            array(661, 681, "El Arcatraz"),
-            array(662, 682, "Bancal del Magister")
+            array(647, 667), array(648, 668), array(651, 678), array(649, 669),
+            array(650, 670), array(652, 671), array(653, 672), array(654, 673),
+            array(656, 674), array(657, 675), array(655, 676), array(658, 677),
+            array(659, 679), array(660, 680), array(661, 681), array(662, 682)
         );
+        $tbc_raids = array(690, 692, 693, 694, 696, 695, 697, 698);
 
-        // 8 Bandas de Terrallende (ID Logro, Nombre)
-        $tbc_raids = array(
-            array(690, "Karazhan"),
-            array(692, "Guarida de Gruul"),
-            array(693, "Guarida de Magtheridon"),
-            array(694, "Caverna Santuario Serpiente"),
-            array(696, "El Ojo (Castillo de la Tempestad)"),
-            array(695, "La Batalla del Monte Hyjal"),
-            array(697, "El Templo Oscuro"),
-            array(698, "Meseta de La Fuente del Sol")
-        );
-
-        // 16 Mazmorras de Rasganorte (Normal, Heroico, Nombre)
         $wotlk_dungeons = array(
-            array(477,  489,  "Fortaleza de Utgarde"),
-            array(478,  490,  "El Nexo"),
-            array(480,  491,  "Azjol-Nerub"),
-            array(481,  492,  "Ahn'kahet: El Antiguo Reino"),
-            array(482,  493,  "Fortaleza de Drak'Tharon"),
-            array(483,  494,  "El Bastión Violeta"),
-            array(484,  495,  "Gundrak"),
-            array(485,  496,  "Cámaras de Piedra"),
-            array(486,  497,  "Cámaras de Relámpagos"),
-            array(487,  498,  "El Oculus"),
-            array(488,  499,  "Pináculo de Utgarde"),
-            array(479,  500,  "La Matanza de Stratholme"),
-            array(4296, 4298, "Prueba del Campeón"),
-            array(4516, 4519, "La Forja de Almas"),
-            array(4517, 4520, "Foso de Saron"),
-            array(4518, 4521, "Cámaras de Reflexión")
+            array(477, 489), array(478, 490), array(480, 491), array(481, 492),
+            array(482, 493), array(483, 494), array(484, 495), array(485, 496),
+            array(486, 497), array(487, 498), array(488, 499), array(479, 500),
+            array(4296, 4298), array(4516, 4519), array(4517, 4520), array(4518, 4521)
         );
-
-        // 9 Bandas de Rasganorte (10j, 25j, Nombre)
         $wotlk_raids = array(
-            array(576,  577,  "Naxxramas"),
-            array(1876, 625,  "El Sagrario Obsidiana"),
-            array(622,  623,  "El Ojo de la Eternidad"),
-            array(1722, 1721, "La Cámara de Archavon"),
-            array(2894, 2895, "Ulduar"),
-            array(3917, 3916, "Prueba del Cruzado"),
-            array(4396, 4397, "La Guarida de Onyxia"),
-            array(4532, 4608, "Ciudadela de la Corona de Hielo"),
-            array(4817, 4815, "El Sagrario Rubí")
+            array(576, 577), array(1876, 625), array(622, 623),
+            array(1722, 1721), array(2894, 2895), array(3917, 3916),
+            array(4396, 4397), array(4532, 4608), array(4817, 4815)
         );
 
-        $all_ids = array();
-        foreach ($classic_dungeons as $d) { list($did, $nm) = $d; $all_ids[] = $did; }
-        foreach ($classic_raids as $r)    { list($rid, $nm) = $r; $all_ids[] = $rid; }
-        foreach ($tbc_dungeons as $d)     { list($n, $h, $nm) = $d; $all_ids[] = $n; $all_ids[] = $h; }
-        foreach ($tbc_raids as $r)        { list($rid, $nm) = $r;   $all_ids[] = $rid; }
-        foreach ($wotlk_dungeons as $d)   { list($n, $h, $nm) = $d; $all_ids[] = $n; $all_ids[] = $h; }
-        foreach ($wotlk_raids as $r)      { list($r10, $r25, $nm) = $r; $all_ids[] = $r10; $all_ids[] = $r25; }
+        $pvp_categories = array(
+            array('key' => 'prog_pvp_gen',  'lbl' => 'General', 'items' => array(245, 246, 247, array(700, 701), 1157, 512, 516, 513, 515, 870)),
+            array('key' => 'prog_pvp_arn',  'lbl' => 'Arena',   'items' => array(399, 400, 402, 406, 408, 1159, 403, 407, 1161, 2090)),
+            array('key' => 'prog_pvp_av',   'lbl' => 'Alterac', 'items' => array(218, 219, 221, 222, 225, 226, 582, array(706, 707), array(224, 1151), array(1167, 1168))),
+            array('key' => 'prog_pvp_ab',   'lbl' => 'Arathi',  'items' => array(154, 155, 156, 157, 158, 159, 161, 162, 583, array(1169, 1170))),
+            array('key' => 'prog_pvp_eots', 'lbl' => 'EotS',    'items' => array(208, 209, 211, 212, 213, 214, 216, 587, 1258, array(1171, 1259))),
+            array('key' => 'prog_pvp_wsg',  'lbl' => 'WSG',     'items' => array(166, 167, 168, 199, 200, 201, array(202, 1502), array(1251, 1252), array(206, 1252), array(1172, 1173))),
+            array('key' => 'prog_pvp_sota', 'lbl' => 'SotA',    'items' => array(1308, 1309, 1310, 1761, 1762, 1763, 1764, 1765, 2189, array(2194, 2195))),
+            array('key' => 'prog_pvp_ioc',  'lbl' => 'IoC',     'items' => array(3776, 3777, 3845, 3846, 3847, 3848, 3849, 3850, 3851, array(3857, 3957)))
+        );
 
+        // Recolectar todos los IDs para consultarlos de una sola vez
+        $all_ids = array_merge($classic_dungeons, $classic_raids, $tbc_raids);
+        foreach ($tbc_dungeons as $p)   { $all_ids[] = $p[0]; $all_ids[] = $p[1]; }
+        foreach ($wotlk_dungeons as $p) { $all_ids[] = $p[0]; $all_ids[] = $p[1]; }
+        foreach ($wotlk_raids as $p)    { $all_ids[] = $p[0]; $all_ids[] = $p[1]; }
+        foreach ($pvp_categories as $c) {
+            foreach ($c['items'] as $it) {
+                if (is_array($it)) { $all_ids[] = $it[0]; $all_ids[] = $it[1]; }
+                else { $all_ids[] = $it; }
+            }
+        }
+        $all_ids = array_unique($all_ids);
+        $in_clause = implode(',', $all_ids);
+
+        // 1. Obtener nombres oficiales desde mmfpm.dbc_achievement
+        $sqlm = new SQL;
+        $sqlm->connect($mmfpm_db['addr'], $mmfpm_db['user'], $mmfpm_db['pass'], $mmfpm_db['name']);
+        $ach_names = array();
+        $dbc_res = $sqlm->query("SELECT id, name01 FROM dbc_achievement WHERE id IN ($in_clause)");
+        while ($row = $sqlm->fetch_assoc($dbc_res)) {
+            $ach_names[(int)$row['id']] = $row['name01'];
+        }
+        $get_name = function($aid) use ($ach_names) {
+            return isset($ach_names[$aid]) ? $ach_names[$aid] : "Achievement #$aid";
+        };
+
+        // 2. Obtener logros completados del personaje
         $completed_ach = array();
-        $ach_res = $sqlc->query("SELECT achievement FROM character_achievement WHERE guid = $id AND achievement IN (" . implode(',', $all_ids) . ")");
+        $ach_res = $sqlc->query("SELECT achievement FROM character_achievement WHERE guid = $id AND achievement IN ($in_clause)");
         while ($row = $sqlc->fetch_assoc($ach_res)) {
             $completed_ach[(int)$row['achievement']] = true;
         }
-
-        $cls_d_done = 0; $cls_d_slices = array();
-        foreach ($classic_dungeons as $d) {
-            list($did, $nm) = $d;
-            $done = isset($completed_ach[$did]);
-            if ($done) $cls_d_done++;
-            $cls_d_slices[] = array('name' => $nm, 'done' => $done);
-        }
-        $cls_d_pct = floor(($cls_d_done / 20) * 100);
-
-        $cls_r_done = 0; $cls_r_slices = array();
-        foreach ($classic_raids as $r) {
-            list($rid, $nm) = $r;
-            $done = isset($completed_ach[$rid]);
-            if ($done) $cls_r_done++;
-            $cls_r_slices[] = array('name' => $nm, 'done' => $done);
-        }
-        $cls_r_pct = floor(($cls_r_done / 6) * 100);
-
-        $tbc_d_done = 0; $tbc_d_slices = array();
-        foreach ($tbc_dungeons as $d) {
-            list($n, $h, $nm) = $d;
-            $done = isset($completed_ach[$n]) || isset($completed_ach[$h]);
-            if ($done) $tbc_d_done++;
-            $tbc_d_slices[] = array('name' => $nm, 'done' => $done);
-        }
-        $tbc_d_pct = floor(($tbc_d_done / 16) * 100);
-
-        $tbc_r_done = 0; $tbc_r_slices = array();
-        foreach ($tbc_raids as $r) {
-            list($rid, $nm) = $r;
-            $done = isset($completed_ach[$rid]);
-            if ($done) $tbc_r_done++;
-            $tbc_r_slices[] = array('name' => $nm, 'done' => $done);
-        }
-        $tbc_r_pct = floor(($tbc_r_done / 8) * 100);
-
-        $dungeon_done = 0; $dungeon_slices = array();
-        foreach ($wotlk_dungeons as $d) {
-            list($n, $h, $nm) = $d;
-            $done = isset($completed_ach[$n]) || isset($completed_ach[$h]);
-            if ($done) $dungeon_done++;
-            $dungeon_slices[] = array('name' => $nm, 'done' => $done);
-        }
-        $dungeon_pct = floor(($dungeon_done / 16) * 100);
-
-        $raid_done = 0; $raid_slices = array(); $raid_rows = array();
-        foreach ($wotlk_raids as $r) {
-            list($r10, $r25, $nm) = $r;
-            $d10 = isset($completed_ach[$r10]);
-            $d25 = isset($completed_ach[$r25]);
-            if ($d10) $raid_done++;
-            if ($d25) $raid_done++;
-            $raid_slices[] = $d10;
-            $raid_slices[] = $d25;
-            $raid_rows[] = array('name' => $nm, 'd10' => $d10, 'd25' => $d25);
-        }
-        $raid_pct = floor(($raid_done / 18) * 100);
 
         $draw_pie = function($slices, $pct, $label) {
             $total = count($slices);
@@ -369,11 +273,52 @@ function char_achievements(&$sqlr, &$sqlc)
             return $svg;
         };
 
-        $cls_d_bools = array_map(function($x) { return $x['done']; }, $cls_d_slices);
-        $cls_r_bools = array_map(function($x) { return $x['done']; }, $cls_r_slices);
-        $tbc_d_bools = array_map(function($x) { return $x['done']; }, $tbc_d_slices);
-        $tbc_r_bools = array_map(function($x) { return $x['done']; }, $tbc_r_slices);
-        $d_bools     = array_map(function($x) { return $x['done']; }, $dungeon_slices);
+        $render_simple_card = function($title, $sub_lbl, $pie_lbl, $items) use ($completed_ach, $get_name, $draw_pie) {
+            $done_cnt = 0; $slices = array(); $li = '';
+            foreach ($items as $it) {
+                if (is_array($it)) {
+                    $done = isset($completed_ach[$it[0]]) || isset($completed_ach[$it[1]]);
+                    $pick_id = isset($completed_ach[$it[1]]) ? $it[1] : $it[0];
+                } else {
+                    $done = isset($completed_ach[$it]);
+                    $pick_id = $it;
+                }
+                if ($done) $done_cnt++;
+                $slices[] = $done;
+                $nm = htmlspecialchars($get_name($pick_id));
+                $li .= $done
+                    ? '<li><span class="mm-ok">[&#10004;]</span> '.$nm.'</li>'
+                    : '<li><span class="mm-no">[&#10008;]</span> <span class="mm-dim">'.$nm.'</span></li>';
+            }
+            $tot = count($items);
+            $pct = floor(($done_cnt / $tot) * 100);
+            return '<div class="mm-prog-card">
+                <div class="mm-prog-title">'.htmlspecialchars($title).'</div>
+                <div class="mm-prog-sub">'.$sub_lbl.': <span class="mm-ok">'.$done_cnt.'/'.$tot.'</span> (<b>'.$pct.'%</b>)</div>
+                '.$draw_pie($slices, $pct, $pie_lbl).'
+                <ul class="mm-prog-list">'.$li.'</ul>
+            </div>';
+        };
+
+        // Tarjeta especial 10/25 para WotLK Raids
+        $r_done = 0; $r_slices = array(); $r_li = '';
+        foreach ($wotlk_raids as $pair) {
+            $d10 = isset($completed_ach[$pair[0]]);
+            $d25 = isset($completed_ach[$pair[1]]);
+            if ($d10) $r_done++;
+            if ($d25) $r_done++;
+            $r_slices[] = $d10; $r_slices[] = $d25;
+            $t10 = $d10 ? '<span class="mm-ok">[10&#10004;]</span>' : '<span class="mm-no">[10&#10008;]</span>';
+            $t25 = $d25 ? '<span class="mm-ok">[25&#10004;]</span>' : '<span class="mm-no">[25&#10008;]</span>';
+            $r_li .= '<li>'.$t10.' '.$t25.' '.htmlspecialchars($get_name($pair[0])).'</li>';
+        }
+        $r_pct = floor(($r_done / 18) * 100);
+        $wotlk_raid_card = '<div class="mm-prog-card">
+            <div class="mm-prog-title">'.htmlspecialchars($t('prog_wot_r')).'</div>
+            <div class="mm-prog-sub">'.$t('prog_modes').': <span class="mm-ok">'.$r_done.'/18</span> (<b>'.$r_pct.'%</b>)</div>
+            '.$draw_pie($r_slices, $r_pct, $t('prog_raids')).'
+            <ul class="mm-prog-list">'.$r_li.'</ul>
+        </div>';
 
         $output .= '
         <style>
@@ -393,101 +338,25 @@ function char_achievements(&$sqlr, &$sqlc)
         <table class="lined" style="width: 100%;">
           <tr>
             <td>
-              <div class="mm-prog-wrap">
-                <div class="mm-prog-card">
-                  <div class="mm-prog-title">Mazmorras Clásicas (Vanilla)</div>
-                  <div class="mm-prog-sub">Completadas: <span class="mm-ok">'.$cls_d_done.'/20</span> (<b>'.$cls_d_pct.'%</b>)</div>
-                  '.$draw_pie($cls_d_bools, $cls_d_pct, 'Mazmorras').'
-                  <ul class="mm-prog-list">';
+              <div class="mm-prog-wrap">'
+                .$render_simple_card($t('prog_cls_d'), $t('prog_done'), $t('prog_dung'), $classic_dungeons)
+                .$render_simple_card($t('prog_cls_r'), $t('prog_done'), $t('prog_raids'), $classic_raids)
+              .'</div>
+              <div class="mm-prog-wrap">'
+                .$render_simple_card($t('prog_tbc_d'), $t('prog_done'), $t('prog_dung'), $tbc_dungeons)
+                .$render_simple_card($t('prog_tbc_r'), $t('prog_done'), $t('prog_raids'), $tbc_raids)
+              .'</div>
+              <div class="mm-prog-wrap">'
+                .$render_simple_card($t('prog_wot_d'), $t('prog_done'), $t('prog_dung'), $wotlk_dungeons)
+                .$wotlk_raid_card
+              .'</div>
+              <div class="mm-prog-wrap">';
 
-        foreach ($cls_d_slices as $ds) {
-            $output .= $ds['done']
-                ? '<li><span class="mm-ok">[&#10004;]</span> '.htmlspecialchars($ds['name']).'</li>'
-                : '<li><span class="mm-no">[&#10008;]</span> <span class="mm-dim">'.htmlspecialchars($ds['name']).'</span></li>';
+        foreach ($pvp_categories as $cat) {
+            $output .= $render_simple_card($t($cat['key']), $t('prog_done'), $cat['lbl'], $cat['items']);
         }
 
         $output .= '
-                  </ul>
-                </div>
-                <div class="mm-prog-card">
-                  <div class="mm-prog-title">Bandas Clásicas (Vanilla)</div>
-                  <div class="mm-prog-sub">Completadas: <span class="mm-ok">'.$cls_r_done.'/6</span> (<b>'.$cls_r_pct.'%</b>)</div>
-                  '.$draw_pie($cls_r_bools, $cls_r_pct, 'Raids').'
-                  <ul class="mm-prog-list">';
-
-        foreach ($cls_r_slices as $rs) {
-            $output .= $rs['done']
-                ? '<li><span class="mm-ok">[&#10004;]</span> '.htmlspecialchars($rs['name']).'</li>'
-                : '<li><span class="mm-no">[&#10008;]</span> <span class="mm-dim">'.htmlspecialchars($rs['name']).'</span></li>';
-        }
-
-        $output .= '
-                  </ul>
-                </div>
-              </div>
-              <div class="mm-prog-wrap">
-                <div class="mm-prog-card">
-                  <div class="mm-prog-title">Mazmorras de Terrallende (TBC)</div>
-                  <div class="mm-prog-sub">Completadas: <span class="mm-ok">'.$tbc_d_done.'/16</span> (<b>'.$tbc_d_pct.'%</b>)</div>
-                  '.$draw_pie($tbc_d_bools, $tbc_d_pct, 'Mazmorras').'
-                  <ul class="mm-prog-list">';
-
-        foreach ($tbc_d_slices as $ds) {
-            $output .= $ds['done']
-                ? '<li><span class="mm-ok">[&#10004;]</span> '.htmlspecialchars($ds['name']).'</li>'
-                : '<li><span class="mm-no">[&#10008;]</span> <span class="mm-dim">'.htmlspecialchars($ds['name']).'</span></li>';
-        }
-
-        $output .= '
-                  </ul>
-                </div>
-                <div class="mm-prog-card">
-                  <div class="mm-prog-title">Bandas de Terrallende (TBC)</div>
-                  <div class="mm-prog-sub">Completadas: <span class="mm-ok">'.$tbc_r_done.'/8</span> (<b>'.$tbc_r_pct.'%</b>)</div>
-                  '.$draw_pie($tbc_r_bools, $tbc_r_pct, 'Raids').'
-                  <ul class="mm-prog-list">';
-
-        foreach ($tbc_r_slices as $rs) {
-            $output .= $rs['done']
-                ? '<li><span class="mm-ok">[&#10004;]</span> '.htmlspecialchars($rs['name']).'</li>'
-                : '<li><span class="mm-no">[&#10008;]</span> <span class="mm-dim">'.htmlspecialchars($rs['name']).'</span></li>';
-        }
-
-        $output .= '
-                  </ul>
-                </div>
-              </div>
-              <div class="mm-prog-wrap">
-                <div class="mm-prog-card">
-                  <div class="mm-prog-title">Mazmorras de Rasganorte (WotLK)</div>
-                  <div class="mm-prog-sub">Completadas: <span class="mm-ok">'.$dungeon_done.'/16</span> (<b>'.$dungeon_pct.'%</b>)</div>
-                  '.$draw_pie($d_bools, $dungeon_pct, 'Mazmorras').'
-                  <ul class="mm-prog-list">';
-
-        foreach ($dungeon_slices as $ds) {
-            $output .= $ds['done']
-                ? '<li><span class="mm-ok">[&#10004;]</span> '.htmlspecialchars($ds['name']).'</li>'
-                : '<li><span class="mm-no">[&#10008;]</span> <span class="mm-dim">'.htmlspecialchars($ds['name']).'</span></li>';
-        }
-
-        $output .= '
-                  </ul>
-                </div>
-                <div class="mm-prog-card">
-                  <div class="mm-prog-title">Bandas de Rasganorte (10 / 25)</div>
-                  <div class="mm-prog-sub">Modalidades: <span class="mm-ok">'.$raid_done.'/18</span> (<b>'.$raid_pct.'%</b>)</div>
-                  '.$draw_pie($raid_slices, $raid_pct, 'Raids').'
-                  <ul class="mm-prog-list">';
-
-        foreach ($raid_rows as $rr) {
-            $t10 = $rr['d10'] ? '<span class="mm-ok">[10&#10004;]</span>' : '<span class="mm-no">[10&#10008;]</span>';
-            $t25 = $rr['d25'] ? '<span class="mm-ok">[25&#10004;]</span>' : '<span class="mm-no">[25&#10008;]</span>';
-            $output .= '<li>'.$t10.' '.$t25.' '.htmlspecialchars($rr['name']).'</li>';
-        }
-
-        $output .= '
-                  </ul>
-                </div>
               </div>
             </td>
           </tr>
