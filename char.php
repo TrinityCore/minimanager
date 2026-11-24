@@ -23,12 +23,14 @@ function char_main(&$sqlr, &$sqlc)
 
     require_once 'core/char/char_security.php';
 
-    $result = $sqlc->query('SELECT account, race FROM characters WHERE guid = '.$id.' LIMIT 1');
+    $result = $sqlc->query('SELECT account, deleteInfos_Account, race FROM characters WHERE guid = '.$id.' LIMIT 1');
 
     if ($sqlc->num_rows($result))
     {
         //resrict by owner's gmlvl
         $owner_acc_id = $sqlc->result($result, 0, 'account');
+        if (empty($owner_acc_id))
+            $owner_acc_id = $sqlc->result($result, 0, 'deleteInfos_Account');
         $query = $sqlr->query('SELECT `username`, `SecurityLevel` FROM `account` LEFT JOIN `account_access` ON `account`.`id`=`account_access`.`AccountID` WHERE `account`.`id` = '.$owner_acc_id.' ORDER BY `SecurityLevel` DESC LIMIT 1');
         $owner_name = $sqlr->result($query, 0, 'username');
         $owner_gmlvl = $sqlr->result($query, 0, 'SecurityLevel');
@@ -56,7 +58,7 @@ function char_main(&$sqlr, &$sqlc)
 
         if ($user_lvl >= $owner_gmlvl && (($side_v === $side_p) || !$side_v))
         {
-            $result = $sqlc->query('SELECT characters.equipmentCache, BINARY characters.name AS name, characters.race, characters.class, characters.level, characters.zone, characters.map, characters.online, characters.totaltime, characters.gender, characters.account, character_stats.blockPct,
+            $result = $sqlc->query('SELECT characters.equipmentCache, BINARY characters.name AS name, BINARY characters.deleteInfos_Name AS deleteInfos_Name, characters.deleteInfos_Account, characters.deleteDate, characters.race, characters.class, characters.level, characters.zone, characters.map, characters.online, characters.totaltime, characters.gender, characters.account, character_stats.blockPct,
                                     character_stats.dodgePct, character_stats.parryPct, character_stats.critPct, character_stats.rangedCritPct, character_stats.spellCritPct, COALESCE(guild_member.guildid,0) AS guildid, COALESCE(guild_member.rank,0) AS `rank`,
                                     characters.totalHonorPoints, characters.arenaPoints, characters.totalKills, character_stats.maxhealth, character_stats.maxpower1, character_stats.strength, character_stats.agility, character_stats.stamina, character_stats.intellect,
                                     character_stats.spirit, character_stats.armor, character_stats.resHoly, character_stats.resFire, character_stats.resNature, character_stats.resFrost, character_stats.resShadow, character_stats.resArcane, character_stats.attackPower,
@@ -267,12 +269,20 @@ function char_main(&$sqlr, &$sqlc)
                                                 <img src="'.spell_get_icon($aura['spell'], $sqlm).'" alt="'.$aura['spell'].'" width="24" height="24" />
                                             </a>';
 
+            if (empty($char['account']) && !empty($char['deleteInfos_Account']))
+                $char['account'] = $char['deleteInfos_Account'];
+
+            $delete_date_str = !empty($char['deleteDate']) ? ' ('.date('Y-m-d H:i', (int)$char['deleteDate']).')' : '';
+            $char_name_display = !empty($char['deleteInfos_Name'])
+                ? '<span style="color: #ff4444;">&lt;deleted'.$delete_date_str.'&gt;</span> '.htmlentities($char['deleteInfos_Name'], ENT_QUOTES, 'UTF-8')
+                : htmlentities($char['name'] ?? '', ENT_QUOTES, 'UTF-8');
+
             $output .= '
                                         </div>
                                     </td>
                                     <td colspan="4">
                                         <font class="bold">
-                                            '.htmlentities($char['name'] ?? '').' -
+                                            '.$char_name_display.' -
                                             <img src="img/c_icons/'.$char['race'].'-'.$char['gender'].'.gif" onmousemove="toolTip(\''.char_get_race_name($char['race']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />
                                             <img src="img/c_icons/'.$char['class'].'.gif" onmousemove="toolTip(\''.char_get_class_name($char['class']).'\', \'item_tooltip\')" onmouseout="toolTip()" alt="" />
                                             - lvl '.char_get_level_color($char['level']).'
